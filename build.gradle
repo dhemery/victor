@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+defaultTasks 'build'
+
+dependencies {
+    compile fileTree(dir: 'lib/main', include: '*.jar')
+    testCompile fileTree(dir: 'lib/test', include: '*.jar')
+}
+
+version = '0.1.1'
+
+processResources.doLast {
+    Runtime.getRuntime().exec('chmod +x build/classes/main/com/dhemery/victor/driver/iphonesim')
+}
