@@ -7,7 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.poller.For;
 import com.dhemery.victor.driver.io.MapRequest;
 import com.dhemery.victor.driver.io.MapResponse;
 import com.dhemery.victor.driver.io.Response;
@@ -52,6 +51,6 @@ public class SymbioteApplicationDriver implements IOSApplicationDriver {
 	}
 
 	public void waitUntilReady() {
-		new For(20000).poll().until(new ApplicationServerResponds(SERVER_URL));
+		new Poll().until(new ApplicationServerResponds(SERVER_URL));
 	}
 }
