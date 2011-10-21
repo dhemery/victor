@@ -6,5 +6,4 @@ public interface IOSApplicationDriver {
 	boolean isPresent(IOSElement element);
 	boolean isVisible(IOSElement element);
 	void touch(IOSElement element);
-	void waitUntilReady();
 }

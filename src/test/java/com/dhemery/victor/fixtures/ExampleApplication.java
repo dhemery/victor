@@ -1,11 +1,10 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.victor.driver.IOSApplicationDriver;
-import com.dhemery.victor.driver.SymbioteClient;
+import com.dhemery.victor.driver.SymbioteApplicationDriver;
 
 
 public class ExampleApplication {
-	private final IOSApplicationDriver driver = new SymbioteClient();
+	private final SymbioteApplicationDriver driver = new SymbioteApplicationDriver();
 	
 	public ExampleApplication() {
 		driver.waitUntilReady();

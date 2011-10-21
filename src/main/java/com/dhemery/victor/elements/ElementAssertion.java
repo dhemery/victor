@@ -1,6 +1,6 @@
 package com.dhemery.victor.elements;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import com.dhemery.victor.elements.ios.IOSElement;
 import com.dhemery.victor.elements.polled.PolledIOSElementConditions;
