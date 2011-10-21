@@ -9,9 +9,10 @@ import com.dhemery.victor.elements.conditions.IsVisible;
 
 public class PolledElementConditions implements ElementConditions {
 	private final Element element;
-	private final Poll poll = new Poll();
+	private final Poll poll;
 
 	public PolledElementConditions(Element element) {
+		this.poll = element.driver().poll();
 		this.element = element;
 	}
 

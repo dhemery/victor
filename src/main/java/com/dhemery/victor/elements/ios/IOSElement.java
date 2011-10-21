@@ -1,6 +1,6 @@
 package com.dhemery.victor.elements.ios;
 
-import com.dhemery.victor.driver.IOSApplicationDriver;
+import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.ElementAssertion;
 import com.dhemery.victor.elements.ElementCommands;
@@ -10,21 +10,21 @@ import com.dhemery.victor.elements.conditions.IsVisible;
 
 public class IOSElement implements Element {
 	private final String locator;
-	private final IOSApplicationDriver app;
+	private final ApplicationDriver driver;
 
-	public IOSElement(IOSApplicationDriver app, String locator) {
-		this.app = app;
+	public IOSElement(ApplicationDriver driver, String locator) {
+		this.driver = driver;
 		this.locator = locator;
 	}
 
 	@Override
 	public boolean isPresent() {
-		return app.isPresent(this);
+		return driver.isPresent(this);
 	}
 
 	@Override
 	public boolean isVisible() {
-		return app.isVisible(this);
+		return driver.isVisible(this);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class IOSElement implements Element {
 
 	@Override
 	public void touch() {
-		app.touch(this);
+		driver.touch(this);
 	}
 
 	public String locator() {
@@ -47,14 +47,19 @@ public class IOSElement implements Element {
 	}
 
 	public ElementCommands whenPresent() {
-		return new PolledElementCommands(this, new IsPresent(this));
+		return new PolledElementCommands(driver.poll(), this, new IsPresent(this));
 	}
 
 	public ElementCommands whenVisible() {
-		return new PolledElementCommands(this, new IsVisible(this));
+		return new PolledElementCommands(driver.poll(), this, new IsVisible(this));
 	}
 	
 	public ElementAssertion verify() {
 		return new ElementAssertion(this);
+	}
+
+	@Override
+	public ApplicationDriver driver() {
+		return driver;
 	}
 }

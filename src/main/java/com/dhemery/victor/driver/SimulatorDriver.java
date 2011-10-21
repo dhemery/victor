@@ -1,11 +1,16 @@
 package com.dhemery.victor.driver;
 
 
-public class IOSSimulatorDriver {
+public class SimulatorDriver {
 	private static final String SHUTDOWN_SCRIPT = "application \"iPhone Simulator\" quit";
-	private static final String SIM_LAUNCHER_FILE_NAME = "/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
+	private final String simulatorPath;
+	
+	public SimulatorDriver(String simulatorPath) {
+		this.simulatorPath = simulatorPath;
+	}
+
 	public void launch(String appPath) {
-		String[] launchCommand = new String[] { SIM_LAUNCHER_FILE_NAME, "-SimulateApplication", appPath };
+		String[] launchCommand = new String[] { simulatorPath, "-SimulateApplication", appPath };
 		run(launchCommand);
 	}
 

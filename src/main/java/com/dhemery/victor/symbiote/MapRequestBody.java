@@ -1,4 +1,4 @@
-package com.dhemery.victor.driver.io;
+package com.dhemery.victor.symbiote;
 
 public class MapRequestBody extends PostRequestBody {
 	private final String query;

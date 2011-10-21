@@ -1,4 +1,4 @@
-package com.dhemery.victor.driver.io;
+package com.dhemery.victor.symbiote;
 
 import java.io.BufferedReader;
 import java.io.IOException;

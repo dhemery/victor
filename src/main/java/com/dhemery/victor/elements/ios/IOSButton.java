@@ -1,9 +1,9 @@
 package com.dhemery.victor.elements.ios;
 
-import com.dhemery.victor.driver.IOSApplicationDriver;
+import com.dhemery.victor.driver.ApplicationDriver;
 
 public class IOSButton extends IOSView {
-	public IOSButton(IOSApplicationDriver app, String type, String name) {
+	public IOSButton(ApplicationDriver app, String type, String name) {
 		super(app, type, name);
 	}
 }

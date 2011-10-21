@@ -1,4 +1,4 @@
-package com.dhemery.victor.driver;
+package com.dhemery.victor.symbiote;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -7,13 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.driver.io.PingRequest;
 
-final class ApplicationServerResponds implements Condition {
+final class ServerAcknowledgesPing implements Condition {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverPath;
 
-	public ApplicationServerResponds(String serverPath) {
+	public ServerAcknowledgesPing(String serverPath) {
 		this.serverPath = serverPath;
 	}
 
@@ -26,8 +25,8 @@ final class ApplicationServerResponds implements Condition {
 	public boolean isSatisfied() {
 		return ping();
 	}
-	
-	boolean ping() {
+
+	private boolean ping() {
 		try {
 			new PingRequest().sendTo(serverPath);
 		} catch (ProtocolException e) {
@@ -39,6 +38,5 @@ final class ApplicationServerResponds implements Condition {
 		}
 		log.debug("Ping succeeded");
 		return true;
-}
-
+	}
 }

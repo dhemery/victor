@@ -1,12 +1,14 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.victor.driver.SymbioteApplicationDriver;
+import com.dhemery.victor.driver.Poll;
+import com.dhemery.victor.symbiote.SymbioteDriver;
 
 
 public class ExampleApplication {
-	private final SymbioteApplicationDriver driver = new SymbioteApplicationDriver();
+	private final SymbioteDriver driver;
 	
-	public ExampleApplication() {
+	public ExampleApplication(String serverUrl, Poll poll) {
+		driver = new SymbioteDriver(serverUrl, poll);
 		driver.waitUntilReady();
 	}
 	

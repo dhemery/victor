@@ -1,4 +1,4 @@
-package com.dhemery.victor.driver.io;
+package com.dhemery.victor.symbiote;
 
 import com.google.gson.GsonBuilder;
 

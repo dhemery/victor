@@ -6,9 +6,10 @@ import com.dhemery.victor.driver.Poll;
 public class PolledElementCommands implements ElementCommands {
 	private final ElementCommands element;
 	private final Condition ready;
-	private final Poll poll = new Poll();
+	private final Poll poll;
 
-	public PolledElementCommands(ElementCommands element, Condition condition) {
+	public PolledElementCommands(Poll poll, ElementCommands element, Condition condition) {
+		this.poll = poll;
 		ready = condition;
 		this.element = element;
 	}

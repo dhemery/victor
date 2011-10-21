@@ -1,10 +1,10 @@
 package com.dhemery.victor.elements.ios;
 
-import com.dhemery.victor.driver.IOSApplicationDriver;
+import com.dhemery.victor.driver.ApplicationDriver;
 
 public class IOSDisplay {
-	private final IOSApplicationDriver driver;
-	public IOSDisplay(IOSApplicationDriver driver) {
+	private final ApplicationDriver driver;
+	public IOSDisplay(ApplicationDriver driver) {
 		this.driver = driver;
 	}
 
