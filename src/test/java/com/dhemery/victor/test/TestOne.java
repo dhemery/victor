@@ -1,15 +1,11 @@
 package com.dhemery.victor.test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dhemery.poller.For;
-import com.dhemery.poller.TimeoutException;
 import com.dhemery.victor.driver.IOSApplicationDriver;
 import com.dhemery.victor.driver.IOSSimulator;
 import com.dhemery.victor.driver.VictorClient;
@@ -38,42 +34,32 @@ public class TestOne {
 
 	@Test
 	public void testOne() throws InterruptedException {
-		sleep(5000);
-
 		MasterDisplay master = new MasterDisplay(app);
+		DetailDisplay detail = new DetailDisplay(app);
 		IOSView masterView = master.masterView();
 		IOSLabel detailLabel = master.detailLabel();
-
-		assertTrue(masterView.exists());
-		assertTrue(masterView.isVisible());
-		assertTrue(detailLabel.exists());
-		assertTrue(detailLabel.isVisible());
-
-		detailLabel.touch();
-		sleep(5000);
-
-		DetailDisplay detail = new DetailDisplay(app);
 		IOSView detailView = detail.detailView();
 		IOSButton masterButton = detail.masterButton();
 
-		assertTrue(detailView.exists());
-		assertTrue(detailView.isVisible());
-		assertTrue(masterButton.exists());
-		assertTrue(masterButton.isVisible());
+		masterView.verify().isPresent();
+		masterView.verify().isVisible();
+//		masterView.verify().isNotPresent();
+//		masterView.verify().isNotVisible();
+		detailLabel.verify().isPresent();
+		detailLabel.verify().isVisible();
+
+		detailLabel.touch();
+
+		detailView.verify().isPresent();
+		detailView.verify().isVisible();
+		masterButton.verify().isPresent();
+		masterButton.verify().isVisible();
 
 		masterButton.touch();
-		sleep(5000);
 
-		assertTrue(masterView.exists());
-		assertTrue(masterView.isVisible());
-		assertTrue(detailLabel.exists());
-		assertTrue(detailLabel.isVisible());
-	}
-
-	private void sleep(int i) {
-		try {
-			new For(i).poll().untilTimerExpires();
-		} catch(TimeoutException e) {
-		}
+		masterView.verify().isPresent();
+		masterView.verify().isVisible();
+		detailLabel.verify().isPresent();
+		detailLabel.verify().isVisible();
 	}
 }
