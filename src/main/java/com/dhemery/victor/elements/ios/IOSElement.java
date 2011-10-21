@@ -19,12 +19,12 @@ public class IOSElement implements ElementCommands, ElementConditions {
 
 	@Override
 	public boolean isPresent() {
-		return app.elementExists(this);
+		return app.isPresent(this);
 	}
 
 	@Override
 	public boolean isVisible() {
-		return app.elementIsVisible(this);
+		return app.isVisible(this);
 	}
 
 	@Override

@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.For;
+import com.dhemery.victor.driver.io.MapRequest;
+import com.dhemery.victor.driver.io.MapResponse;
+import com.dhemery.victor.driver.io.Response;
 import com.dhemery.victor.elements.ios.IOSElement;
-import com.dhemery.victor.queries.MapRequest;
-import com.dhemery.victor.queries.MapResponse;
-import com.dhemery.victor.queries.Response;
 import com.google.gson.Gson;
 
 public class SymbioteClient implements IOSApplicationDriver {
@@ -19,13 +19,13 @@ public class SymbioteClient implements IOSApplicationDriver {
 	private static final String SERVER_URL = "http://localhost:37265";
 
 	@Override
-	public boolean elementExists(IOSElement element) {
+	public boolean isPresent(IOSElement element) {
 		List<String> matches = each(element.locator(), "accessibilityLabel");
 		return matches.size() == 1;
 	}
 
 	@Override
-	public boolean elementIsVisible(IOSElement element) {
+	public boolean isVisible(IOSElement element) {
 		List<String> matches = each(element.locator(), "isHidden");
 		if(matches.size() != 1) return false;
 		boolean isHidden = Boolean.parseBoolean(matches.get(0));

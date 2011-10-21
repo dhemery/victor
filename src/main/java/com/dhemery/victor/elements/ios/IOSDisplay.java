@@ -13,7 +13,7 @@ public class IOSDisplay {
 	}
 
 	public IOSButton button(String name) {
-		return new IOSButton(app, "UINavigationItemView", name);
+		return new IOSButton(app, "UINavigationItemButtonView", name);
 	}
 
 	public IOSLabel label(String name) {

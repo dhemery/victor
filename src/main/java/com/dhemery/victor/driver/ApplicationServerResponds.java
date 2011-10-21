@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.queries.PingRequest;
+import com.dhemery.victor.driver.io.PingRequest;
 
 final class ApplicationServerResponds implements Condition {
 	private final Logger log = LoggerFactory.getLogger(getClass());

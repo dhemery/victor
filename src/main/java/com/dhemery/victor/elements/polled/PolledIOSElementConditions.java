@@ -23,7 +23,8 @@ public class PolledIOSElementConditions extends Polled implements ElementConditi
 	
 	@Override
 	public boolean isNotPresent() {
-		return pollUntil(new IsNotPresent(element));
+		pollUntil(new IsNotPresent(element));
+		return true;
 	}
 
 	@Override

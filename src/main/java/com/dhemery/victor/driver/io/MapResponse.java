@@ -1,4 +1,4 @@
-package com.dhemery.victor.queries;
+package com.dhemery.victor.driver.io;
 
 import java.util.List;
 

@@ -4,8 +4,10 @@ import com.dhemery.poller.Condition;
 import com.dhemery.poller.For;
 
 public class Polled {
-	protected boolean pollUntil(Condition condition) {
-		new For(20000).poll().until(condition);
-		return false;
+	private final long timeoutInMilliseconds = 20000;
+	private final long pollingIntervalInMilliseconds = 1000;
+
+	protected void pollUntil(Condition condition) {
+		new For(timeoutInMilliseconds).poll().every(pollingIntervalInMilliseconds).until(condition);
 	}
 }
