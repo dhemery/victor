@@ -1,14 +1,14 @@
 package com.dhemery.victor.elements.ios;
 
 import com.dhemery.victor.driver.IOSApplicationDriver;
+import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.ElementAssertion;
 import com.dhemery.victor.elements.ElementCommands;
-import com.dhemery.victor.elements.ElementConditions;
+import com.dhemery.victor.elements.PolledElementCommands;
 import com.dhemery.victor.elements.conditions.IsPresent;
 import com.dhemery.victor.elements.conditions.IsVisible;
-import com.dhemery.victor.elements.polled.PolledIOSElementCommands;
 
-public class IOSElement implements ElementCommands, ElementConditions {
+public class IOSElement implements Element {
 	private final String locator;
 	private final IOSApplicationDriver app;
 
@@ -47,11 +47,11 @@ public class IOSElement implements ElementCommands, ElementConditions {
 	}
 
 	public ElementCommands whenPresent() {
-		return new PolledIOSElementCommands(this, new IsPresent(this));
+		return new PolledElementCommands(this, new IsPresent(this));
 	}
 
 	public ElementCommands whenVisible() {
-		return new PolledIOSElementCommands(this, new IsVisible(this));
+		return new PolledElementCommands(this, new IsVisible(this));
 	}
 	
 	public ElementAssertion verify() {

@@ -1,12 +1,12 @@
 package com.dhemery.victor.elements.conditions;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.elements.ios.IOSElement;
+import com.dhemery.victor.elements.Element;
 
 public class IsNotPresent implements Condition {
-	private final IOSElement element;
+	private final Element element;
 
-	public IsNotPresent(IOSElement element) {
+	public IsNotPresent(Element element) {
 		this.element = element;
 	}
 

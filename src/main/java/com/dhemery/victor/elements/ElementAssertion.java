@@ -2,12 +2,10 @@ package com.dhemery.victor.elements;
 
 import static org.junit.Assert.assertTrue;
 
-import com.dhemery.victor.elements.ios.IOSElement;
-import com.dhemery.victor.elements.polled.PolledIOSElementConditions;
 public class ElementAssertion implements ElementConditions {
-	private final IOSElement element;
+	private final Element element;
 
-	public ElementAssertion(IOSElement element) {
+	public ElementAssertion(Element element) {
 		this.element = element;
 	}
 
@@ -36,6 +34,6 @@ public class ElementAssertion implements ElementConditions {
 	}
 
 	public ElementConditions eventually() {
-		return new PolledIOSElementConditions(element);
+		return new PolledElementConditions(element);
 	}
 }

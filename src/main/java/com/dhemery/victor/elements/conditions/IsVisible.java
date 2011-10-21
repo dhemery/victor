@@ -1,12 +1,12 @@
 package com.dhemery.victor.elements.conditions;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.elements.ios.IOSElement;
+import com.dhemery.victor.elements.Element;
 
 public class IsVisible implements Condition {
-	private final IOSElement element;
+	private final Element element;
 
-	public IsVisible(IOSElement element) {
+	public IsVisible(Element element) {
 		this.element = element;
 	}
 

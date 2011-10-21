@@ -1,19 +1,17 @@
-package com.dhemery.victor.elements.polled;
+package com.dhemery.victor.elements;
 
 import com.dhemery.victor.driver.Poll;
-import com.dhemery.victor.elements.ElementConditions;
 import com.dhemery.victor.elements.conditions.IsNotPresent;
 import com.dhemery.victor.elements.conditions.IsNotVisible;
 import com.dhemery.victor.elements.conditions.IsPresent;
 import com.dhemery.victor.elements.conditions.IsVisible;
-import com.dhemery.victor.elements.ios.IOSElement;
 
 
-public class PolledIOSElementConditions implements ElementConditions {
-	private final IOSElement element;
+public class PolledElementConditions implements ElementConditions {
+	private final Element element;
 	private final Poll poll = new Poll();
 
-	public PolledIOSElementConditions(IOSElement element) {
+	public PolledElementConditions(Element element) {
 		this.element = element;
 	}
 
