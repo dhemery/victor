@@ -1,6 +1,6 @@
 package com.dhemery.victor.driver;
 
-import com.dhemery.victor.elements.IOSElement;
+import com.dhemery.victor.elements.ios.IOSElement;
 
 public interface IOSApplicationDriver {
 	boolean elementExists(IOSElement element);

@@ -8,13 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.For;
-import com.dhemery.victor.elements.IOSElement;
+import com.dhemery.victor.elements.ios.IOSElement;
 import com.dhemery.victor.queries.MapRequest;
 import com.dhemery.victor.queries.MapResponse;
 import com.dhemery.victor.queries.Response;
 import com.google.gson.Gson;
 
-public class VictorClient implements IOSApplicationDriver {
+public class SymbioteClient implements IOSApplicationDriver {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private static final String SERVER_URL = "http://localhost:37265";
 

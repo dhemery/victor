@@ -1,10 +1,13 @@
 package com.dhemery.victor.elements;
 
 import static org.junit.Assert.*;
-public class IOSElementAssertion implements IOSElementConditions {
+
+import com.dhemery.victor.elements.ios.IOSElement;
+import com.dhemery.victor.elements.polled.PolledIOSElementConditions;
+public class ElementAssertion implements ElementConditions {
 	private final IOSElement element;
 
-	public IOSElementAssertion(IOSElement element) {
+	public ElementAssertion(IOSElement element) {
 		this.element = element;
 	}
 
@@ -30,5 +33,9 @@ public class IOSElementAssertion implements IOSElementConditions {
 	public boolean isNotVisible() {
 		assertTrue(element.isNotVisible());
 		return true;
+	}
+
+	public ElementConditions eventually() {
+		return new PolledIOSElementConditions(element);
 	}
 }

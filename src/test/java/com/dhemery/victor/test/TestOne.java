@@ -7,19 +7,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dhemery.victor.driver.IOSApplicationDriver;
-import com.dhemery.victor.driver.IOSSimulator;
-import com.dhemery.victor.driver.VictorClient;
-import com.dhemery.victor.elements.IOSButton;
-import com.dhemery.victor.elements.IOSLabel;
-import com.dhemery.victor.elements.IOSView;
+import com.dhemery.victor.driver.IOSSimulatorDriver;
+import com.dhemery.victor.driver.SymbioteClient;
+import com.dhemery.victor.elements.ios.IOSButton;
+import com.dhemery.victor.elements.ios.IOSLabel;
+import com.dhemery.victor.elements.ios.IOSView;
 import com.dhemery.victor.fixtures.DetailDisplay;
 import com.dhemery.victor.fixtures.MasterDisplay;
 
 public class TestOne {
 	public static final String PATH = new File("example/Test App Frankified.app/Test App Frankified").getAbsolutePath();
 
-	private static IOSSimulator simulator = new IOSSimulator();
-	private static IOSApplicationDriver app = new VictorClient();
+	private static IOSSimulatorDriver simulator = new IOSSimulatorDriver();
+	private static IOSApplicationDriver app = new SymbioteClient();
 
 	@BeforeClass
 	public static void launchApp() {
@@ -48,18 +48,20 @@ public class TestOne {
 		detailLabel.verify().isPresent();
 		detailLabel.verify().isVisible();
 
-		detailLabel.touch();
+		detailLabel.whenPresent().touch();
 
 		detailView.verify().isPresent();
 		detailView.verify().isVisible();
 		masterButton.verify().isPresent();
 		masterButton.verify().isVisible();
 
-		masterButton.touch();
+		masterButton.whenPresent().touch();
 
-		masterView.verify().isPresent();
-		masterView.verify().isVisible();
-		detailLabel.verify().isPresent();
-		detailLabel.verify().isVisible();
+		masterView.verify().eventually().isPresent();
+		masterView.verify().eventually().isVisible();
+		detailLabel.verify().eventually().isPresent();
+		detailLabel.verify().eventually().isVisible();
+		
+		detailLabel.whenPresent().touch();
 	}
 }

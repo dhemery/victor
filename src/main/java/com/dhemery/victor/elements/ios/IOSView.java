@@ -1,4 +1,4 @@
-package com.dhemery.victor.elements;
+package com.dhemery.victor.elements.ios;
 
 import com.dhemery.victor.driver.IOSApplicationDriver;
 

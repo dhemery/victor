@@ -1,9 +1,9 @@
 package com.dhemery.victor.fixtures;
 
 import com.dhemery.victor.driver.IOSApplicationDriver;
-import com.dhemery.victor.elements.IOSButton;
-import com.dhemery.victor.elements.IOSDisplay;
-import com.dhemery.victor.elements.IOSView;
+import com.dhemery.victor.elements.ios.IOSButton;
+import com.dhemery.victor.elements.ios.IOSDisplay;
+import com.dhemery.victor.elements.ios.IOSView;
 
 public class DetailDisplay extends IOSDisplay {
 	public DetailDisplay(IOSApplicationDriver app) {
