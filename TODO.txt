@@ -1,0 +1,5 @@
+Throw an exception if accessibility is disabled in the simulator.
+
+Research the range of possible locator formats.
+
+Research what else Symbiote can do. Add appropriate API features.

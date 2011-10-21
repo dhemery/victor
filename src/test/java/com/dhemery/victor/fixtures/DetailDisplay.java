@@ -1,20 +1,19 @@
 package com.dhemery.victor.fixtures;
 
 import com.dhemery.victor.driver.ApplicationDriver;
-import com.dhemery.victor.elements.ios.IOSButton;
+import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.ios.IOSDisplay;
-import com.dhemery.victor.elements.ios.IOSView;
 
 public class DetailDisplay extends IOSDisplay {
 	public DetailDisplay(ApplicationDriver app) {
 		super(app);
 	}
 
-	public IOSButton masterButton() {
+	public Element masterButton() {
 		return button("Master");
 	}
 
-	public IOSView detailView() {
+	public Element detailView() {
 		return view("UINavigationItemView", "Detail");
 	}
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
+import com.dhemery.victor.elements.Locator;
 import com.google.gson.Gson;
 
 public class SymbioteDriver implements ApplicationDriver {
@@ -22,9 +23,9 @@ public class SymbioteDriver implements ApplicationDriver {
 		this.poll = poll;
 	}
 
-	private List<String> each(String locator, String property) {
+	private List<String> each(Locator locator, String property) {
 		try {
-			MapRequest request = new MapRequest(locator, property);
+			MapRequest request = new MapRequest(locator.toString(), property);
 			Response response = request.sendTo(serverUrl);
 			MapResponse mapResponse = new Gson().fromJson(response.body(), MapResponse.class);
 			List<String> values = mapResponse.results();

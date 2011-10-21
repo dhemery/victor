@@ -4,15 +4,16 @@ import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.ElementAssertion;
 import com.dhemery.victor.elements.ElementCommands;
+import com.dhemery.victor.elements.Locator;
 import com.dhemery.victor.elements.PolledElementCommands;
 import com.dhemery.victor.elements.conditions.IsPresent;
 import com.dhemery.victor.elements.conditions.IsVisible;
 
 public class IOSElement implements Element {
-	private final String locator;
+	private final Locator locator;
 	private final ApplicationDriver driver;
 
-	public IOSElement(ApplicationDriver driver, String locator) {
+	public IOSElement(ApplicationDriver driver, Locator locator) {
 		this.driver = driver;
 		this.locator = locator;
 	}
@@ -42,7 +43,7 @@ public class IOSElement implements Element {
 		driver.touch(this);
 	}
 
-	public String locator() {
+	public Locator locator() {
 		return locator;
 	}
 

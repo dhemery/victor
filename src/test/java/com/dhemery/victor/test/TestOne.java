@@ -8,9 +8,7 @@ import org.junit.Test;
 
 import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.SimulatorDriver;
-import com.dhemery.victor.elements.ios.IOSButton;
-import com.dhemery.victor.elements.ios.IOSLabel;
-import com.dhemery.victor.elements.ios.IOSView;
+import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.fixtures.DetailDisplay;
 import com.dhemery.victor.fixtures.ExampleApplication;
 import com.dhemery.victor.fixtures.MasterDisplay;
@@ -41,10 +39,10 @@ public class TestOne {
 	public void testOne() throws InterruptedException {
 		MasterDisplay master = application.masterDisplay();
 		DetailDisplay detail = application.detailDisplay();
-		IOSView masterView = master.masterView();
-		IOSLabel detailLabel = master.detailLabel();
-		IOSView detailView = detail.detailView();
-		IOSButton masterButton = detail.masterButton();
+		Element masterView = master.masterView();
+		Element detailLabel = master.detailLabel();
+		Element detailView = detail.detailView();
+		Element masterButton = detail.masterButton();
 
 		masterView.verify().eventually().isPresent();
 		masterView.verify().eventually().isVisible();

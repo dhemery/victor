@@ -8,15 +8,15 @@ public class IOSDisplay {
 		this.driver = driver;
 	}
 
-	public IOSButton button(String name) {
-		return new IOSButton(driver, "UINavigationItemButtonView", name);
+	public IOSElement button(String name) {
+		return view("UINavigationItemButtonView", name);
 	}
 
-	public IOSLabel label(String name) {
-		return new IOSLabel(driver, name);
+	public IOSElement label(String name) {
+		return new IOSElement(driver, new IOSLocator("label", name));
 	}
 
-	public IOSView view(String type, String name) {
-		return new IOSView(driver, type, name);
+	public IOSElement view(String subtype, String name) {
+		return new IOSElement(driver, new IOSLocator("view", subtype, name));
 	}
 }
