@@ -7,8 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.ApplicationDriver;
-import com.dhemery.victor.driver.Poll;
 import com.dhemery.victor.elements.Element;
 import com.google.gson.Gson;
 

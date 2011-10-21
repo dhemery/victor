@@ -1,5 +1,6 @@
 package com.dhemery.victor.driver;
 
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.elements.Element;
 
 public interface ApplicationDriver {

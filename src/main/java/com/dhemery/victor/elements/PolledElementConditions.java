@@ -1,6 +1,6 @@
 package com.dhemery.victor.elements;
 
-import com.dhemery.victor.driver.Poll;
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.elements.conditions.IsNotPresent;
 import com.dhemery.victor.elements.conditions.IsNotVisible;
 import com.dhemery.victor.elements.conditions.IsPresent;

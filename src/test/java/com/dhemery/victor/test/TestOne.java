@@ -6,7 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dhemery.victor.driver.Poll;
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.SimulatorDriver;
 import com.dhemery.victor.elements.ios.IOSButton;
 import com.dhemery.victor.elements.ios.IOSLabel;

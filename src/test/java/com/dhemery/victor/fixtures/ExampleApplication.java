@@ -1,6 +1,6 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.victor.driver.Poll;
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.symbiote.SymbioteDriver;
 
 

@@ -1,7 +1,7 @@
 package com.dhemery.victor.elements;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.driver.Poll;
+import com.dhemery.poller.Poll;
 
 public class PolledElementCommands implements ElementCommands {
 	private final ElementCommands element;
