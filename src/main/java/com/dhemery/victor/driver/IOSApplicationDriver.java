@@ -1,6 +1,9 @@
 package com.dhemery.victor.driver;
 
+import com.dhemery.victor.elements.IOSElement;
+
 public interface IOSApplicationDriver {
-	boolean elementExists(String locator);
-	boolean elementIsVisible(String locator);
+	boolean elementExists(IOSElement element);
+	boolean elementIsVisible(IOSElement element);
+	void waitUntilReady();
 }

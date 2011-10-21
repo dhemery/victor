@@ -9,8 +9,8 @@ public class MasterDisplay extends IOSDisplay {
 		super(app);
 	}
 
-	public IOSLabel detailsLabel() {
-		return label("Details");
+	public IOSLabel detailLabel() {
+		return label("Detail");
 	}
 
 }

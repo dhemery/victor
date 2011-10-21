@@ -13,6 +13,6 @@ public class IOSDisplay {
 	}
 
 	public IOSLabel label(String name) {
-		return new IOSLabel(app, "Details");
+		return new IOSLabel(app, name);
 	}
 }

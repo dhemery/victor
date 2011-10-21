@@ -12,6 +12,10 @@ public class IOSElement {
 	}
 
 	public boolean isVisible() {
-		return app.elementExists(locator) && app.elementIsVisible(locator);
+		return app.elementExists(this) && app.elementIsVisible(this);
+	}
+
+	public String locator() {
+		return locator;
 	}
 }

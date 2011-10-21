@@ -1,24 +1,28 @@
 package com.dhemery.victor.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dhemery.victor.driver.IOSApplicationDriver;
 import com.dhemery.victor.driver.IOSSimulator;
 import com.dhemery.victor.driver.VictorClient;
 import com.dhemery.victor.fixtures.MasterDisplay;
-import com.dhemery.victor.fixtures.MyApplication;
 
 public class TestOne {
+	public static final String PATH = new File("example/Test App Frankified.app/Test App Frankified").getAbsolutePath();
+
 	private static IOSSimulator simulator = new IOSSimulator();
-	private static VictorClient app = new MyApplication();
+	private static IOSApplicationDriver app = new VictorClient();
 
 	@BeforeClass
 	public static void launchApp() {
-		simulator.launch(app.path());
-		app.waitForServer();
+		simulator.launch(PATH);
+		app.waitUntilReady();
 	}
 
 	@AfterClass
@@ -29,6 +33,6 @@ public class TestOne {
 	@Test
 	public void testOne() throws InterruptedException {
 		MasterDisplay master = new MasterDisplay(app);
-		assertTrue(master.detailsLabel().isVisible());
+		assertTrue(master.detailLabel().isVisible());
 	}
 }
