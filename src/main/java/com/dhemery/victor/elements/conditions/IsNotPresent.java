@@ -12,7 +12,7 @@ public class IsNotPresent implements Condition {
 
 	@Override
 	public String describe() {
-		return String.format("%s is not present", element.locator()) ;
+		return String.format("[%s] is not present", element.locator()) ;
 	}
 
 	@Override

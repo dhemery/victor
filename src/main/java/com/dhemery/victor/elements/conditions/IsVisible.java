@@ -12,7 +12,7 @@ public class IsVisible implements Condition {
 
 	@Override
 	public String describe() {
-		return String.format("%s is visible", element.locator());
+		return String.format("[%s] is visible", element.locator());
 	}
 
 	@Override
