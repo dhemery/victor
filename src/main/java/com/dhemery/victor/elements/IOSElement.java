@@ -11,8 +11,16 @@ public class IOSElement {
 		this.locator = locator;
 	}
 
+	public boolean exists() {
+		return app.elementExists(this);
+	}
+
 	public boolean isVisible() {
-		return app.elementExists(this) && app.elementIsVisible(this);
+		return app.elementIsVisible(this);
+	}
+
+	public void touch() {
+		app.touch(this);
 	}
 
 	public String locator() {

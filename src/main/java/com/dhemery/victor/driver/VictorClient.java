@@ -20,19 +20,19 @@ public class VictorClient implements IOSApplicationDriver {
 
 	@Override
 	public boolean elementExists(IOSElement element) {
-		List<String> matches = mapOf(element.locator(), "accessibilityLabel");
+		List<String> matches = each(element.locator(), "accessibilityLabel");
 		return matches.size() == 1;
 	}
 
 	@Override
 	public boolean elementIsVisible(IOSElement element) {
-		List<String> matches = mapOf(element.locator(), "isHidden");
+		List<String> matches = each(element.locator(), "isHidden");
 		if(matches.size() != 1) return false;
 		boolean isHidden = Boolean.parseBoolean(matches.get(0));
 		return !isHidden;
 	}
 
-	private List<String> mapOf(String locator, String property) {
+	private List<String> each(String locator, String property) {
 		try {
 			MapRequest request = new MapRequest(locator, property);
 			Response response = request.sendTo(SERVER_URL);
@@ -49,5 +49,10 @@ public class VictorClient implements IOSApplicationDriver {
 	@Override
 	public void waitUntilReady() {
 		new For(20000).poll().until(new ApplicationServerResponds(SERVER_URL));
+	}
+
+	@Override
+	public void touch(IOSElement element) {
+		each(element.locator(), "touch");
 	}
 }

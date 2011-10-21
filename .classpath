@@ -10,5 +10,5 @@
 	<classpathentry kind="lib" path="lib/test/logback-core-0.9.30.jar"/>
 	<classpathentry kind="lib" path="lib/test/slf4j-api-1.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/main/gson-1.7.1.jar" sourcepath="lib/sources/gson-1.7.1-sources.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="build/classes/main"/>
 </classpath>
