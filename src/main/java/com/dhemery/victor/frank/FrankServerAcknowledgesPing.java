@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.http.Request;
 
 final class FrankServerAcknowledgesPing implements Condition {
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -29,7 +28,7 @@ final class FrankServerAcknowledgesPing implements Condition {
 
 	private boolean ping() {
 		try {
-			new Request("").sendTo(serverPath);
+			new PingRequest().sendTo(serverPath);
 		} catch (ProtocolException e) {
 			log.debug("Ping got Protocol exception: {}", e.getMessage());
 			return false;

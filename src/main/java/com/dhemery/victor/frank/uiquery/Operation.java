@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.uiquery;
 
 import java.util.ArrayList;
 import java.util.Collection;

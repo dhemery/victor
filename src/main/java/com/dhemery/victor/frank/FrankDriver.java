@@ -11,7 +11,10 @@ import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.Locator;
+import com.dhemery.victor.frank.json.ResultsResponseParser;
+import com.dhemery.victor.http.Request;
 import com.dhemery.victor.http.Response;
+import com.dhemery.victor.phone.Phone;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +27,10 @@ public class FrankDriver implements ApplicationDriver {
 	public FrankDriver(String serverUrl, Poll poll) {
 		this.serverUrl = serverUrl;
 		this.poll = poll;
-		gson = new GsonBuilder().registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser()).create();
+		gson = new GsonBuilder()
+						.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
+						.disableHtmlEscaping()
+						.create();
 	}
 
 	private ResultsResponse each(Locator locator, String property) {
@@ -73,5 +79,17 @@ public class FrankDriver implements ApplicationDriver {
 	@Override
 	public Poll poll() {
 		return poll;
+	}
+
+	public OrientationResponse orientation() {
+		Request request = new OrientationRequest();
+		Response response;
+		try {
+			response = request.sendTo(serverUrl);
+		} catch (IOException e) {
+			log.debug("Threw exception", e);
+			return new OrientationResponse(Phone.Orientation.UNKNOWN.name());
+		}
+		return gson.fromJson(response.body(), OrientationResponse.class);
 	}
 }

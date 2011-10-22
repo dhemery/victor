@@ -13,7 +13,7 @@ public class Request {
 	private final RequestBody body;
 	
 	public Request(String verb) {
-		this(verb, new GetRequestBody());
+		this(verb, new RequestBody());
 	}
 
 	public Request(String verb, RequestBody body) {

@@ -1,14 +1,16 @@
 package com.dhemery.victor.frank;
 
+import com.dhemery.victor.frank.uiquery.MapCommand;
+import com.dhemery.victor.frank.uiquery.Operation;
 import com.dhemery.victor.http.Request;
 
 public class MapRequest extends Request {
-	public MapRequest(MapRequestBody body) {
+	public MapRequest(MapCommand body) {
 		super("map", body);
 	}
 
 	public MapRequest(String query, Operation operation) {
-		this(new MapRequestBody(query, operation));
+		this(new MapCommand(query, operation));
 	}
 	
 	public MapRequest(String query, String property) {

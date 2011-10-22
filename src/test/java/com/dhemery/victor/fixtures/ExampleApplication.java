@@ -1,15 +1,12 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.poller.Poll;
 import com.dhemery.victor.frank.FrankDriver;
-
 
 public class ExampleApplication {
 	private final FrankDriver driver;
 	
-	public ExampleApplication(String serverUrl, Poll poll) {
-		driver = new FrankDriver(serverUrl, poll);
-		driver.waitUntilReady();
+	public ExampleApplication(FrankDriver driver) {
+		this.driver = driver;
 	}
 	
 	public DetailDisplay detailDisplay() {

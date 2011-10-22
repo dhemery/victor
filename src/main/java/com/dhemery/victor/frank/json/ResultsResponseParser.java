@@ -1,9 +1,10 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.json;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dhemery.victor.frank.ResultsResponse;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
