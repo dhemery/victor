@@ -1,0 +1,32 @@
+GET dump
+    json
+
+GET orientation
+    {orientation:string(landscape|portrait|flat)}
+
+GET accessibility_check
+    {acccessibility_enabled:string(true|false)}
+
+POST map {query:string,operation:Operation}
+    ResultsResponse
+    ErrorResponse
+
+POST app_exec {operation:Operation}
+    SuccessResponse
+    ErrorResponse
+
+------------
+
+Operation
+    {method_name:string,arguments:[string]}
+
+ErrorResponse
+    {outcome:"ERROR", reason:string, details:string}
+
+SuccessResponse
+    {outcome:"SUCCESS"}
+
+ResultsResponse
+    {outcome:"SUCCESS", results:[json]}
+
+
