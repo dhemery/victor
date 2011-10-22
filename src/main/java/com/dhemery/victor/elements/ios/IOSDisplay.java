@@ -1,6 +1,7 @@
 package com.dhemery.victor.elements.ios;
 
 import com.dhemery.victor.driver.ApplicationDriver;
+import com.dhemery.victor.elements.Locator;
 
 public class IOSDisplay {
 	private final ApplicationDriver driver;
@@ -8,15 +9,11 @@ public class IOSDisplay {
 		this.driver = driver;
 	}
 
-	public IOSElement button(String name) {
-		return view("UINavigationItemButtonView", name);
+	public IOSElement element(Locator locator) {
+		return new IOSElement(driver, locator);
 	}
 
-	public IOSElement label(String name) {
-		return new IOSElement(driver, new IOSLocator("label", name));
-	}
-
-	public IOSElement view(String subtype, String name) {
-		return new IOSElement(driver, new IOSLocator("view", subtype, name));
+	public IOSElement element(String type, String name) {
+		return element(new IOSLocator(type, name));
 	}
 }
