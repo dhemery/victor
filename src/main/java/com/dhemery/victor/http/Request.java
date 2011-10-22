@@ -7,24 +7,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
-
-public abstract class Request {
+public class Request {
 	private final String verb;
+	private final RequestBody body;
 	
 	public Request(String verb) {
-		this.verb = verb;
+		this(verb, new GetRequestBody());
 	}
 
-	protected abstract void writeBodyTo(HttpURLConnection connection) throws IOException;
+	public Request(String verb, RequestBody body) {
+		this.verb = verb;
+		this.body = body;
+	}
 
 	public Response sendTo(String serverUrl) throws IOException {
 		URL url = urlFor(serverUrl, verb);
 		HttpURLConnection connection = connectTo(url);
 		try {
-			writeBodyTo(connection);
+			body.writeTo(connection);
 			Response response = receiveResponseFrom(connection);
 			return response;
 		} finally {

@@ -1,8 +1,8 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.victor.http.PostRequest;
+import com.dhemery.victor.http.Request;
 
-public class MapRequest extends PostRequest {
+public class MapRequest extends Request {
 	public MapRequest(MapRequestBody body) {
 		super("map", body);
 	}
