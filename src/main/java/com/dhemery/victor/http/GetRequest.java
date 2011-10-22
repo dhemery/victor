@@ -1,7 +1,8 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+
 
 
 public class GetRequest extends Request {

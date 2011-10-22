@@ -1,4 +1,6 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.frank;
+
+import com.dhemery.victor.http.PostRequestBody;
 
 public class MapRequestBody extends PostRequestBody {
 	private final String query;

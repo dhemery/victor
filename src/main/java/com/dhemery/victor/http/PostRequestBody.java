@@ -1,4 +1,4 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.http;
 
 import com.google.gson.GsonBuilder;
 

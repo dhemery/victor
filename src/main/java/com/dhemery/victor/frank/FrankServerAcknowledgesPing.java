@@ -1,4 +1,4 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.frank;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -8,17 +8,17 @@ import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Condition;
 
-final class ServerAcknowledgesPing implements Condition {
+final class FrankServerAcknowledgesPing implements Condition {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverPath;
 
-	public ServerAcknowledgesPing(String serverPath) {
+	public FrankServerAcknowledgesPing(String serverPath) {
 		this.serverPath = serverPath;
 	}
 
 	@Override
 	public String describe() {
-		return "application server responds";
+		return "Frank server acknowledges ping";
 	}
 
 	@Override

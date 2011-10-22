@@ -1,6 +1,7 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.frank;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,30 +12,43 @@ import com.dhemery.poller.Poll;
 import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
 import com.dhemery.victor.elements.Locator;
-import com.google.gson.Gson;
+import com.dhemery.victor.http.Response;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class SymbioteDriver implements ApplicationDriver {
+public class FrankDriver implements ApplicationDriver {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final Poll poll;
 	private final String serverUrl;
 
-	public SymbioteDriver(String serverUrl, Poll poll) {
+	public FrankDriver(String serverUrl, Poll poll) {
 		this.serverUrl = serverUrl;
 		this.poll = poll;
 	}
 
 	private List<String> each(Locator locator, String property) {
+		MapRequest request = new MapRequest(locator.toString(), property);
+		Response response;
 		try {
-			MapRequest request = new MapRequest(locator.toString(), property);
-			Response response = request.sendTo(serverUrl);
-			MapResponse mapResponse = new Gson().fromJson(response.body(), MapResponse.class);
-			List<String> values = mapResponse.results();
-			log.debug("[{}].{}: {}", new Object[] { locator, property, values} );
-			return values;
+			response = request.sendTo(serverUrl);
 		} catch (IOException e) {
 			log.debug("Threw exception", e);
 			return Collections.emptyList();
 		}
+		List<String> matches = getMatches(response.body());
+		log.debug("[{}] {}: {}", new Object[] { locator, property, matches} );
+		return matches;
+	}
+
+	private List<String> getMatches(String stringBody) {
+		List<String> matches;
+		matches = new ArrayList<String>();
+		JsonObject body = new JsonParser().parse(stringBody).getAsJsonObject();
+		for(JsonElement element : body.get("results").getAsJsonArray()) {
+			matches.add(element.getAsString());
+		}
+		return matches;
 	}
 
 	@Override
@@ -57,7 +71,7 @@ public class SymbioteDriver implements ApplicationDriver {
 	}
 
 	public void waitUntilReady() {
-		poll.until(new ServerAcknowledgesPing(serverUrl));
+		poll.until(new FrankServerAcknowledgesPing(serverUrl));
 	}
 
 	@Override

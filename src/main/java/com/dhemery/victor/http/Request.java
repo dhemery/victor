@@ -1,4 +1,4 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 
 public abstract class Request {
 	private final String verb;

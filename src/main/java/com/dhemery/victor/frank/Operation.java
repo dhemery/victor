@@ -1,11 +1,11 @@
-package com.dhemery.victor.symbiote;
+package com.dhemery.victor.frank;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class Operation {
-	private String method_name;
-	private Collection<String> arguments = new ArrayList<String>();
+	private final String method_name;
+	private final Collection<String> arguments = new ArrayList<String>();
 	
 	public Operation(String methodName) {
 		this.method_name = methodName;
