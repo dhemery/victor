@@ -39,10 +39,15 @@ public class IOSElement implements Element {
 	}
 
 	@Override
+	public void flash() {
+		driver.flash(this);
+	}
+
+	@Override
 	public void touch() {
 		driver.touch(this);
 	}
-
+	
 	public Locator locator() {
 		return locator;
 	}

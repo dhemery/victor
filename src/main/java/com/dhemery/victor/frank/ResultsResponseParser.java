@@ -22,7 +22,7 @@ public class ResultsResponseParser implements JsonDeserializer<ResultsResponse> 
 
 		if(succeeded) {
 			for(JsonElement result : body.get("results").getAsJsonArray()) {
-				results.add(result.getAsString());
+				if(!result.isJsonNull()) results.add(result.getAsString());
 			}
 		} else {
 			reason = body.get("reason").getAsString();

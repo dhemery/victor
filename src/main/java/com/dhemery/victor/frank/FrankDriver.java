@@ -61,6 +61,11 @@ public class FrankDriver implements ApplicationDriver {
 		each(element.locator(), "touch");
 	}
 
+	@Override
+	public void flash(Element element) {
+		each(element.locator(), "flash");
+	}
+	
 	public void waitUntilReady() {
 		poll.until(new FrankServerAcknowledgesPing(serverUrl));
 	}

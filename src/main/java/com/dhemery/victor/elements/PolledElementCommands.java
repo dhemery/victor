@@ -23,4 +23,10 @@ public class PolledElementCommands implements ElementCommands {
 		whenReady();
 		element.touch();
 	}
+
+	@Override
+	public void flash() {
+		whenReady();
+		element.flash();
+	}
 }

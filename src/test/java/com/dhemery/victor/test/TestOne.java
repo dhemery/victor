@@ -46,8 +46,10 @@ public class TestOne {
 
 		masterView.verify().eventually().isPresent();
 		masterView.verify().eventually().isVisible();
+		masterView.whenPresent().flash();
 		detailLabel.verify().eventually().isPresent();
 		detailLabel.verify().eventually().isVisible();
+		detailLabel.whenPresent().flash();
 //		detailView.verify().isNotPresent();
 //		detailView.verify().isNotVisible();
 //		masterButton.verify().isNotPresent();
@@ -57,8 +59,10 @@ public class TestOne {
 
 		detailView.verify().eventually().isPresent();
 		detailView.verify().eventually().isVisible();
+		detailView.whenPresent().flash();
 		masterButton.verify().eventually().isPresent();
 		masterButton.verify().eventually().isVisible();
+		masterButton.whenPresent().flash();
 //		masterView.verify().isNotPresent();
 //		masterView.verify().isNotVisible();
 //		detailLabel.verify().isNotPresent();
@@ -68,8 +72,10 @@ public class TestOne {
 
 		masterView.verify().eventually().isPresent();
 		masterView.verify().eventually().isVisible();
+		masterView.whenPresent().flash();
 		detailLabel.verify().eventually().isPresent();
 		detailLabel.verify().eventually().isVisible();
+		detailLabel.whenPresent().flash();
 //		detailView.verify().isNotPresent();
 //		detailView.verify().isNotVisible();
 //		masterButton.verify().isNotPresent();
