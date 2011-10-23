@@ -1,13 +1,26 @@
-Test app_exec
+Frank API:
+   - Implement app_exec
+   - Implement accessibility_check
+   - Implement dump
 
-Give an appropriate error message if assistive access is disabled in the Universal Access system preferences.
+Environment checks, with helpful error messages:
+   - Assistive access enabled in the Universal Access system preferences.
+   - Accessibility enabled in the simulator.
 
-Give an appropriate error message if accessibility is disabled in the simulator.
+Polling
+   - Phone conditions
 
-Research the range of possible locator formats.
+General API features:
+   - thing.when(Condition) => ThingCommands
+   - thing.waitUntil(Condition)
+   - Application API (e.g. to get elements)?
 
-Polling for phone conditions (e.g. orientation).
+Phone:
+   - API for phone-related simulator menus 
 
-thing.when(Condition) => ThingCommands
+Simulator:
+   - API for simulation-related menus 
 
-thing.waitUntil(Condition)
+Research:
+   - Queries that Frank can execute
+   - Methods that Frank can invoke on query results (targets)
