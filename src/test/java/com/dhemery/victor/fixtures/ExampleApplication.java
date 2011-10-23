@@ -1,19 +1,19 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.victor.frank.FrankDriver;
+import com.dhemery.victor.elements.ElementFactory;
 
 public class ExampleApplication {
-	private final FrankDriver driver;
-	
-	public ExampleApplication(FrankDriver driver) {
-		this.driver = driver;
+	private final ElementFactory elementFactory;
+
+	public ExampleApplication(ElementFactory elementFactory) {
+		this.elementFactory = elementFactory;
 	}
 	
 	public DetailDisplay detailDisplay() {
-		return new DetailDisplay(driver);
+		return new DetailDisplay(elementFactory);
 	}
 
 	public MasterDisplay masterDisplay() {
-		return new MasterDisplay(driver);
+		return new MasterDisplay(elementFactory);
 	}
 }

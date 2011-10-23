@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.client;
 
 import java.util.List;
 
@@ -19,4 +19,18 @@ public class ResultsResponse {
 	public List<String> results() { return results; }
 	public String details() { return details; }
 	public String reason() { return reason; }
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[resultsResponse:");
+		builder.append(String.format("[succeeded:%s]", succeeded()));
+		if(succeeded()) {
+			builder.append(String.format("[results:%s]", results));
+		} else {
+			builder.append(String.format("[reason:%s][details:%s]"));
+		}
+		builder.append("]");
+		return builder.toString();
+	}
 }

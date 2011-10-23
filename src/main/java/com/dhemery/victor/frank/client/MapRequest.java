@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.client;
 
 import com.dhemery.victor.frank.uiquery.MapCommand;
 import com.dhemery.victor.frank.uiquery.Operation;

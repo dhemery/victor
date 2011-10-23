@@ -11,8 +11,8 @@ public class PolledElementConditions implements ElementConditions {
 	private final Element element;
 	private final Poll poll;
 
-	public PolledElementConditions(Element element) {
-		this.poll = element.driver().poll();
+	public PolledElementConditions(Element element, Poll poll) {
+		this.poll = poll;
 		this.element = element;
 	}
 

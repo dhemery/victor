@@ -1,5 +1,9 @@
-Throw an exception if accessibility is disabled in the simulator.
+Test app_exec
+
+Give an appropriate error message if assistive access is disabled in the Universal Access system preferences.
+
+Give an appropriate error message if accessibility is disabled in the simulator.
 
 Research the range of possible locator formats.
 
-Research what else Symbiote can do. Add appropriate API features.
+Polling for phone conditions (e.g. orientation).

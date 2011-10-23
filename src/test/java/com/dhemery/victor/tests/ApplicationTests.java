@@ -14,7 +14,7 @@ public class ApplicationTests extends VictorTest {
 
 	@Before
 	public void setUp() {
-		application = new ExampleApplication(frank());
+		application = new ExampleApplication(elementFactory());
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package com.dhemery.victor.elements;
 
 import com.dhemery.poller.Condition;
+import com.dhemery.poller.Poll;
 import com.dhemery.victor.elements.conditions.IsNotPresent;
 import com.dhemery.victor.elements.conditions.IsNotVisible;
 import com.dhemery.victor.elements.conditions.IsPresent;
@@ -8,13 +9,15 @@ import com.dhemery.victor.elements.conditions.IsVisible;
 
 public class ElementAssertion implements ElementConditions {
 	private final Element element;
+	private final Poll poll;
 
-	public ElementAssertion(Element element) {
+	public ElementAssertion(Element element, Poll poll) {
 		this.element = element;
+		this.poll = poll;
 	}
 
 	public ElementConditions eventually() {
-		return new PolledElementConditions(element);
+		return new PolledElementConditions(element, poll);
 	}
 
 	@Override

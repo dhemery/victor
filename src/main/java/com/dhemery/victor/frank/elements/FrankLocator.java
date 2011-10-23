@@ -1,12 +1,12 @@
-package com.dhemery.victor.elements.ios;
+package com.dhemery.victor.frank.elements;
 
 import com.dhemery.victor.elements.Locator;
 
-public class IOSLocator implements Locator {
+public class FrankLocator implements Locator {
 	private final String mark;
 	private final String type;
 
-	public IOSLocator(String type, String mark) {
+	public FrankLocator(String type, String mark) {
 		this.type = type;
 		this.mark = mark;
 	}

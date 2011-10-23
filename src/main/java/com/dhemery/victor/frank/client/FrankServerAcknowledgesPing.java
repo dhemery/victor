@@ -1,7 +1,4 @@
-package com.dhemery.victor.frank;
-
-import java.io.IOException;
-import java.net.ProtocolException;
+package com.dhemery.victor.frank.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +26,8 @@ final class FrankServerAcknowledgesPing implements Condition {
 	private boolean ping() {
 		try {
 			new PingRequest().sendTo(serverPath);
-		} catch (ProtocolException e) {
-			log.debug("Ping got Protocol exception: {}", e.getMessage());
-			return false;
-		} catch (IOException e) {
-			log.debug("Ping got IO Exception: {}", e.getMessage());
+		} catch (Throwable e) {
+			log.debug("Ping failed: {}", e.getMessage());
 			return false;
 		}
 		log.debug("Ping succeeded");

@@ -7,8 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Request {
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String verb;
 	private final RequestBody body;
 	
@@ -21,13 +24,16 @@ public class Request {
 		this.body = body;
 	}
 
+	public String verb() { return verb; }
+	public RequestBody body() { return body; }
+
 	public Response sendTo(String serverUrl) throws IOException {
+		log.debug("Sending: {}", this);
 		URL url = urlFor(serverUrl, verb);
 		HttpURLConnection connection = connectTo(url);
 		try {
 			body.writeTo(connection);
-			Response response = receiveResponseFrom(connection);
-			return response;
+			return receiveResponseFrom(connection);
 		} finally {
 			connection.disconnect();			
 		}
@@ -50,6 +56,7 @@ public class Request {
 		}
 		in.close();
 		Response response = new Response(connection.getResponseMessage(), builder.toString());
+		log.debug("Response: {}", response);
 		return response;
 	}
 
@@ -59,5 +66,10 @@ public class Request {
 		} catch (MalformedURLException e) {
 			return null;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("[verb:%s][body:%s]", verb(), body());
 	}
 }

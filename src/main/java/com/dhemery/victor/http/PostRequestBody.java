@@ -18,7 +18,7 @@ public class PostRequestBody extends RequestBody {
 	public void writeTo(HttpURLConnection connection) throws IOException {
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		String json = gson.toJson(this);
-		log.debug("Posting body {}", json);
+		log.debug("Writing body as Json: {}", json);
 		OutputStream outputStream = connection.getOutputStream();
 		OutputStreamWriter out = new OutputStreamWriter(outputStream);
 		out.write(json);

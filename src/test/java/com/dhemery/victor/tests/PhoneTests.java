@@ -1,24 +1,28 @@
 package com.dhemery.victor.tests;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.dhemery.victor.phone.Phone;
 import com.dhemery.victor.test.VictorTest;
 
 public class PhoneTests extends VictorTest {
-	private Phone phone;
-	
-	@Before
-	public void setUp() {
-		phone = new Phone(frank());
-	}
-
 	@Test
-	public void orientation() {
-		assertThat(phone.orientation(), equalTo(Phone.Orientation.PORTRAIT));
+	public void orientation() throws InterruptedException {
+		assertThat(phone().orientation(), equalTo(Phone.Orientation.PORTRAIT));
+		phone().rotateLeft();
+		Thread.sleep(2000);
+		assertThat(phone().orientation(), equalTo(Phone.Orientation.LANDSCAPE));
+		phone().rotateRight();
+		Thread.sleep(2000);
+		assertThat(phone().orientation(), equalTo(Phone.Orientation.PORTRAIT));
+		phone().rotateRight();
+		Thread.sleep(2000);
+		assertThat(phone().orientation(), equalTo(Phone.Orientation.LANDSCAPE));
+		phone().rotateRight();
+		Thread.sleep(2000);
+		assertThat(phone().orientation(), equalTo(Phone.Orientation.PORTRAIT));
 	}
 }

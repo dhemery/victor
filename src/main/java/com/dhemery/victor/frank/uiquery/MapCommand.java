@@ -7,4 +7,11 @@ public class MapCommand extends OperationCommand {
 		super(operation);
 		this.query = query;
 	}
+	
+	public String query() { return query; }
+	
+	@Override
+	public String toString() {
+		return String.format("[query:%s]%s", query(), super.toString());
+	}
 }

@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.client;
 
 public class OrientationResponse {
 	private final String orientation;

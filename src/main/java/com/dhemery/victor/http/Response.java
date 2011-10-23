@@ -12,4 +12,9 @@ public class Response {
 
 	public String body() { return body; }
 	public String status() { return status; }
+	
+	@Override
+	public String toString() {
+		return String.format("[status:%s][body:%s]", status(), body());
+	}
 }

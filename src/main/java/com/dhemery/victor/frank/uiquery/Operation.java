@@ -13,4 +13,9 @@ public class Operation {
 	
 	public String methodName() { return method_name; }
 	public Collection<String> arguments() { return arguments; }
+	
+	@Override
+	public String toString() {
+		return String.format("[method_name:%s][arguments:%s]", methodName(), arguments());
+	}
 }

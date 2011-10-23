@@ -1,24 +1,20 @@
 package com.dhemery.victor.fixtures;
 
-import com.dhemery.victor.driver.ApplicationDriver;
 import com.dhemery.victor.elements.Element;
-import com.dhemery.victor.elements.Locator;
-import com.dhemery.victor.elements.ios.IOSDisplay;
-import com.dhemery.victor.elements.ios.IOSLocator;
+import com.dhemery.victor.elements.ElementFactory;
 
-public class DetailDisplay extends IOSDisplay {
-	private static final Locator MASTER_BUTTON = new IOSLocator("navigationItemButtonView", "Master"); 
-	private static final Locator DETAIL_VIEW = new IOSLocator("navigationItemView", "Detail"); 
+public class DetailDisplay {
+	private final ElementFactory elementFactory; 
 
-	public DetailDisplay(ApplicationDriver app) {
-		super(app);
+	public DetailDisplay(ElementFactory elementFactory) {
+		this.elementFactory = elementFactory;
 	}
 
 	public Element masterButton() {
-		return element(MASTER_BUTTON);
+		return elementFactory.element("navigationItemButtonView", "Master");
 	}
 
 	public Element detailView() {
-		return element(DETAIL_VIEW);
+		return elementFactory.element("navigationItemView", "Detail");
 	}
 }
