@@ -7,3 +7,7 @@ Give an appropriate error message if accessibility is disabled in the simulator.
 Research the range of possible locator formats.
 
 Polling for phone conditions (e.g. orientation).
+
+thing.when(Condition) => ThingCommands
+
+thing.waitUntil(Condition)
