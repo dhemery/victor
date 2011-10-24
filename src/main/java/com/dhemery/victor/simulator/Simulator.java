@@ -4,13 +4,14 @@ import java.io.IOException;
 
 public class Simulator {
 	private final String simulatorPath;
+	private Process simulatorProcess;
 	
 	public Simulator(String simulatorPath) {
 		this.simulatorPath = simulatorPath;
 	}
 
 	public void launch(String applicationPath) throws IOException {
-		new OSCommand(simulatorPath, "-SimulateApplication", applicationPath).run();
+		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationPath).run();
 	}
 
 	public void shutDown() throws IOException, InterruptedException {
@@ -22,7 +23,7 @@ public class Simulator {
 		new MenuTouchCommand(menuName, menuItemName).run().waitFor();
 	}
 
-	public void waitForSimulatorToShutDown() throws IOException, InterruptedException {
-		new WaitUntilSimulatorShutsDownCommand().run().waitFor();
+	public void waitForSimulatorToShutDown() throws InterruptedException {
+		simulatorProcess.waitFor();
 	}
 }
