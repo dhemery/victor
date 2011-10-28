@@ -1,14 +1,14 @@
 package com.dhemery.victor.application;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Application.Orientation;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.ApplicationDriver.Orientation;
 
 public class PolledApplicationConditions implements ApplicationConditions {
-	private final Application application;
+	private final ApplicationDriver application;
 	private final Poll poll;
 
-	public PolledApplicationConditions(Application application, Poll poll) {
+	public PolledApplicationConditions(ApplicationDriver application, Poll poll) {
 		this.application = application;
 		this.poll = poll;
 	}

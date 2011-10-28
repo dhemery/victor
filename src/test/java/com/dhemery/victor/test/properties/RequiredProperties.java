@@ -26,4 +26,8 @@ public class RequiredProperties {
 			throw new RequiredPropertyFileException(filename);
 		}
 	}
+
+	public Integer getInteger(String propertyName) {
+		return Integer.parseInt(get(propertyName));
+	}
 }

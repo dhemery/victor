@@ -3,13 +3,11 @@ package com.dhemery.victor.frank;
 import java.io.IOException;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Element;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.application.ApplicationAssertion;
-import com.dhemery.victor.frank.client.FrankClient;
-import com.dhemery.victor.frank.client.OrientationResponse;
 
-public class FrankApplication implements Application {
+public class FrankApplication implements ApplicationDriver {
 	private final FrankClient frankClient;
 	private final Poll poll;
 
@@ -30,13 +28,13 @@ public class FrankApplication implements Application {
 	}
 
 	@Override
-	public Element element(String query) {
+	public ViewDriver view(String query) {
 		return new FrankElement(frankClient, query, poll);
 	}
 
 	@Override
-	public Element element(String type, String name) {
-		return element(String.format("%s marked:'%s'", type, name));
+	public ViewDriver view(String type, String name) {
+		return view(String.format("%s marked:'%s'", type, name));
 	}
 
 	@Override

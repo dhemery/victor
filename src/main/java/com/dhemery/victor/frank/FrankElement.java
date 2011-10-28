@@ -3,17 +3,16 @@ package com.dhemery.victor.frank;
 import java.io.IOException;
 import java.util.List;
 
+import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.Element;
-import com.dhemery.victor.elements.ElementAssertion;
-import com.dhemery.victor.elements.ElementCommands;
-import com.dhemery.victor.elements.IsPresent;
-import com.dhemery.victor.elements.IsVisible;
-import com.dhemery.victor.elements.PolledElementCommands;
-import com.dhemery.victor.frank.client.FrankClient;
-import com.dhemery.victor.frank.client.ResultsResponse;
+import com.dhemery.victor.ViewDriver;
+import com.dhemery.victor.views.ElementAssertion;
+import com.dhemery.victor.views.ElementCommands;
+import com.dhemery.victor.views.IsPresent;
+import com.dhemery.victor.views.IsVisible;
+import com.dhemery.victor.views.PolledElementCommands;
 
-public class FrankElement implements Element {
+public class FrankElement implements ViewDriver {
 	private final FrankClient frankClient;
 	private final Poll poll;
 	private final String query;
@@ -25,30 +24,12 @@ public class FrankElement implements Element {
 	}
 
 	@Override
-	public boolean isPresent() {
-		ResultsResponse response;
-		try {
-			response = frankClient.map(query, "accessibilityLabel");
-		} catch (IOException e) {
-			return false;
-		}
-		if(!response.succeeded()) return false;
-		return response.results().size() == 1;
+	public void flash() throws IOException {
+		invokeMethod("flash");
 	}
 
-	@Override
-	public boolean isVisible() {
-		ResultsResponse response;
-		try {
-			response = frankClient.map(query, "isHidden");
-		} catch (IOException e) {
-			return false;
-		}
-		if(!response.succeeded()) return false;
-		List<String> matches = response.results();
-		if(matches.size() != 1) return false;
-		boolean isHidden = Boolean.parseBoolean(matches.get(0));
-		return !isHidden;
+	public ResultsResponse invokeMethod(String method) throws IOException {
+		return frankClient.map(query, method);
 	}
 
 	@Override
@@ -62,36 +43,59 @@ public class FrankElement implements Element {
 	}
 
 	@Override
-	public void flash() {
+	public boolean isPresent() {
+		ResultsResponse response;
 		try {
-			frankClient.map(query, "flash");
+			response = invokeMethod("accessibilityLabel");
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return false;
 		}
+		if(!response.succeeded()) return false;
+		return response.results().size() == 1;
 	}
 
 	@Override
-	public void touch() {
+	public boolean isVisible() {
+		ResultsResponse response;
 		try {
-			frankClient.map(query, "touch");
+			response = invokeMethod("isHidden");
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return false;
 		}
+		if(!response.succeeded()) return false;
+		List<String> matches = response.results();
+		if(matches.size() != 1) return false;
+		boolean isHidden = Boolean.parseBoolean(matches.get(0));
+		return !isHidden;
 	}
 
+	@Override
 	public String query() {
 		return query;
 	}
 
-	public ElementCommands whenPresent() {
-		return new PolledElementCommands(poll, this, new IsPresent(this));
+	@Override
+	public void touch() throws IOException {
+		invokeMethod("touch");
 	}
 
-	public ElementCommands whenVisible() {
-		return new PolledElementCommands(poll, this, new IsVisible(this));
-	}
-
+	@Override
 	public ElementAssertion verify() {
 		return new ElementAssertion(this, poll);
+	}
+
+	@Override
+	public ElementCommands when(Condition condition) {
+		return new PolledElementCommands(this, condition, poll);
+	}
+
+	@Override
+	public ElementCommands whenPresent() {
+		return when(new IsPresent(this));
+	}
+
+	@Override
+	public ElementCommands whenVisible() {
+		return when(new IsVisible(this));
 	}
 }

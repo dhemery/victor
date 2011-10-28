@@ -1,14 +1,14 @@
 package com.dhemery.victor.application;
 
 import com.dhemery.poller.Condition;
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Application.Orientation;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.ApplicationDriver.Orientation;
 
-public class HasOrientation implements Condition {
-	private final Application application;
+public class HasOrientation extends Condition {
+	private final ApplicationDriver application;
 	private final Orientation orientation;
 
-	public HasOrientation(Application application, Orientation orientation) {
+	public HasOrientation(ApplicationDriver application, Orientation orientation) {
 		this.application = application;
 		this.orientation = orientation;
 	}

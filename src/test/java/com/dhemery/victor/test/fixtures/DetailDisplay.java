@@ -1,20 +1,20 @@
 package com.dhemery.victor.test.fixtures;
 
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Element;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.ViewDriver;
 
 public class DetailDisplay {
-	private final Application application; 
+	private final ApplicationDriver application; 
 
-	public DetailDisplay(Application application) {
+	public DetailDisplay(ApplicationDriver application) {
 		this.application = application;
 	}
 
-	public Element masterButton() {
-		return application.element("navigationItemButtonView", "Master");
+	public ViewDriver masterButton() {
+		return application.view("navigationItemButtonView", "Master");
 	}
 
-	public Element detailView() {
-		return application.element("navigationItemView", "Detail");
+	public ViewDriver detailView() {
+		return application.view("navigationItemView", "Detail");
 	}
 }

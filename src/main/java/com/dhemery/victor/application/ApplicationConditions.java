@@ -1,7 +1,7 @@
 package com.dhemery.victor.application;
 
-import com.dhemery.victor.Application;
+import com.dhemery.victor.ApplicationDriver;
 
 public interface ApplicationConditions {
-	public boolean hasOrientation(Application.Orientation orientation);
+	public boolean hasOrientation(ApplicationDriver.Orientation orientation);
 }

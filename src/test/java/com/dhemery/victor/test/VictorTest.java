@@ -7,17 +7,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Phone;
-import com.dhemery.victor.frank.FrankApplication;
-import com.dhemery.victor.frank.FrankSimulatedPhone;
-import com.dhemery.victor.frank.client.FrankClient;
-import com.dhemery.victor.simulator.Simulator;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.PhoneDriver;
+import com.dhemery.victor.Victor;
 import com.dhemery.victor.test.properties.RequiredProperties;
 
 public class VictorTest {
-	private static Application application;
-	private static Phone phone;
+	private static ApplicationDriver application;
+	private static PhoneDriver phone;
 
 	@BeforeClass
 	public static void launchApp() throws IOException {
@@ -25,25 +22,16 @@ public class VictorTest {
 
 		String simulatorPath = properties.get("simulator.path");
 		String applicationPath = new File(properties.get("application.path")).getAbsolutePath();
-		phone = frankSimulatedPhone(simulatorPath, applicationPath);
+		String frankServerUrl = properties.get("frank.server.url");
 
-		long timeout = Long.parseLong(properties.get("polling.timeout"));
-		long pollingInterval = Long.parseLong(properties.get("polling.interval"));
-		String frankServerUrl = properties.get("server.url");
-		application = frankApplication(timeout, pollingInterval, frankServerUrl);
-	}
-
-	private static Application frankApplication(long timeout, long pollingInterval, String frankServerUrl) {
+		long timeout = properties.getInteger("polling.timeout");
+		long pollingInterval = properties.getInteger("polling.interval");
 		Poll poll = new Poll(timeout, pollingInterval);
-		FrankClient frankClient = new FrankClient(frankServerUrl);
-		frankClient.waitUntilReady(poll);
-		return new FrankApplication(frankClient, poll);
-	}
-
-	private static Phone frankSimulatedPhone(String simulatorPath, String applicationPath) throws IOException {
-		Simulator simulator = new Simulator(simulatorPath);
-		simulator.launch(applicationPath);
-		return new FrankSimulatedPhone(simulator);
+		
+		Victor launcher = new Victor();
+		launcher.launch(simulatorPath, applicationPath, frankServerUrl, poll);
+		application = launcher.application();
+		phone = launcher.phone();
 	}
 
 	@AfterClass
@@ -51,6 +39,6 @@ public class VictorTest {
 		phone.shutDown();
 	}
 
-	public Application application() { return application; }
-	public Phone phone() { return phone; }
+	public ApplicationDriver application() { return application; }
+	public PhoneDriver phone() { return phone; }
 }

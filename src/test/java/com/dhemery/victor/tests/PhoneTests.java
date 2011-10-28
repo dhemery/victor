@@ -3,15 +3,15 @@ package com.dhemery.victor.tests;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dhemery.victor.Application;
-import com.dhemery.victor.Phone;
+import com.dhemery.victor.ApplicationDriver;
+import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.test.VictorTest;
 
-import static com.dhemery.victor.Application.Orientation.*;
+import static com.dhemery.victor.ApplicationDriver.Orientation.*;
 
 public class PhoneTests extends VictorTest {
-	private Application application;
-	private Phone phone;
+	private ApplicationDriver application;
+	private PhoneDriver phone;
 
 	@Before
 	public void setUp() {
