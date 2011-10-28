@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	For information about how to configure Logback,
+	see http://logback.qos.ch/manual/configuration.html
+-->
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ALL</level>
+	    </filter>
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} %5level - %message - %logger.%method\(\):%line%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="ALL">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
