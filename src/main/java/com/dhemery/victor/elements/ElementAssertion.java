@@ -2,10 +2,7 @@ package com.dhemery.victor.elements;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.elements.conditions.IsNotPresent;
-import com.dhemery.victor.elements.conditions.IsNotVisible;
-import com.dhemery.victor.elements.conditions.IsPresent;
-import com.dhemery.victor.elements.conditions.IsVisible;
+import com.dhemery.victor.Element;
 
 public class ElementAssertion implements ElementConditions {
 	private final Element element;

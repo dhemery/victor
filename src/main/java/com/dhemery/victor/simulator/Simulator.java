@@ -20,7 +20,7 @@ public class Simulator {
 	}
 
 	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
-		new MenuTouchCommand(menuName, menuItemName).run().waitFor();
+		new MenuTouchCommand(menuName, menuItemName).run();
 	}
 
 	public void waitForSimulatorToShutDown() throws InterruptedException {

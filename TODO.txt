@@ -7,13 +7,9 @@ Environment checks, with helpful error messages:
    - Assistive access enabled in the Universal Access system preferences.
    - Accessibility enabled in the simulator.
 
-Polling
-   - Phone conditions
-
 General API features:
    - thing.when(Condition) => ThingCommands
    - thing.waitUntil(Condition)
-   - Application API (e.g. to get elements)?
 
 Phone:
    - API for phone-related simulator menus 

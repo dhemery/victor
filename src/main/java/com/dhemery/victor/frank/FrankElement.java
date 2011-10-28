@@ -1,27 +1,26 @@
-package com.dhemery.victor.frank.elements;
+package com.dhemery.victor.frank;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.elements.Element;
+import com.dhemery.victor.Element;
 import com.dhemery.victor.elements.ElementAssertion;
 import com.dhemery.victor.elements.ElementCommands;
-import com.dhemery.victor.elements.Locator;
+import com.dhemery.victor.elements.IsPresent;
+import com.dhemery.victor.elements.IsVisible;
 import com.dhemery.victor.elements.PolledElementCommands;
-import com.dhemery.victor.elements.conditions.IsPresent;
-import com.dhemery.victor.elements.conditions.IsVisible;
 import com.dhemery.victor.frank.client.FrankClient;
 import com.dhemery.victor.frank.client.ResultsResponse;
 
 public class FrankElement implements Element {
-	private final Locator locator;
 	private final FrankClient frankClient;
 	private final Poll poll;
+	private final String query;
 
-	public FrankElement(FrankClient frankClient, Locator locator, Poll poll) {
+	public FrankElement(FrankClient frankClient, String query, Poll poll) {
 		this.frankClient = frankClient;
-		this.locator = locator;
+		this.query = query;
 		this.poll = poll;
 	}
 
@@ -29,7 +28,7 @@ public class FrankElement implements Element {
 	public boolean isPresent() {
 		ResultsResponse response;
 		try {
-			response = frankClient.map(locator, "accessibilityLabel");
+			response = frankClient.map(query, "accessibilityLabel");
 		} catch (IOException e) {
 			return false;
 		}
@@ -41,7 +40,7 @@ public class FrankElement implements Element {
 	public boolean isVisible() {
 		ResultsResponse response;
 		try {
-			response = frankClient.map(locator, "isHidden");
+			response = frankClient.map(query, "isHidden");
 		} catch (IOException e) {
 			return false;
 		}
@@ -65,7 +64,7 @@ public class FrankElement implements Element {
 	@Override
 	public void flash() {
 		try {
-			frankClient.map(locator, "flash");
+			frankClient.map(query, "flash");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -74,14 +73,14 @@ public class FrankElement implements Element {
 	@Override
 	public void touch() {
 		try {
-			frankClient.map(locator, "touch");
+			frankClient.map(query, "touch");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public Locator locator() {
-		return locator;
+	public String query() {
+		return query;
 	}
 
 	public ElementCommands whenPresent() {

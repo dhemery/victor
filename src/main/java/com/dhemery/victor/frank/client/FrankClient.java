@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.elements.Locator;
 import com.dhemery.victor.frank.json.ResultsResponseParser;
 import com.dhemery.victor.http.Request;
 import com.dhemery.victor.http.Response;
@@ -26,8 +25,8 @@ public class FrankClient  {
 						.create();
 	}
 
-	public ResultsResponse map(Locator locator, String property) throws IOException {
-		MapRequest request = new MapRequest(locator.toString(), property);
+	public ResultsResponse map(String query, String property) throws IOException {
+		MapRequest request = new MapRequest(query, property);
 		Response response = request.sendTo(serverUrl);
 		ResultsResponse results = gson.fromJson(response.body(), ResultsResponse.class);
 		log.debug("Results from {} ==> {}", request, results);

@@ -5,4 +5,7 @@ import java.net.HttpURLConnection;
 
 public class RequestBody {
 	public void writeTo(HttpURLConnection connection) throws IOException {}
+	@Override public String toString() {
+		return "";
+	}
 }
