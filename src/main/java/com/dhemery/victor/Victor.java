@@ -69,11 +69,11 @@ public class Victor {
 	 */
 	public void launch(String simulatorPath, String applicationPath, String frankServerUrl, Poll poll) throws IOException, PollTimeoutException {
 		SimulatorDriver simulator = new SimulatorDriver(simulatorPath);
-		simulator.launch(applicationPath);
 		phone = new SimulatedPhoneDriver(simulator);
 		FrankClient frankClient = new FrankClient(frankServerUrl, poll);
-		frankClient.waitUntilReady();
 		application = new FrankApplicationDriver(frankClient, poll);
+		simulator.launch(applicationPath);
+		frankClient.waitUntilReady();
 	}
 
 	/**
