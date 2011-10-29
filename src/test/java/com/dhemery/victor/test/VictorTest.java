@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.dhemery.poller.Poll;
+import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.Victor;
@@ -17,7 +18,7 @@ public class VictorTest {
 	private static PhoneDriver phone;
 
 	@BeforeClass
-	public static void launchApp() throws IOException {
+	public static void launchApp() throws IOException, PollTimeoutException {
 		RequiredProperties properties = new RequiredProperties("victor.properties");
 
 		String simulatorPath = properties.get("simulator.path");

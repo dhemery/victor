@@ -6,18 +6,27 @@ import java.util.List;
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.victor.ViewDriver;
-import com.dhemery.victor.views.ElementAssertion;
-import com.dhemery.victor.views.ElementCommands;
+import com.dhemery.victor.views.ViewAssertion;
 import com.dhemery.victor.views.IsPresent;
 import com.dhemery.victor.views.IsVisible;
-import com.dhemery.victor.views.PolledElementCommands;
+import com.dhemery.victor.views.PolledViewCommands;
 
-public class FrankElement implements ViewDriver {
+/**
+ * A view driver that interacts with a view through a Frank server.
+ * @author Dale Emery
+ *
+ */
+public class FrankViewDriver implements ViewDriver {
 	private final FrankClient frankClient;
 	private final Poll poll;
 	private final String query;
 
-	public FrankElement(FrankClient frankClient, String query, Poll poll) {
+	/**
+	 * @param frankClient a client connected to a frank server.
+	 * @param query a query that selects the views driven by this driver.
+	 * @param poll polls relevant conditions during the various {@link #when} methods.
+	 */
+	public FrankViewDriver(FrankClient frankClient, String query, Poll poll) {
 		this.frankClient = frankClient;
 		this.query = query;
 		this.poll = poll;
@@ -80,22 +89,22 @@ public class FrankElement implements ViewDriver {
 	}
 
 	@Override
-	public ElementAssertion verify() {
-		return new ElementAssertion(this, poll);
+	public ViewAssertion verify() {
+		return new ViewAssertion(this, poll);
 	}
 
 	@Override
-	public ElementCommands when(Condition condition) {
-		return new PolledElementCommands(this, condition, poll);
+	public PolledViewCommands when(Condition condition) {
+		return new PolledViewCommands(this, condition, poll);
 	}
 
 	@Override
-	public ElementCommands whenPresent() {
+	public PolledViewCommands whenPresent() {
 		return when(new IsPresent(this));
 	}
 
 	@Override
-	public ElementCommands whenVisible() {
+	public PolledViewCommands whenVisible() {
 		return when(new IsVisible(this));
 	}
 }

@@ -1,6 +1,10 @@
 package com.dhemery.victor.frank;
 
-
+/**
+ * An command for a view or an application delegate to execute an operation.
+ * @author Dale Emery
+ *
+ */
 public class OperationCommand extends PostRequestBody {
 	public final Operation operation;
 	
@@ -8,6 +12,9 @@ public class OperationCommand extends PostRequestBody {
 		this.operation = operation;
 	}
 	
+	/**
+	 * @return the operation to execute.
+	 */
 	public Operation operation() { return operation; }
 	
 	@Override

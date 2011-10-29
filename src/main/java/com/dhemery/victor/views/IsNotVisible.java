@@ -3,20 +3,25 @@ package com.dhemery.victor.views;
 import com.dhemery.poller.Condition;
 import com.dhemery.victor.ViewDriver;
 
+/**
+ * A condition that is satisfied when the view is not visible.
+ * @author Dale Emery
+ *
+ */
 public class IsNotVisible extends Condition {
-	private final ViewDriver element;
+	private final ViewDriver view;
 
-	public IsNotVisible(ViewDriver element) {
-		this.element = element;
+	public IsNotVisible(ViewDriver view) {
+		this.view = view;
 	}
 
 	@Override
 	public String describe() {
-		return String.format("[%s] is not visible", element.query());
+		return String.format("[%s] is not visible", view.query());
 	}
 
 	@Override
 	public boolean isSatisfied() {
-		return element.isNotVisible();
+		return view.isNotVisible();
 	}
 }

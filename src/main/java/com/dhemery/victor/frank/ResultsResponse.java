@@ -2,6 +2,11 @@ package com.dhemery.victor.frank;
 
 import java.util.List;
 
+/**
+ * A Frank response that may include a list of results.
+ * @author Dale Emery
+ *
+ */
 public class ResultsResponse {
 	private final boolean succeeded;
 	private final List<String> results;
@@ -15,10 +20,25 @@ public class ResultsResponse {
 		this.details = details;
 	}
 
-	public boolean succeeded() { return succeeded; }
-	public List<String> results() { return results; }
+	/**
+	 * @return the detailed description of the failure, if the request failed. Otherwise null.
+	 */
 	public String details() { return details; }
+	
+	/**
+	 * @return a general description of the failure, if the request failed. Otherwise null.
+	 */
 	public String reason() { return reason; }
+	
+	/**
+	 * @return the list of results, if the request was successful. An empty list otherwise.
+	 */
+	public List<String> results() { return results; }
+
+	/**
+	 * @return true if the request was successful, false otherwise.
+	 */
+	public boolean succeeded() { return succeeded; }
 	
 	@Override
 	public String toString() {

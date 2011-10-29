@@ -3,10 +3,11 @@ package com.dhemery.victor;
 import java.io.IOException;
 
 import com.dhemery.poller.Poll;
-import com.dhemery.victor.frank.FrankApplication;
+import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.victor.frank.FrankApplicationDriver;
 import com.dhemery.victor.frank.FrankClient;
-import com.dhemery.victor.phone.SimulatedPhone;
-import com.dhemery.victor.phone.Simulator;
+import com.dhemery.victor.phone.SimulatedPhoneDriver;
+import com.dhemery.victor.phone.SimulatorDriver;
 
 /**
  * <p>Runs a Frankified iOS application in an iOS Simulator.</p>
@@ -60,18 +61,19 @@ public class Victor {
 
 	/**
 	 * @param simulatorPath the file path to the iOS Simulator application to use to run the iOS application.
-	 * @param iosApplicationPath
-	 * @param frankServerUrl
-	 * @param poll
+	 * @param iosApplicationPath the fila path to the iOS application to run.
+	 * @param frankServerUrl the URL to the Frank server embedded into the application.
+	 * @param poll for repeated checks with timeouts.
 	 * @throws IOException
+	 * @throws PollTimeoutException if the application does not become available before the poll times out.
 	 */
-	public void launch(String simulatorPath, String applicationPath, String frankServerUrl, Poll poll) throws IOException {
-		Simulator simulator = new Simulator(simulatorPath);
+	public void launch(String simulatorPath, String applicationPath, String frankServerUrl, Poll poll) throws IOException, PollTimeoutException {
+		SimulatorDriver simulator = new SimulatorDriver(simulatorPath);
 		simulator.launch(applicationPath);
-		phone = new SimulatedPhone(simulator);
+		phone = new SimulatedPhoneDriver(simulator);
 		FrankClient frankClient = new FrankClient(frankServerUrl, poll);
 		frankClient.waitUntilReady();
-		application = new FrankApplication(frankClient, poll);
+		application = new FrankApplicationDriver(frankClient, poll);
 	}
 
 	/**

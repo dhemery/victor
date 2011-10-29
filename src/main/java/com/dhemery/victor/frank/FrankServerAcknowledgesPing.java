@@ -5,7 +5,12 @@ import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Condition;
 
-final class FrankServerAcknowledgesPing extends Condition {
+/**
+ * A condition that is satisfied when the Frank server acknowledges a "ping" request.
+ * @author Dale Emery
+ *
+ */
+class FrankServerAcknowledgesPing extends Condition {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverPath;
 

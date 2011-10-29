@@ -2,11 +2,11 @@ package com.dhemery.victor.phone;
 
 import java.io.IOException;
 
-public class Simulator {
+public class SimulatorDriver {
 	private final String simulatorPath;
 	private Process simulatorProcess;
 	
-	public Simulator(String simulatorPath) {
+	public SimulatorDriver(String simulatorPath) {
 		this.simulatorPath = simulatorPath;
 	}
 

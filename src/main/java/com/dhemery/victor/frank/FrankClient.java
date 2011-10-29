@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.poller.Poll;
+import com.dhemery.poller.PollTimeoutException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -38,7 +39,7 @@ public class FrankClient  {
 		return gson.fromJson(response.body(), OrientationResponse.class);
 	}
 
-	public void waitUntilReady() {
+	public void waitUntilReady() throws PollTimeoutException {
 		poll.until(new FrankServerAcknowledgesPing(serverUrl));
 	}
 }

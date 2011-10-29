@@ -1,8 +1,12 @@
 package com.dhemery.victor.tests;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.poller.RequiredConditionException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.test.VictorTest;
@@ -20,7 +24,7 @@ public class PhoneTests extends VictorTest {
 	}
 
 	@Test
-	public void orientation() throws InterruptedException {
+	public void orientation() throws InterruptedException, RequiredConditionException, PollTimeoutException, IOException {
 		application.verify().hasOrientation(PORTRAIT);
 
 		phone.rotateLeft();

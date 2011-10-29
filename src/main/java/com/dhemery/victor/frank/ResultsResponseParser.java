@@ -10,6 +10,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+/**
+ * Constructs a {@link ResultsResponse} from a properly formatted JSON string.
+ * @author Dale Emery
+ *
+ */
 public class ResultsResponseParser implements JsonDeserializer<ResultsResponse> {
 	@Override
 	public ResultsResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {

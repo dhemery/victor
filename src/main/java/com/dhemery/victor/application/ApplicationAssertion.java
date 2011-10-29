@@ -1,26 +1,45 @@
 package com.dhemery.victor.application;
 
 import com.dhemery.poller.Poll;
+import com.dhemery.poller.RequiredConditionException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
-
-public class ApplicationAssertion implements ApplicationConditions {
+/**
+ * <p>
+ * Checks conditions on an application.
+ * If a condition is not true when checked, the check throws an exception.
+ * </p>
+ * 
+ * @author Dale Emery
+ */
+public class ApplicationAssertion {
 	private final ApplicationDriver application;
 	private final Poll poll;
 
+	/**
+	 * @param application the application whose conditions to check.
+	 * @param poll the poll to use for {@link #eventually()} checks.
+	 */
 	public ApplicationAssertion(ApplicationDriver application, Poll poll) {
 		this.application = application;
 		this.poll = poll;		
 	}
-	
-	public ApplicationConditions eventually() {
+
+	/**
+	 * @return a driver that repeatedly polls the application for specified conditions.
+	 */
+	public PolledApplicationConditions eventually() {
 		return new PolledApplicationConditions(application, poll);
 	}
 
-	@Override
-	public boolean hasOrientation(Orientation orientation) {
-		new HasOrientation(application, orientation).requireSatisfied();
-		return true;
+	/**
+	 * @throws RequiredConditionException if the application does not have the required orientation.
+	 */
+	public void hasOrientation(Orientation orientation) throws RequiredConditionException {
+		HasOrientation condition = new HasOrientation(application, orientation);
+		if(!condition.isSatisfied()) {
+			throw new RequiredConditionException(condition);
+		}
 	}
 }

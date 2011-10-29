@@ -8,8 +8,8 @@ import java.io.IOException;
  *
  */
 public interface PhoneDriver {
-	public void rotateLeft();
-	public void rotateRight();
+	public void rotateLeft() throws IOException, InterruptedException;
+	public void rotateRight() throws IOException, InterruptedException;
 	
 	/**
 	 * Shuts down the phone.

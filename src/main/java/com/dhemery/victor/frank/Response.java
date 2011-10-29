@@ -1,7 +1,10 @@
 package com.dhemery.victor.frank;
 
-
-public class Response {
+/**
+ * A Frank server response from an HTTP request that return JSON strings.
+ * @author Dale Emery
+ */
+class Response {
 	private final String status;
 	private final String body;
 	
@@ -10,7 +13,14 @@ public class Response {
 		this.body = body;		
 	}
 
+	/**
+	 * @return body of the response.
+	 */
 	public String body() { return body; }
+	
+	/**
+	 * @return the HTTP response status of the response.
+	 */
 	public String status() { return status; }
 	
 	@Override
