@@ -3,8 +3,8 @@ package com.dhemery.victor;
 import java.io.IOException;
 
 import com.dhemery.poller.Condition;
+import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.views.ViewAssertion;
-import com.dhemery.victor.views.PolledViewCommands;
 
 /**
  * A driver that can interact with one or more views in an iOS application.
@@ -53,20 +53,26 @@ public interface ViewDriver {
 	 * @return a view driver that can verify whether the view satisfies certain conditions.
 	 */
 	public ViewAssertion verify();
+
 	/**
-	 * 
-	 * @param condition a condition that must be satisfied before the driver executes each command.
-	 * @return a view driver that waits for the condition to be satisfied before it executes each command.
+	 * Polls until the specified condition is satisfied.
+	 * @param condition
+	 * @return this view driver.
+	 * @throws PollTimeoutException if the poll times out before the condition is satisfied.
 	 */
-	public PolledViewCommands when(Condition condition);
+	public ViewDriver when(Condition condition) throws PollTimeoutException;
+
 	/**
-	 * @return a view driver that waits for the view
-	 * to become present before it executes each command.
+	 * Polls until the view is present.
+	 * @return this view driver
+	 * @throws PollTimeoutException if the poll times out before the view is present.
 	 */
-	public PolledViewCommands whenPresent();
+	public ViewDriver whenPresent() throws PollTimeoutException;
+
 	/**
-	 * @return a view driver that waits for the view
-	 * to become visible before it executes each command.
+	 * Polls until the view is visible.
+	 * @return this view driver
+	 * @throws PollTimeoutException if the poll times out before the view is visible.
 	 */
-	public PolledViewCommands whenVisible();
+	public ViewDriver whenVisible() throws PollTimeoutException;
 }

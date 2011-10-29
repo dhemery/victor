@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
+import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.views.ViewAssertion;
 import com.dhemery.victor.views.IsPresent;
 import com.dhemery.victor.views.IsVisible;
-import com.dhemery.victor.views.PolledViewCommands;
 
 /**
  * A view driver that interacts with a view through a Frank server.
@@ -94,17 +94,20 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public PolledViewCommands when(Condition condition) {
-		return new PolledViewCommands(this, condition, poll);
+	public ViewDriver when(Condition condition) throws PollTimeoutException {
+		poll.until(condition);
+		return this;
 	}
 
 	@Override
-	public PolledViewCommands whenPresent() {
-		return when(new IsPresent(this));
+	public ViewDriver whenPresent() throws PollTimeoutException {
+		when(new IsPresent(this));
+		return this;
 	}
 
 	@Override
-	public PolledViewCommands whenVisible() {
-		return when(new IsVisible(this));
+	public ViewDriver whenVisible() throws PollTimeoutException {
+		when(new IsVisible(this));
+		return this;
 	}
 }
