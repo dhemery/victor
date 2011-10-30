@@ -1,9 +1,9 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.application.server;
 
 import java.util.List;
 
 /**
- * A Frank response that may include a list of results.
+ * An application response that may include a list of results.
  * @author Dale Emery
  *
  */

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.PollTimeoutException;
-import com.dhemery.victor.views.ViewAssertion;
+import com.dhemery.victor.view.ViewAssertion;
 
 /**
  * A driver that can interact with one or more views in an iOS application.

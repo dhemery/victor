@@ -3,11 +3,12 @@ package com.dhemery.victor.phone;
 import java.io.IOException;
 
 import com.dhemery.victor.PhoneDriver;
+import com.dhemery.victor.simulator.Simulator;
 
 public class SimulatedPhoneDriver implements PhoneDriver {
-	private final SimulatorDriver simulator;
+	private final Simulator simulator;
 
-	public SimulatedPhoneDriver(SimulatorDriver simulator) {
+	public SimulatedPhoneDriver(Simulator simulator) {
 		this.simulator = simulator;
 	}
 

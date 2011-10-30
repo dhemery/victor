@@ -4,7 +4,7 @@ package com.dhemery.victor.frank;
  * A Frank server response from an HTTP request that return JSON strings.
  * @author Dale Emery
  */
-class Response {
+public class Response {
 	private final String status;
 	private final String body;
 	

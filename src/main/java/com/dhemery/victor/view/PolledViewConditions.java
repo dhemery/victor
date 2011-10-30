@@ -1,4 +1,4 @@
-package com.dhemery.victor.views;
+package com.dhemery.victor.view;
 
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;

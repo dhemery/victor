@@ -4,10 +4,13 @@ import java.io.IOException;
 
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
-import com.dhemery.victor.frank.FrankApplicationDriver;
-import com.dhemery.victor.frank.FrankClient;
+import com.dhemery.victor.application.server.AcknowledgesPing;
+import com.dhemery.victor.application.server.ApplicationServer;
+import com.dhemery.victor.frank.FrankServer;
 import com.dhemery.victor.phone.SimulatedPhoneDriver;
-import com.dhemery.victor.phone.SimulatorDriver;
+import com.dhemery.victor.remote.RemoteApplicationDriver;
+import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.Simulator;
 
 /**
  * <p>Runs a Frankified iOS application in an iOS Simulator.</p>
@@ -61,19 +64,19 @@ public class Victor {
 
 	/**
 	 * @param simulatorPath the file path to the iOS Simulator application to use to run the iOS application.
-	 * @param iosApplicationPath the fila path to the iOS application to run.
+	 * @param applicationPath the file path to the iOS application to run.
 	 * @param frankServerUrl the URL to the Frank server embedded into the application.
 	 * @param poll for repeated checks with timeouts.
 	 * @throws IOException
 	 * @throws PollTimeoutException if the application does not become available before the poll times out.
 	 */
 	public void launch(String simulatorPath, String applicationPath, String frankServerUrl, Poll poll) throws IOException, PollTimeoutException {
-		SimulatorDriver simulator = new SimulatorDriver(simulatorPath);
-		phone = new SimulatedPhoneDriver(simulator);
-		FrankClient frankClient = new FrankClient(frankServerUrl, poll);
-		application = new FrankApplicationDriver(frankClient, poll);
+		Simulator simulator = new LocalSimulator(simulatorPath);
+		ApplicationServer applicationServer = new FrankServer(frankServerUrl);
 		simulator.launch(applicationPath);
-		frankClient.waitUntilReady();
+		poll.until(new AcknowledgesPing(applicationServer));
+		phone = new SimulatedPhoneDriver(simulator);
+		application = new RemoteApplicationDriver(applicationServer, poll);
 	}
 
 	/**

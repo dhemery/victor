@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.remote;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,45 +7,48 @@ import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ViewDriver;
-import com.dhemery.victor.views.ViewAssertion;
-import com.dhemery.victor.views.IsPresent;
-import com.dhemery.victor.views.IsVisible;
+import com.dhemery.victor.application.server.ApplicationServer;
+import com.dhemery.victor.application.server.Operation;
+import com.dhemery.victor.application.server.ResultsResponse;
+import com.dhemery.victor.view.IsPresent;
+import com.dhemery.victor.view.IsVisible;
+import com.dhemery.victor.view.ViewAssertion;
 
 /**
- * A view driver that interacts with a view through a Frank server.
+ * A view driver that interacts with a view through an application server.
  * @author Dale Emery
  *
  */
-public class FrankViewDriver implements ViewDriver {
-	private final FrankClient frankClient;
+public class RemoteViewDriver implements ViewDriver {
+	private final ApplicationServer server;
 	private final Poll poll;
 	private final String query;
 
 	/**
-	 * @param frankClient a client connected to a frank server.
+	 * @param server an application server that can interact with this view.
 	 * @param query a query that selects the views driven by this driver.
 	 * @param poll polls relevant conditions during the various {@link #when} methods.
 	 */
-	public FrankViewDriver(FrankClient frankClient, String query, Poll poll) {
-		this.frankClient = frankClient;
+	public RemoteViewDriver(ApplicationServer server, String query, Poll poll) {
+		this.server = server;
 		this.query = query;
 		this.poll = poll;
 	}
 
-	@Override
-	public void flash() throws IOException {
-		invokeMethod("flash");
+	private ResultsResponse call(String method, String...arguments) throws IOException {
+		return perform(new Operation(method, arguments));
 	}
 
-	public ResultsResponse invokeMethod(String method) throws IOException {
-		return frankClient.map(query, method);
+	@Override
+	public void flash() throws IOException {
+		call("flash");
 	}
 
 	@Override
 	public boolean isNotPresent() {
 		return !isPresent();
 	}
-
+	
 	@Override
 	public boolean isNotVisible() {
 		return !isVisible();
@@ -55,7 +58,7 @@ public class FrankViewDriver implements ViewDriver {
 	public boolean isPresent() {
 		ResultsResponse response;
 		try {
-			response = invokeMethod("accessibilityLabel");
+			response = call("accessibilityLabel");
 		} catch (IOException e) {
 			return false;
 		}
@@ -67,15 +70,23 @@ public class FrankViewDriver implements ViewDriver {
 	public boolean isVisible() {
 		ResultsResponse response;
 		try {
-			response = invokeMethod("isHidden");
+			response = property("isHidden");
 		} catch (IOException e) {
 			return false;
 		}
 		if(!response.succeeded()) return false;
-		List<String> matches = response.results();
-		if(matches.size() != 1) return false;
-		boolean isHidden = Boolean.parseBoolean(matches.get(0));
+		List<String> values = response.results();
+		if(values.size() != 1) return false;
+		boolean isHidden = Boolean.parseBoolean(values.get(0));
 		return !isHidden;
+	}
+
+	private ResultsResponse perform(Operation operation) throws IOException {
+		return server.perform(query, operation);
+	}
+
+	private ResultsResponse property(String name) throws IOException {
+		return perform(new Operation(name));
 	}
 
 	@Override
@@ -85,7 +96,7 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public void touch() throws IOException {
-		invokeMethod("touch");
+		call("touch");
 	}
 
 	@Override

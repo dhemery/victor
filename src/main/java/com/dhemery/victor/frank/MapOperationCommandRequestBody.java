@@ -1,11 +1,13 @@
 package com.dhemery.victor.frank;
 
+import com.dhemery.victor.application.server.Operation;
+
 /**
  * A command to invoke an operation on the set of views that match a query.
  * @author Dale Emery
  *
  */
-public class MapCommand extends OperationCommand {
+public class MapOperationCommandRequestBody extends OperationCommandRequestBody {
 	public final String query;
 
 	/**
@@ -13,7 +15,7 @@ public class MapCommand extends OperationCommand {
 	 * @param query a query that selects the views that will perform the operation.
 	 * @param operation the operation for the views to perform.
 	 */
-	public MapCommand(String query, Operation operation) {
+	public MapOperationCommandRequestBody(String query, Operation operation) {
 		super(operation);
 		this.query = query;
 	}

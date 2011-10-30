@@ -1,4 +1,4 @@
-package com.dhemery.victor.phone;
+package com.dhemery.victor.simulator;
 
 import java.io.IOException;
 import java.util.ArrayList;

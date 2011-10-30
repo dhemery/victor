@@ -1,4 +1,4 @@
-package com.dhemery.victor.views;
+package com.dhemery.victor.view;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.victor.ViewDriver;

@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.remote;
 
 import java.io.IOException;
 
@@ -6,28 +6,30 @@ import com.dhemery.poller.Poll;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.application.ApplicationAssertion;
+import com.dhemery.victor.application.server.ApplicationServer;
+import com.dhemery.victor.application.server.OrientationResponse;
 
 /**
- * A driver that interacts with an application through a Frank server.
+ * A driver that interacts with an application through an application server.
  * @author Dale Emery
  */
-public class FrankApplicationDriver implements ApplicationDriver {
-	private final FrankClient frankClient;
+public class RemoteApplicationDriver implements ApplicationDriver {
+	private final ApplicationServer server;
 	private final Poll poll;
 
 	/**
-	 * @param frankClient a client connected to the Frank server where the application is running.
+	 * @param server an application server that can interact with this application.
 	 * @param poll a poll to use to create view drivers and to perform verifications.
 	 */
-	public FrankApplicationDriver(FrankClient frankClient, Poll poll) {
-		this.frankClient = frankClient;
+	public RemoteApplicationDriver(ApplicationServer server, Poll poll) {
+		this.server = server;
 		this.poll = poll;
 	}
 
 	@Override
 	public Orientation orientation() {
 		try {
-			OrientationResponse response = frankClient.orientation();
+			OrientationResponse response = server.orientation();
 			String orientationName = response.orientation().toUpperCase();
 			return Orientation.valueOf(orientationName);
 		} catch (IOException e) {
@@ -37,7 +39,7 @@ public class FrankApplicationDriver implements ApplicationDriver {
 
 	@Override
 	public ViewDriver view(String query) {
-		return new FrankViewDriver(frankClient, query, poll);
+		return new RemoteViewDriver(server, query, poll);
 	}
 
 	@Override

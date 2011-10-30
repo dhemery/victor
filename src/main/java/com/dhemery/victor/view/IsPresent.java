@@ -1,27 +1,27 @@
-package com.dhemery.victor.views;
+package com.dhemery.victor.view;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.victor.ViewDriver;
 
 /**
- * A condition that is satisfied when the view is visible.
+ * A condition that is satisfied when the view is present.
  * @author Dale Emery
  *
  */
-public class IsVisible extends Condition {
+public class IsPresent extends Condition {
 	private final ViewDriver view;
 
-	public IsVisible(ViewDriver view) {
+	public IsPresent(ViewDriver view) {
 		this.view = view;
 	}
 
 	@Override
 	public String describe() {
-		return String.format("[%s] is visible", view.query());
+		return String.format("[%s] is present", view.query()) ;
 	}
 
 	@Override
 	public boolean isSatisfied() {
-		return view.isVisible();
+		return view.isPresent();
 	}
 }

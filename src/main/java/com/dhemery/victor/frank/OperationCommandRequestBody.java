@@ -1,14 +1,16 @@
 package com.dhemery.victor.frank;
 
+import com.dhemery.victor.application.server.Operation;
+
 /**
- * An command for a view or an application delegate to execute an operation.
+ * A command for some entity in an application to perform an operation.
  * @author Dale Emery
  *
  */
-public class OperationCommand extends PostRequestBody {
+public class OperationCommandRequestBody extends PostRequestBody {
 	public final Operation operation;
 	
-	public OperationCommand(Operation operation) {
+	public OperationCommandRequestBody(Operation operation) {
 		this.operation = operation;
 	}
 	

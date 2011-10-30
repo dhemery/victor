@@ -1,7 +1,7 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.application.server;
 
 /**
- * A response from a Frank {@link OrientationRequest}.
+ * A response from an application server orientation() request.
  * @author Dale Emery
  *
  */
@@ -13,7 +13,7 @@ public class OrientationResponse {
 	}
 	
 	/**
-	 * @return the application's orientation, as returned from a Frank {@code OrientationRequest}.
+	 * @return the application's orientation, as reported by the application server.
 	 */
 	public String orientation() { return orientation; }
 }

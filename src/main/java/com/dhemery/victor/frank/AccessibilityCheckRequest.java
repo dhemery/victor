@@ -1,5 +1,6 @@
 package com.dhemery.victor.frank;
 
+
 /**
  * A request to learn whether accessibility is enabled in the application.
  * @author Dale Emery
