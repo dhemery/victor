@@ -11,10 +11,10 @@ public class MasterDisplay {
 	}
 
 	public ViewDriver detailLabel() {
-		return application.view("*");
+		return application.view("UILabel");
 	}
 
 	public ViewDriver masterView() {
-		return application.view("*");
+		return application.view("UINavigationItemView");
 	}
 }
