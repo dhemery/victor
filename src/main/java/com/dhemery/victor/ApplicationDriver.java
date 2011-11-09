@@ -30,24 +30,7 @@ public interface ApplicationDriver {
 	public ApplicationAssertion verify();
 	
 	/**
-	 * @return a driver that can interact with the views that match the query.
+	 * @return a driver that can interact with the views that match the Igor query.
 	 */
-	public ViewDriver view(String query);
-
-	/**
-	 * <p>
-	 * Creates a driver that can interact with views that have the given "class" and accessibilityLabel.
-	 * </p>
-	 * <p>
-	 * The {@code type} parameter is similar to the name of an Objective C class of the views to match.
-	 * But the {@code type} parameter omits the leading "UI" prefix.
-	 * Also, the {@code type} parameter may begin with either an upper or lower case letter.
-	 * Except for the first letter, the rest of the type must match the case of the view's Objective C class name.
-	 * </p>
-	 *  
-	 * @param type the "class" of the views to be represented by this driver (see above).
-	 * @param accessibilityLabel the accessibilityLabel to be represented by this driver.
-	 * @return a driver for the views that have the given type and accessibilityLabel.
-	 */
-	public ViewDriver view(String type, String accessibilityLabel);
+	public ViewDriver view(String igorQuery);
 }

@@ -43,11 +43,6 @@ public class RemoteApplicationDriver implements ApplicationDriver {
 	}
 
 	@Override
-	public ViewDriver view(String type, String name) {
-		return view(String.format("%s marked:'%s'", type, name));
-	}
-
-	@Override
 	public ApplicationAssertion verify() {
 		return new ApplicationAssertion(this, poll);
 	}
