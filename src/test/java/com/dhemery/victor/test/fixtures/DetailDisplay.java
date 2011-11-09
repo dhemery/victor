@@ -11,10 +11,10 @@ public class DetailDisplay {
 	}
 
 	public ViewDriver masterButton() {
-		return application.view("navigationItemButtonView", "Master");
+		return application.view("*");
 	}
 
 	public ViewDriver detailView() {
-		return application.view("navigationItemView", "Detail");
+		return application.view("*");
 	}
 }
