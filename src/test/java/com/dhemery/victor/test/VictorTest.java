@@ -19,7 +19,7 @@ public class VictorTest {
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutException {
-		RequiredProperties properties = new RequiredProperties("victor.properties");
+		RequiredProperties properties = new RequiredProperties("my.properties", "victor.properties");
 
 		String simulatorPath = properties.get("simulator.path");
 		String applicationPath = new File(properties.get("application.path")).getAbsolutePath();

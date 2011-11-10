@@ -12,7 +12,3 @@ Phone:
 
 Simulator:
    - API for simulation-related menus 
-
-Research:
-   - Queries that Frank can execute
-   - Methods that Frank can invoke on query results (targets)
