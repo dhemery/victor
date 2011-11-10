@@ -8,6 +8,7 @@ import com.dhemery.victor.application.server.Operation;
  *
  */
 public class MapOperationCommandRequestBody extends OperationCommandRequestBody {
+	public final String selector_engine = "uiquery";
 	public final String query;
 
 	/**
@@ -24,9 +25,10 @@ public class MapOperationCommandRequestBody extends OperationCommandRequestBody 
 	 * @return the query that selects views to perform the operation.
 	 */
 	public String query() { return query; }
+	public String selectorEngine() { return selector_engine; }
 	
 	@Override
 	public String toString() {
-		return String.format("[query:%s]%s", query(), super.toString());
+		return String.format("[query:%s][selector_engine:%s]%s", query(), selectorEngine(), super.toString());
 	}
 }
