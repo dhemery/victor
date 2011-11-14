@@ -1,6 +1,5 @@
 Frank API:
    - Implement app_exec
-   - Implement accessibility_check
    - Implement dump
 
 Environment checks, with helpful error messages:

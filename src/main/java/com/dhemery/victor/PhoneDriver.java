@@ -9,6 +9,7 @@ import java.io.IOException;
  *
  */
 public interface PhoneDriver {
+	public boolean isEnabledForAccessibility() throws IOException;
 	public void rotateLeft() throws IOException, InterruptedException;
 	public void rotateRight() throws IOException, InterruptedException;
 	

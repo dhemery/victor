@@ -1,4 +1,4 @@
-package com.dhemery.victor.test.properties;
+package com.dhemery.properties;
 
 @SuppressWarnings("serial")
 public class RequiredPropertyException extends RuntimeException {

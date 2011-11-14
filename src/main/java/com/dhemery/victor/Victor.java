@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.application.server.AcknowledgesPing;
 import com.dhemery.victor.application.server.ApplicationServer;
 import com.dhemery.victor.frank.FrankServer;
-import com.dhemery.victor.phone.SimulatedPhoneDriver;
 import com.dhemery.victor.remote.RemoteApplicationDriver;
+import com.dhemery.victor.remote.RemotePhoneDriver;
 import com.dhemery.victor.simulator.LocalSimulator;
 import com.dhemery.victor.simulator.Simulator;
 
@@ -19,7 +20,7 @@ import com.dhemery.victor.simulator.Simulator;
  * Creates a {@link PhoneDriver} that can interact with the simulated iOS device in the sumulator.
  * Creates an {@link ApplicationDriver} that can interact with the application running in the simulated phone.
  * </p>
- * 
+ *
  * <p><strong>Prerequisite: A "Frankified" application.</strong>
  * {@code Victor} communicates to the application through a Frank server embedded into the application.
  * To use Victor, you must create a "Frankified" version of your application.
@@ -54,6 +55,37 @@ import com.dhemery.victor.simulator.Simulator;
 public class Victor {
 	private ApplicationDriver application;
 	private PhoneDriver phone;
+	private final String simulatorPath;
+	private final String applicationPath;
+	private final String frankServerUrl;
+	private final Poll poll;
+
+	/** 
+	 * <p>The configuration must define the following properties:</p>
+	 * <ul>
+	 * <li>{@code simulator.path}: The file path to the iOS Simulator executable.</li>
+	 * <li>{@code application.path}: The file path to the application to launch in the simulator.</li>
+	 * <li>{@code frank.server.url}: The URL where the embedded Frank server listens.</li>
+	 * <li>{@code polling.timeout}: How long to persist polling (for {@code eventually()} methods) before timing out.</li>
+	 * <li>{@code polling.interval}: How long to wait between polls.</li>
+	 * </ul>
+	 * 
+	 * @param configuration dictionary of configuration properties.
+	 */
+	public Victor(RequiredProperties configuration) {
+		this(configuration.get("application.path"),
+				configuration.get("simulator.path"),
+				configuration.get("frank.server.url"),
+				configuration.getInteger("polling.timeout"),
+				configuration.getInteger("polling.interval"));
+	}
+
+	public Victor(String applicationPath, String simulatorPath, String frankServerUrl, Integer timeout, Integer pollingInterval) {
+		this.applicationPath = applicationPath;
+		this.simulatorPath = simulatorPath;
+		this.frankServerUrl = frankServerUrl;
+		this.poll = new Poll(timeout, pollingInterval);
+	}
 
 	/**
 	 * @return a driver that can interact with the application launched by the previous call to {@link #launch}. 
@@ -62,21 +94,14 @@ public class Victor {
 		return application;
 	}
 
-	/**
-	 * @param simulatorPath the file path to the iOS Simulator application to use to run the iOS application.
-	 * @param applicationPath the file path to the iOS application to run.
-	 * @param frankServerUrl the URL to the Frank server embedded into the application.
-	 * @param poll for repeated checks with timeouts.
-	 * @throws IOException
-	 * @throws PollTimeoutException if the application does not become available before the poll times out.
-	 */
-	public void launch(String simulatorPath, String applicationPath, String frankServerUrl, Poll poll) throws IOException, PollTimeoutException {
+	public Victor launch() throws IOException, PollTimeoutException {		
 		Simulator simulator = new LocalSimulator(simulatorPath);
 		ApplicationServer applicationServer = new FrankServer(frankServerUrl);
 		simulator.launch(applicationPath);
 		poll.until(new AcknowledgesPing(applicationServer));
-		phone = new SimulatedPhoneDriver(simulator);
+		phone = new RemotePhoneDriver(simulator, applicationServer);
 		application = new RemoteApplicationDriver(applicationServer, poll);
+		return this;
 	}
 
 	/**

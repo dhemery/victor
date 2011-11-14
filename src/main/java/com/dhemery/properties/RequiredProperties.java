@@ -1,4 +1,4 @@
-package com.dhemery.victor.test.properties;
+package com.dhemery.properties;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

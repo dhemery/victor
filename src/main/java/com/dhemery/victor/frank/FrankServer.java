@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dhemery.victor.application.server.AccessibilityCheckResponse;
 import com.dhemery.victor.application.server.ApplicationServer;
 import com.dhemery.victor.application.server.Operation;
 import com.dhemery.victor.application.server.OrientationResponse;
@@ -54,5 +55,12 @@ public class FrankServer implements ApplicationServer  {
 			} catch (IOException e) {
 				return false;
 			}
+	}
+
+	@Override
+	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
+		Request request = new AccessibilityCheckRequest();
+		Response response = request.sendTo(serverUrl);
+		return gson.fromJson(response.body(), AccessibilityCheckResponse.class);
 	}
 }

@@ -9,6 +9,12 @@ import java.io.IOException;
  */
 public interface ApplicationServer {
 	/**
+	 * @return an AccessibilityCheckResponse that indicates whether accessibility is enabled in the device.
+	 * @throws IOException
+	 */
+	public AccessibilityCheckResponse accessibilityCheck() throws IOException;
+
+	/**
 	 * @return an OrientationResponse that indicates the application's current orientation.
 	 * @throws IOException
 	 */
@@ -28,4 +34,5 @@ public interface ApplicationServer {
 	 * @return true if the server responds to the ping request, otherwise false.
 	 */
 	public boolean ping();
+
 }
