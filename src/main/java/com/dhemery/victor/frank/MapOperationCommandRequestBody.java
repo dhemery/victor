@@ -8,7 +8,7 @@ import com.dhemery.victor.application.server.Operation;
  *
  */
 public class MapOperationCommandRequestBody extends OperationCommandRequestBody {
-	public final String selector_engine = "uiquery";
+	public final String selector_engine = "Igor";
 	public final String query;
 
 	/**
