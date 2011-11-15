@@ -17,7 +17,7 @@ public class VictorTest {
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutException {
-		RequiredProperties configuration = new RequiredProperties("my.properties", "default.properties");
+		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Victor launcher = new Victor(configuration).launch();
 
 		application = launcher.application();
