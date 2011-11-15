@@ -22,6 +22,13 @@ public class VictorTest {
 
 		application = launcher.application();
 		phone = launcher.phone();
+		verifyAccessibilityIsEnabled();
+	}
+
+	private static void verifyAccessibilityIsEnabled() throws IOException {
+		if(!phone.isEnabledForAccessibility()) {
+			throw new RuntimeException("Please enable accessibility in the Phone/Simulator settings: Settings > General > Accessibility.");
+		}
 	}
 
 	@AfterClass

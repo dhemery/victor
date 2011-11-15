@@ -1,5 +1,6 @@
 package com.dhemery.victor;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.dhemery.poller.Poll;
@@ -81,8 +82,8 @@ public class Victor {
 	}
 
 	public Victor(String applicationPath, String simulatorPath, String frankServerUrl, Integer timeout, Integer pollingInterval) {
-		this.applicationPath = applicationPath;
-		this.simulatorPath = simulatorPath;
+		this.applicationPath = new File(applicationPath).getAbsolutePath();
+		this.simulatorPath = new File(simulatorPath).getAbsolutePath();
 		this.frankServerUrl = frankServerUrl;
 		this.poll = new Poll(timeout, pollingInterval);
 	}
