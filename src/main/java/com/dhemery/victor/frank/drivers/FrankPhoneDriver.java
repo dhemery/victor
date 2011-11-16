@@ -6,6 +6,11 @@ import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.simulator.Simulator;
 
+/**
+ * A phone driver that interacts with a "phone" through a simulator and a Frank server.
+ * @author Dale Emery
+ *
+ */
 public class FrankPhoneDriver implements PhoneDriver {
 	private final Simulator simulator;
 	private final FrankClient frank;

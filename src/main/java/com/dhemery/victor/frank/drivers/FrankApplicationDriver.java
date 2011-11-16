@@ -12,7 +12,7 @@ import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.OrientationResponse;
 
 /**
- * A driver that interacts with an application through a Frank client.
+ * An application driver that interacts with an application through a Frank server.
  * @author Dale Emery
  */
 public class FrankApplicationDriver implements ApplicationDriver {

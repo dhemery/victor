@@ -2,18 +2,25 @@ package com.dhemery.victor.simulator;
 
 import java.io.IOException;
 
+/**
+ * An iOS simulator running on this computer.
+ * @author Dale Emery
+ *
+ */
 public class LocalSimulator implements Simulator {
 	private final String simulatorPath;
 	private Process simulatorProcess;
 	
+	/**
+	 * @param simulatorPath the file path to the simulator application.
+	 */
 	public LocalSimulator(String simulatorPath) {
 		this.simulatorPath = simulatorPath;
 	}
 
 	@Override
-	public Simulator launch(String applicationPath) throws IOException {
+	public void launch(String applicationPath) throws IOException {
 		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationPath).run();
-		return this;
 	}
 
 	@Override
@@ -23,9 +30,8 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public Simulator touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
+	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
 		new MenuTouchCommand(menuName, menuItemName).run();
-		return this;
 	}
 
 	private void waitForSimulatorToShutDown() throws InterruptedException {

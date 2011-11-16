@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 
 /**
  * The body of a Frank request.
- * Buy default, a RequestBody is empty and is not written to the connection,
+ * Buy default, a {@code RequestBody} is empty and is not written to the connection,
  * which causes the request to be sent via HTTP GET.
  * Derived classes may actually write bytes to the connection,
  * which causes the request to be sent vie HTTP PUT.

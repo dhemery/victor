@@ -28,6 +28,9 @@ public class FrankClient  {
 	private final String serverUrl;
 	private final Gson gson;
 
+	/**
+	 * @param serverUrl The URL where the Frank server listens for requests.
+	 */
 	public FrankClient(String serverUrl) {
 		this.serverUrl = serverUrl;
 		gson = new GsonBuilder()
@@ -36,18 +39,37 @@ public class FrankClient  {
 						.create();
 	}
 
+	/**
+	 * Determines whether accessibility is enabled in the phone or simulator
+	 * where the Frank server is running.
+	 * @return a response that describes whether accessibility is enabled.
+	 * @throws IOException
+	 */
 	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
 		FranklyRequest request = new AccessibilityCheckFranklyRequest();
 		FranklyResponse response = request.sendTo(serverUrl);
 		return gson.fromJson(response.body(), AccessibilityCheckResponse.class);
 	}
 	
+	/**
+	 * Determines the current orientation (portrait or landscape)
+	 * of the application in which the Frank server is running.
+	 * @return a response that describes the application's orientation.
+	 * @throws IOException
+	 */
 	public OrientationResponse orientation() throws IOException {
 		FranklyRequest request = new OrientationFranklyRequest();
 		FranklyResponse response = request.sendTo(serverUrl);
 		return gson.fromJson(response.body(), OrientationResponse.class);
 	}
 
+	/**
+	 * Instructs a set of views to perform an operation.
+	 * @param query identifies the views that will perform the operation.
+	 * @param operation the operation to perform.
+	 * @return a response that lists the results returned by each view that performed the operation.
+	 * @throws IOException
+	 */
 	public ResultsResponse perform(Query query, Operation operation) throws IOException {
 		MapFranklyRequest request = new MapFranklyRequest(query, operation);
 		FranklyResponse response = request.sendTo(serverUrl);
@@ -56,6 +78,10 @@ public class FrankClient  {
 		return results;
 	}
 
+	/**
+	 * Sends a GET request to the Frank server.
+	 * @return true if the Frank server response to the request, otherwise false.
+	 */
 	private boolean ping() {
 			try {
 				new PingFranklyRequest().sendTo(serverUrl);
@@ -65,7 +91,12 @@ public class FrankClient  {
 			}
 	}
 
-	public FrankClient waitForServer(Poll poll) throws PollTimeoutException {
+	/**
+	 * Wait until the Frank server responds to a ping request or the poll times out.
+	 * @param poll repeatedly pings until the server responds of the poll times out.
+	 * @throws PollTimeoutException if the poll expires before the Frank server responds.
+	 */
+	public void waitForServer(Poll poll) throws PollTimeoutException {
 		poll.until(new Condition() {
 			@Override
 			public String describe() {
@@ -77,6 +108,5 @@ public class FrankClient  {
 				return ping();
 			}
 		});
-		return this;
 	}
 }

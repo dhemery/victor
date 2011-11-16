@@ -1,7 +1,7 @@
 package com.dhemery.victor.frank.frankly;
 
 /**
- * A Frank server response from an HTTP request that return JSON strings.
+ * A Frank server response from an HTTP request that returns JSON strings.
  * @author Dale Emery
  */
 public class FranklyResponse {

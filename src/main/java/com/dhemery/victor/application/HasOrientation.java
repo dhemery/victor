@@ -4,6 +4,11 @@ import com.dhemery.poller.Condition;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
+/**
+ * A Condition that determines whether the application has a given orientation (portrait or landscape).
+ * @author Dale Emery
+ *
+ */
 public class HasOrientation extends Condition {
 	private final ApplicationDriver application;
 	private final Orientation orientation;

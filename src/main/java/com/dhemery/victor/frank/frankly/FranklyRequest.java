@@ -10,15 +10,32 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A request to a Frank server.
+ * @author Dale Emery
+ *
+ */
 public class FranklyRequest {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String verb;
 	private final FranklyRequestBody body;
 	
+	/**
+	 * Creates a Frank GET request.
+	 * @param verb the path portion of the URL to which to send the request.
+	 */
 	public FranklyRequest(String verb) {
 		this(verb, new FranklyRequestBody());
 	}
 
+	/**
+	 * Creates a Frank request.
+	 * If the body writes bytes to the connection,
+	 * the request is sent as a POST request.
+	 * Otherwise it is sent as a GET request.
+	 * @param verb the path portion of the URL to which to send the request.
+	 * @param body the body of the request.
+	 */
 	public FranklyRequest(String verb, FranklyRequestBody body) {
 		this.verb = verb;
 		this.body = body;
@@ -27,6 +44,12 @@ public class FranklyRequest {
 	public String verb() { return verb; }
 	public FranklyRequestBody body() { return body; }
 
+	/**
+	 * Sends the request to the Frank server and returns the server's response.
+	 * @param serverUrl The URL where the Frank server listens for requests.
+	 * @return The Frank server's response to the request.
+	 * @throws IOException
+	 */
 	public FranklyResponse sendTo(String serverUrl) throws IOException {
 		log.debug("Sending: {}", this);
 		URL url = urlFor(serverUrl, verb);

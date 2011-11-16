@@ -1,5 +1,9 @@
 package com.dhemery.victor.frank;
 
+/**
+ * A response to a Frank server accessibility check request. 
+ * @author Dale Emery
+ */
 public class AccessibilityCheckResponse {
 	private String accessibility_enabled;
 

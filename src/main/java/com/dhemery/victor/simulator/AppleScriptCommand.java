@@ -3,23 +3,34 @@ package com.dhemery.victor.simulator;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * An command to run an AppleScript program on this computer.
+ * @author Dale Emery
+ *
+ */
 public class AppleScriptCommand extends OSCommand {
 	private static final String APPLESCRIPT_RUNNER = "osascript";
-	public AppleScriptCommand(String...script) {
-		super(APPLESCRIPT_RUNNER, script);
-	}
 
+	/**
+	 * Constructs a command to run the AppleScript program.
+	 * @param scriptLines the lines of the AppleScript program.
+	 */
 	public AppleScriptCommand(List<String> scriptLines) {
-		super(APPLESCRIPT_RUNNER, scriptFor(scriptLines));
+		super(APPLESCRIPT_RUNNER, argumentsToRun(scriptLines));
 	}
 
-	private static List<String> scriptFor(List<String> scriptLines) {
-		List<String> script = new ArrayList<String>();
+	/**
+	 * Transforms the lines of an AppleScript program into a sequence
+	 * of arguments for the osascript command.
+	 * @param scriptLines the lines of an AppleScript program.
+	 * @return a list of arguments to pass to osascript to run the AppleScript program.
+	 */
+	private static List<String> argumentsToRun(List<String> scriptLines) {
+		List<String> osascriptArguments = new ArrayList<String>();
 		for(String line : scriptLines) {
-			script.add("-e");
-			script.add(line);
+			osascriptArguments.add("-e");
+			osascriptArguments.add(line);
 		}
-		return script;
+		return osascriptArguments;
 	}
 }

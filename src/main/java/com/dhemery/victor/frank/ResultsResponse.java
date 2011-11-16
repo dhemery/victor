@@ -3,7 +3,7 @@ package com.dhemery.victor.frank;
 import java.util.List;
 
 /**
- * An application response that may include a list of results.
+ * An Frank response that may include a list of property values or return values.
  * @author Dale Emery
  *
  */

@@ -39,7 +39,7 @@ public interface ViewDriver {
 	public boolean isVisible();
 	
 	/**
-	 * @return the query that selects the views that this driver represents.
+	 * @return the query that identifies the views represented by this driver.
 	 */
 	public Query query();
 

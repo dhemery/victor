@@ -16,7 +16,7 @@ import com.dhemery.victor.view.IsVisible;
 import com.dhemery.victor.view.ViewAssertion;
 
 /**
- * A view driver that interacts with a view through a Frank client.
+ * A view driver that interacts with a view through a Frank server.
  * @author Dale Emery
  *
  */
@@ -27,7 +27,7 @@ public class FrankViewDriver implements ViewDriver {
 
 	/**
 	 * @param frank a Frank client that can interact with this view.
-	 * @param query a query that selects the views driven by this driver.
+	 * @param query a query that identifies the views driven by this driver.
 	 * @param poll polls relevant conditions during the various {@link #when} methods.
 	 */
 	public FrankViewDriver(FrankClient frank, Query query, Poll poll) {
@@ -57,21 +57,24 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public boolean isPresent() {
+		String property = "accessibilityLabel";
 		ResultsResponse response;
 		try {
-			response = call("accessibilityLabel");
+			response = call(property);
 		} catch (IOException e) {
 			return false;
 		}
 		if(!response.succeeded()) return false;
-		return response.results().size() == 1;
+		List<String> values = response.results();
+		return values.size() == 1;
 	}
 
 	@Override
 	public boolean isVisible() {
+		String property = "isHidden";
 		ResultsResponse response;
 		try {
-			response = property("isHidden");
+			response = property(property);
 		} catch (IOException e) {
 			return false;
 		}
@@ -86,8 +89,8 @@ public class FrankViewDriver implements ViewDriver {
 		return frank.perform(query, operation);
 	}
 
-	private ResultsResponse property(String name) throws IOException {
-		return perform(new Operation(name));
+	private ResultsResponse property(String propertyName) throws IOException {
+		return perform(new Operation(propertyName));
 	}
 
 	@Override
