@@ -1,26 +1,26 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.victor.application.server.Operation;
+import com.dhemery.victor.Query;
+import com.dhemery.victor.frank.Operation;
 
 /**
  * A command to invoke an operation on the set of views that match a query.
  * @author Dale Emery
  *
  */
-public class MapOperationCommandRequestBody extends OperationCommandRequestBody {
-	public final String query;
+public class MapOperationFranklyRequestBody extends OperationFranklyRequestBody {
 	public final String selector_engine;
+	public final String query;
 
 	/**
 	 * Constructs a command to invoke an operation on a set of views.
-	 * @param query a query that selects the views that will perform the operation.
-	 * @param selectorEngine the selector engine that will interpret the query within the Frank server.
+	 * @param query identifies the views that will perform the operation.
 	 * @param operation the operation for the views to perform.
 	 */
-	public MapOperationCommandRequestBody(String selectorEngine, String query, Operation operation) {
+	public MapOperationFranklyRequestBody(Query query, Operation operation) {
 		super(operation);
-		selector_engine = selectorEngine;
-		this.query = query;
+		selector_engine = query.selectorEngine();
+		this.query = query.selector();
 	}
 
 	/**

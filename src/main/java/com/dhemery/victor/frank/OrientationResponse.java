@@ -1,4 +1,4 @@
-package com.dhemery.victor.application.server;
+package com.dhemery.victor.frank;
 
 /**
  * A response from an application server orientation() request.

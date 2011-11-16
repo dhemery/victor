@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.frankly;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
  * @author Dale Emery
  *
  */
-public class RequestBody {
+public class FranklyRequestBody {
 	/**
 	 * Writes the body of this request through the connection.
 	 * In this class, the method does nothing, which causes the request to be sent via HTTP GET.

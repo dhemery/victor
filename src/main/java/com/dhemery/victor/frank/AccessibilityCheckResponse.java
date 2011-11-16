@@ -1,4 +1,4 @@
-package com.dhemery.victor.application.server;
+package com.dhemery.victor.frank;
 
 public class AccessibilityCheckResponse {
 	private String accessibility_enabled;

@@ -1,4 +1,5 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.frankly;
+
 
 
 /**
@@ -6,8 +7,8 @@ package com.dhemery.victor.frank;
  * @author Dale Emery
  *
  */
-public class OrientationRequest extends Request {
-	public OrientationRequest() {
+public class OrientationFranklyRequest extends FranklyRequest {
+	public OrientationFranklyRequest() {
 		super("orientation");
 	}
 }

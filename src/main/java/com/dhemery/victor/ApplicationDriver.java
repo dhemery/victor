@@ -1,5 +1,6 @@
 package com.dhemery.victor;
 
+import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.application.ApplicationAssertion;
 
 /**
@@ -30,7 +31,11 @@ public interface ApplicationDriver {
 	public ApplicationAssertion verify();
 	
 	/**
-	 * @return a driver that can interact with the views that match the Igor query.
+	 * @return a driver that can interact with the views that match the selector.
 	 */
-	public ViewDriver view(String igorQuery);
+	public ViewDriver view(String selector);
+
+	public ViewDriver view(String selectorEngine, String selector);
+
+	public void waitUntilReady() throws PollTimeoutException;
 }

@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.frankly;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,8 +17,8 @@ import com.google.gson.GsonBuilder;
  * @author Dale Emery
  *
  */
-public class PostRequestBody extends RequestBody {
-	private static final Logger log = LoggerFactory.getLogger(PostRequestBody.class);
+public class PostFranklyRequestBody extends FranklyRequestBody {
+	private static final Logger log = LoggerFactory.getLogger(PostFranklyRequestBody.class);
 
 	/**
 	 * Writes this request body to the connection as a JSON string.

@@ -9,7 +9,6 @@ import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
-import com.dhemery.victor.Victor;
 
 public class VictorTest {
 	private static ApplicationDriver application;
@@ -18,10 +17,11 @@ public class VictorTest {
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutException {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
-		Victor launcher = new Victor(configuration).launch();
-
-		application = launcher.application();
+		Launcher launcher = new Launcher(configuration);
+		launcher.launch();
 		phone = launcher.phone();
+		application = launcher.application();
+		application.waitUntilReady();
 		verifyAccessibilityIsEnabled();
 	}
 

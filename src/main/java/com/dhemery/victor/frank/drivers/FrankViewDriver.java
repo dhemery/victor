@@ -1,4 +1,4 @@
-package com.dhemery.victor.remote;
+package com.dhemery.victor.frank.drivers;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,31 +6,32 @@ import java.util.List;
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.victor.Query;
 import com.dhemery.victor.ViewDriver;
-import com.dhemery.victor.application.server.ApplicationServer;
-import com.dhemery.victor.application.server.Operation;
-import com.dhemery.victor.application.server.ResultsResponse;
+import com.dhemery.victor.frank.FrankClient;
+import com.dhemery.victor.frank.Operation;
+import com.dhemery.victor.frank.ResultsResponse;
 import com.dhemery.victor.view.IsPresent;
 import com.dhemery.victor.view.IsVisible;
 import com.dhemery.victor.view.ViewAssertion;
 
 /**
- * A view driver that interacts with a view through an application server.
+ * A view driver that interacts with a view through a Frank client.
  * @author Dale Emery
  *
  */
-public class RemoteViewDriver implements ViewDriver {
-	private final ApplicationServer server;
+public class FrankViewDriver implements ViewDriver {
+	private final FrankClient frank;
 	private final Poll poll;
-	private final String query;
+	private final Query query;
 
 	/**
-	 * @param server an application server that can interact with this view.
+	 * @param frank a Frank client that can interact with this view.
 	 * @param query a query that selects the views driven by this driver.
 	 * @param poll polls relevant conditions during the various {@link #when} methods.
 	 */
-	public RemoteViewDriver(ApplicationServer server, String query, Poll poll) {
-		this.server = server;
+	public FrankViewDriver(FrankClient frank, Query query, Poll poll) {
+		this.frank = frank;
 		this.query = query;
 		this.poll = poll;
 	}
@@ -82,7 +83,7 @@ public class RemoteViewDriver implements ViewDriver {
 	}
 
 	private ResultsResponse perform(Operation operation) throws IOException {
-		return server.perform(query, operation);
+		return frank.perform(query, operation);
 	}
 
 	private ResultsResponse property(String name) throws IOException {
@@ -90,7 +91,7 @@ public class RemoteViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public String query() {
+	public Query query() {
 		return query;
 	}
 

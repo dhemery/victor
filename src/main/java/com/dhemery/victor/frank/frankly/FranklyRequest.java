@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frank.frankly;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,25 +10,24 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-public class Request {
+public class FranklyRequest {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String verb;
-	private final RequestBody body;
+	private final FranklyRequestBody body;
 	
-	public Request(String verb) {
-		this(verb, new RequestBody());
+	public FranklyRequest(String verb) {
+		this(verb, new FranklyRequestBody());
 	}
 
-	public Request(String verb, RequestBody body) {
+	public FranklyRequest(String verb, FranklyRequestBody body) {
 		this.verb = verb;
 		this.body = body;
 	}
 
 	public String verb() { return verb; }
-	public RequestBody body() { return body; }
+	public FranklyRequestBody body() { return body; }
 
-	public Response sendTo(String serverUrl) throws IOException {
+	public FranklyResponse sendTo(String serverUrl) throws IOException {
 		log.debug("Sending: {}", this);
 		URL url = urlFor(serverUrl, verb);
 		HttpURLConnection connection = connectTo(url);
@@ -48,7 +47,7 @@ public class Request {
 		return connection;
 	}
 
-	private Response receiveResponseFrom(HttpURLConnection connection) throws IOException {
+	private FranklyResponse receiveResponseFrom(HttpURLConnection connection) throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String line;
 		StringBuilder builder = new StringBuilder();
@@ -56,7 +55,7 @@ public class Request {
 			builder.append(line);
 		}
 		in.close();
-		Response response = new Response(connection.getResponseMessage(), builder.toString());
+		FranklyResponse response = new FranklyResponse(connection.getResponseMessage(), builder.toString());
 		log.debug("Response: {}", response);
 		return response;
 	}

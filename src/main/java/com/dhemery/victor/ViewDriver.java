@@ -37,12 +37,12 @@ public interface ViewDriver {
 	 * @return {@code true} if the view is visible, otherwise {@code false}.
 	 */
 	public boolean isVisible();
-
-	/**
-	 * @return the query used to identify the views represented by this driver.
-	 */
-	public String query();
 	
+	/**
+	 * @return the query that selects the views that this driver represents.
+	 */
+	public Query query();
+
 	/**
 	 * Touch the element.
 	 * @throws IOException
