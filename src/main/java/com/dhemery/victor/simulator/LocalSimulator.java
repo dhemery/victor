@@ -11,8 +11,9 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath) throws IOException {
+	public Simulator launch(String applicationPath) throws IOException {
 		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationPath).run();
+		return this;
 	}
 
 	@Override
@@ -22,8 +23,9 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
+	public Simulator touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
 		new MenuTouchCommand(menuName, menuItemName).run();
+		return this;
 	}
 
 	private void waitForSimulatorToShutDown() throws InterruptedException {

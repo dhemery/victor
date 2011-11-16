@@ -15,9 +15,10 @@ public class MapRequest extends Request {
 	/**
 	 * Constructs a map request to perform an operation on a set of views.
 	 * @param query a query to identify the views that will execute the operation.
+	 * @param selectorEngine the selector engine that will interpret the query within the Frank server.
 	 * @param operation the operation for each matching view to execute.
 	 */
-	public MapRequest(String query, Operation operation) {
-		this(new MapOperationCommandRequestBody(query, operation));
+	public MapRequest(String selectorEngine, String query, Operation operation) {
+		this(new MapOperationCommandRequestBody(selectorEngine, query, operation));
 	}
 }

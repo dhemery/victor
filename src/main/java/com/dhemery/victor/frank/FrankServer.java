@@ -22,9 +22,11 @@ public class FrankServer implements ApplicationServer  {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverUrl;
 	private final Gson gson;
+	private final String defaultSelectorEngine;
 
-	public FrankServer(String serverUrl) {
+	public FrankServer(String serverUrl, String defaultSelectorEngine) {
 		this.serverUrl = serverUrl;
+		this.defaultSelectorEngine = defaultSelectorEngine;
 		gson = new GsonBuilder()
 						.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
 						.disableHtmlEscaping()
@@ -33,7 +35,7 @@ public class FrankServer implements ApplicationServer  {
 
 	@Override
 	public ResultsResponse perform(String query, Operation operation) throws IOException {
-		MapRequest request = new MapRequest(query, operation);
+		MapRequest request = new MapRequest(defaultSelectorEngine, query, operation);
 		Response response = request.sendTo(serverUrl);
 		ResultsResponse results = gson.fromJson(response.body(), ResultsResponse.class);
 		log.debug("Results from {} ==> {}", request, results);

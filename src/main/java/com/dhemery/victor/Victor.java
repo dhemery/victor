@@ -60,6 +60,7 @@ public class Victor {
 	private final String applicationPath;
 	private final String frankServerUrl;
 	private final Poll poll;
+	private final String defaultSelectorEngine;
 
 	/** 
 	 * <p>The configuration must define the following properties:</p>
@@ -67,6 +68,7 @@ public class Victor {
 	 * <li>{@code simulator.path}: The file path to the iOS Simulator executable.</li>
 	 * <li>{@code application.path}: The file path to the application to launch in the simulator.</li>
 	 * <li>{@code frank.server.url}: The URL where the embedded Frank server listens.</li>
+	 * <li>@{code default.selector.engine}: The selector engine to use for map operations if the operation does not specify a selector engine.</li>
 	 * <li>{@code polling.timeout}: How long to persist polling (for {@code eventually()} methods) before timing out.</li>
 	 * <li>{@code polling.interval}: How long to wait between polls.</li>
 	 * </ul>
@@ -77,14 +79,16 @@ public class Victor {
 		this(configuration.get("application.path"),
 				configuration.get("simulator.path"),
 				configuration.get("frank.server.url"),
+				configuration.get("default.selector.engine"),
 				configuration.getInteger("polling.timeout"),
 				configuration.getInteger("polling.interval"));
 	}
 
-	public Victor(String applicationPath, String simulatorPath, String frankServerUrl, Integer timeout, Integer pollingInterval) {
+	public Victor(String applicationPath, String simulatorPath, String frankServerUrl, String defaultSelectorEngine, Integer timeout, Integer pollingInterval) {
 		this.applicationPath = new File(applicationPath).getAbsolutePath();
 		this.simulatorPath = new File(simulatorPath).getAbsolutePath();
 		this.frankServerUrl = frankServerUrl;
+		this.defaultSelectorEngine = defaultSelectorEngine;
 		this.poll = new Poll(timeout, pollingInterval);
 	}
 
@@ -96,10 +100,11 @@ public class Victor {
 	}
 
 	public Victor launch() throws IOException, PollTimeoutException {		
-		Simulator simulator = new LocalSimulator(simulatorPath);
-		ApplicationServer applicationServer = new FrankServer(frankServerUrl);
-		simulator.launch(applicationPath);
+		Simulator simulator = new LocalSimulator(simulatorPath).launch(applicationPath);
+
+		ApplicationServer applicationServer = new FrankServer(frankServerUrl, defaultSelectorEngine);
 		poll.until(new AcknowledgesPing(applicationServer));
+
 		phone = new RemotePhoneDriver(simulator, applicationServer);
 		application = new RemoteApplicationDriver(applicationServer, poll);
 		return this;
