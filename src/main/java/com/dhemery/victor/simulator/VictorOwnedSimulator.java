@@ -7,14 +7,14 @@ import java.io.IOException;
  * @author Dale Emery
  *
  */
-public class LocalSimulator implements Simulator {
+public class VictorOwnedSimulator implements Simulator {
 	private final String simulatorPath;
 	private Process simulatorProcess;
 	
 	/**
 	 * @param simulatorPath the file path to the simulator application.
 	 */
-	public LocalSimulator(String simulatorPath) {
+	public VictorOwnedSimulator(String simulatorPath) {
 		this.simulatorPath = simulatorPath;
 	}
 

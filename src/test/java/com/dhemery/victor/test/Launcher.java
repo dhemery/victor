@@ -11,7 +11,8 @@ import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.drivers.FrankApplicationDriver;
 import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
-import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.AlreadyRunningSimulator;
+import com.dhemery.victor.simulator.VictorOwnedSimulator;
 import com.dhemery.victor.simulator.Simulator;
 
 public class Launcher {
@@ -28,10 +29,14 @@ public class Launcher {
 		defaultSelectorEngine = configuration.get("default.selector.engine");
 		Integer timeout = configuration.getInteger("polling.timeout");
 		Integer pollingInterval = configuration.getInteger("polling.interval");
+		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
 		poll = new Poll(timeout, pollingInterval);
 		frank = new FrankClient(frankServerUrl);
-		simulator = new LocalSimulator(simulatorPath);
+		if(victorOwnsSimulator)
+			simulator = new VictorOwnedSimulator(simulatorPath);
+		else
+			simulator = new AlreadyRunningSimulator();
 	}
 
 	public ApplicationDriver application() {
