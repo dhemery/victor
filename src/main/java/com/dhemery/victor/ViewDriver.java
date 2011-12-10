@@ -2,6 +2,8 @@ package com.dhemery.victor;
 
 import java.io.IOException;
 
+import org.hamcrest.SelfDescribing;
+
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.view.ViewAssertion;
@@ -10,7 +12,7 @@ import com.dhemery.victor.view.ViewAssertion;
  * A driver that can interact with one or more views in an iOS application.
  * @author Dale Emery
  */
-public interface ViewDriver {
+public interface ViewDriver extends SelfDescribing {
 	
 	/**
 	 * Causes the view to flash visually.

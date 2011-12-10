@@ -3,6 +3,8 @@ package com.dhemery.victor.frank.drivers;
 import java.io.IOException;
 import java.util.List;
 
+import org.hamcrest.Description;
+
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
@@ -11,9 +13,10 @@ import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.Operation;
 import com.dhemery.victor.frank.ResultsResponse;
-import com.dhemery.victor.view.IsPresent;
-import com.dhemery.victor.view.IsVisible;
+import com.dhemery.victor.view.Present;
 import com.dhemery.victor.view.ViewAssertion;
+import com.dhemery.victor.view.ViewMatcherCondition;
+import com.dhemery.victor.view.Visible;
 
 /**
  * A view driver that interacts with a view through a Frank server.
@@ -116,13 +119,18 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public ViewDriver whenPresent() throws PollTimeoutException {
-		when(new IsPresent(this));
+		when(new ViewMatcherCondition(this, new Present()));
 		return this;
 	}
 
 	@Override
 	public ViewDriver whenVisible() throws PollTimeoutException {
-		when(new IsVisible(this));
+		when(new ViewMatcherCondition(this, new Visible()));
 		return this;
+	}
+
+	@Override
+	public void describeTo(Description description) {
+		description.appendDescriptionOf(query());
 	}
 }

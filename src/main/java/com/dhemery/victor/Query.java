@@ -1,5 +1,8 @@
 package com.dhemery.victor;
 
+import org.hamcrest.Description;
+import org.hamcrest.SelfDescribing;
+
 /**
  * <p>
  * A Query identifies views in an iOS application.
@@ -12,7 +15,7 @@ package com.dhemery.victor;
  * 
  * @author Dale Emery
  */
-public class Query {
+public class Query implements SelfDescribing {
 	private final String selectorEngine;
 	private final String selector;
 
@@ -26,5 +29,10 @@ public class Query {
 
 	public String toString() {
 		return String.format("query:[selectorEngine:%s][selector:%s]", selectorEngine(), selector());
+	}
+
+	@Override
+	public void describeTo(Description description) {
+		description.appendText(toString());
 	}
 }

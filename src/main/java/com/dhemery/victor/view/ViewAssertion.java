@@ -1,5 +1,7 @@
 package com.dhemery.victor.view;
 
+import org.hamcrest.Matcher;
+
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.RequiredConditionException;
@@ -38,31 +40,32 @@ public class ViewAssertion {
 	 * @throws RequiredConditionException if the view is present.
 	 */
 	public void isNotPresent() throws RequiredConditionException {
-		require(new IsNotPresent(view));
+		require(new Not(new Present()));
 	}
 
 	/**
 	 * @throws RequiredConditionException if the view is visible.
 	 */
 	public void isNotVisible() throws RequiredConditionException {
-		require(new IsNotVisible(view));
+		require(new Not(new Visible()));
 	}
 
 	/**
 	 * @throws RequiredConditionException iv the view is not present.
 	 */
 	public void isPresent() throws RequiredConditionException {
-		require(new IsPresent(view));
+		require(new Present());
 	}
 
 	/**
 	 * @throws RequiredConditionException if the view is not visible.
 	 */
 	public void isVisible() throws RequiredConditionException {
-		require(new IsVisible(view));
+		require(new Visible());
 	}
 
-	private void require(Condition condition) throws RequiredConditionException {
+	private void require(Matcher<ViewDriver> matcher) throws RequiredConditionException {
+		Condition condition = new ViewMatcherCondition(view, matcher);
 		if(!condition.isSatisfied()) {
 			throw new RequiredConditionException(condition);
 		}

@@ -4,12 +4,12 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/test/hamcrest-all-1.3.0RC2.jar"/>
 	<classpathentry kind="lib" path="lib/test/junit-dep-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/test/logback-classic-0.9.30.jar"/>
 	<classpathentry kind="lib" path="lib/test/logback-core-0.9.30.jar"/>
 	<classpathentry kind="lib" path="lib/main/gson-1.7.1.jar" sourcepath="lib/sources/gson-1.7.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/main/slf4j-api-1.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/main/dhemery-utilities-0.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/main/hamcrest-all-1.3.0RC2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

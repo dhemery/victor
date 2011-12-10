@@ -27,7 +27,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out while the view is present.
 	 */
 	public ViewDriver isNotPresent() throws PollTimeoutException {
-		return when(new IsNotPresent(view));
+		return when(new ViewMatcherCondition(view, new Not(new Present())));
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out while the view is visible.
 	 */
 	public ViewDriver isNotVisible() throws PollTimeoutException {
-		return when(new IsNotVisible(view));
+		return when(new ViewMatcherCondition(view, new Not(new Visible())));
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out before the view becomes present.
 	 */
 	public ViewDriver isPresent() throws PollTimeoutException {
-		return when(new IsPresent(view));
+		return when(new ViewMatcherCondition(view, new Present()));
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out before the view becomes visible.
 	 */
 	public ViewDriver isVisible() throws PollTimeoutException {
-		return when(new IsVisible(view));
+		return when(new ViewMatcherCondition(view, new Visible()));
 	}
 
 	private ViewDriver when(Condition condition) throws PollTimeoutException {
