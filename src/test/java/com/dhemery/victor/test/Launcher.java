@@ -51,4 +51,8 @@ public class Launcher {
 	public PhoneDriver phone() {
 		return new FrankPhoneDriver(simulator, frank);
 	}
+
+	public Poll poll() {
+		return poll;
+	}
 }

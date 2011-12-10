@@ -19,6 +19,7 @@ public class ViewAssertion {
 
 	/**
 	 * @param view the view whose conditions to check.
+	 * @param poll 
 	 * @param poll the poll to use for {@link #eventually()} checks.
 	 */
 	public ViewAssertion(ViewDriver view, Poll poll) {
