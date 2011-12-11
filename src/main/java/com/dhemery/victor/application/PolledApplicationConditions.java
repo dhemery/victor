@@ -1,10 +1,12 @@
 package com.dhemery.victor.application;
 
+import static com.dhemery.victor.application.OrientationMatcher.orientation;
+import static com.dhemery.victor.matchers.MatcherCondition.subject;
+
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
-
 /**
  * <p>A driver that polls an {@code Application} to determine whether certain conditions are true.
  * 
@@ -29,6 +31,6 @@ public class PolledApplicationConditions {
 	 * @throws PollTimeoutException if the poll times out before the application has the given orientation. 
 	 */
 	public void hasOrientation(Orientation orientation) throws PollTimeoutException {
-		poll.until(new HasOrientation(application, orientation));
+		poll.until(subject(application).has(orientation(orientation)));
 	}
 }

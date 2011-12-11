@@ -4,20 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 
-import com.dhemery.poller.Condition;
-import com.dhemery.poller.Poll;
-import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.Query;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.Operation;
 import com.dhemery.victor.frank.ResultsResponse;
-import com.dhemery.victor.view.Present;
-import com.dhemery.victor.view.ViewAssertion;
-import com.dhemery.victor.view.ViewMatcherCondition;
-import com.dhemery.victor.view.Visible;
 
 /**
  * A view driver that interacts with a view through a Frank server.
@@ -26,18 +18,15 @@ import com.dhemery.victor.view.Visible;
  */
 public class FrankViewDriver implements ViewDriver {
 	private final FrankClient frank;
-	private final Poll poll;
 	private final Query query;
 
 	/**
 	 * @param frank a Frank client that can interact with this view.
 	 * @param query a query that identifies the views driven by this driver.
-	 * @param poll polls relevant conditions during the various {@link #when} methods.
 	 */
-	public FrankViewDriver(FrankClient frank, Query query, Poll poll) {
+	public FrankViewDriver(FrankClient frank, Query query) {
 		this.frank = frank;
 		this.query = query;
-		this.poll = poll;
 	}
 
 	private ResultsResponse call(String method, String...arguments) throws IOException {
@@ -47,16 +36,6 @@ public class FrankViewDriver implements ViewDriver {
 	@Override
 	public void flash() throws IOException {
 		call("flash");
-	}
-
-	@Override
-	public boolean isNotPresent() {
-		return !isPresent();
-	}
-	
-	@Override
-	public boolean isNotVisible() {
-		return !isVisible();
 	}
 
 	@Override
@@ -105,30 +84,6 @@ public class FrankViewDriver implements ViewDriver {
 	@Override
 	public void touch() throws IOException {
 		call("touch");
-	}
-
-	@Override
-	public ViewAssertion verify() {
-		return new ViewAssertion(this, poll);
-	}
-
-	@Override
-	public ViewDriver when(Matcher<ViewDriver> matcher) throws PollTimeoutException {
-		Condition condition = new  ViewMatcherCondition(this, matcher);
-		poll.until(condition);
-		return this;
-	}
-
-	@Override
-	public ViewDriver whenPresent() throws PollTimeoutException {
-		when(new Present());
-		return this;
-	}
-
-	@Override
-	public ViewDriver whenVisible() throws PollTimeoutException {
-		when(new Visible());
-		return this;
 	}
 
 	@Override

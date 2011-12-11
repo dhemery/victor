@@ -11,6 +11,8 @@ import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.ViewDriver;
+import com.dhemery.victor.application.ApplicationAssertion;
+import com.dhemery.victor.application.PolledApplicationConditions;
 import com.dhemery.victor.view.PolledViewConditions;
 import com.dhemery.victor.view.ViewAssertion;
 
@@ -27,7 +29,6 @@ public class VictorTest {
 		poll = launcher.poll();
 		phone = launcher.phone();
 		application = launcher.application();
-		application.waitUntilReady();
 		verifyAccessibilityIsEnabled();
 	}
 
@@ -44,10 +45,20 @@ public class VictorTest {
 
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
-	public ViewAssertion verifyThat(ViewDriver view) {
+
+	public ViewAssertion assertThat(ViewDriver view) {
 		return new ViewAssertion(view, poll);
 	}
+
 	public PolledViewConditions when(ViewDriver view) {
 		return new PolledViewConditions(view, poll);
+	}
+
+	public ApplicationAssertion assertThat(ApplicationDriver application) {
+		return new ApplicationAssertion(application, poll);
+	}
+	
+	public PolledApplicationConditions when(ApplicationDriver application) {
+		return new PolledApplicationConditions(application, poll);
 	}
 }

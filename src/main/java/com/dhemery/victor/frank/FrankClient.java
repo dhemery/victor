@@ -2,19 +2,18 @@ package com.dhemery.victor.frank;
 
 import java.io.IOException;
 
+import org.hamcrest.Description;
+import org.hamcrest.SelfDescribing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.poller.Condition;
-import com.dhemery.poller.Poll;
-import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.Query;
 import com.dhemery.victor.frank.frankly.AccessibilityCheckFranklyRequest;
+import com.dhemery.victor.frank.frankly.FranklyRequest;
 import com.dhemery.victor.frank.frankly.FranklyResponse;
 import com.dhemery.victor.frank.frankly.MapFranklyRequest;
 import com.dhemery.victor.frank.frankly.OrientationFranklyRequest;
 import com.dhemery.victor.frank.frankly.PingFranklyRequest;
-import com.dhemery.victor.frank.frankly.FranklyRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +22,7 @@ import com.google.gson.GsonBuilder;
  * @author Dale Emery
  *
  */
-public class FrankClient  {
+public class FrankClient implements SelfDescribing {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverUrl;
 	private final Gson gson;
@@ -82,7 +81,7 @@ public class FrankClient  {
 	 * Sends a GET request to the Frank server.
 	 * @return true if the Frank server response to the request, otherwise false.
 	 */
-	private boolean ping() {
+	public boolean isReady() {
 			try {
 				new PingFranklyRequest().sendTo(serverUrl);
 				return true;
@@ -91,22 +90,8 @@ public class FrankClient  {
 			}
 	}
 
-	/**
-	 * Wait until the Frank server responds to a ping request or the poll times out.
-	 * @param poll repeatedly pings until the server responds of the poll times out.
-	 * @throws PollTimeoutException if the poll expires before the Frank server responds.
-	 */
-	public void waitForServer(Poll poll) throws PollTimeoutException {
-		poll.until(new Condition() {
-			@Override
-			public String describe() {
-				return "Frank server responds to ping";
-			}
-
-			@Override
-			public boolean isSatisfied() {
-				return ping();
-			}
-		});
+	@Override
+	public void describeTo(Description description) {
+		description.appendText("the Frank client");
 	}
 }

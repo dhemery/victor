@@ -25,18 +25,18 @@ public class PhoneTests extends VictorTest {
 
 	@Test
 	public void orientation() throws InterruptedException, RequiredConditionException, PollTimeoutException, IOException {
-		application.verify().hasOrientation(PORTRAIT);
+		assertThat(application).hasOrientation(PORTRAIT);
 
 		phone.rotateLeft();
-		application.verify().eventually().hasOrientation(LANDSCAPE);
+		assertThat(application).eventually().hasOrientation(LANDSCAPE);
 
 		phone.rotateRight();
-		application.verify().eventually().hasOrientation(PORTRAIT);
+		assertThat(application).eventually().hasOrientation(PORTRAIT);
 
 		phone.rotateRight();
-		application.verify().eventually().hasOrientation(LANDSCAPE);
+		assertThat(application).eventually().hasOrientation(LANDSCAPE);
 
 		phone.rotateRight();
-		application.verify().eventually().hasOrientation(PORTRAIT);
+		assertThat(application).eventually().hasOrientation(PORTRAIT);
 	}
 }

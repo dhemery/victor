@@ -31,29 +31,29 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException, PollTimeoutException {
-		verifyThat(masterView).eventually().isPresent();
-		verifyThat(masterView).eventually().isVisible();
+		assertThat(masterView).eventually().isPresent();
+		assertThat(masterView).eventually().isVisible();
 		when(masterView).isPresent().flash();
-		verifyThat(detailLabel).eventually().isPresent();
-		verifyThat(detailLabel).eventually().isVisible();
+		assertThat(detailLabel).eventually().isPresent();
+		assertThat(detailLabel).eventually().isVisible();
 		when(detailLabel).isPresent().flash();
 
 		when(detailLabel).isPresent().touch();
 
-		verifyThat(detailView).eventually().isPresent();
-		verifyThat(detailView).eventually().isVisible();
+		assertThat(detailView).eventually().isPresent();
+		assertThat(detailView).eventually().isVisible();
 		when(detailView).isPresent().flash();
-		verifyThat(masterButton).eventually().isPresent();
-		verifyThat(masterButton).eventually().isVisible();
+		assertThat(masterButton).eventually().isPresent();
+		assertThat(masterButton).eventually().isVisible();
 		when(masterButton).isPresent().flash();
 
 		when(masterButton).isPresent().touch();
 
-		verifyThat(masterView).eventually().isPresent();
-		verifyThat(masterView).eventually().isVisible();
+		assertThat(masterView).eventually().isPresent();
+		assertThat(masterView).eventually().isVisible();
 		when(masterView).isPresent().flash();
-		verifyThat(detailLabel).eventually().isPresent();
-		verifyThat(detailLabel).eventually().isVisible();
+		assertThat(detailLabel).eventually().isPresent();
+		assertThat(detailLabel).eventually().isVisible();
 		when(detailLabel).isPresent().flash();
 	}
 }

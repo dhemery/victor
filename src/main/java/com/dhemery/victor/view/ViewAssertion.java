@@ -7,6 +7,10 @@ import com.dhemery.poller.Poll;
 import com.dhemery.poller.RequiredConditionException;
 import com.dhemery.victor.ViewDriver;
 
+import static com.dhemery.victor.matchers.Not.*;
+import static com.dhemery.victor.matchers.MatcherCondition.*;
+import static com.dhemery.victor.view.ViewIsPresentMatcher.*;
+import static com.dhemery.victor.view.ViewIsVisibleMatcher.*;
 /**
  * <p>
  * Checks conditions on a view.
@@ -40,32 +44,32 @@ public class ViewAssertion {
 	 * @throws RequiredConditionException if the view is present.
 	 */
 	public void isNotPresent() throws RequiredConditionException {
-		require(new Not(new Present()));
+		require(not(present()));
 	}
 
 	/**
 	 * @throws RequiredConditionException if the view is visible.
 	 */
 	public void isNotVisible() throws RequiredConditionException {
-		require(new Not(new Visible()));
+		require(not(visible()));
 	}
 
 	/**
 	 * @throws RequiredConditionException iv the view is not present.
 	 */
 	public void isPresent() throws RequiredConditionException {
-		require(new Present());
+		require(present());
 	}
 
 	/**
 	 * @throws RequiredConditionException if the view is not visible.
 	 */
 	public void isVisible() throws RequiredConditionException {
-		require(new Visible());
+		require(visible());
 	}
 
 	private void require(Matcher<ViewDriver> matcher) throws RequiredConditionException {
-		Condition condition = new ViewMatcherCondition(view, matcher);
+		Condition condition = subject(view).matches(matcher);
 		if(!condition.isSatisfied()) {
 			throw new RequiredConditionException(condition);
 		}

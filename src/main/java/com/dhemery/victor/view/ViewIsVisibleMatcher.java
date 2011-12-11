@@ -1,11 +1,12 @@
 package com.dhemery.victor.view;
 
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import com.dhemery.victor.ViewDriver;
 
-public class Visible extends TypeSafeMatcher<ViewDriver> {
+public class ViewIsVisibleMatcher extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
 	public void describeTo(Description description) {
@@ -15,5 +16,10 @@ public class Visible extends TypeSafeMatcher<ViewDriver> {
 	@Override
 	protected boolean matchesSafely(ViewDriver view) {
 		return view.isVisible();
+	}
+
+	
+	public static Matcher<ViewDriver> visible() {
+		return new ViewIsVisibleMatcher();
 	}
 }

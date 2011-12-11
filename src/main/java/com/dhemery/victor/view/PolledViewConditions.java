@@ -1,10 +1,16 @@
 package com.dhemery.victor.view;
 
+import org.hamcrest.Matcher;
+
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ViewDriver;
 
+import static com.dhemery.victor.matchers.Not.not;
+import static com.dhemery.victor.matchers.MatcherCondition.subject;
+import static com.dhemery.victor.view.ViewIsPresentMatcher.present;
+import static com.dhemery.victor.view.ViewIsVisibleMatcher.visible;
 /**
  * <p>A driver that polls a {@code view} to determine whether certain conditions are true.
  * @author Dale Emery
@@ -27,7 +33,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out while the view is present.
 	 */
 	public ViewDriver isNotPresent() throws PollTimeoutException {
-		return when(new ViewMatcherCondition(view, new Not(new Present())));
+		return when(not(present()));
 	}
 
 	/**
@@ -35,7 +41,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out while the view is visible.
 	 */
 	public ViewDriver isNotVisible() throws PollTimeoutException {
-		return when(new ViewMatcherCondition(view, new Not(new Visible())));
+		return when(not(visible()));
 	}
 	
 	/**
@@ -43,7 +49,7 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out before the view becomes present.
 	 */
 	public ViewDriver isPresent() throws PollTimeoutException {
-		return when(new ViewMatcherCondition(view, new Present()));
+		return when(present());
 	}
 
 	/**
@@ -51,10 +57,11 @@ public class PolledViewConditions {
 	 * @throws PollTimeoutException if the poll times out before the view becomes visible.
 	 */
 	public ViewDriver isVisible() throws PollTimeoutException {
-		return when(new ViewMatcherCondition(view, new Visible()));
+		return when(visible());
 	}
 
-	private ViewDriver when(Condition condition) throws PollTimeoutException {
+	private ViewDriver when(Matcher<ViewDriver> matcher) throws PollTimeoutException {
+		Condition condition = subject(view).matches(matcher);
 		poll.until(condition);
 		return view;
 	}

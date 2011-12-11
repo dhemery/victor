@@ -1,14 +1,14 @@
 package com.dhemery.victor;
 
-import com.dhemery.poller.PollTimeoutException;
-import com.dhemery.victor.application.ApplicationAssertion;
+import org.hamcrest.SelfDescribing;
+
 
 /**
  * A driver that can interact with an application running on an iOS device.
  * @author Dale Emery
  *
  */
-public interface ApplicationDriver {
+public interface ApplicationDriver extends SelfDescribing {
 	public enum Orientation {
 		LANDSCAPE,
 		PORTRAIT,
@@ -16,19 +16,9 @@ public interface ApplicationDriver {
 	}
 
 	/**
-	 * @return {@code true} if the application has the given orientation, otherwise {@code false}.
-	 */
-	public boolean hasOrientation(Orientation orientation);
-
-	/**
 	 * @return the application's current orientation.
 	 */
 	public Orientation orientation();
-	
-	/**
-	 * @return a verifier that can verify whether the application satisfies certain conditions.
-	 */
-	public ApplicationAssertion verify();
 	
 	/**
 	 * Create a driver that uses the default selector engine to identify the views it represents.
@@ -44,10 +34,4 @@ public interface ApplicationDriver {
 	 * @return a driver that can interact with views described by the selector.
 	 */
 	public ViewDriver view(String selectorEngine, String selector);
-
-	/**
-	 * Polls until the application server is ready to respond to requests.
-	 * @throws PollTimeoutException
-	 */
-	public void waitUntilReady() throws PollTimeoutException;
 }

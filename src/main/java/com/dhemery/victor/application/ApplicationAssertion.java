@@ -1,10 +1,13 @@
 package com.dhemery.victor.application;
 
+import static com.dhemery.victor.matchers.MatcherCondition.subject;
+import static com.dhemery.victor.application.OrientationMatcher.orientation;
+
+import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.RequiredConditionException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
-
 /**
  * <p>
  * Checks conditions on an application.
@@ -37,7 +40,7 @@ public class ApplicationAssertion {
 	 * @throws RequiredConditionException if the application does not have the required orientation.
 	 */
 	public void hasOrientation(Orientation orientation) throws RequiredConditionException {
-		HasOrientation condition = new HasOrientation(application, orientation);
+		Condition condition = subject(application).has(orientation(orientation));
 		if(!condition.isSatisfied()) {
 			throw new RequiredConditionException(condition);
 		}
