@@ -10,6 +10,7 @@ import com.dhemery.victor.ApplicationDriver.Orientation;
 
 public class OrientationMatcher extends TypeSafeMatcher<ApplicationDriver> {
 	private final Matcher<Orientation> matcher;
+	private Orientation sampledOrientation;
 
 	public OrientationMatcher(Orientation orientation) {
 		this.matcher = equalTo(orientation);
@@ -23,14 +24,15 @@ public class OrientationMatcher extends TypeSafeMatcher<ApplicationDriver> {
 
 	@Override
 	protected boolean matchesSafely(ApplicationDriver application) {
-		return matcher.matches(application.orientation());
+		sampledOrientation = application.orientation();
+		return matcher.matches(sampledOrientation);
 	}
 
 	@Override
 	protected void describeMismatchSafely(ApplicationDriver application, Description mismatchDescription) {
 		mismatchDescription.appendDescriptionOf(application)
-							.appendText(" does not have orientation ")
-							.appendDescriptionOf(matcher);
+							.appendText(" has orientation ")
+							.appendText(sampledOrientation.toString());
 	}
 	
 	public static OrientationMatcher orientation(Orientation orientation) {
