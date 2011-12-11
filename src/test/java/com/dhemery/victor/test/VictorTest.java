@@ -2,19 +2,17 @@ package com.dhemery.victor.test;
 
 import java.io.IOException;
 
+import org.hamcrest.SelfDescribing;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.dhemery.assertions.PollableAssertions;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.preconditions.PolledPreconditions;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
-import com.dhemery.victor.ViewDriver;
-import com.dhemery.victor.application.ApplicationAssertion;
-import com.dhemery.victor.application.PolledApplicationConditions;
-import com.dhemery.victor.view.PolledViewConditions;
-import com.dhemery.victor.view.ViewAssertion;
 
 public class VictorTest {
 	private static ApplicationDriver application;
@@ -46,19 +44,11 @@ public class VictorTest {
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
 
-	public ViewAssertion assertThat(ViewDriver view) {
-		return new ViewAssertion(view, poll);
+	public <T extends SelfDescribing> PollableAssertions<T> assertThat(T subject) {
+		return new PollableAssertions<T>(subject, poll);
 	}
 
-	public PolledViewConditions when(ViewDriver view) {
-		return new PolledViewConditions(view, poll);
-	}
-
-	public ApplicationAssertion assertThat(ApplicationDriver application) {
-		return new ApplicationAssertion(application, poll);
-	}
-	
-	public PolledApplicationConditions when(ApplicationDriver application) {
-		return new PolledApplicationConditions(application, poll);
+	public <T extends SelfDescribing> PolledPreconditions<T> when(T subject) {
+		return new PolledPreconditions<T>(subject, poll);
 	}
 }

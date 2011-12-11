@@ -10,6 +10,8 @@ import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.test.VictorTest;
 import com.dhemery.victor.test.fixtures.DetailDisplay;
 import com.dhemery.victor.test.fixtures.MasterDisplay;
+import static com.dhemery.victor.view.Present.present;
+import static com.dhemery.victor.view.Visible.visible;
 
 public class ApplicationTests extends VictorTest {
 	private MasterDisplay master;
@@ -31,29 +33,29 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException, PollTimeoutException {
-		assertThat(masterView).eventually().isPresent();
-		assertThat(masterView).eventually().isVisible();
-		when(masterView).isPresent().flash();
-		assertThat(detailLabel).eventually().isPresent();
-		assertThat(detailLabel).eventually().isVisible();
-		when(detailLabel).isPresent().flash();
+		assertThat(masterView).eventually().is(present());
+		assertThat(masterView).eventually().is(visible());
+		when(masterView).is(present()).flash();
+		assertThat(detailLabel).eventually().is(present());
+		assertThat(detailLabel).eventually().is(visible());
+		when(detailLabel).is(present()).flash();
 
-		when(detailLabel).isPresent().touch();
+		when(detailLabel).is(present()).touch();
 
-		assertThat(detailView).eventually().isPresent();
-		assertThat(detailView).eventually().isVisible();
-		when(detailView).isPresent().flash();
-		assertThat(masterButton).eventually().isPresent();
-		assertThat(masterButton).eventually().isVisible();
-		when(masterButton).isPresent().flash();
+		assertThat(detailView).eventually().is(present());
+		assertThat(detailView).eventually().is(visible());
+		when(detailView).is(present()).flash();
+		assertThat(masterButton).eventually().is(present());
+		assertThat(masterButton).eventually().is(visible());
+		when(masterButton).is(present()).flash();
 
-		when(masterButton).isPresent().touch();
+		when(masterButton).is(present()).touch();
 
-		assertThat(masterView).eventually().isPresent();
-		assertThat(masterView).eventually().isVisible();
-		when(masterView).isPresent().flash();
-		assertThat(detailLabel).eventually().isPresent();
-		assertThat(detailLabel).eventually().isVisible();
-		when(detailLabel).isPresent().flash();
+		assertThat(masterView).eventually().is(present());
+		assertThat(masterView).eventually().is(visible());
+		when(masterView).is(present()).flash();
+		assertThat(detailLabel).eventually().is(present());
+		assertThat(detailLabel).eventually().is(visible());
+		when(detailLabel).is(present()).flash();
 	}
 }

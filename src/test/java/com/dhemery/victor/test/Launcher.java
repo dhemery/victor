@@ -1,7 +1,5 @@
 package com.dhemery.victor.test;
 
-import static com.dhemery.victor.matchers.MatcherCondition.subject;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +14,7 @@ import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
 import com.dhemery.victor.simulator.AlreadyRunningSimulator;
 import com.dhemery.victor.simulator.Simulator;
 import com.dhemery.victor.simulator.VictorOwnedSimulator;
-import static com.dhemery.victor.frank.ReadyMatcher.ready;
+import static com.dhemery.victor.frank.Ready.ready;
 
 
 public class Launcher {
@@ -49,7 +47,7 @@ public class Launcher {
 	
 	public void launch() throws IOException, PollTimeoutException {
 		simulator.launch(applicationPath);
-		poll.until(subject(frank).is(ready()));
+		poll.until(frank).is(ready());
 	}
 
 	public PhoneDriver phone() {

@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 import com.dhemery.victor.ViewDriver;
 
-public class ViewIsVisibleMatcher extends TypeSafeMatcher<ViewDriver> {
+public class Visible extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
 	public void describeTo(Description description) {
@@ -20,6 +20,6 @@ public class ViewIsVisibleMatcher extends TypeSafeMatcher<ViewDriver> {
 
 	
 	public static Matcher<ViewDriver> visible() {
-		return new ViewIsVisibleMatcher();
+		return new Visible();
 	}
 }

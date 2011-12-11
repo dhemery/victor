@@ -1,31 +1,16 @@
 EXPECTATIONS:
-assertThat(view).present();
-assertThat(view).not().present();
-assertThat(view).is().present();
-assertThat(view).is().not().present();
-assertThat(view).eventually().present();
-assertThat(view).eventually().not().present();
-assertThat(view).eventually().is().present();
-assertThat(view).eventually().is().not().present();
-
-ILLEGAL:
-assertThat(view).is().not().eventually().present();
-assertThat(view).is().eventually().present();
-assertThat(view).is().eventually().not().present();
-
-NOTES:
-assertThat() can be followed by eventually(), is(), not(), or a condition.
-eventually() can be followed by is(), not(), or a condition.
-is() can be followed by not(), or a condition.
-not() must be followed by a condition.
+assertThat(view).is(matcher();
+assertThat(view).is(matcher);
+assertThat(view).has(sampler()).that(matcher());
+assertThat(view).eventually().is(matcher());
+assertThat(view).eventually().is(matcher());
+assertThat(view).eventually().has(sampler()).that(matcher();
 
 --------------
 
 POLLING:
-waitUntil(view).present();
-waitUntil(view).not().present();
-waitUntil(view).is().present();
-waitUntil(view).is().not().present();
+waitUntil(view).is(matcher());
+waitUntil(view).has(sampler()).that(matcher());
 
 NOTES:
 wait.until(view) is a synonym for expect(view).eventually().
@@ -34,10 +19,9 @@ Or vice versa.
 --------------
 
 PRECONDITIONS:
-when(view).present().action();
-when(view).not().present().action();
-when(view).is().present().action();
-when(view).is().not().present().action();
+when(view).is(present()).action();
+when(view).is(not(present())).action();
+when(view).has(sampler()).that(matcher()).action();
 
 Each precondition polls until the condition is true,
 then yields the view as a ViewActions.

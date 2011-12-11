@@ -3,10 +3,10 @@ package com.dhemery.victor.frank;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-public class ReadyMatcher extends TypeSafeMatcher<FrankClient> {
+public class Ready extends TypeSafeMatcher<FrankClient> {
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("responds to requests");
+		description.appendText("ready to respond to requests");
 	}
 
 	@Override
@@ -17,10 +17,10 @@ public class ReadyMatcher extends TypeSafeMatcher<FrankClient> {
 	@Override
 	protected void describeMismatchSafely(FrankClient item, Description mismatchDescription) {
 		mismatchDescription.appendDescriptionOf(item)
-							.appendText(" does not yet respond to requests");
+							.appendText(" is not ready to respond to requests");
 	}
 	
-	public static ReadyMatcher ready() {
-		return new ReadyMatcher();
+	public static Ready ready() {
+		return new Ready();
 	}
 }
