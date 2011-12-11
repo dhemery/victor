@@ -40,6 +40,8 @@ public class ApplicationTests extends VictorTest {
 		assertThat(detailLabel).eventually().is(visible());
 		when(detailLabel).is(present()).flash();
 
+		waitUntil(detailLabel).is(present());
+
 		when(detailLabel).is(present()).touch();
 
 		assertThat(detailView).eventually().is(present());

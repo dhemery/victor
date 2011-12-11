@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import com.dhemery.assertions.PollableAssertions;
 import com.dhemery.poller.Poll;
 import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.poller.Subject;
 import com.dhemery.preconditions.PolledPreconditions;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
@@ -50,5 +51,9 @@ public class VictorTest {
 
 	public <T extends SelfDescribing> PolledPreconditions<T> when(T subject) {
 		return new PolledPreconditions<T>(subject, poll);
+	}
+	
+	public <T extends SelfDescribing> Subject<T> waitUntil(T subject) {
+		return poll.until(subject);
 	}
 }
