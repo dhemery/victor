@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import com.dhemery.poller.Condition;
 import com.dhemery.poller.Poll;
@@ -112,20 +113,21 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public ViewDriver when(Condition condition) throws PollTimeoutException {
+	public ViewDriver when(Matcher<ViewDriver> matcher) throws PollTimeoutException {
+		Condition condition = new  ViewMatcherCondition(this, matcher);
 		poll.until(condition);
 		return this;
 	}
 
 	@Override
 	public ViewDriver whenPresent() throws PollTimeoutException {
-		when(new ViewMatcherCondition(this, new Present()));
+		when(new Present());
 		return this;
 	}
 
 	@Override
 	public ViewDriver whenVisible() throws PollTimeoutException {
-		when(new ViewMatcherCondition(this, new Visible()));
+		when(new Visible());
 		return this;
 	}
 
@@ -133,4 +135,5 @@ public class FrankViewDriver implements ViewDriver {
 	public void describeTo(Description description) {
 		description.appendDescriptionOf(query());
 	}
+
 }

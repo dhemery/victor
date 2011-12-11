@@ -2,9 +2,9 @@ package com.dhemery.victor;
 
 import java.io.IOException;
 
+import org.hamcrest.Matcher;
 import org.hamcrest.SelfDescribing;
 
-import com.dhemery.poller.Condition;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.view.ViewAssertion;
 
@@ -62,7 +62,7 @@ public interface ViewDriver extends SelfDescribing {
 	 * @return this view driver.
 	 * @throws PollTimeoutException if the poll times out before the condition is satisfied.
 	 */
-	public ViewDriver when(Condition condition) throws PollTimeoutException;
+	public ViewDriver when(Matcher<ViewDriver> matcher) throws PollTimeoutException;
 
 	/**
 	 * Polls until the view is present.
