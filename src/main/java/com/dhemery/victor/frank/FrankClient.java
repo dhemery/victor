@@ -8,12 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.victor.Query;
-import com.dhemery.victor.frank.frankly.AccessibilityCheckFranklyRequest;
+import com.dhemery.victor.frank.frankly.CheckAccessibility;
 import com.dhemery.victor.frank.frankly.FranklyRequest;
 import com.dhemery.victor.frank.frankly.FranklyResponse;
-import com.dhemery.victor.frank.frankly.MapFranklyRequest;
-import com.dhemery.victor.frank.frankly.OrientationFranklyRequest;
-import com.dhemery.victor.frank.frankly.PingFranklyRequest;
+import com.dhemery.victor.frank.frankly.PerformViewOperation;
+import com.dhemery.victor.frank.frankly.GetApplicationOrientation;
+import com.dhemery.victor.frank.frankly.Ping;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -45,7 +45,7 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
-		FranklyRequest request = new AccessibilityCheckFranklyRequest();
+		FranklyRequest request = new CheckAccessibility();
 		FranklyResponse response = request.sendTo(serverUrl);
 		return gson.fromJson(response.body(), AccessibilityCheckResponse.class);
 	}
@@ -57,7 +57,7 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public OrientationResponse orientation() throws IOException {
-		FranklyRequest request = new OrientationFranklyRequest();
+		FranklyRequest request = new GetApplicationOrientation();
 		FranklyResponse response = request.sendTo(serverUrl);
 		return gson.fromJson(response.body(), OrientationResponse.class);
 	}
@@ -70,7 +70,7 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public ResultsResponse perform(Query query, Operation operation) throws IOException {
-		MapFranklyRequest request = new MapFranklyRequest(query, operation);
+		PerformViewOperation request = new PerformViewOperation(query, operation);
 		FranklyResponse response = request.sendTo(serverUrl);
 		ResultsResponse results = gson.fromJson(response.body(), ResultsResponse.class);
 		log.debug("Results from {} ==> {}", request, results);
@@ -83,7 +83,7 @@ public class FrankClient implements SelfDescribing {
 	 */
 	public boolean isReady() {
 			try {
-				new PingFranklyRequest().sendTo(serverUrl);
+				new Ping().sendTo(serverUrl);
 				return true;
 			} catch (IOException e) {
 				return false;

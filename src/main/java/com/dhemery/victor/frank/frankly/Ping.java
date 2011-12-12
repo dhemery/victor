@@ -8,8 +8,8 @@ package com.dhemery.victor.frank.frankly;
  * @author Dale Emery
  *
  */
-public class PingFranklyRequest extends FranklyRequest {
-	public PingFranklyRequest() {
+public class Ping extends FranklyRequest {
+	public Ping() {
 		super("");
 	}
 }

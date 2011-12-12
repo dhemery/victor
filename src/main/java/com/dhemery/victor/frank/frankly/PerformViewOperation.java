@@ -8,13 +8,13 @@ import com.dhemery.victor.frank.Operation;
  * @author Dale Emery
  *
  */
-public class MapFranklyRequest extends FranklyRequest {
+public class PerformViewOperation extends FranklyRequest {
 	/**
 	 * Constructs a map request to perform an operation on a set of views.
 	 * @param query identifies the views that will execute the operation.
 	 * @param operation the operation for each matching view to execute.
 	 */
-	public MapFranklyRequest(Query query, Operation operation) {
-		super("map", new MapOperationFranklyRequestBody(query, operation));
+	public PerformViewOperation(Query query, Operation operation) {
+		super("map", new ViewOperation(query, operation));
 	}
 }

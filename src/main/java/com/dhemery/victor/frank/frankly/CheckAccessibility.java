@@ -7,8 +7,8 @@ package com.dhemery.victor.frank.frankly;
  * @author Dale Emery
  *
  */
-public class AccessibilityCheckFranklyRequest extends FranklyRequest {
-	public AccessibilityCheckFranklyRequest() {
+public class CheckAccessibility extends FranklyRequest {
+	public CheckAccessibility() {
 		super("accessibility_check");
 	}
 }

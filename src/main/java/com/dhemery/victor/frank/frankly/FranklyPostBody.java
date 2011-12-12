@@ -17,8 +17,8 @@ import com.google.gson.GsonBuilder;
  * @author Dale Emery
  *
  */
-public class PostFranklyRequestBody extends FranklyRequestBody {
-	private static final Logger log = LoggerFactory.getLogger(PostFranklyRequestBody.class);
+public class FranklyPostBody extends FranklyRequestBody {
+	private static final Logger log = LoggerFactory.getLogger(FranklyPostBody.class);
 
 	/**
 	 * Writes this request body to the connection as a JSON string.

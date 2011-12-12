@@ -8,7 +8,7 @@ import com.dhemery.victor.frank.Operation;
  * @author Dale Emery
  *
  */
-public class MapOperationFranklyRequestBody extends OperationFranklyRequestBody {
+public class ViewOperation extends FranklyOperation {
 	public final String selector_engine;
 	public final String query;
 
@@ -17,7 +17,7 @@ public class MapOperationFranklyRequestBody extends OperationFranklyRequestBody 
 	 * @param query identifies the views that will perform the operation.
 	 * @param operation the operation for the views to perform.
 	 */
-	public MapOperationFranklyRequestBody(Query query, Operation operation) {
+	public ViewOperation(Query query, Operation operation) {
 		super(operation);
 		selector_engine = query.selectorEngine();
 		this.query = query.selector();

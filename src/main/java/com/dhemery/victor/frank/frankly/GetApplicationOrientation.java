@@ -7,8 +7,8 @@ package com.dhemery.victor.frank.frankly;
  * @author Dale Emery
  *
  */
-public class OrientationFranklyRequest extends FranklyRequest {
-	public OrientationFranklyRequest() {
+public class GetApplicationOrientation extends FranklyRequest {
+	public GetApplicationOrientation() {
 		super("orientation");
 	}
 }

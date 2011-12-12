@@ -7,10 +7,10 @@ import com.dhemery.victor.frank.Operation;
  * @author Dale Emery
  *
  */
-public class OperationFranklyRequestBody extends PostFranklyRequestBody {
+public class FranklyOperation extends FranklyPostBody {
 	public final Operation operation;
 	
-	public OperationFranklyRequestBody(Operation operation) {
+	public FranklyOperation(Operation operation) {
 		this.operation = operation;
 	}
 	
