@@ -2,7 +2,7 @@ package com.dhemery.victor.application;
 
 import org.hamcrest.Description;
 
-import com.dhemery.matchers.Sampler;
+import com.dhemery.pollable.Sampler;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 

@@ -1,10 +1,12 @@
 package com.dhemery.victor.test;
 
+import static com.dhemery.victor.frank.Ready.ready;
+
 import java.io.File;
 import java.io.IOException;
 
-import com.dhemery.poller.Poll;
-import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.pollable.PolledSubject;
+import com.dhemery.poller.PollTimer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -14,14 +16,13 @@ import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
 import com.dhemery.victor.simulator.AlreadyRunningSimulator;
 import com.dhemery.victor.simulator.Simulator;
 import com.dhemery.victor.simulator.VictorOwnedSimulator;
-import static com.dhemery.victor.frank.Ready.ready;
 
 
 public class Launcher {
 	private final String applicationPath;
 	private final String defaultSelectorEngine;
 	private final FrankClient frank;
-	private final Poll poll;
+	private final PollTimer pollTimer;
 	private final Simulator simulator;
 
 	public Launcher(RequiredProperties configuration) {
@@ -33,7 +34,7 @@ public class Launcher {
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
-		poll = new Poll(timeout, pollingInterval);
+		pollTimer = new PollTimer(timeout, pollingInterval);
 		frank = new FrankClient(frankServerUrl);
 		if(victorOwnsSimulator)
 			simulator = new VictorOwnedSimulator(simulatorPath);
@@ -45,16 +46,20 @@ public class Launcher {
 		return new FrankApplicationDriver(frank, defaultSelectorEngine);
 	}
 	
-	public void launch() throws IOException, PollTimeoutException {
+	public void launch() throws IOException {
 		simulator.launch(applicationPath);
-		poll.until(frank).is(ready());
+		waitUntil(frank).is(ready());
+	}
+
+	private PolledSubject<FrankClient> waitUntil(FrankClient frank) {
+		return new PolledSubject<FrankClient>(frank, pollTimer);
 	}
 
 	public PhoneDriver phone() {
 		return new FrankPhoneDriver(simulator, frank);
 	}
 
-	public Poll poll() {
-		return poll;
+	public PollTimer pollTimer() {
+		return pollTimer;
 	}
 }

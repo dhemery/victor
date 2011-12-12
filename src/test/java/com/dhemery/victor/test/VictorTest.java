@@ -6,11 +6,11 @@ import org.hamcrest.SelfDescribing;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.dhemery.assertions.PollableAssertions;
-import com.dhemery.poller.Poll;
+import com.dhemery.pollable.PollableSubject;
+import com.dhemery.pollable.PolledPreconditions;
+import com.dhemery.pollable.PolledSubject;
 import com.dhemery.poller.PollTimeoutException;
-import com.dhemery.poller.Subject;
-import com.dhemery.preconditions.PolledPreconditions;
+import com.dhemery.poller.PollTimer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -18,14 +18,14 @@ import com.dhemery.victor.PhoneDriver;
 public class VictorTest {
 	private static ApplicationDriver application;
 	private static PhoneDriver phone;
-	private static Poll poll;
+	private static PollTimer pollTimer;
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutException {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Launcher launcher = new Launcher(configuration);
 		launcher.launch();
-		poll = launcher.poll();
+		pollTimer = launcher.pollTimer();
 		phone = launcher.phone();
 		application = launcher.application();
 		verifyAccessibilityIsEnabled();
@@ -45,15 +45,15 @@ public class VictorTest {
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
 
-	public <T extends SelfDescribing> PollableAssertions<T> assertThat(T subject) {
-		return new PollableAssertions<T>(subject, poll);
+	public <T extends SelfDescribing> PollableSubject<T> assertThat(T subject) {
+		return new PollableSubject<T>(subject, pollTimer);
 	}
 
 	public <T extends SelfDescribing> PolledPreconditions<T> when(T subject) {
-		return new PolledPreconditions<T>(subject, poll);
+		return new PolledPreconditions<T>(subject, pollTimer);
 	}
 	
-	public <T extends SelfDescribing> Subject<T> waitUntil(T subject) {
-		return poll.until(subject);
+	public <T extends SelfDescribing> PolledSubject<T> waitUntil(T subject) {
+		return new PolledSubject<T>(subject, pollTimer);
 	}
 }

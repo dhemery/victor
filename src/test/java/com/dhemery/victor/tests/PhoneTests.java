@@ -9,8 +9,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dhemery.assertions.RequiredMatchException;
-import com.dhemery.matchers.Sampler;
+import com.dhemery.matchers.MatchException;
+import com.dhemery.pollable.Sampler;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -28,8 +28,11 @@ public class PhoneTests extends VictorTest {
 	}
 
 	@Test
-	public void orientationTests() throws InterruptedException, PollTimeoutException, IOException, RequiredMatchException {
+	public void orientationTests() throws InterruptedException, PollTimeoutException, IOException, MatchException {
 		assertThat(application).has(orientation(), equalTo(PORTRAIT));
+		assertThat(application).has(orientation()).that(is(equalTo(PORTRAIT)));
+		waitUntil(application).has(orientation()).that(is(equalTo(PORTRAIT)));
+		when(application).has(orientation()).that(is(equalTo(PORTRAIT)));
 
 		phone.rotateLeft();
 		assertThat(application).eventually().has(orientation(), equalTo(LANDSCAPE));
