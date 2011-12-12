@@ -88,7 +88,12 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendDescriptionOf(query());
+		description.appendText(toString());
+	}
+
+	@Override
+	public String toString() {
+		return query().toString();
 	}
 
 }

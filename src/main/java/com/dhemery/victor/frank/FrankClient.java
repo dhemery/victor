@@ -92,6 +92,11 @@ public class FrankClient implements SelfDescribing {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("the Frank client");
+		description.appendText(toString());
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Frank client (%s)", serverUrl);
 	}
 }

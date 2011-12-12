@@ -49,6 +49,11 @@ public class FrankApplicationDriver implements ApplicationDriver {
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("the application");
+		description.appendText(toString());
+	}
+
+	@Override
+	public String toString() {
+		return "the application";
 	}
 }

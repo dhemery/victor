@@ -1,6 +1,7 @@
 package com.dhemery.victor.tests;
 
 import static com.dhemery.matchers.Matchers.is;
+import static com.dhemery.matchers.Matchers.that;
 import static com.dhemery.victor.ApplicationAttributes.orientation;
 import static com.dhemery.victor.ApplicationDriver.Orientation.LANDSCAPE;
 import static com.dhemery.victor.ApplicationDriver.Orientation.PORTRAIT;
@@ -27,10 +28,15 @@ public class PhoneTests extends VictorTest {
 
 	@Test
 	public void orientationTests() throws InterruptedException, IOException {
+		// The following assertions all assert the same condition, with different styles.
 		assertThat(application).has(orientation(), equalTo(PORTRAIT));
+		assertThat(application).has(orientation(), that(is(equalTo(PORTRAIT))));
 		assertThat(application).has(orientation()).that(is(equalTo(PORTRAIT)));
+
+		// The following waits all wait for the same condition, with different styles.
+		waitUntil(application).has(orientation(), equalTo(PORTRAIT));
+		waitUntil(application).has(orientation(), that(is(equalTo(PORTRAIT))));
 		waitUntil(application).has(orientation()).that(is(equalTo(PORTRAIT)));
-		when(application).has(orientation()).that(is(equalTo(PORTRAIT)));
 
 		phone.rotateLeft();
 		assertThat(application).eventually().has(orientation(), equalTo(LANDSCAPE));
