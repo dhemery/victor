@@ -6,22 +6,14 @@ import com.dhemery.pollable.Sampler;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
-public class OrientationSampler implements Sampler<ApplicationDriver, Orientation> {
-	private Orientation orientation;
-
+public class OrientationSampler extends Sampler<ApplicationDriver, Orientation> {
 	@Override
 	public void describeTo(Description description) {
 		description.appendText("orientation");
 	}
 
 	@Override
-	public void sample(ApplicationDriver application) {
-		orientation = application.orientation();
+	protected Orientation sample(ApplicationDriver application) {
+		return application.orientation();
 	}
-
-	@Override
-	public Orientation value() {
-		return orientation;
-	}
-
 }

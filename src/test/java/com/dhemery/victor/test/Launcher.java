@@ -5,8 +5,8 @@ import static com.dhemery.victor.frank.FrankConditions.ready;
 import java.io.File;
 import java.io.IOException;
 
-import com.dhemery.pollable.PolledSubject;
-import com.dhemery.poller.PollTimer;
+import com.dhemery.pollable.WaitUntil;
+import com.dhemery.poller.Timer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -22,8 +22,8 @@ public class Launcher {
 	private final String applicationPath;
 	private final String defaultSelectorEngine;
 	private final FrankClient frank;
-	private final PollTimer pollTimer;
 	private final Simulator simulator;
+	private final Timer timer;
 
 	public Launcher(RequiredProperties configuration) {
 		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
@@ -34,7 +34,7 @@ public class Launcher {
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
-		pollTimer = new PollTimer(timeout, pollingInterval);
+		timer = new Timer(timeout, pollingInterval);
 		frank = new FrankClient(frankServerUrl);
 		if(victorOwnsSimulator)
 			simulator = new VictorOwnedSimulator(simulatorPath);
@@ -51,15 +51,15 @@ public class Launcher {
 		waitUntil(frank).is(ready());
 	}
 
-	private PolledSubject<FrankClient> waitUntil(FrankClient frank) {
-		return new PolledSubject<FrankClient>(frank, pollTimer);
+	private WaitUntil<FrankClient> waitUntil(FrankClient frank) {
+		return new WaitUntil<FrankClient>(frank, timer);
 	}
 
 	public PhoneDriver phone() {
 		return new FrankPhoneDriver(simulator, frank);
 	}
 
-	public PollTimer pollTimer() {
-		return pollTimer;
+	public Timer timer() {
+		return timer;
 	}
 }
