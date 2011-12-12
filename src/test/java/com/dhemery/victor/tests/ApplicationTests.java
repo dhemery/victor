@@ -1,5 +1,8 @@
 package com.dhemery.victor.tests;
 
+import static com.dhemery.victor.ViewConditions.present;
+import static com.dhemery.victor.ViewConditions.visible;
+
 import java.io.IOException;
 
 import org.junit.Before;
@@ -10,8 +13,6 @@ import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.test.VictorTest;
 import com.dhemery.victor.test.fixtures.DetailDisplay;
 import com.dhemery.victor.test.fixtures.MasterDisplay;
-import static com.dhemery.victor.view.Present.present;
-import static com.dhemery.victor.view.Visible.visible;
 
 public class ApplicationTests extends VictorTest {
 	private MasterDisplay master;

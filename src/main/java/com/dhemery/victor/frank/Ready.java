@@ -19,8 +19,4 @@ public class Ready extends TypeSafeMatcher<FrankClient> {
 		mismatchDescription.appendDescriptionOf(item)
 							.appendText(" is not ready to respond to requests");
 	}
-	
-	public static Ready ready() {
-		return new Ready();
-	}
 }

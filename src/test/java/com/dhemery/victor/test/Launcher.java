@@ -1,6 +1,6 @@
 package com.dhemery.victor.test;
 
-import static com.dhemery.victor.frank.Ready.ready;
+import static com.dhemery.victor.frank.FrankConditions.ready;
 
 import java.io.File;
 import java.io.IOException;
