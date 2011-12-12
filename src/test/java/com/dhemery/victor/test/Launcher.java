@@ -14,7 +14,7 @@ import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
 import com.dhemery.victor.simulator.AlreadyRunningSimulator;
 import com.dhemery.victor.simulator.Simulator;
 import com.dhemery.victor.simulator.VictorOwnedSimulator;
-import static com.dhemery.victor.frank.Ready.ready;
+import static com.dhemery.victor.frank.FrankConditions.ready;
 
 
 public class Launcher {
