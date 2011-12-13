@@ -16,4 +16,13 @@ public class OrientationResponse {
 	 * @return the application's orientation, as reported by the application server.
 	 */
 	public String orientation() { return orientation; }
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[orientationResponse:");
+		builder.append(String.format("[orientation:%s]", orientation()));
+		builder.append("]");
+		return builder.toString();
+	}
 }

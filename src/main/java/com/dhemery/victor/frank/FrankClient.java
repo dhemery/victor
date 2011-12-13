@@ -33,9 +33,9 @@ public class FrankClient implements SelfDescribing {
 	public FrankClient(String serverUrl) {
 		this.serverUrl = serverUrl;
 		gson = new GsonBuilder()
-						.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
-						.disableHtmlEscaping()
-						.create();
+					.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
+					.disableHtmlEscaping()
+					.create();
 	}
 
 	/**
@@ -45,11 +45,27 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
-		FranklyRequest request = new CheckAccessibility();
-		FranklyResponse response = request.sendTo(serverUrl);
-		return gson.fromJson(response.body(), AccessibilityCheckResponse.class);
+		return send(new CheckAccessibility(), AccessibilityCheckResponse.class);
 	}
-	
+
+	@Override
+	public void describeTo(Description description) {
+		description.appendText(toString());
+	}
+
+	/**
+	 * Sends a GET request to the Frank server.
+	 * @return true if the Frank server responds to the request, otherwise false.
+	 */
+	public boolean isReady() {
+		try {
+			new Ping().sendTo(serverUrl);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
 	/**
 	 * Determines the current orientation (portrait or landscape)
 	 * of the application in which the Frank server is running.
@@ -57,9 +73,7 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public OrientationResponse orientation() throws IOException {
-		FranklyRequest request = new GetApplicationOrientation();
-		FranklyResponse response = request.sendTo(serverUrl);
-		return gson.fromJson(response.body(), OrientationResponse.class);
+		return send(new GetApplicationOrientation(), OrientationResponse.class);
 	}
 
 	/**
@@ -70,29 +84,14 @@ public class FrankClient implements SelfDescribing {
 	 * @throws IOException
 	 */
 	public ResultsResponse perform(Query query, Operation operation) throws IOException {
-		PerformViewOperation request = new PerformViewOperation(query, operation);
+		return send(new PerformViewOperation(query, operation), ResultsResponse.class);
+	}
+
+	private <T> T send(FranklyRequest request, Class<T> resultsClass) throws IOException {
 		FranklyResponse response = request.sendTo(serverUrl);
-		ResultsResponse results = gson.fromJson(response.body(), ResultsResponse.class);
+		T results = gson.fromJson(response.body(), resultsClass);
 		log.debug("Results from {} ==> {}", request, results);
 		return results;
-	}
-
-	/**
-	 * Sends a GET request to the Frank server.
-	 * @return true if the Frank server response to the request, otherwise false.
-	 */
-	public boolean isReady() {
-			try {
-				new Ping().sendTo(serverUrl);
-				return true;
-			} catch (IOException e) {
-				return false;
-			}
-	}
-
-	@Override
-	public void describeTo(Description description) {
-		description.appendText(toString());
 	}
 
 	@Override

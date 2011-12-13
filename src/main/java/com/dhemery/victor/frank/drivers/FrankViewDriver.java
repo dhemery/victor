@@ -1,6 +1,7 @@
 package com.dhemery.victor.frank.drivers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Description;
@@ -40,40 +41,39 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public boolean isPresent() {
-		String property = "accessibilityLabel";
-		ResultsResponse response;
-		try {
-			response = call(property);
-		} catch (IOException e) {
-			return false;
-		}
+		ResultsResponse response = property("accessibilityLabel");
 		if(!response.succeeded()) return false;
-		List<String> values = response.results();
-		return values.size() == 1;
+		return isSingular(response.results());
 	}
 
 	@Override
 	public boolean isVisible() {
-		String property = "isHidden";
+		ResultsResponse response = property("isHidden");
+		if(!response.succeeded()) return false;
+		List<String> results = response.results();
+		return isSingular(results) && isFalse(results.get(0));
+	}
+
+	public ResultsResponse property(String property) {
+		return perform(new Operation(property));
+	}
+
+	private boolean isFalse(String result) {
+		return !Boolean.parseBoolean(result);
+	}
+
+	private boolean isSingular(List<String> results) {
+		return results.size() == 1;
+	}
+
+	private ResultsResponse perform(Operation operation) {
 		ResultsResponse response;
 		try {
-			response = property(property);
+			response = frank.perform(query, operation);
 		} catch (IOException e) {
-			return false;
+			response = new ResultsResponse(false, new ArrayList<String>(), null, null);
 		}
-		if(!response.succeeded()) return false;
-		List<String> values = response.results();
-		if(values.size() != 1) return false;
-		boolean isHidden = Boolean.parseBoolean(values.get(0));
-		return !isHidden;
-	}
-
-	private ResultsResponse perform(Operation operation) throws IOException {
-		return frank.perform(query, operation);
-	}
-
-	private ResultsResponse property(String propertyName) throws IOException {
-		return perform(new Operation(propertyName));
+		return response;
 	}
 
 	@Override
