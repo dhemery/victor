@@ -34,7 +34,6 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException, PollTimeoutException {
-		the(masterView).eventually().is(present());
 		assertThat(masterView).eventually().is(present());
 		assertThat(masterView).eventually().is(visible());
 		when(masterView).is(present()).flash();

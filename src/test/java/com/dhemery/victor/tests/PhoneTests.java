@@ -1,11 +1,11 @@
 package com.dhemery.victor.tests;
 
-import static com.dhemery.matchers.Matchers.is;
-import static com.dhemery.matchers.Matchers.that;
+import static com.dhemery.matchers.That.that;
 import static com.dhemery.victor.ApplicationAttributes.orientation;
 import static com.dhemery.victor.ApplicationDriver.Orientation.LANDSCAPE;
 import static com.dhemery.victor.ApplicationDriver.Orientation.PORTRAIT;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
 
