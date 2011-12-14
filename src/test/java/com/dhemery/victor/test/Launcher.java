@@ -5,9 +5,10 @@ import static com.dhemery.victor.frank.FrankConditions.ready;
 import java.io.File;
 import java.io.IOException;
 
-import com.dhemery.pollable.WaitUntil;
 import com.dhemery.poller.Timer;
 import com.dhemery.properties.RequiredProperties;
+import com.dhemery.sentences.SentenceFactory;
+import com.dhemery.sentences.internal.Sentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
@@ -23,7 +24,7 @@ public class Launcher {
 	private final String defaultSelectorEngine;
 	private final FrankClient frank;
 	private final Simulator simulator;
-	private final Timer timer;
+	private final SentenceFactory sentenceFactory;
 
 	public Launcher(RequiredProperties configuration) {
 		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
@@ -34,7 +35,7 @@ public class Launcher {
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
-		timer = new Timer(timeout, pollingInterval);
+		sentenceFactory = new SentenceFactory(new Timer(timeout, pollingInterval));
 		frank = new FrankClient(frankServerUrl);
 		if(victorOwnsSimulator)
 			simulator = new VictorOwnedSimulator(simulatorPath);
@@ -51,15 +52,15 @@ public class Launcher {
 		waitUntil(frank).is(ready());
 	}
 
-	private WaitUntil<FrankClient> waitUntil(FrankClient frank) {
-		return new WaitUntil<FrankClient>(frank, timer);
+	private Sentence<FrankClient,Boolean> waitUntil(FrankClient frank) {
+		return sentenceFactory.waitUntil(frank);
 	}
 
 	public PhoneDriver phone() {
 		return new FrankPhoneDriver(simulator, frank);
 	}
 
-	public Timer timer() {
-		return timer;
+	public SentenceFactory sentenceFactory() {
+		return sentenceFactory;
 	}
 }

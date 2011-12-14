@@ -1,6 +1,6 @@
 package com.dhemery.victor;
 
-import com.dhemery.pollable.Sampler;
+import com.dhemery.matchers.Sampler;
 import com.dhemery.victor.application.OrientationSampler;
 
 public class ApplicationAttributes {

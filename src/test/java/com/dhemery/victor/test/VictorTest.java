@@ -2,30 +2,28 @@ package com.dhemery.victor.test;
 
 import java.io.IOException;
 
-import org.hamcrest.SelfDescribing;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.dhemery.pollable.AssertThat;
-import com.dhemery.pollable.WaitUntil;
-import com.dhemery.pollable.When;
 import com.dhemery.poller.PollTimeoutException;
-import com.dhemery.poller.Timer;
 import com.dhemery.properties.RequiredProperties;
+import com.dhemery.sentences.SentenceFactory;
+import com.dhemery.sentences.internal.PollableSentence;
+import com.dhemery.sentences.internal.Sentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 
 public class VictorTest {
 	private static ApplicationDriver application;
 	private static PhoneDriver phone;
-	private static Timer timer;
+	private static SentenceFactory sentenceFactory;
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutException {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Launcher launcher = new Launcher(configuration);
 		launcher.launch();
-		timer = launcher.timer();
+		sentenceFactory = launcher.sentenceFactory();
 		phone = launcher.phone();
 		application = launcher.application();
 		verifyAccessibilityIsEnabled();
@@ -45,15 +43,19 @@ public class VictorTest {
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
 
-	public <S extends SelfDescribing> AssertThat<S> assertThat(S subject) {
-		return new AssertThat<S>(subject, timer);
+	public <S> PollableSentence<S,Boolean> assertThat(S subject) {
+		return sentenceFactory.assertThat(subject);
 	}
 
-	public <S extends SelfDescribing> When<S> when(S subject) {
-		return new When<S>(subject, timer);
+	public <S> Sentence<S,S> when(S subject) {
+		return sentenceFactory.when(subject);
 	}
 	
-	public <S extends SelfDescribing> WaitUntil<S> waitUntil(S subject) {
-		return new WaitUntil<S>(subject, timer);
+	public <S> Sentence<S,Boolean> waitUntil(S subject) {
+		return sentenceFactory.waitUntil(subject);
+	}
+	
+	public <S> PollableSentence<S,Boolean> the(S subject) {
+		return sentenceFactory.the(subject);
 	}
 }
