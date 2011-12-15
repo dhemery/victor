@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import com.dhemery.poller.Timer;
 import com.dhemery.properties.RequiredProperties;
-import com.dhemery.sentences.SentenceFactory;
+import com.dhemery.sentences.Sentences;
 import com.dhemery.sentences.internal.Sentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -24,7 +24,7 @@ public class Launcher {
 	private final String defaultSelectorEngine;
 	private final FrankClient frank;
 	private final Simulator simulator;
-	private final SentenceFactory sentenceFactory;
+	private final Sentences sentences;
 
 	public Launcher(RequiredProperties configuration) {
 		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
@@ -35,7 +35,7 @@ public class Launcher {
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
-		sentenceFactory = new SentenceFactory(new Timer(timeout, pollingInterval));
+		sentences = new Sentences(new Timer(timeout, pollingInterval));
 		frank = new FrankClient(frankServerUrl);
 		if(victorOwnsSimulator)
 			simulator = new VictorOwnedSimulator(simulatorPath);
@@ -53,14 +53,14 @@ public class Launcher {
 	}
 
 	private Sentence<FrankClient,Boolean> waitUntil(FrankClient frank) {
-		return sentenceFactory.waitUntil(frank);
+		return sentences.waitUntil(frank);
 	}
 
 	public PhoneDriver phone() {
 		return new FrankPhoneDriver(simulator, frank);
 	}
 
-	public SentenceFactory sentenceFactory() {
-		return sentenceFactory;
+	public Sentences sentences() {
+		return sentences;
 	}
 }
