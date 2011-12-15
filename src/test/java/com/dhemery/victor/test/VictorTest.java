@@ -9,7 +9,6 @@ import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.sentences.SentenceFactory;
 import com.dhemery.sentences.internal.PollableSentence;
-import com.dhemery.sentences.internal.Sentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 
@@ -47,15 +46,15 @@ public class VictorTest {
 		return sentenceFactory.assertThat(subject);
 	}
 
-	public <S> Sentence<S,S> when(S subject) {
+	public <S> PollableSentence<S,S> when(S subject) {
 		return sentenceFactory.when(subject);
 	}
 	
-	public <S> Sentence<S,Boolean> waitUntil(S subject) {
-		return sentenceFactory.waitUntil(subject);
+	public <S> PollableSentence<S,Boolean> waitUntil(S subject) {
+		return sentenceFactory.assertThat(subject);
 	}
 	
 	public <S> PollableSentence<S,Boolean> the(S subject) {
-		return sentenceFactory.the(subject);
+		return sentenceFactory.valueOf(subject);
 	}
 }

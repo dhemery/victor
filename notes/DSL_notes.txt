@@ -1,27 +1,36 @@
-EXPECTATIONS:
-assertThat(view).is(matcher();
-assertThat(view).is(matcher);
-assertThat(view).has(sampler()).that(matcher());
-assertThat(view).eventually().is(matcher());
-assertThat(view).eventually().is(matcher());
-assertThat(view).eventually().has(sampler()).that(matcher();
+ASSERTIONS:
+assertThat(subject).is(matcher());
+assertThat(subject).is(matcher());
+assertThat(subject).has(feature()).that(matcher());
+assertThat(subject).eventually().is(matcher());
+assertThat(subject).eventually().is(matcher());
+assertThat(subject).eventually().has(feature()).that(matcher();
 
 --------------
 
-POLLING:
-waitUntil(view).is(matcher());
-waitUntil(view).has(sampler()).that(matcher());
-
-NOTES:
-wait.until(view) is a synonym for expect(view).eventually().
-Or vice versa.
+POLLS:
+waitUntil(subject).is(matcher());
+waitUntil(subject).has(feature()).that(matcher());
 
 --------------
 
 PRECONDITIONS:
-when(view).is(present()).action();
-when(view).is(not(present())).action();
-when(view).has(sampler()).that(matcher()).action();
+when(subject).is(present()).action();
+when(subject).is(not(present())).action();
+when(subject).has(sampler()).that(matcher()).action();
 
 Each precondition polls until the condition is true,
-then yields the view as a ViewActions.
+then yields the subject.
+
+--------------
+
+PREDICATES
+valueOf(subject).is(matcher());
+valueOf(subject).is(matcher());
+valueOf(subject).has(feature()).that(matcher());
+valueOf(subject).eventually().is(matcher());
+valueOf(subject).eventually().is(matcher());
+valueOf(subject).eventually().has(feature()).that(matcher();
+
+Each predicate yields a boolean value.
+
