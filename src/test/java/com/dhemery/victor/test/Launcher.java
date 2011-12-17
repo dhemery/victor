@@ -52,7 +52,7 @@ public class Launcher {
 		waitUntil(frank).is(ready());
 	}
 
-	private Sentence<FrankClient,Boolean> waitUntil(FrankClient frank) {
+	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {
 		return sentences.waitUntil(frank);
 	}
 

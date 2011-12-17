@@ -42,7 +42,7 @@ public class VictorTest {
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
 
-	public <S> PollableSentence<S,Boolean> assertThat(S subject) {
+	public <S> PollableSentence<S,Void> assertThat(S subject) {
 		return sentences.assertThat(subject);
 	}
 
@@ -50,7 +50,7 @@ public class VictorTest {
 		return sentences.when(subject);
 	}
 	
-	public <S> PollableSentence<S,Boolean> waitUntil(S subject) {
+	public <S> PollableSentence<S,Void> waitUntil(S subject) {
 		return sentences.assertThat(subject);
 	}
 	
