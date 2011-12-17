@@ -1,27 +1,17 @@
 package com.dhemery.victor.application;
 
-import org.hamcrest.Description;
-
-import com.dhemery.pollable.Sampler;
+import com.dhemery.matchers.Feature;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
-public class OrientationSampler implements Sampler<ApplicationDriver, Orientation> {
-	private Orientation orientation;
-
+public class OrientationSampler extends Feature<ApplicationDriver, Orientation> {
 	@Override
-	public void describeTo(Description description) {
-		description.appendText("orientation");
+	public String name() {
+		return "orientation";
 	}
 
 	@Override
-	public void sample(ApplicationDriver application) {
-		orientation = application.orientation();
+	public Orientation valueOn(ApplicationDriver subject) {
+		return subject.orientation();
 	}
-
-	@Override
-	public Orientation value() {
-		return orientation;
-	}
-
 }
