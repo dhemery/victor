@@ -1,0 +1,6 @@
+[submodule "sentences"]
+	path = sentences
+	url = git@github.com:dhemery/sentences
+[submodule "properties"]
+	path = properties
+	url = git@github.com:dhemery/properties

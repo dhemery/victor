@@ -1,6 +1,6 @@
 package com.dhemery.victor;
 
-import com.dhemery.matchers.Feature;
+import com.dhemery.sentences.Feature;
 import com.dhemery.victor.application.OrientationSampler;
 
 public class ApplicationAttributes {

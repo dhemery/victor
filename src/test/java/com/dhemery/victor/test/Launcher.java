@@ -8,7 +8,7 @@ import java.io.IOException;
 import com.dhemery.poller.Timer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.sentences.Sentences;
-import com.dhemery.sentences.internal.Sentence;
+import com.dhemery.sentences.Sentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;

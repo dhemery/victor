@@ -1,6 +1,6 @@
 package com.dhemery.victor.application;
 
-import com.dhemery.matchers.Feature;
+import com.dhemery.sentences.Feature;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 

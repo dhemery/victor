@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import com.dhemery.poller.PollTimeoutException;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.sentences.Sentences;
-import com.dhemery.sentences.internal.PollableSentence;
+import com.dhemery.sentences.PollableSentence;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 
