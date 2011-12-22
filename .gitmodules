@@ -1,0 +1,9 @@
+[submodule "poller"]
+	path = poller
+	url = git@github.com:dhemery/poller
+[submodule "properties"]
+	path = properties
+	url = git@github.com:dhemery/properties
+[submodule "sentences"]
+	path = sentences
+	url = git@github.com:dhemery/sentences
