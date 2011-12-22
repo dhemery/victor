@@ -1,1 +1,1 @@
-include 'properties', 'sentences:poller'
+include 'poller', 'properties', 'sentences'
