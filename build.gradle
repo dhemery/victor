@@ -3,9 +3,8 @@ apply plugin: 'java'
 defaultTasks 'build'
 
 dependencies {
-	compile project(':poller')
-	compile project(':properties')
-	compile project(':sentences')
+	compile project(':sentences'), project(':sentences:poller'), project(':properties')
+	testCompile project(':sentences'), project(':sentences:poller'), project(':properties')
 	compile fileTree(dir: 'lib/main', include: '*.jar')
 	testCompile fileTree(dir: 'lib/test', include: '*.jar')
 }
