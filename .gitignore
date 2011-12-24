@@ -1,7 +1,18 @@
+# Gradle
+.gradle/
+out/
+
+# Eclipse
 .classpath
 .project
+.settings/
 bin/
 build/
-.gradle/
-.settings/
+
+# IDEA
+*.iml
+*.ipr
+*.iws
+
+# Project
 my.properties
