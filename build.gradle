@@ -2,32 +2,23 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-allprojects {
-	eclipse {
-		jdt {
-			sourceCompatibility = 1.6
-			targetCompatibility = 1.6
-		}
-	}
-	idea {
-		project {
-			jdkName = '1.6'
-			languageLevel = '1.6'
-		}
+eclipse {
+	jdt {
+		sourceCompatibility = 1.6
+		targetCompatibility = 1.6
 	}
 }
-
+idea {
+	project {
+		jdkName = '1.6'
+		languageLevel = 'JDK_1_6'
+	}
+}
 defaultTasks 'build'
 
 dependencies {
-	compile project(':sentence-kit')
-	compile project(':polling-kit')
-	compile project(':properties-kit')
-	compile fileTree(dir: 'lib/main', include: '*.jar')
-	testCompile project(':sentence-kit')
-	testCompile project(':polling-kit')
-	testCompile project(':properties-kit')
-	testCompile fileTree(dir: 'lib/test', include: '*.jar')
+	compile subprojects, fileTree(dir: 'lib/main', include: '*.jar')
+	testCompile subprojects, fileTree(dir: 'lib/test', include: '*.jar')
 }
 
 dependsOnChildren()
