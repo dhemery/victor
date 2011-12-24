@@ -3,7 +3,7 @@ package com.dhemery.victor.test.tools;
 
 import java.io.IOException;
 
-import com.dhemery.poller.PollTimeoutException;
+import com.dhemery.polling.PollTimeoutException;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.test.Launcher;

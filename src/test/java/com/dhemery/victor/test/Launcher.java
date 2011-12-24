@@ -5,10 +5,10 @@ import static com.dhemery.victor.frank.FrankConditions.ready;
 import java.io.File;
 import java.io.IOException;
 
-import com.dhemery.poller.Timer;
+import com.dhemery.polling.SystemClockPollTimer;
 import com.dhemery.properties.RequiredProperties;
-import com.dhemery.sentences.Sentences;
 import com.dhemery.sentences.Sentence;
+import com.dhemery.sentences.Sentences;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
@@ -35,7 +35,7 @@ public class Launcher {
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
 
-		sentences = new Sentences(new Timer(timeout, pollingInterval));
+		sentences = new Sentences(new SystemClockPollTimer(timeout, pollingInterval));
 		frank = new FrankClient(frankServerUrl);
 		if(victorOwnsSimulator)
 			simulator = new VictorOwnedSimulator(simulatorPath);
