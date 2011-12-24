@@ -13,11 +13,11 @@ allprojects {
 defaultTasks 'build'
 
 dependencies {
-	compile project(':sentences-kit')
+	compile project(':sentence-kit')
 	compile project(':polling-kit')
 	compile project(':properties-kit')
 	compile fileTree(dir: 'lib/main', include: '*.jar')
-	testCompile project(':sentences-kit')
+	testCompile project(':sentence-kit')
 	testCompile project(':polling-kit')
 	testCompile project(':properties-kit')
 	testCompile fileTree(dir: 'lib/test', include: '*.jar')
