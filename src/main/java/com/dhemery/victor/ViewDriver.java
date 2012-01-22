@@ -29,7 +29,7 @@ public interface ViewDriver extends SelfDescribing {
 	/**
 	 * @return the query that identifies the views represented by this driver.
 	 */
-	public Query query();
+	public ViewQuery query();
 
 	/**
 	 * Touch the element.

@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.dhemery.polling.PollTimeoutException;
+import com.dhemery.polling.PollTimeoutError;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.sentences.PollableSentence;
 import com.dhemery.sentences.Sentences;
@@ -18,7 +18,7 @@ public class VictorTest {
 	private static Sentences sentences;
 
 	@BeforeClass
-	public static void launchApp() throws IOException, PollTimeoutException {
+	public static void launchApp() throws IOException, PollTimeoutError {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Launcher launcher = new Launcher(configuration);
 		launcher.launch();
@@ -55,6 +55,6 @@ public class VictorTest {
 	}
 	
 	public <S> PollableSentence<S,Boolean> the(S subject) {
-		return sentences.valueOf(subject);
+		return sentences.the(subject);
 	}
 }

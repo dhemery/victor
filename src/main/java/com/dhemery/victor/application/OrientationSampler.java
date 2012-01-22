@@ -1,17 +1,17 @@
 package com.dhemery.victor.application;
 
-import com.dhemery.sentences.Feature;
+import com.dhemery.sentences.Query;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
-public class OrientationSampler extends Feature<ApplicationDriver, Orientation> {
+public class OrientationSampler extends Query<ApplicationDriver, Orientation> {
 	@Override
 	public String name() {
 		return "orientation";
 	}
 
 	@Override
-	public Orientation valueOn(ApplicationDriver subject) {
+	public Orientation query(ApplicationDriver subject) {
 		return subject.orientation();
 	}
 }

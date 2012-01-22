@@ -8,7 +8,6 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.dhemery.polling.PollTimeoutException;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.test.VictorTest;
 import com.dhemery.victor.test.fixtures.DetailDisplay;
@@ -33,7 +32,7 @@ public class ApplicationTests extends VictorTest {
 	}
 
 	@Test
-	public void navigation() throws IOException, PollTimeoutException {
+	public void navigation() throws IOException {
 		assertThat(masterView).eventually().is(present());
 		assertThat(masterView).eventually().is(visible());
 		when(masterView).is(present()).flash();

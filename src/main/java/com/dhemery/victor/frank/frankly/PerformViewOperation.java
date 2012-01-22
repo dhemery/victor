@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.victor.Query;
+import com.dhemery.victor.ViewQuery;
 import com.dhemery.victor.frank.Operation;
 
 /**
@@ -14,7 +14,7 @@ public class PerformViewOperation extends FranklyRequest {
 	 * @param query identifies the views that will execute the operation.
 	 * @param operation the operation for each matching view to execute.
 	 */
-	public PerformViewOperation(Query query, Operation operation) {
+	public PerformViewOperation(ViewQuery query, Operation operation) {
 		super("map", new ViewOperation(query, operation));
 	}
 }

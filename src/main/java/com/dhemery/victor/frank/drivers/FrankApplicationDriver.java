@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.hamcrest.Description;
 
 import com.dhemery.victor.ApplicationDriver;
-import com.dhemery.victor.Query;
+import com.dhemery.victor.ViewQuery;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.OrientationResponse;
@@ -44,7 +44,7 @@ public class FrankApplicationDriver implements ApplicationDriver {
 
 	@Override
 	public ViewDriver view(String selectorEngine, String selector) {
-		return new FrankViewDriver(frank, new Query(selectorEngine, selector));
+		return new FrankViewDriver(frank, new ViewQuery(selectorEngine, selector));
 	}
 
 	@Override

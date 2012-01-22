@@ -5,8 +5,8 @@ import org.hamcrest.SelfDescribing;
 
 /**
  * <p>
- * A Query identifies views in an iOS application.
- * A query consists of two parts:
+ * A ViewQuery identifies views in an iOS application.
+ * A view query consists of two parts:
  * a selector engine name and a selector.
  * The selector engine name identifies which selector engine will perform the query.
  * The selector describes to the selector engine which views to select.
@@ -15,11 +15,11 @@ import org.hamcrest.SelfDescribing;
  * 
  * @author Dale Emery
  */
-public class Query implements SelfDescribing {
+public class ViewQuery implements SelfDescribing {
 	private final String selectorEngine;
 	private final String selector;
 
-	public Query(String selectorEngineName, String selector) {
+	public ViewQuery(String selectorEngineName, String selector) {
 		this.selectorEngine = selectorEngineName;
 		this.selector = selector;
 	}

@@ -7,7 +7,7 @@ import org.hamcrest.SelfDescribing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.victor.Query;
+import com.dhemery.victor.ViewQuery;
 import com.dhemery.victor.frank.frankly.CheckAccessibility;
 import com.dhemery.victor.frank.frankly.FranklyRequest;
 import com.dhemery.victor.frank.frankly.FranklyResponse;
@@ -83,7 +83,7 @@ public class FrankClient implements SelfDescribing {
 	 * @return a response that lists the results returned by each view that performed the operation.
 	 * @throws IOException
 	 */
-	public ResultsResponse perform(Query query, Operation operation) throws IOException {
+	public ResultsResponse perform(ViewQuery query, Operation operation) throws IOException {
 		return send(new PerformViewOperation(query, operation), ResultsResponse.class);
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hamcrest.Description;
 
-import com.dhemery.victor.Query;
+import com.dhemery.victor.ViewQuery;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.Operation;
@@ -19,13 +19,13 @@ import com.dhemery.victor.frank.ResultsResponse;
  */
 public class FrankViewDriver implements ViewDriver {
 	private final FrankClient frank;
-	private final Query query;
+	private final ViewQuery query;
 
 	/**
 	 * @param frank a Frank client that can interact with this view.
 	 * @param query a query that identifies the views driven by this driver.
 	 */
-	public FrankViewDriver(FrankClient frank, Query query) {
+	public FrankViewDriver(FrankClient frank, ViewQuery query) {
 		this.frank = frank;
 		this.query = query;
 	}
@@ -77,7 +77,7 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public Query query() {
+	public ViewQuery query() {
 		return query;
 	}
 
