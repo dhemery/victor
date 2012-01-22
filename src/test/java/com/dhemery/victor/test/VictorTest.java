@@ -51,7 +51,7 @@ public class VictorTest {
 	}
 	
 	public <S> PollableSentence<S,Void> waitUntil(S subject) {
-		return sentences.assertThat(subject);
+		return sentences.waitUntil(subject);
 	}
 	
 	public <S> PollableSentence<S,Boolean> the(S subject) {

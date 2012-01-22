@@ -35,4 +35,4 @@ task javadocJar(type: Jar, dependsOn:javadoc) {
 
 task all(dependsOn:[build,sourcesJar,javadocJar])
 
-version = '1.1.4'
+version = '1.1.5'
