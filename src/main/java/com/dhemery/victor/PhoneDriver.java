@@ -19,4 +19,11 @@ public interface PhoneDriver {
 	 * @throws InterruptedException
 	 */
 	public void shutDown() throws IOException, InterruptedException;
+	
+	/**
+	 * Saves an image of the screen to the desktop.
+	 * @throws InterruptedException 
+	 * @throws IOException 
+	 */
+	public void saveScreenShot() throws IOException, InterruptedException;
 }

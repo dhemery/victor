@@ -40,4 +40,9 @@ public class FrankPhoneDriver implements PhoneDriver {
 	public void shutDown() throws IOException, InterruptedException {
 		simulator.shutDown();
 	}
+
+	@Override
+	public void saveScreenShot() throws IOException, InterruptedException {
+		simulator.touchMenuItem("File", "Save Screen Shot");
+	}
 }
