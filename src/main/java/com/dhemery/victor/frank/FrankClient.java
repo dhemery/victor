@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import com.dhemery.victor.ViewQuery;
 import com.dhemery.victor.frank.frankly.CheckAccessibility;
-import com.dhemery.victor.frank.frankly.FranklyRequest;
-import com.dhemery.victor.frank.frankly.FranklyResponse;
 import com.dhemery.victor.frank.frankly.PerformViewOperation;
 import com.dhemery.victor.frank.frankly.GetApplicationOrientation;
 import com.dhemery.victor.frank.frankly.Ping;
+import com.dhemery.victor.http.HttpRequest;
+import com.dhemery.victor.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -87,8 +87,8 @@ public class FrankClient implements SelfDescribing {
 		return send(new PerformViewOperation(query, operation), ResultsResponse.class);
 	}
 
-	private <T> T send(FranklyRequest request, Class<T> resultsClass) throws IOException {
-		FranklyResponse response = request.sendTo(serverUrl);
+	private <T> T send(HttpRequest request, Class<T> resultsClass) throws IOException {
+		HttpResponse response = request.sendTo(serverUrl);
 		T results = gson.fromJson(response.body(), resultsClass);
 		log.debug("Results from {} ==> {}", request, results);
 		return results;

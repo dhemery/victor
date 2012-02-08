@@ -15,45 +15,60 @@ import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.drivers.FrankApplicationDriver;
 import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
 import com.dhemery.victor.simulator.AlreadyRunningSimulator;
+import com.dhemery.victor.simulator.RemoteSimulator;
 import com.dhemery.victor.simulator.Simulator;
 import com.dhemery.victor.simulator.VictorOwnedSimulator;
 
 
 public class Launcher {
-	private final String applicationPath;
-	private final String defaultSelectorEngine;
 	private final FrankClient frank;
-	private final Simulator simulator;
-	private final Sentences sentences;
+	private Simulator simulator;
+	private final RequiredProperties configuration;
 
 	public Launcher(RequiredProperties configuration) {
-		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
-		applicationPath = new File(configuration.get("application.path")).getAbsolutePath();
-		String frankServerUrl = configuration.get("frank.server.url");
-		defaultSelectorEngine = configuration.get("default.selector.engine");
-		Integer timeout = configuration.getInteger("polling.timeout");
-		Integer pollingInterval = configuration.getInteger("polling.interval");
-		Boolean victorOwnsSimulator = Boolean.parseBoolean(configuration.get("victor.owns.simulator"));
+		this.configuration = configuration;
+		frank = frankClient();
+	}
 
-		sentences = new Sentences(new SystemClockPollTimer(timeout, pollingInterval));
-		frank = new FrankClient(frankServerUrl);
-		if(victorOwnsSimulator)
-			simulator = new VictorOwnedSimulator(simulatorPath);
-		else
-			simulator = new AlreadyRunningSimulator();
+	private Simulator alreadyRunningSimulator() {
+		return new AlreadyRunningSimulator();
 	}
 
 	public ApplicationDriver application() {
+		String defaultSelectorEngine = configuration.get("default.selector.engine");
 		return new FrankApplicationDriver(frank, defaultSelectorEngine);
 	}
-	
+
+	public FrankClient frankClient() {
+		String frankServerUrl = configuration.get("frank.server.url");
+		return new FrankClient(frankServerUrl);
+	}
+
 	public void launch() throws IOException {
-		simulator.launch(applicationPath);
+		String simulatorLocation = configuration.get("simulator.location");
+		if(simulatorLocation.equalsIgnoreCase("local")) {
+			Boolean launchNew = Boolean.parseBoolean(configuration.get("local.simulator.launch.new"));
+			if(launchNew) {
+				simulator = launchLocalSimulator();
+			} else {
+				simulator = alreadyRunningSimulator();
+			}
+		} else if(simulatorLocation.equalsIgnoreCase("remote")) {
+			simulator = launchRemoteSimulator();
+		}
 		waitUntil(frank).is(ready());
 	}
 
-	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {
-		return sentences.waitUntil(frank);
+	private Simulator launchLocalSimulator() throws IOException {
+		String simulatorPath = new File(configuration.get("local.simulator.path")).getAbsolutePath();
+		String applicationPath = new File(configuration.get("local.application.path")).getAbsolutePath();
+		return new VictorOwnedSimulator(simulatorPath).launch(applicationPath);
+	}
+
+	private Simulator launchRemoteSimulator() throws IOException {
+		String simulatorUrl = configuration.get("remote.simulator.url");
+		String applicationPath = new File(configuration.get("remote.application.path")).getAbsolutePath();
+		return new RemoteSimulator(simulatorUrl).launch(applicationPath);
 	}
 
 	public PhoneDriver phone() {
@@ -61,6 +76,12 @@ public class Launcher {
 	}
 
 	public Sentences sentences() {
-		return sentences;
+		Integer timeout = configuration.getInteger("polling.timeout");
+		Integer pollingInterval = configuration.getInteger("polling.interval");
+		return new Sentences(new SystemClockPollTimer(timeout, pollingInterval));
+	}
+
+	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {
+		return sentences().waitUntil(frank);
 	}
 }

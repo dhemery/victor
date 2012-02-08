@@ -1,5 +1,7 @@
 package com.dhemery.victor.frank.frankly;
 
+import com.dhemery.victor.http.HttpRequest;
+
 
 
 /**
@@ -7,7 +9,7 @@ package com.dhemery.victor.frank.frankly;
  * @author Dale Emery
  *
  */
-public class GetApplicationOrientation extends FranklyRequest {
+public class GetApplicationOrientation extends HttpRequest {
 	public GetApplicationOrientation() {
 		super("orientation");
 	}

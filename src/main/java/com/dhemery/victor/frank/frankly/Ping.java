@@ -1,5 +1,7 @@
 package com.dhemery.victor.frank.frankly;
 
+import com.dhemery.victor.http.HttpRequest;
+
 
 
 /**
@@ -8,7 +10,7 @@ package com.dhemery.victor.frank.frankly;
  * @author Dale Emery
  *
  */
-public class Ping extends FranklyRequest {
+public class Ping extends HttpRequest {
 	public Ping() {
 		super("");
 	}

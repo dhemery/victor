@@ -1,18 +1,22 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * The body of a Frank request.
- * Buy default, a {@code RequestBody} is empty and is not written to the connection,
+ * The body of an HTTP request.
+ * Buy default, an {@code HttpRequestBody} is empty and is not written to the connection,
  * which causes the request to be sent via HTTP GET.
  * Derived classes may actually write bytes to the connection,
  * which causes the request to be sent vie HTTP PUT.
  * @author Dale Emery
  *
  */
-public class FranklyRequestBody {
+public class HttpRequestBody {
+	protected transient final Logger log = LoggerFactory.getLogger(getClass()); 
 	/**
 	 * Writes the body of this request through the connection.
 	 * In this class, the method does nothing, which causes the request to be sent via HTTP GET.
@@ -21,7 +25,9 @@ public class FranklyRequestBody {
 	 * @param connection the connection to write the request body to.
 	 * @throws IOException
 	 */
-	public void writeTo(HttpURLConnection connection) throws IOException {}
+	public void writeTo(HttpURLConnection connection) throws IOException {
+		log.debug("Sending {} via HTTP GET", connection.getURL());
+	}
 
 	@Override
 	public String toString() {

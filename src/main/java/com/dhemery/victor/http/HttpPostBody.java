@@ -1,25 +1,20 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.http;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * The body of a Frank POST request.
+ * The body of an HTTP POST request.
  * Writes itself to the connection as a JSON string.
  * @author Dale Emery
  *
  */
-public class FranklyPostBody extends FranklyRequestBody {
-	private static final Logger log = LoggerFactory.getLogger(FranklyPostBody.class);
-
+public class HttpPostBody extends HttpRequestBody {
 	/**
 	 * Writes this request body to the connection as a JSON string.
 	 * This causes the request to be sent via HTTP POST.

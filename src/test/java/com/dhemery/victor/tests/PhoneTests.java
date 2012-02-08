@@ -33,7 +33,6 @@ public class PhoneTests extends VictorTest {
 		assertThat(application).has(orientation(), that(is(equalTo(PORTRAIT))));
 		assertThat(application).has(orientation()).that(is(equalTo(PORTRAIT)));
 
-
 		// The following waits all wait for the same condition, with different styles.
 		waitUntil(application).has(orientation(), equalTo(PORTRAIT));
 		waitUntil(application).has(orientation(), that(is(equalTo(PORTRAIT))));

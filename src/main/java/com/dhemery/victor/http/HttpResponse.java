@@ -1,14 +1,14 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.http;
 
 /**
- * A Frank server response from an HTTP request that returns JSON strings.
+ * An HTTP server response from a request that returns JSON strings.
  * @author Dale Emery
  */
-public class FranklyResponse {
+public class HttpResponse {
 	private final String status;
 	private final String body;
 	
-	public FranklyResponse(String status, String body) {
+	public HttpResponse(String status, String body) {
 		this.status = status;
 		this.body = body;		
 	}

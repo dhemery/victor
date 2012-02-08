@@ -8,7 +8,7 @@ public interface Simulator {
 	 * @param applicationPath the file path of the application to launch.
 	 * @throws IOException
 	 */
-	public void launch(String applicationPath) throws IOException;
+//	public void launch(String applicationPath) throws IOException;
 	
 	/**
 	 * Shuts down the simulator.

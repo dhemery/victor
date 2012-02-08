@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,48 +11,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A request to a Frank server.
+ * A request to an HTTP server.
  * @author Dale Emery
  *
  */
-public class FranklyRequest {
+public class HttpRequest {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String verb;
-	private final FranklyRequestBody body;
+	private final HttpRequestBody body;
 	
 	/**
-	 * Creates a Frank GET request.
+	 * Creates an HTTP GET request.
 	 * @param verb the path portion of the URL to which to send the request.
 	 */
-	public FranklyRequest(String verb) {
-		this(verb, new FranklyRequestBody());
+	public HttpRequest(String verb) {
+		this(verb, new HttpRequestBody());
 	}
 
 	/**
-	 * Creates a Frank request.
+	 * Creates an HTTP request.
 	 * If the body writes bytes to the connection,
 	 * the request is sent as a POST request.
 	 * Otherwise it is sent as a GET request.
 	 * @param verb the path portion of the URL to which to send the request.
 	 * @param body the body of the request.
 	 */
-	public FranklyRequest(String verb, FranklyRequestBody body) {
+	public HttpRequest(String verb, HttpRequestBody body) {
 		this.verb = verb;
 		this.body = body;
 	}
 
 	public String verb() { return verb; }
-	public FranklyRequestBody body() { return body; }
+	public HttpRequestBody body() { return body; }
 
 	/**
-	 * Sends the request to the Frank server and returns the server's response.
-	 * @param serverUrl The URL where the Frank server listens for requests.
-	 * @return The Frank server's response to the request.
+	 * Sends the request to the HTTP server and returns the server's response.
+	 * @param serverUrl The URL where the HTTP server listens for requests.
+	 * @return The HTTP server's response to the request.
 	 * @throws IOException
 	 */
-	public FranklyResponse sendTo(String serverUrl) throws IOException {
-		log.debug("Sending: {}", this);
+	public HttpResponse sendTo(String serverUrl) throws IOException {
 		URL url = urlFor(serverUrl, verb);
+		log.debug("Sending: {} {}", url.toString(), this);
 		HttpURLConnection connection = connectTo(url);
 		try {
 			body.writeTo(connection);
@@ -70,7 +70,7 @@ public class FranklyRequest {
 		return connection;
 	}
 
-	private FranklyResponse receiveResponseFrom(HttpURLConnection connection) throws IOException {
+	private HttpResponse receiveResponseFrom(HttpURLConnection connection) throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String line;
 		StringBuilder builder = new StringBuilder();
@@ -78,21 +78,22 @@ public class FranklyRequest {
 			builder.append(line);
 		}
 		in.close();
-		FranklyResponse response = new FranklyResponse(connection.getResponseMessage(), builder.toString());
+		HttpResponse response = new HttpResponse(connection.getResponseMessage(), builder.toString());
 		log.debug("Response: {}", response);
 		return response;
 	}
 
 	protected URL urlFor(String serverUrl, String verb) {
+		String fullUrl = String.format("%s/%s", serverUrl, verb);
 		try {
-			return new URL(String.format("%s/%s", serverUrl, verb));
+			return new URL(fullUrl);
 		} catch (MalformedURLException e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("[verb:%s][body:%s]", verb(), body());
+		return String.format("[body:%s]", body());
 	}
 }
