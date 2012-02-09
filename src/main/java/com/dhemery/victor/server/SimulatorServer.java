@@ -6,6 +6,9 @@ import java.net.InetSocketAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dhemery.victor.simulator.RemoteCloseSimulatorCommand;
+import com.dhemery.victor.simulator.RemoteLaunchApplicationCommand;
+import com.dhemery.victor.simulator.RemoteTouchMenuItemCommand;
 import com.dhemery.victor.simulator.VictorOwnedSimulator;
 import com.sun.net.httpserver.HttpServer;
 
@@ -29,9 +32,9 @@ public class SimulatorServer {
 		simulator = new VictorOwnedSimulator(SIMULATOR_PATH);
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
-		server.createContext("/launchApplication", new LaunchApplicationHandler(simulator));
-		server.createContext("/closeSimulator", new CloseSimulatorHandler(simulator));
-		server.createContext("/touchMenuItem", new TouchMenuItemHandler(simulator));
+		server.createContext(String.format("/%s", RemoteLaunchApplicationCommand.VERB), new LaunchApplicationHandler(simulator));
+		server.createContext(String.format("/%s", RemoteCloseSimulatorCommand.VERB), new CloseSimulatorHandler(simulator));
+		server.createContext(String.format("/%s", RemoteTouchMenuItemCommand.VERB), new TouchMenuItemHandler(simulator));
 	}
 
 	private void run() {

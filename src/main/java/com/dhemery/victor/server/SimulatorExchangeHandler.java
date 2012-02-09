@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,6 +27,15 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
 		this.type = type;
 	}
 
+	public T body(HttpExchange request) throws IOException {
+		InputStream requestBody = request.getRequestBody();
+		InputStreamReader requestReader = new InputStreamReader(requestBody);
+		BufferedReader bufferedReader = new BufferedReader(requestReader);
+		String line = bufferedReader.readLine();
+		requestReader.close();
+		return new Gson().fromJson(line, type);
+	}
+
 	private String errorMessageFor(Exception e) {
 		StringWriter errorMessage = new StringWriter();
 		e.printStackTrace(new PrintWriter(errorMessage));
@@ -41,15 +51,7 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
 		} catch (Exception e) {
 			sendError(request, body, e);
 		}
-		sendResponse(request, body, "");
-	}
-
-	public T body(HttpExchange request) throws IOException {
-		InputStream requestBody = request.getRequestBody();
-		InputStreamReader inputStreamReader = new InputStreamReader(requestBody);
-		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-		String line = bufferedReader.readLine();
-		return new Gson().fromJson(line, type);
+		sendResponse(request, body, "OK");
 	}
 
 	public abstract void perform(VictorOwnedSimulator simulator, T body) throws IOException, InterruptedException;
@@ -59,8 +61,18 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
 	}
 
 	public void sendResponse(HttpExchange request, T body, String message) throws IOException {
-		request.sendResponseHeaders(200, 0);
-		new OutputStreamWriter(request.getResponseBody()).append(message);
+		String response = new StringBuilder()
+							.append(request.getRequestURI())
+							.append(" ")
+							.append(body)
+							.append(" ")
+							.append(message)
+							.toString();
+		request.sendResponseHeaders(200, response.length());
+		OutputStream responseBody = request.getResponseBody();
+		OutputStreamWriter responseWriter = new OutputStreamWriter(responseBody);
+		responseWriter.append(response);
+		responseWriter.close();
 		request.close();
 	}
 }
