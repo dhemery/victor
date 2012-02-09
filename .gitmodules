@@ -1,9 +1,0 @@
-[submodule "polling-kit"]
-	path = polling-kit
-	url = git@github.com:dhemery/polling-kit
-[submodule "sentence-kit"]
-	path = sentence-kit
-	url = git@github.com:dhemery/sentence-kit
-[submodule "properties-kit"]
-	path = properties-kit
-	url = git@github.com:dhemery/properties-kit
