@@ -5,6 +5,9 @@ import static com.dhemery.victor.frank.FrankConditions.ready;
 import java.io.File;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dhemery.polling.SystemClockPollTimer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.sentences.Sentence;
@@ -14,24 +17,22 @@ import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.drivers.FrankApplicationDriver;
 import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
-import com.dhemery.victor.simulator.AlreadyRunningSimulator;
 import com.dhemery.victor.simulator.RemoteSimulator;
 import com.dhemery.victor.simulator.Simulator;
-import com.dhemery.victor.simulator.VictorOwnedSimulator;
+import com.dhemery.victor.simulator.LocalSimulator;
 
 
 public class Launcher {
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final FrankClient frank;
 	private Simulator simulator;
 	private final RequiredProperties configuration;
+	private final String simulatorHost;
 
 	public Launcher(RequiredProperties configuration) {
 		this.configuration = configuration;
+		simulatorHost = configuration.get("simulator.host");
 		frank = frankClient();
-	}
-
-	private Simulator alreadyRunningSimulator() {
-		return new AlreadyRunningSimulator();
 	}
 
 	public ApplicationDriver application() {
@@ -40,35 +41,34 @@ public class Launcher {
 	}
 
 	public FrankClient frankClient() {
-		String frankServerUrl = configuration.get("frank.server.url");
+		String frankServerUrl = urlForSimulatorHostPort(configuration.get("frank.server.port"));
 		return new FrankClient(frankServerUrl);
 	}
 
 	public void launch() throws IOException {
-		String simulatorLocation = configuration.get("simulator.location");
-		if(simulatorLocation.equalsIgnoreCase("local")) {
-			Boolean launchNew = Boolean.parseBoolean(configuration.get("local.simulator.launch.new"));
-			if(launchNew) {
-				simulator = launchLocalSimulator();
-			} else {
-				simulator = alreadyRunningSimulator();
-			}
-		} else if(simulatorLocation.equalsIgnoreCase("remote")) {
+		if(simulatorHost.equals("localhost")) {
+			simulator = launchLocalSimulator();
+		} else {
 			simulator = launchRemoteSimulator();
+		}
+		Boolean launchNew = Boolean.parseBoolean(configuration.get("simulator.launch.new"));
+		if(launchNew) {
+			String applicationPath = configuration.get("application.path");
+			simulator.launch(applicationPath);
 		}
 		waitUntil(frank).is(ready());
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {
-		String simulatorPath = new File(configuration.get("local.simulator.path")).getAbsolutePath();
-		String applicationPath = new File(configuration.get("local.application.path")).getAbsolutePath();
-		return new VictorOwnedSimulator(simulatorPath).launch(applicationPath);
+		log.debug("Launching local simulator");
+		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
+		return new LocalSimulator(simulatorPath);
 	}
 
 	private Simulator launchRemoteSimulator() throws IOException {
-		String simulatorUrl = configuration.get("remote.simulator.url");
-		String applicationPath = new File(configuration.get("remote.application.path")).getAbsolutePath();
-		return new RemoteSimulator(simulatorUrl).launch(applicationPath);
+		String simulatorUrl = urlForSimulatorHostPort(configuration.get("simulator.server.port"));
+		log.debug("Launching simulator on remote server {}", simulatorUrl);
+		return new RemoteSimulator(simulatorUrl);
 	}
 
 	public PhoneDriver phone() {
@@ -79,6 +79,10 @@ public class Launcher {
 		Integer timeout = configuration.getInteger("polling.timeout");
 		Integer pollingInterval = configuration.getInteger("polling.interval");
 		return new Sentences(new SystemClockPollTimer(timeout, pollingInterval));
+	}
+
+	public String urlForSimulatorHostPort(String simulatorServerPort) {
+		return String.format("http://%s:%s", simulatorHost, simulatorServerPort);
 	}
 
 	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {

@@ -8,7 +8,7 @@ import java.util.List;
  * @author Dale Emery
  *
  */
-public class TouchMenuItemCommand extends AppleScriptCommand {
+public class LocalTouchMenuItemCommand extends AppleScriptCommand {
 	private static final String TOUCH_MENU_ITEM_TEMPLATE = "   click menu item \"%s\" of menu \"%s\" of menu bar of process \"iPhone Simulator\"";
 
 	/**
@@ -16,7 +16,7 @@ public class TouchMenuItemCommand extends AppleScriptCommand {
 	 * @param menuName
 	 * @param menuItemName
 	 */
-	public TouchMenuItemCommand(String menuName, String menuItemName) {
+	public LocalTouchMenuItemCommand(String menuName, String menuItemName) {
 		super(menuTouchScriptFor(menuName, menuItemName));
 	}
 

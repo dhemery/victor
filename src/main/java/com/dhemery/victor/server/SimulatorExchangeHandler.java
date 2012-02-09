@@ -12,17 +12,17 @@ import java.io.StringWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.victor.simulator.VictorOwnedSimulator;
+import com.dhemery.victor.simulator.LocalSimulator;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	private final VictorOwnedSimulator simulator;
+	private final LocalSimulator simulator;
 	private final Class<T> type;
 
-	public SimulatorExchangeHandler(VictorOwnedSimulator simulator, Class<T> type) {
+	public SimulatorExchangeHandler(LocalSimulator simulator, Class<T> type) {
 		this.simulator = simulator;
 		this.type = type;
 	}
@@ -54,7 +54,7 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
 		sendResponse(request, body, "OK");
 	}
 
-	public abstract void perform(VictorOwnedSimulator simulator, T body) throws IOException, InterruptedException;
+	public abstract void perform(LocalSimulator simulator, T body) throws IOException, InterruptedException;
 
 	public void sendError(HttpExchange request, T body, Exception e) throws IOException {
 		sendResponse(request, body, errorMessageFor(e));

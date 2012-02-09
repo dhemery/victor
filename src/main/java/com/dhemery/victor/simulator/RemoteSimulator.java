@@ -17,10 +17,10 @@ public class RemoteSimulator implements Simulator {
 		log.debug("Using remote simulator at {}", simulatorUrl);
 	}
 
-	public Simulator launch(String applicationPath) throws IOException {
+	@Override
+	public void launch(String applicationPath) throws IOException {
 		log.debug("Launching remote application {}", applicationPath);
 		perform(new RemoteLaunchApplicationCommand(applicationPath));
-		return this;
 	}
 
 	@Override

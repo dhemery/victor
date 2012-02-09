@@ -1,5 +1,6 @@
 package com.dhemery.victor.simulator;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -7,20 +8,21 @@ import java.io.IOException;
  * @author Dale Emery
  *
  */
-public class VictorOwnedSimulator implements Simulator {
+public class LocalSimulator implements Simulator {
 	private final String simulatorPath;
 	private Process simulatorProcess;
 	
 	/**
 	 * @param simulatorPath the file path to the simulator application.
 	 */
-	public VictorOwnedSimulator(String simulatorPath) {
+	public LocalSimulator(String simulatorPath) {
 		this.simulatorPath = simulatorPath;
 	}
 
-	public Simulator launch(String applicationPath) throws IOException {
-		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationPath).run();
-		return this;
+	@Override
+	public void launch(String applicationPath) throws IOException {
+		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
+		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath).run();
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class VictorOwnedSimulator implements Simulator {
 
 	@Override
 	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
-		new TouchMenuItemCommand(menuName, menuItemName).run();
+		new LocalTouchMenuItemCommand(menuName, menuItemName).run();
 	}
 
 	private void waitForSimulatorToShutDown() throws InterruptedException {

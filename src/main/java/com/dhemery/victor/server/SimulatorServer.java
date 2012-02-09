@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.dhemery.victor.simulator.RemoteCloseSimulatorCommand;
 import com.dhemery.victor.simulator.RemoteLaunchApplicationCommand;
 import com.dhemery.victor.simulator.RemoteTouchMenuItemCommand;
-import com.dhemery.victor.simulator.VictorOwnedSimulator;
+import com.dhemery.victor.simulator.LocalSimulator;
 import com.sun.net.httpserver.HttpServer;
 
 public class SimulatorServer {
@@ -26,10 +26,10 @@ public class SimulatorServer {
 		}
 	}
 	private final HttpServer server;
-	private final VictorOwnedSimulator simulator;
+	private final LocalSimulator simulator;
 
 	public SimulatorServer() throws IOException {
-		simulator = new VictorOwnedSimulator(SIMULATOR_PATH);
+		simulator = new LocalSimulator(SIMULATOR_PATH);
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
 		server.createContext(String.format("/%s", RemoteLaunchApplicationCommand.VERB), new LaunchApplicationHandler(simulator));

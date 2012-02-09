@@ -2,16 +2,16 @@ package com.dhemery.victor.server;
 
 import java.io.IOException;
 
-import com.dhemery.victor.simulator.RemoteTouchMenuItemCommandBody;
-import com.dhemery.victor.simulator.VictorOwnedSimulator;
+import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.RemoteTouchMenuItemCommand;
 
-public class TouchMenuItemHandler extends SimulatorExchangeHandler<RemoteTouchMenuItemCommandBody> {
-	public TouchMenuItemHandler(VictorOwnedSimulator simulator) {
-		super(simulator, RemoteTouchMenuItemCommandBody.class);
+public class TouchMenuItemHandler extends SimulatorExchangeHandler<RemoteTouchMenuItemCommand.Body> {
+	public TouchMenuItemHandler(LocalSimulator simulator) {
+		super(simulator, RemoteTouchMenuItemCommand.Body.class);
 	}
 
 	@Override
-	public void perform(VictorOwnedSimulator simulator, RemoteTouchMenuItemCommandBody body) throws IOException, InterruptedException {
+	public void perform(LocalSimulator simulator, RemoteTouchMenuItemCommand.Body body) throws IOException, InterruptedException {
 		simulator.touchMenuItem(body.menuName, body.menuItemName);
 	}
 }
