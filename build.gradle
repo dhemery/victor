@@ -16,8 +16,13 @@ idea {
 }
 defaultTasks 'build'
 
+dependencies {
+	compile fileTree(dir: 'lib/main', include: '*.jar')
+	testCompile fileTree(dir: 'lib/test', include: '*.jar')
+}
+
 manifest.mainAttributes("Main-Class" : "com.dhemery.victor.server.VictorServer")
-	
+
 task sourcesJar(type: Jar, dependsOn:classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
