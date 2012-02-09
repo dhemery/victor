@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator;
+package com.dhemery.victor.simulator.remote;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.victor.http.HttpRequest;
+import com.dhemery.victor.simulator.Simulator;
 
 
 public class RemoteSimulator implements Simulator {

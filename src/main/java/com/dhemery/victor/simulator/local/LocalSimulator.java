@@ -1,7 +1,9 @@
-package com.dhemery.victor.simulator;
+package com.dhemery.victor.simulator.local;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.dhemery.victor.simulator.Simulator;
 
 /**
  * An iOS simulator running on this computer.

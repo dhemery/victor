@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator;
+package com.dhemery.victor.simulator.local;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package com.dhemery.victor.server;
+package com.dhemery.victor.simulator.server;
 
 import java.io.IOException;
 
-import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.local.LocalSimulator;
 
 public class CloseSimulatorHandler extends SimulatorExchangeHandler<Void> {
 	public CloseSimulatorHandler(LocalSimulator simulator) {

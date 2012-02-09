@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator;
+package com.dhemery.victor.simulator.remote;
 
 import com.dhemery.victor.http.HttpRequest;
 

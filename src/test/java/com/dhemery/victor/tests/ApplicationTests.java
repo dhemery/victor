@@ -33,7 +33,7 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException {
-		assertThat(masterView).eventually().is(present());
+		assertThat(masterView).is(present());
 		assertThat(masterView).eventually().is(visible());
 		when(masterView).is(present()).flash();
 		assertThat(detailLabel).eventually().is(present());

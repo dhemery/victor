@@ -17,9 +17,9 @@ import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.drivers.FrankApplicationDriver;
 import com.dhemery.victor.frank.drivers.FrankPhoneDriver;
-import com.dhemery.victor.simulator.RemoteSimulator;
 import com.dhemery.victor.simulator.Simulator;
-import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.local.LocalSimulator;
+import com.dhemery.victor.simulator.remote.RemoteSimulator;
 
 
 public class Launcher {

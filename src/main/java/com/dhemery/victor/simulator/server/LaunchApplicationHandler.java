@@ -1,9 +1,9 @@
-package com.dhemery.victor.server;
+package com.dhemery.victor.simulator.server;
 
 import java.io.IOException;
 
-import com.dhemery.victor.simulator.LocalSimulator;
-import com.dhemery.victor.simulator.RemoteLaunchApplicationCommand;
+import com.dhemery.victor.simulator.local.LocalSimulator;
+import com.dhemery.victor.simulator.remote.RemoteLaunchApplicationCommand;
 
 public class LaunchApplicationHandler extends SimulatorExchangeHandler<RemoteLaunchApplicationCommand.Body> {
 	public LaunchApplicationHandler(LocalSimulator simulator) {

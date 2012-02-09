@@ -1,4 +1,4 @@
-package com.dhemery.victor.server;
+package com.dhemery.victor.simulator.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -6,10 +6,10 @@ import java.net.InetSocketAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.victor.simulator.RemoteCloseSimulatorCommand;
-import com.dhemery.victor.simulator.RemoteLaunchApplicationCommand;
-import com.dhemery.victor.simulator.RemoteTouchMenuItemCommand;
-import com.dhemery.victor.simulator.LocalSimulator;
+import com.dhemery.victor.simulator.local.LocalSimulator;
+import com.dhemery.victor.simulator.remote.RemoteCloseSimulatorCommand;
+import com.dhemery.victor.simulator.remote.RemoteLaunchApplicationCommand;
+import com.dhemery.victor.simulator.remote.RemoteTouchMenuItemCommand;
 import com.sun.net.httpserver.HttpServer;
 
 public class SimulatorServer {
