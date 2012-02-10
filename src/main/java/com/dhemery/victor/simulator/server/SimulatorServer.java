@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dhemery.victor.simulator.local.LocalSimulator;
-import com.dhemery.victor.simulator.remote.RemoteCloseSimulatorCommand;
-import com.dhemery.victor.simulator.remote.RemoteLaunchApplicationCommand;
-import com.dhemery.victor.simulator.remote.RemoteTouchMenuItemCommand;
+import com.dhemery.victor.simulator.remote.CloseSimulatorRequest;
+import com.dhemery.victor.simulator.remote.LaunchApplicationRequest;
+import com.dhemery.victor.simulator.remote.TouchMenuItemRequest;
 import com.sun.net.httpserver.HttpServer;
 
 public class SimulatorServer {
@@ -32,9 +32,9 @@ public class SimulatorServer {
 		simulator = new LocalSimulator(SIMULATOR_PATH);
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
-		server.createContext(String.format("/%s", RemoteLaunchApplicationCommand.VERB), new LaunchApplicationHandler(simulator));
-		server.createContext(String.format("/%s", RemoteCloseSimulatorCommand.VERB), new CloseSimulatorHandler(simulator));
-		server.createContext(String.format("/%s", RemoteTouchMenuItemCommand.VERB), new TouchMenuItemHandler(simulator));
+		server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));
+		server.createContext(String.format("/%s", CloseSimulatorRequest.VERB), new CloseSimulatorHandler(simulator));
+		server.createContext(String.format("/%s", TouchMenuItemRequest.VERB), new TouchMenuItemHandler(simulator));
 	}
 
 	private void run() {

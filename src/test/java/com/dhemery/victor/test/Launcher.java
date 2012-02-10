@@ -54,7 +54,8 @@ public class Launcher {
 		Boolean launchNew = Boolean.parseBoolean(configuration.get("simulator.launch.new"));
 		if(launchNew) {
 			String applicationPath = configuration.get("application.path");
-			simulator.launch(applicationPath);
+			String deviceType = configuration.get("simulator.device.type");
+			simulator.launch(applicationPath, deviceType);
 		}
 		waitUntil(frank).is(ready());
 	}

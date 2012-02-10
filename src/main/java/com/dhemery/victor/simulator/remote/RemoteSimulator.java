@@ -19,14 +19,14 @@ public class RemoteSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath) throws IOException {
+	public void launch(String applicationPath, String deviceType) throws IOException {
 		log.debug("Launching remote application {}", applicationPath);
-		perform(new RemoteLaunchApplicationCommand(applicationPath));
+		perform(new LaunchApplicationRequest(applicationPath, deviceType));
 	}
 
 	@Override
 	public void shutDown() throws IOException, InterruptedException {
-		perform(new RemoteCloseSimulatorCommand());
+		perform(new CloseSimulatorRequest());
 	}
 
 	private void perform(HttpRequest operation) throws IOException {
@@ -35,6 +35,6 @@ public class RemoteSimulator implements Simulator {
 
 	@Override
 	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
-		perform(new RemoteTouchMenuItemCommand(menuName, menuItemName));
+		perform(new TouchMenuItemRequest(menuName, menuItemName));
 	}
 }

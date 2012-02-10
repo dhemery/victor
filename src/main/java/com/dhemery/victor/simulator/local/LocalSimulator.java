@@ -22,9 +22,9 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath) throws IOException {
+	public void launch(String applicationPath, String deviceType) throws IOException {
 		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
-		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath).run();
+		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath, "-SimulateDevice", deviceType).run();
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class LocalSimulator implements Simulator {
 
 	@Override
 	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
-		new LocalTouchMenuItemCommand(menuName, menuItemName).run();
+		new TouchMenuItemCommand(menuName, menuItemName).run();
 	}
 
 	private void waitForSimulatorToShutDown() throws InterruptedException {
