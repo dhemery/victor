@@ -32,4 +32,9 @@ public interface ViewDriver extends SelfDescribing {
 	 * Touch the element.
 	 */
 	public void touch();
+
+	/**
+	 * @param text the text to type into the view.
+	 */
+	void type(String text);
 }

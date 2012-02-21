@@ -95,4 +95,10 @@ public class FrankViewDriver implements ViewDriver {
 	public String toString() {
 		return query().toString();
 	}
+
+	@Override
+	public void type(String text) {
+		call("setText", text);
+	}
+
 }
