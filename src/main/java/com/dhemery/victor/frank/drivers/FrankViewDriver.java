@@ -97,8 +97,7 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public void type(String text) {
-		call("setText", text);
+	public void setText(String text) {
+		call("setText:", text);
 	}
-
 }

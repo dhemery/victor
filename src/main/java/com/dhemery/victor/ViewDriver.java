@@ -36,5 +36,5 @@ public interface ViewDriver extends SelfDescribing {
 	/**
 	 * @param text the text to type into the view.
 	 */
-	void type(String text);
+	void setText(String text);
 }
