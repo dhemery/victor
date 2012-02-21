@@ -33,9 +33,9 @@ public class FrankClient implements SelfDescribing {
 	public FrankClient(String serverUrl) {
 		this.serverUrl = serverUrl;
 		gson = new GsonBuilder()
-					.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
-					.disableHtmlEscaping()
-					.create();
+		.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
+		.disableHtmlEscaping()
+		.create();
 	}
 
 	/**
@@ -58,12 +58,8 @@ public class FrankClient implements SelfDescribing {
 	 * @return true if the Frank server responds to the request, otherwise false.
 	 */
 	public boolean isReady() {
-		try {
-			new Ping().sendTo(serverUrl);
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
+		new Ping().sendTo(serverUrl);
+		return true;
 	}
 
 	/**

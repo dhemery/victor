@@ -73,7 +73,7 @@ public class Launcher {
 	}
 
 	public PhoneDriver phone() {
-		return new FrankPhoneDriver(simulator, frank);
+		return new FrankPhoneDriver(simulator);
 	}
 
 	public Sentences sentences() {

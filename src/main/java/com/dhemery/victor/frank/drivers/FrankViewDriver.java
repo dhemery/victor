@@ -30,12 +30,12 @@ public class FrankViewDriver implements ViewDriver {
 		this.query = query;
 	}
 
-	private ResultsResponse call(String method, String...arguments) throws IOException {
+	private ResultsResponse call(String method, String...arguments) {
 		return perform(new Operation(method, arguments));
 	}
 
 	@Override
-	public void flash() throws IOException {
+	public void flash() {
 		call("flash");
 	}
 
@@ -82,7 +82,7 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public void touch() throws IOException {
+	public void touch() {
 		call("touch");
 	}
 
@@ -95,5 +95,4 @@ public class FrankViewDriver implements ViewDriver {
 	public String toString() {
 		return query().toString();
 	}
-
 }

@@ -41,8 +41,12 @@ public class OSCommand {
 	 * @return a native process that can describe and control the invoked command.
 	 * @throws IOException
 	 */
-	public Process run() throws IOException {
+	public Process run() {
 		log.debug("Executing command {}", Arrays.asList(command));
-		return Runtime.getRuntime().exec(command);
+		try {
+			return Runtime.getRuntime().exec(command);
+		} catch (IOException e) {
+			throw new OSCommandException(Arrays.asList(command).toString(), e);
+		}
 	}
 }

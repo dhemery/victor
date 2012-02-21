@@ -1,7 +1,5 @@
 package com.dhemery.victor;
 
-import java.io.IOException;
-
 import org.hamcrest.SelfDescribing;
 
 /**
@@ -12,9 +10,8 @@ public interface ViewDriver extends SelfDescribing {
 	
 	/**
 	 * Causes the view to flash visually.
-	 * @throws IOException
 	 */
-	public void flash() throws IOException;
+	public void flash();
 	
 	/**
 	 * @return {@code true} if the view is present, otherwise {@code false}.
@@ -33,7 +30,6 @@ public interface ViewDriver extends SelfDescribing {
 
 	/**
 	 * Touch the element.
-	 * @throws IOException
 	 */
-	public void touch() throws IOException;
+	public void touch();
 }

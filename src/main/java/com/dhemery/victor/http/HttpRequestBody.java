@@ -1,6 +1,5 @@
 package com.dhemery.victor.http;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import org.slf4j.Logger;
@@ -23,10 +22,9 @@ public class HttpRequestBody {
 	 * Derived classes may override this method and actually write bytes,
 	 * which causes the message to be sent via HTTP PUT.
 	 * @param connection the connection to write the request body to.
-	 * @throws IOException
 	 */
-	public void writeTo(HttpURLConnection connection) throws IOException {
-		log.debug("Sending {} via HTTP GET", connection.getURL());
+	public void writeTo(HttpURLConnection connection) {
+		log.debug("Sending empty body to {} via HTTP GET", connection.getURL());
 	}
 
 	@Override

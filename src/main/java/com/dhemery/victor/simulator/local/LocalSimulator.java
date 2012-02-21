@@ -1,7 +1,6 @@
 package com.dhemery.victor.simulator.local;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.dhemery.victor.simulator.Simulator;
 
@@ -22,13 +21,13 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath, String deviceType) throws IOException {
+	public void launch(String applicationPath, String deviceType) {
 		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
 		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath, "-SimulateDevice", deviceType).run();
 	}
 
 	@Override
-	public void shutDown() throws IOException, InterruptedException {
+	public void shutDown() {
 		if(simulatorProcess != null) {
 			touchMenuItem("iOS Simulator", "Quit iOS Simulator");
 			waitForSimulatorToShutDown();			
@@ -37,11 +36,15 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
+	public void touchMenuItem(String menuName, String menuItemName) {
 		new TouchMenuItemCommand(menuName, menuItemName).run();
 	}
 
-	private void waitForSimulatorToShutDown() throws InterruptedException {
-		simulatorProcess.waitFor();
+	private void waitForSimulatorToShutDown() {
+		try {
+			simulatorProcess.waitFor();
+		} catch (InterruptedException e) {
+			throw new SimulatorCommandException("Exception while waiting for simulator to shut down", e);
+		}
 	}
 }

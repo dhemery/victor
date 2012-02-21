@@ -20,13 +20,21 @@ public class HttpPostBody extends HttpRequestBody {
 	 * This causes the request to be sent via HTTP POST.
 	 */
 	@Override
-	public void writeTo(HttpURLConnection connection) throws IOException {
+	public void writeTo(HttpURLConnection connection) {
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		String json = gson.toJson(this);
 		log.debug("Writing body as Json: {}", json);
-		OutputStream outputStream = connection.getOutputStream();
-		OutputStreamWriter out = new OutputStreamWriter(outputStream);
-		out.write(json);
-		out.close();
+		write(connection, json);
+	}
+
+	private void write(HttpURLConnection connection, String json) {
+		try {
+			OutputStream outputStream = connection.getOutputStream();
+			OutputStreamWriter out = new OutputStreamWriter(outputStream);
+			out.write(json);
+			out.close();
+		} catch (IOException e) {
+			throw new HttpException(String.format("Exception while writing to %s", connection.getURL()), e);
+		}
 	}
 }

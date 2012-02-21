@@ -1,7 +1,5 @@
 package com.dhemery.victor.simulator.remote;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,22 +17,22 @@ public class RemoteSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath, String deviceType) throws IOException {
+	public void launch(String applicationPath, String deviceType) {
 		log.debug("Launching remote application {}", applicationPath);
 		perform(new LaunchApplicationRequest(applicationPath, deviceType));
 	}
 
 	@Override
-	public void shutDown() throws IOException, InterruptedException {
+	public void shutDown() {
 		perform(new CloseSimulatorRequest());
 	}
 
-	private void perform(HttpRequest operation) throws IOException {
+	private void perform(HttpRequest operation) {
 		operation.sendTo(simulatorUrl);
 	}
 
 	@Override
-	public void touchMenuItem(String menuName, String menuItemName) throws IOException, InterruptedException {
+	public void touchMenuItem(String menuName, String menuItemName) {
 		perform(new TouchMenuItemRequest(menuName, menuItemName));
 	}
 }
