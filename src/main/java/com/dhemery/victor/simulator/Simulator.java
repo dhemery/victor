@@ -6,7 +6,7 @@ public interface Simulator {
 	 * Launches an application in the simulator.
 	 * @param applicationPath the file path of the application to launch.
 	 */
-	public void launch(String applicationPath, String deviceType);
+	public void launch(String applicationPath, String deviceType, String sdkRoot);
 	
 	/**
 	 * Shuts down the simulator.

@@ -21,9 +21,9 @@ public class LocalSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath, String deviceType) {
+	public void launch(String applicationPath, String deviceType, String sdkRoot) {
 		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
-		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath, "-SimulateDevice", deviceType).run();
+		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath, "-SimulateDevice", deviceType, "-currentSDKRoot", sdkRoot).run();
 	}
 
 	@Override

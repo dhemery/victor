@@ -17,9 +17,9 @@ public class RemoteSimulator implements Simulator {
 	}
 
 	@Override
-	public void launch(String applicationPath, String deviceType) {
+	public void launch(String applicationPath, String deviceType, String sdkRoot) {
 		log.debug("Launching remote application {}", applicationPath);
-		perform(new LaunchApplicationRequest(applicationPath, deviceType));
+		perform(new LaunchApplicationRequest(applicationPath, deviceType, sdkRoot));
 	}
 
 	@Override

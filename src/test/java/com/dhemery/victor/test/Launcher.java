@@ -55,7 +55,11 @@ public class Launcher {
 		if(launchNew) {
 			String applicationPath = configuration.get("application.path");
 			String deviceType = configuration.get("simulator.device.type");
-			simulator.launch(applicationPath, deviceType);
+			String iosVersion = configuration.get("simulator.sdk.version");
+			String sdkPathPattern = configuration.get("simulator.sdk.path.pattern");
+			String sdkRoot = String.format(sdkPathPattern, iosVersion);
+			log.debug("Launching simulator for sdk {}", sdkRoot);
+			simulator.launch(applicationPath, deviceType, sdkRoot);
 		}
 		waitUntil(frank).is(ready());
 	}
@@ -88,5 +92,9 @@ public class Launcher {
 
 	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {
 		return sentences().waitUntil(frank);
+	}
+
+	public Simulator simulator() {
+		return simulator;
 	}
 }

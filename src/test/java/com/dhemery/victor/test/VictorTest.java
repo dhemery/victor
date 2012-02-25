@@ -11,11 +11,13 @@ import com.dhemery.sentences.PollableSentence;
 import com.dhemery.sentences.Sentences;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
+import com.dhemery.victor.simulator.Simulator;
 
 public class VictorTest {
 	private static ApplicationDriver application;
 	private static PhoneDriver phone;
 	private static Sentences sentences;
+	private static Simulator simulator;
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutError {
@@ -25,11 +27,12 @@ public class VictorTest {
 		sentences = launcher.sentences();
 		phone = launcher.phone();
 		application = launcher.application();
+		simulator = launcher.simulator();
 	}
 
 	@AfterClass
-	public static void shutDownPhone() throws IOException, InterruptedException {
-		phone.shutDown();
+	public static void shutDownSimulator() throws IOException, InterruptedException {
+		simulator.shutDown();
 	}
 
 	public ApplicationDriver application() { return application; }

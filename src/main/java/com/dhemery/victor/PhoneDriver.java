@@ -9,10 +9,6 @@ public interface PhoneDriver {
 	public void rotateLeft();
 	public void rotateRight();
 	
-	/**
-	 * Shuts down the phone.
-	 */
-	public void shutDown();
 	
 	/**
 	 * Saves an image of the screen to the desktop.

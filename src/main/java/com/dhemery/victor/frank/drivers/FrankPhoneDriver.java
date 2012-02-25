@@ -26,11 +26,6 @@ public class FrankPhoneDriver implements PhoneDriver {
 	}
 	
 	@Override
-	public void shutDown() {
-		simulator.shutDown();
-	}
-
-	@Override
 	public void saveScreenShot() {
 		simulator.touchMenuItem("File", "Save Screen Shot");
 	}
