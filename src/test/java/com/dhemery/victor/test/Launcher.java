@@ -1,6 +1,7 @@
 package com.dhemery.victor.test;
 
-import static com.dhemery.victor.frank.FrankConditions.ready;
+import static com.dhemery.victor.frank.Ready.ready;
+import static org.hamcrest.Matchers.is;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,10 +9,10 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dhemery.polling.PollTimer;
+import com.dhemery.polling.Sentences;
 import com.dhemery.polling.SystemClockPollTimer;
 import com.dhemery.properties.RequiredProperties;
-import com.dhemery.sentences.Sentence;
-import com.dhemery.sentences.Sentences;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.frank.FrankClient;
@@ -61,7 +62,7 @@ public class Launcher {
 			log.debug("Launching simulator for sdk {}", sdkRoot);
 			simulator.launch(applicationPath, deviceType, sdkRoot);
 		}
-		waitUntil(frank).is(ready());
+		Sentences.waitUntil(frank, timer(), is(ready()));
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {
@@ -80,18 +81,14 @@ public class Launcher {
 		return new FrankPhoneDriver(simulator);
 	}
 
-	public Sentences sentences() {
+	public PollTimer timer() {
 		Integer timeout = configuration.getInteger("polling.timeout");
 		Integer pollingInterval = configuration.getInteger("polling.interval");
-		return new Sentences(new SystemClockPollTimer(timeout, pollingInterval));
+		return new SystemClockPollTimer(timeout, pollingInterval);
 	}
 
 	public String urlForSimulatorHostPort(String simulatorServerPort) {
 		return String.format("http://%s:%s", simulatorHost, simulatorServerPort);
-	}
-
-	private Sentence<FrankClient,Void> waitUntil(FrankClient frank) {
-		return sentences().waitUntil(frank);
 	}
 
 	public Simulator simulator() {

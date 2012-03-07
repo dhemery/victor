@@ -41,21 +41,30 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public boolean isPresent() {
-		ResultsResponse response = property("accessibilityLabel");
+		ResultsResponse response = perform(new Operation("accessibilityLabel"));
 		if(!response.succeeded()) return false;
 		return isSingular(response.results());
 	}
 
 	@Override
 	public boolean isVisible() {
-		ResultsResponse response = property("isHidden");
+		ResultsResponse response = perform(new Operation("isHidden"));
 		if(!response.succeeded()) return false;
 		List<String> results = response.results();
 		return isSingular(results) && isFalse(results.get(0));
 	}
 
-	public ResultsResponse property(String property) {
-		return perform(new Operation(property));
+	public String property(String property) {
+		Operation operation = new Operation(property);
+		ResultsResponse response = perform(operation);
+		if(!response.succeeded()) {
+			throw new FrankViewOperationException(operation, response);
+		}
+		List<String> results = response.results();
+		if(!isSingular(results)) {
+			throw new FrankViewOperationException("Query must identify a single view", operation, response);
+		}
+		return response.results().get(0);
 	}
 
 	private boolean isFalse(String result) {

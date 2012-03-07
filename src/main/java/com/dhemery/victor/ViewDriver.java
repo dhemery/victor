@@ -24,6 +24,12 @@ public interface ViewDriver extends SelfDescribing {
 	public boolean isVisible();
 	
 	/**
+	 * @param propertyName the name of the property to retrieve.
+	 * @return the value of the property for the view.
+	 */
+	public String property(String propertyName);
+
+	/**
 	 * @return the query that identifies the views represented by this driver.
 	 */
 	public ViewQuery query();

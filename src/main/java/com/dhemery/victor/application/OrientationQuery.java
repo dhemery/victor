@@ -1,10 +1,10 @@
 package com.dhemery.victor.application;
 
-import com.dhemery.sentences.Query;
+import com.dhemery.polling.Query;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.ApplicationDriver.Orientation;
 
-public class OrientationSampler extends Query<ApplicationDriver, Orientation> {
+public class OrientationQuery extends Query<ApplicationDriver, Orientation> {
 	@Override
 	public String name() {
 		return "orientation";
@@ -13,5 +13,9 @@ public class OrientationSampler extends Query<ApplicationDriver, Orientation> {
 	@Override
 	public Orientation query(ApplicationDriver subject) {
 		return subject.orientation();
+	}
+	
+	public static Query<ApplicationDriver, Orientation> orientation() {
+		return new OrientationQuery();
 	}
 }

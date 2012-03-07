@@ -1,9 +1,12 @@
 package com.dhemery.victor.tests;
 
-import static com.dhemery.sentences.That.that;
-import static com.dhemery.victor.ApplicationAttributes.orientation;
+import static com.dhemery.polling.Has.has;
+import static com.dhemery.polling.Sentences.assertThat;
+import static com.dhemery.polling.That.that;
+import static com.dhemery.victor.application.OrientationQuery.orientation;
 import static com.dhemery.victor.ApplicationDriver.Orientation.LANDSCAPE;
 import static com.dhemery.victor.ApplicationDriver.Orientation.PORTRAIT;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
@@ -29,25 +32,21 @@ public class PhoneTests extends VictorTest {
 	@Test
 	public void orientationTests() throws InterruptedException, IOException {
 		// The following assertions all assert the same condition, with different styles.
-		assertThat(application).has(orientation(), equalTo(PORTRAIT));
-		assertThat(application).has(orientation(), that(is(equalTo(PORTRAIT))));
-		assertThat(application).has(orientation()).that(is(equalTo(PORTRAIT)));
+		assertThat(application, has(orientation(), equalTo(PORTRAIT)));
 
 		// The following waits all wait for the same condition, with different styles.
-		waitUntil(application).has(orientation(), equalTo(PORTRAIT));
-		waitUntil(application).has(orientation(), that(is(equalTo(PORTRAIT))));
-		waitUntil(application).has(orientation()).that(is(equalTo(PORTRAIT)));
+		waitUntil(application, has(orientation(), equalTo(PORTRAIT)));
 
 		phone.rotateLeft();
-		assertThat(application).eventually().has(orientation(), equalTo(LANDSCAPE));
+		assertThat(application, eventually(), has(orientation(), that(is(equalTo(LANDSCAPE)))));
 
 		phone.rotateRight();
-		assertThat(application).eventually().has(orientation(), equalTo(PORTRAIT));
+		assertThat(application, eventually(), has(orientation(), equalTo(PORTRAIT)));
 
 		phone.rotateRight();
-		assertThat(application).eventually().has(orientation(), equalTo(LANDSCAPE));
+		assertThat(application, eventually(), has(orientation(), equalTo(LANDSCAPE)));
 
 		phone.rotateRight();
-		assertThat(application).eventually().has(orientation(), equalTo(PORTRAIT));
+		assertThat(application, eventually(), has(orientation(), equalTo(PORTRAIT)));
 	}
-}
+	}

@@ -2,13 +2,14 @@ package com.dhemery.victor.test;
 
 import java.io.IOException;
 
+import org.hamcrest.Matcher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.dhemery.polling.PollTimeoutError;
+import com.dhemery.polling.PollTimer;
+import com.dhemery.polling.Sentences;
 import com.dhemery.properties.RequiredProperties;
-import com.dhemery.sentences.PollableSentence;
-import com.dhemery.sentences.Sentences;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
 import com.dhemery.victor.simulator.Simulator;
@@ -16,18 +17,18 @@ import com.dhemery.victor.simulator.Simulator;
 public class VictorTest {
 	private static ApplicationDriver application;
 	private static PhoneDriver phone;
-	private static Sentences sentences;
 	private static Simulator simulator;
+	private static PollTimer timer;
 
 	@BeforeClass
 	public static void launchApp() throws IOException, PollTimeoutError {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Launcher launcher = new Launcher(configuration);
 		launcher.launch();
-		sentences = launcher.sentences();
 		phone = launcher.phone();
 		application = launcher.application();
 		simulator = launcher.simulator();
+		timer = launcher.timer();
 	}
 
 	@AfterClass
@@ -35,22 +36,19 @@ public class VictorTest {
 		simulator.shutDown();
 	}
 
+
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
-
-	public <S> PollableSentence<S,Void> assertThat(S subject) {
-		return sentences.assertThat(subject);
-	}
-
-	public <S> PollableSentence<S,S> when(S subject) {
-		return sentences.when(subject);
+	
+	public PollTimer eventually() {
+		return timer;
 	}
 	
-	public <S> PollableSentence<S,Void> waitUntil(S subject) {
-		return sentences.waitUntil(subject);
+	public <S> void waitUntil(S subject, Matcher<? super S> matcher) {
+		Sentences.waitUntil(subject, eventually(), matcher);
 	}
-	
-	public <S> PollableSentence<S,Boolean> the(S subject) {
-		return sentences.the(subject);
+
+	public <S> S when(S subject, Matcher<? super S> matcher) {
+		return Sentences.when(subject, eventually(), matcher);
 	}
 }
