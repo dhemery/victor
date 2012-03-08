@@ -1,14 +1,10 @@
 package com.dhemery.victor.tests;
 
 import static com.dhemery.polling.Has.has;
-import static com.dhemery.polling.Sentences.assertThat;
-import static com.dhemery.polling.That.that;
-import static com.dhemery.victor.application.OrientationQuery.orientation;
 import static com.dhemery.victor.ApplicationDriver.Orientation.LANDSCAPE;
 import static com.dhemery.victor.ApplicationDriver.Orientation.PORTRAIT;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static com.dhemery.victor.application.OrientationQuery.orientation;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
 
@@ -38,7 +34,7 @@ public class PhoneTests extends VictorTest {
 		waitUntil(application, has(orientation(), equalTo(PORTRAIT)));
 
 		phone.rotateLeft();
-		assertThat(application, eventually(), has(orientation(), that(is(equalTo(LANDSCAPE)))));
+		assertThat(application, eventually(), has(orientation(), equalTo(LANDSCAPE)));
 
 		phone.rotateRight();
 		assertThat(application, eventually(), has(orientation(), equalTo(PORTRAIT)));

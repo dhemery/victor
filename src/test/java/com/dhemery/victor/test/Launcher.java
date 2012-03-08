@@ -9,8 +9,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dhemery.polling.MatcherPoll;
 import com.dhemery.polling.PollTimer;
-import com.dhemery.polling.Sentences;
 import com.dhemery.polling.SystemClockPollTimer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
@@ -62,7 +62,7 @@ public class Launcher {
 			log.debug("Launching simulator for sdk {}", sdkRoot);
 			simulator.launch(applicationPath, deviceType, sdkRoot);
 		}
-		Sentences.waitUntil(frank, timer(), is(ready()));
+		new MatcherPoll<FrankClient>(frank, is(ready()), timer()).run();
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {

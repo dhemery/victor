@@ -3,12 +3,13 @@ package com.dhemery.victor.test;
 import java.io.IOException;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.dhemery.polling.MatcherPoll;
 import com.dhemery.polling.PollTimeoutError;
 import com.dhemery.polling.PollTimer;
-import com.dhemery.polling.Sentences;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
@@ -44,11 +45,20 @@ public class VictorTest {
 		return timer;
 	}
 	
+	public static <S> void assertThat(S subject, Matcher<? super S> matcher) {
+		MatcherAssert.assertThat(subject, matcher);
+	}
+
+	public <S> void assertThat(S subject, PollTimer timer, Matcher<? super S> matcher) {
+		new MatcherPoll<S>(subject, matcher, eventually()).run();
+	}
+
 	public <S> void waitUntil(S subject, Matcher<? super S> matcher) {
-		Sentences.waitUntil(subject, eventually(), matcher);
+		assertThat(subject, eventually(), matcher);
 	}
 
 	public <S> S when(S subject, Matcher<? super S> matcher) {
-		return Sentences.when(subject, eventually(), matcher);
+		waitUntil(subject, matcher);
+		return subject;
 	}
 }

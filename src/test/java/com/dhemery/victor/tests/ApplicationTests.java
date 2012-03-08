@@ -1,9 +1,6 @@
 package com.dhemery.victor.tests;
 
-import static com.dhemery.polling.Sentences.assertThat;
-import static com.dhemery.victor.view.Present.present;
 import static com.dhemery.victor.view.Visible.visible;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
@@ -36,31 +33,21 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException {
-		assertThat(masterView, is(present()));
-		assertThat(masterView, eventually(), is(visible()));
-		when(masterView, is(present())).flash();
-		assertThat(detailLabel, eventually(), is(present()));
-		assertThat(detailLabel, eventually(), is(visible()));
-		when(detailLabel, is(present())).flash();
+		when(masterView, is(visible())).flash();
+		when(detailLabel, is(visible())).flash();
 
-		waitUntil(detailLabel, is(present()));
+		detailLabel.touch();
 
-		when(detailLabel, is(present())).touch();
-
-		assertThat(detailView, eventually(), is(present()));
 		assertThat(detailView, eventually(), is(visible()));
-		when(detailView, is(present())).flash();
-		assertThat(masterButton, eventually(), is(present()));
+		detailView.flash();
 		assertThat(masterButton, eventually(), is(visible()));
-		when(masterButton, is(present())).flash();
+		masterButton.flash();
 
-		when(masterButton, is(present())).touch();
+		masterButton.touch();
 
-		assertThat(masterView, eventually(), is(present()));
 		assertThat(masterView, eventually(), is(visible()));
-		when(masterView, is(present())).flash();
-		assertThat(detailLabel, eventually(), is(present()));
 		assertThat(detailLabel, eventually(), is(visible()));
-		when(detailLabel, is(present())).flash();
+		masterView.flash();
+		detailLabel.flash();
 	}
 }
