@@ -19,19 +19,10 @@ public interface ApplicationDriver extends SelfDescribing {
 	 * @return the application's current orientation.
 	 */
 	public Orientation orientation();
-	
-	/**
-	 * Create a driver that uses the default selector engine to identify the views it represents.
-	 * 
-	 * @param selector a selector that describes a set of views to the default selector engine. 
-	 * @return a driver that can interact with the views described by the selector.
-	 */
-	public ViewDriver view(String selector);
 
 	/**
-	 * @param selectorEngine the selector engine to use to find the views represented by this driver.
-	 * @param selector a selector that describes a set of views to the selector engine.
-	 * @return a driver that can interact with views described by the selector.
+	 * @param selector the view query that identifies the views represented by this driver.
+	 * @return a driver that can interact with the views described by the selector.
 	 */
-	public ViewDriver view(String selectorEngine, String selector);
+	public ViewDriver view(ViewSelector selector);
 }

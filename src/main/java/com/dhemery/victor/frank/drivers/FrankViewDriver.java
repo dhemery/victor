@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hamcrest.Description;
 
-import com.dhemery.victor.ViewQuery;
+import com.dhemery.victor.ViewSelector;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.Operation;
@@ -19,15 +19,15 @@ import com.dhemery.victor.frank.ResultsResponse;
  */
 public class FrankViewDriver implements ViewDriver {
 	private final FrankClient frank;
-	private final ViewQuery query;
+	private final ViewSelector selector;
 
 	/**
 	 * @param frank a Frank client that can interact with this view.
-	 * @param query a query that identifies the views driven by this driver.
+	 * @param selector a query that identifies the views driven by this driver.
 	 */
-	public FrankViewDriver(FrankClient frank, ViewQuery query) {
+	public FrankViewDriver(FrankClient frank, ViewSelector selector) {
 		this.frank = frank;
-		this.query = query;
+		this.selector = selector;
 	}
 
 	private ResultsResponse call(String method, String...arguments) {
@@ -78,7 +78,7 @@ public class FrankViewDriver implements ViewDriver {
 	private ResultsResponse perform(Operation operation) {
 		ResultsResponse response;
 		try {
-			response = frank.perform(query, operation);
+			response = frank.perform(selector, operation);
 		} catch (IOException e) {
 			response = new ResultsResponse(false, new ArrayList<String>(), null, null);
 		}
@@ -86,8 +86,8 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public ViewQuery query() {
-		return query;
+	public ViewSelector selector() {
+		return selector;
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class FrankViewDriver implements ViewDriver {
 
 	@Override
 	public String toString() {
-		return query().toString();
+		return selector().toString();
 	}
 
 	@Override

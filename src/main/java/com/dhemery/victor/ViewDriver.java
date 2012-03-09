@@ -30,9 +30,9 @@ public interface ViewDriver extends SelfDescribing {
 	public String property(String propertyName);
 
 	/**
-	 * @return the query that identifies the views represented by this driver.
+	 * @return the selector that identifies the views represented by this driver.
 	 */
-	public ViewQuery query();
+	public ViewSelector selector();
 
 	/**
 	 * Touch the element.

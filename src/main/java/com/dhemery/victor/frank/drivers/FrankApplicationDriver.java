@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.hamcrest.Description;
 
 import com.dhemery.victor.ApplicationDriver;
-import com.dhemery.victor.ViewQuery;
+import com.dhemery.victor.ViewSelector;
 import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.OrientationResponse;
@@ -16,14 +16,12 @@ import com.dhemery.victor.frank.OrientationResponse;
  */
 public class FrankApplicationDriver implements ApplicationDriver {
 	private final FrankClient frank;
-	private final String defaultSelectorEngine;
 
 	/**
 	 * @param frank a Frank client that can interact with this application.
 	 */
-	public FrankApplicationDriver(FrankClient frank, String defaultSelectorEngine) {
+	public FrankApplicationDriver(FrankClient frank) {
 		this.frank = frank;
-		this.defaultSelectorEngine = defaultSelectorEngine;
 	}
 
 	@Override
@@ -38,13 +36,8 @@ public class FrankApplicationDriver implements ApplicationDriver {
 	}
 
 	@Override
-	public ViewDriver view(String selector) {
-		return view(defaultSelectorEngine, selector);
-	}
-
-	@Override
-	public ViewDriver view(String selectorEngine, String selector) {
-		return new FrankViewDriver(frank, new ViewQuery(selectorEngine, selector));
+	public ViewDriver view(ViewSelector selector) {
+		return new FrankViewDriver(frank, selector);
 	}
 
 	@Override

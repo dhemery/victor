@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public class TouchMenuItemCommand extends AppleScriptCommand {
-	private static final String TOUCH_MENU_ITEM_TEMPLATE = "   click menu item \"%s\" of menu \"%s\" of menu bar of process \"iPhone Simulator\"";
+	private static final String TOUCH_MENU_ITEM_TEMPLATE = "   click menu item \"%s\" of menu \"%s\" of menu bar of process \"iOS Simulator\"";
 
 	/**
 	 * 

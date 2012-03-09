@@ -15,11 +15,11 @@ import org.hamcrest.SelfDescribing;
  * 
  * @author Dale Emery
  */
-public class ViewQuery implements SelfDescribing {
+public class ViewSelector implements SelfDescribing {
 	private final String selectorEngine;
 	private final String selector;
 
-	public ViewQuery(String selectorEngineName, String selector) {
+	public ViewSelector(String selectorEngineName, String selector) {
 		this.selectorEngine = selectorEngineName;
 		this.selector = selector;
 	}
@@ -28,7 +28,7 @@ public class ViewQuery implements SelfDescribing {
 	public String selectorEngine() { return selectorEngine; }
 
 	public String toString() {
-		return String.format("query:[selectorEngine:%s][selector:%s]", selectorEngine(), selector());
+		return String.format("viewselector:[selectorEngine:%s][selector:%s]", selectorEngine(), selector());
 	}
 
 	@Override

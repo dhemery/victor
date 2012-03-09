@@ -37,8 +37,7 @@ public class Launcher {
 	}
 
 	public ApplicationDriver application() {
-		String defaultSelectorEngine = configuration.get("default.selector.engine");
-		return new FrankApplicationDriver(frank, defaultSelectorEngine);
+		return new FrankApplicationDriver(frank);
 	}
 
 	public FrankClient frankClient() {
