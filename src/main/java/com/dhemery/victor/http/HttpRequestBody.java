@@ -24,7 +24,7 @@ public class HttpRequestBody {
 	 * @param connection the connection to write the request body to.
 	 */
 	public void writeTo(HttpURLConnection connection) {
-		log.debug("Sending empty body to {} via HTTP GET", connection.getURL());
+		log.trace("Sending empty body to {} via HTTP GET", connection.getURL());
 	}
 
 	@Override

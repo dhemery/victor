@@ -47,7 +47,7 @@ public class HttpRequest {
 	 */
 	public HttpResponse sendTo(String serverUrl) {
 		URL url = urlFor(serverUrl, verb);
-		log.debug("Sending: {} {}", url.toString(), this);
+		log.trace("Sending: {} {}", url.toString(), this);
 		HttpConnection connection = new HttpConnection(url);
 		return connection.send(body);
 	}

@@ -23,7 +23,7 @@ public class HttpPostBody extends HttpRequestBody {
 	public void writeTo(HttpURLConnection connection) {
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		String json = gson.toJson(this);
-		log.debug("Writing body as Json: {}", json);
+		log.trace("Writing body as Json: {}", json);
 		write(connection, json);
 	}
 

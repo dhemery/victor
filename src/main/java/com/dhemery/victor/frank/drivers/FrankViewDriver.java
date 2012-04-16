@@ -11,6 +11,8 @@ import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.frank.FrankClient;
 import com.dhemery.victor.frank.Operation;
 import com.dhemery.victor.frank.ResultsResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A view driver that interacts with a view through a Frank server.
@@ -18,6 +20,7 @@ import com.dhemery.victor.frank.ResultsResponse;
  *
  */
 public class FrankViewDriver implements ViewDriver {
+    private final Logger log = LoggerFactory.getLogger(getClass());
 	private final FrankClient frank;
 	private final ViewSelector selector;
 
@@ -79,6 +82,7 @@ public class FrankViewDriver implements ViewDriver {
 	private ResultsResponse perform(Operation operation) {
 		ResultsResponse response;
 		try {
+            log.debug("{} performing {} with arguments {}", new Object[] {selector(), operation.methodName(), operation.arguments()});
 			response = frank.perform(selector, operation);
 		} catch (IOException e) {
 			response = new ResultsResponse(false, new ArrayList<String>(), null, null);

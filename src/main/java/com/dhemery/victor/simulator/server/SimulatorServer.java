@@ -19,15 +19,15 @@ public class SimulatorServer {
 
     public static void main(String[] args) {
 		try {
-			new SimulatorServer().run();
+			new SimulatorServer("5.1", false).run();
 		} catch(Throwable e) {
 			log.debug("SimulatorServer aborted with {}", e);
 		}
 	}
 	private final HttpServer server;
 
-    public SimulatorServer() throws IOException {
-        LocalSimulator simulator = new LocalSimulator();
+    public SimulatorServer(String sdkVersion, Boolean headless) throws IOException {
+        LocalSimulator simulator = new LocalSimulator(sdkVersion, headless);
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
 		server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));

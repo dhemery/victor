@@ -1,7 +1,7 @@
 package com.dhemery.victor.simulator.local;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dhemery.victor.simulator.Simulator;
@@ -12,19 +12,24 @@ import com.dhemery.victor.simulator.Simulator;
  *
  */
 public class LocalSimulator implements Simulator {
-    private static final String SDK_ROOT="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk";
-    private static final List<String> SIMULATOR_ENVIRONMENT = Arrays.asList(
-            String.format("SDKDIR=%s", SDK_ROOT),
-            String.format("DYLD_ROOT_PATH=%s", SDK_ROOT),
-            String.format("IPHONE_SIMULATOR_ROOT=%s", SDK_ROOT)
-    );
-    public static final List<String> HEADLESS = Arrays.asList("-RegisterForSystemEvents");
+    private static final String RUN_HEADLESS = "-RegisterForSystemEvents";
+    private static final String SDK_ROOT_TEMPLATE="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator%s.sdk";
+    private final List<String> simulatorOptions = new ArrayList<String>();
+    private final List<String> simulatorEnvironment = new ArrayList<String>();
     private Process simulatorProcess;
-	
-	@Override
-	public void launch(String applicationPath, String deviceType, String sdkRoot) {
+
+    public LocalSimulator(String sdkVersion, Boolean headless) {
+        if(headless) simulatorOptions.add(RUN_HEADLESS);
+        String sdkRoot = String.format(SDK_ROOT_TEMPLATE, sdkVersion);
+        simulatorEnvironment.add(String.format("SDKDIR=%s", sdkRoot));
+        simulatorEnvironment.add(String.format("DYLD_ROOT_PATH=%s", sdkRoot));
+        simulatorEnvironment.add(String.format("IPHONE_SIMULATOR_ROOT=%s", sdkRoot));
+    }
+
+    @Override
+	public void launch(String applicationPath) {
 		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
-		simulatorProcess = new OSCommand(applicationAbsolutePath, HEADLESS, SIMULATOR_ENVIRONMENT).run();
+		simulatorProcess = new OSCommand(applicationAbsolutePath, simulatorOptions, simulatorEnvironment).run();
 	}
 
 	@Override

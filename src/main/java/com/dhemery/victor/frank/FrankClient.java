@@ -86,7 +86,7 @@ public class FrankClient implements SelfDescribing {
 	private <T> T send(HttpRequest request, Class<T> resultsClass) throws IOException {
 		HttpResponse response = request.sendTo(serverUrl);
 		T results = gson.fromJson(response.body(), resultsClass);
-		log.debug("Results from {} ==> {}", request, results);
+		log.trace("Results from {} ==> {}", request, results);
 		return results;
 	}
 

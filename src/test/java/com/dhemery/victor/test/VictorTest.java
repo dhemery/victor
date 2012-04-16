@@ -34,7 +34,7 @@ public class VictorTest {
 
 	@AfterClass
 	public static void shutDownSimulator() throws IOException, InterruptedException {
-		simulator.shutDown();
+        if(simulator != null) simulator.shutDown();
 	}
 
 

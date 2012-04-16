@@ -3,7 +3,6 @@ package com.dhemery.victor.test;
 import static com.dhemery.victor.frank.Ready.ready;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -54,19 +53,16 @@ public class Launcher {
 		Boolean launchNew = Boolean.parseBoolean(configuration.get("simulator.launch.new"));
 		if(launchNew) {
 			String applicationPath = configuration.get("application.path");
-			String deviceType = configuration.get("simulator.device.type");
-			String iosVersion = configuration.get("simulator.sdk.version");
-			String sdkPathPattern = configuration.get("simulator.sdk.path.pattern");
-			String sdkRoot = String.format(sdkPathPattern, iosVersion);
-			log.debug("Launching simulator for sdk {}", sdkRoot);
-			simulator.launch(applicationPath, deviceType, sdkRoot);
+			log.debug("Launching simulator");
+			simulator.launch(applicationPath);
 		}
 		new MatcherPoll<FrankClient>(frank, is(ready()), timer()).run();
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {
-		log.debug("Launching local simulator");
-		return new LocalSimulator();
+	    String iosVersion = configuration.get("simulator.sdk.version");
+		log.debug("Launching local {} simulator", iosVersion);
+		return new LocalSimulator(iosVersion, false);
 	}
 
 	private Simulator launchRemoteSimulator() throws IOException {
