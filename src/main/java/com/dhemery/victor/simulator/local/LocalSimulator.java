@@ -1,6 +1,8 @@
 package com.dhemery.victor.simulator.local;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import com.dhemery.victor.simulator.Simulator;
 
@@ -10,28 +12,25 @@ import com.dhemery.victor.simulator.Simulator;
  *
  */
 public class LocalSimulator implements Simulator {
-	private final String simulatorPath;
-	private Process simulatorProcess;
+    private static final String SDK_ROOT="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator5.1.sdk";
+    private static final List<String> SIMULATOR_ENVIRONMENT = Arrays.asList(
+            String.format("SDKDIR=%s", SDK_ROOT),
+            String.format("DYLD_ROOT_PATH=%s", SDK_ROOT),
+            String.format("IPHONE_SIMULATOR_ROOT=%s", SDK_ROOT)
+    );
+    public static final List<String> HEADLESS = Arrays.asList("-RegisterForSystemEvents");
+    private Process simulatorProcess;
 	
-	/**
-	 * @param simulatorPath the file path to the simulator application.
-	 */
-	public LocalSimulator(String simulatorPath) {
-		this.simulatorPath = simulatorPath;
-	}
-
 	@Override
 	public void launch(String applicationPath, String deviceType, String sdkRoot) {
 		String applicationAbsolutePath = new File(applicationPath).getAbsolutePath();
-		simulatorProcess = new OSCommand(simulatorPath, "-SimulateApplication", applicationAbsolutePath, "-SimulateDevice", deviceType, "-currentSDKRoot", sdkRoot).run();
+		simulatorProcess = new OSCommand(applicationAbsolutePath, HEADLESS, SIMULATOR_ENVIRONMENT).run();
 	}
 
 	@Override
 	public void shutDown() {
 		if(simulatorProcess != null) {
-			touchMenuItem("iOS Simulator", "Quit iOS Simulator");
-			waitForSimulatorToShutDown();			
-			simulatorProcess = null;
+			simulatorProcess.destroy();
 		}
 	}
 

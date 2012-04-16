@@ -16,9 +16,8 @@ public class SimulatorServer {
 	private static final int PORT = 4567;
 	private static final Logger log = LoggerFactory.getLogger(SimulatorServer.class);
 	private static final InetSocketAddress ADDRESS = new InetSocketAddress(PORT);
-	private static final String SIMULATOR_PATH = "/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		try {
 			new SimulatorServer().run();
 		} catch(Throwable e) {
@@ -26,10 +25,9 @@ public class SimulatorServer {
 		}
 	}
 	private final HttpServer server;
-	private final LocalSimulator simulator;
 
-	public SimulatorServer() throws IOException {
-		simulator = new LocalSimulator(SIMULATOR_PATH);
+    public SimulatorServer() throws IOException {
+        LocalSimulator simulator = new LocalSimulator();
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
 		server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));

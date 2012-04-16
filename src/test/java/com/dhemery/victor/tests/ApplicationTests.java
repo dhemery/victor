@@ -14,17 +14,15 @@ import com.dhemery.victor.test.fixtures.DetailDisplay;
 import com.dhemery.victor.test.fixtures.MasterDisplay;
 
 public class ApplicationTests extends VictorTest {
-	private MasterDisplay master;
-	private DetailDisplay detail;
-	private ViewDriver masterView;
+    private ViewDriver masterView;
 	private ViewDriver detailLabel;
 	private ViewDriver detailView;
 	private ViewDriver masterButton;
 
 	@Before
 	public void setUp() {
-		master = new MasterDisplay(application());
-		detail = new DetailDisplay(application());		
+        MasterDisplay master = new MasterDisplay(application());
+        DetailDisplay detail = new DetailDisplay(application());
 		masterView = master.masterView();
 		detailLabel = master.detailLabel();
 		detailView = detail.detailView();

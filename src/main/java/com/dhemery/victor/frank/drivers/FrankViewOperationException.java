@@ -15,7 +15,7 @@ public class FrankViewOperationException extends RuntimeException {
 	}
 
 	private static String messageAbout(String prefix, Operation operation, ResultsResponse response) {
-		StringBuffer message = new StringBuffer();
+        StringBuilder message = new StringBuilder();
 		message.append(prefix).append("\n")
 			.append("Operation was:\n")
 			.append(operation.toString()).append("\n")

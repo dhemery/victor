@@ -54,7 +54,8 @@ public class FrankViewDriver implements ViewDriver {
 		return isSingular(results) && isFalse(results.get(0));
 	}
 
-	public String property(String property) {
+	@Override
+    public String property(String property) {
 		Operation operation = new Operation(property);
 		ResultsResponse response = perform(operation);
 		if(!response.succeeded()) {

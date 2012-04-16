@@ -66,8 +66,7 @@ public class Launcher {
 
 	private Simulator launchLocalSimulator() throws IOException {
 		log.debug("Launching local simulator");
-		String simulatorPath = new File(configuration.get("simulator.path")).getAbsolutePath();
-		return new LocalSimulator(simulatorPath);
+		return new LocalSimulator();
 	}
 
 	private Simulator launchRemoteSimulator() throws IOException {
