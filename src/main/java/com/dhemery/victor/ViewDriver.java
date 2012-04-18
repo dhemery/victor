@@ -2,12 +2,21 @@ package com.dhemery.victor;
 
 import org.hamcrest.SelfDescribing;
 
+import java.util.List;
+
 /**
  * A driver that can interact with one or more views in an iOS application.
  * @author Dale Emery
  */
 public interface ViewDriver extends SelfDescribing {
-	
+    /**
+     * Call a given method on each view represented by this driver.
+     * @param method the method to call (an Objective-C selector).
+     * @param arguments arguments to pass to the method.
+     * @return the from each represented view.
+     */
+	public List<String> call(String method, String...arguments);
+
 	/**
 	 * Causes the view to flash visually.
 	 */

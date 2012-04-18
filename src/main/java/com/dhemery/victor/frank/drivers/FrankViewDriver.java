@@ -33,8 +33,10 @@ public class FrankViewDriver implements ViewDriver {
 		this.selector = selector;
 	}
 
-	private ResultsResponse call(String method, String...arguments) {
-		return perform(new Operation(method, arguments));
+	@Override
+    public List<String> call(String method, String...arguments) {
+        Operation operation = new Operation(method, arguments);
+		return perform(operation).results();
 	}
 
 	@Override
@@ -82,8 +84,14 @@ public class FrankViewDriver implements ViewDriver {
 	private ResultsResponse perform(Operation operation) {
 		ResultsResponse response;
 		try {
-            log.debug("{} performing {} with arguments {}", new Object[] {selector(), operation.methodName(), operation.arguments()});
+            log.debug("Send: {{}:{}} method {} with arguments {}", new Object[] {selector().selectorEngine(), selector().selector(), operation.methodName(), operation.arguments()});
 			response = frank.perform(selector, operation);
+            log.debug("{}: {{}:{}} method {} results are {}", new Object[] {
+                    response.succeeded() ? "  OK" : "FAIL",
+                    selector().selectorEngine(),
+                    selector().selector(),
+                    operation.methodName(),
+                    response.results()});
 		} catch (IOException e) {
 			response = new ResultsResponse(false, new ArrayList<String>(), null, null);
 		}

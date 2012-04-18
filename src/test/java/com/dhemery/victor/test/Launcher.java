@@ -53,16 +53,15 @@ public class Launcher {
 		Boolean launchNew = Boolean.parseBoolean(configuration.get("simulator.launch.new"));
 		if(launchNew) {
 			String applicationPath = configuration.get("application.path");
+            String sdkVersion = configuration.get("simulator.sdk.version");
 			log.debug("Launching simulator");
-			simulator.launch(applicationPath);
+			simulator.launch(applicationPath, sdkVersion, false);
 		}
 		new MatcherPoll<FrankClient>(frank, is(ready()), timer()).run();
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {
-	    String iosVersion = configuration.get("simulator.sdk.version");
-		log.debug("Launching local {} simulator", iosVersion);
-		return new LocalSimulator(iosVersion, false);
+		return new LocalSimulator();
 	}
 
 	private Simulator launchRemoteSimulator() throws IOException {

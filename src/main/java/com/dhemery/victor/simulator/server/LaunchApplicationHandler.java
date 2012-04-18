@@ -12,6 +12,6 @@ public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApp
 
 	@Override
 	public void perform(LocalSimulator simulator, LaunchApplicationCommand command) throws IOException {
-		simulator.launch(command.applicationPath);
+		simulator.launch(command.applicationPath, "5.1", false);
 	}
 }

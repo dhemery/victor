@@ -46,7 +46,7 @@ public class HttpConnection {
 
 	private HttpResponse responseFrom(HttpURLConnection connection) {
 		HttpResponse response = new HttpResponse(responseMessageFrom(connection), responseBodyFrom(connection));
-		log.debug("Response: {}", response);
+		log.trace("Response: {}", response);
 		return response;
 	}
 
