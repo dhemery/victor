@@ -31,6 +31,6 @@ public class ViewOperation extends FranklyOperation {
 	
 	@Override
 	public String toString() {
-		return String.format("[query:%s][selector_engine:%s]%s", query(), selectorEngine(), super.toString());
+		return String.format("%s %s", query(), super.toString());
 	}
 }

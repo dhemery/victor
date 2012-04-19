@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpRequest {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	private final String verb;
-	private final HttpRequestBody body;
+	public final String verb;
+	public final HttpRequestBody body;
 	
 	/**
 	 * Creates an HTTP GET request.
@@ -37,10 +37,7 @@ public class HttpRequest {
 		this.body = body;
 	}
 
-	public String verb() { return verb; }
-	public HttpRequestBody body() { return body; }
-
-	/**
+    /**
 	 * Sends the request to the HTTP server and returns the server's response.
 	 * @param serverUrl The URL where the HTTP server listens for requests.
 	 * @return The HTTP server's response to the request.
@@ -63,7 +60,7 @@ public class HttpRequest {
 	
 	@Override
 	public String toString() {
-		return String.format("[body:%s]", body());
+		return String.format("%s %s", verb, body);
 	}
 
 

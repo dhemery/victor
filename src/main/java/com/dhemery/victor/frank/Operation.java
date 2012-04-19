@@ -47,6 +47,6 @@ public class Operation {
 	
 	@Override
 	public String toString() {
-		return String.format("[method_name:%s][arguments:%s]", methodName(), arguments());
+		return String.format("%s%s", methodName(), arguments());
 	}
 }

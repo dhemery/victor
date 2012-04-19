@@ -1,7 +1,9 @@
 package com.dhemery.victor.frank;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.dhemery.victor.frank.drivers.FrankViewOperationException;
 import org.hamcrest.Description;
 import org.hamcrest.SelfDescribing;
 import org.slf4j.Logger;
@@ -79,8 +81,12 @@ public class FrankClient implements SelfDescribing {
 	 * @return a response that lists the results returned by each view that performed the operation.
 	 * @throws IOException
 	 */
-	public ResultsResponse perform(ViewSelector query, Operation operation) throws IOException {
-		return send(new PerformViewOperation(query, operation), ResultsResponse.class);
+	public List<String> perform(ViewSelector query, Operation operation) throws IOException {
+		ResultsResponse response = send(new PerformViewOperation(query, operation), ResultsResponse.class);
+        if(!response.succeeded()) {
+            throw new FrankViewOperationException(String.format("Error for query %s", query), operation, response);
+        }
+        return response.results();
 	}
 
 	private <T> T send(HttpRequest request, Class<T> resultsClass) throws IOException {

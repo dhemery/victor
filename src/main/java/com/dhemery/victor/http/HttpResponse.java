@@ -25,6 +25,6 @@ public class HttpResponse {
 	
 	@Override
 	public String toString() {
-		return String.format("[status:%s][body:%s]", status(), body());
+		return String.format("%s: %s", status(), body());
 	}
 }

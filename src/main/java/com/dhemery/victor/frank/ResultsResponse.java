@@ -42,15 +42,10 @@ public class ResultsResponse {
 	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[resultsResponse:");
-		builder.append(String.format("[succeeded:%s]", succeeded()));
 		if(succeeded()) {
-			builder.append(String.format("[results:%s]", results));
+			return String.format("OK: %s", results);
 		} else {
-			builder.append(String.format("[reason:%s][details:%s]", reason, details));
+			return String.format("FAILED: %s (%s)", reason, details);
 		}
-		builder.append("]");
-		return builder.toString();
 	}
 }

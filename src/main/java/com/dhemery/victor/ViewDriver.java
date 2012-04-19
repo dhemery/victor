@@ -20,7 +20,7 @@ public interface ViewDriver extends SelfDescribing {
 	/**
 	 * Causes the view to flash visually.
 	 */
-	public void flash();
+	public ViewDriver flash();
 	
 	/**
 	 * @return {@code true} if the view is present, otherwise {@code false}.

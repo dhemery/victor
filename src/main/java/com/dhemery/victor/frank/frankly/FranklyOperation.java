@@ -22,6 +22,6 @@ public class FranklyOperation extends HttpPostBody {
 	
 	@Override
 	public String toString() {
-		return String.format("[operation:%s]", operation());
+		return operation.toString();
 	}
 }

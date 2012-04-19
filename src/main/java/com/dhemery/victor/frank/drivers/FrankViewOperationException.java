@@ -19,7 +19,7 @@ public class FrankViewOperationException extends RuntimeException {
 		message.append(prefix).append("\n")
 			.append("Operation was:\n")
 			.append(operation.toString()).append("\n")
-			.append("Response was:\n")
+			.append("Results were:\n")
 			.append(response.toString()).append("\n");
 		return message.toString();
 	}

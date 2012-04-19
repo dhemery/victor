@@ -19,10 +19,6 @@ public class OrientationResponse {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[orientationResponse:");
-		builder.append(String.format("[orientation:%s]", orientation()));
-		builder.append("]");
-		return builder.toString();
+		return orientation().toString();
 	}
 }

@@ -11,10 +11,6 @@ public class AccessibilityCheckResponse {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[accessibilityCheckResponse:");
-		builder.append(String.format("[accessibility_enabled:%s]", accessibilityEnabled()));
-		builder.append("]");
-		return builder.toString();
+		return String.format("Enabled: %s", accessibilityEnabled());
 	}
 }

@@ -12,8 +12,12 @@ public class Ready extends TypeSafeMatcher<FrankClient> {
 
 	@Override
 	protected boolean matchesSafely(FrankClient frank) {
-		return frank.isReady();
-	}
+        try {
+            return frank.isReady();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 	
 	@Override
 	protected void describeMismatchSafely(FrankClient item, Description mismatchDescription) {

@@ -29,7 +29,7 @@ public class ViewSelector implements SelfDescribing {
 
 	@Override
     public String toString() {
-		return String.format("viewselector:[selectorEngine:%s][selector:%s]", selectorEngine(), selector());
+		return String.format("%s:%s", selectorEngine(), selector());
 	}
 
 	@Override

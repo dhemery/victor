@@ -2,13 +2,13 @@ package com.dhemery.victor.test;
 
 import java.io.IOException;
 
+import com.dhemery.polling.PollTimeoutException;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.dhemery.polling.MatcherPoll;
-import com.dhemery.polling.PollTimeoutError;
 import com.dhemery.polling.PollTimer;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
@@ -22,7 +22,7 @@ public class VictorTest {
 	private static PollTimer timer;
 
 	@BeforeClass
-	public static void launchApp() throws IOException, PollTimeoutError {
+	public static void launchApp() throws IOException, PollTimeoutException {
 		RequiredProperties configuration = new RequiredProperties("default.properties", "my.properties");
 		Launcher launcher = new Launcher(configuration);
 		launcher.launch();
