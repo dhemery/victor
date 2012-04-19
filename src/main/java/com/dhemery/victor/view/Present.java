@@ -6,6 +6,8 @@ import org.hamcrest.TypeSafeMatcher;
 
 import com.dhemery.victor.ViewDriver;
 
+import java.util.List;
+
 public class Present extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
@@ -15,10 +17,6 @@ public class Present extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
 	protected boolean matchesSafely(ViewDriver view) {
-		return view.isPresent();
-	}
-	
-	public static Matcher<ViewDriver> present() {
-		return new Present();
+        return view.call("accessibilityLabel").size() == 1;
 	}
 }

@@ -6,6 +6,8 @@ import org.hamcrest.TypeSafeMatcher;
 
 import com.dhemery.victor.ViewDriver;
 
+import java.util.List;
+
 public class Visible extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
@@ -15,10 +17,8 @@ public class Visible extends TypeSafeMatcher<ViewDriver> {
 
 	@Override
 	protected boolean matchesSafely(ViewDriver view) {
-		return view.isVisible();
-	}
-	
-	public static Matcher<ViewDriver> visible() {
-		return new Visible();
+        List<String> results = view.call("isHidden");
+        if (results.size() != 1) return false;
+		return !Boolean.parseBoolean(results.get(0));
 	}
 }

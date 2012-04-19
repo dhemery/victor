@@ -3,6 +3,7 @@ package com.dhemery.victor.frank.drivers;
 import java.io.IOException;
 import java.util.List;
 
+import com.dhemery.victor.Action;
 import org.hamcrest.Description;
 
 import com.dhemery.victor.ViewSelector;
@@ -36,37 +37,12 @@ public class FrankViewDriver implements ViewDriver {
         return perform(new Operation(method, arguments));
 	}
 
-	@Override
-	public ViewDriver flash() {
-		call("flash");
-        return this;
-	}
+    @Override
+    public void call(Action<? super ViewDriver> action) {
+        action.executeOn(this);
+    }
 
-	@Override
-	public boolean isPresent() {
-        return isSingular(call("accessibilityLabel"));
-	}
-
-	@Override
-	public boolean isVisible() {
-		List<String> results = call("isHidden");
-		return isSingular(results) && isFalse(results.get(0));
-	}
-
-	@Override
-    public String property(String property) {
-        return call(property).get(0);
-	}
-
-	private boolean isFalse(String result) {
-		return !Boolean.parseBoolean(result);
-	}
-
-	private boolean isSingular(List<String> results) {
-		return results.size() == 1;
-	}
-
-	private List<String> perform(Operation operation) {
+    private List<String> perform(Operation operation) {
         log.debug("Send: {} {}", selector, operation);
         try {
             List<String> results = frank.perform(selector, operation);
@@ -83,11 +59,6 @@ public class FrankViewDriver implements ViewDriver {
 	}
 
 	@Override
-	public void touch() {
-		call("touch");
-	}
-
-	@Override
 	public void describeTo(Description description) {
 		description.appendText(toString());
 	}
@@ -95,10 +66,5 @@ public class FrankViewDriver implements ViewDriver {
 	@Override
 	public String toString() {
 		return selector().toString();
-	}
-
-	@Override
-	public void setText(String text) {
-		call("setText:", text);
 	}
 }

@@ -1,7 +1,9 @@
 This folder contains the libraries and other content to add a
 Frank server to your app:
-   - libFrank.a: The Frank server.
-   - libigor.a: The Igor selector engine, which finds views
+   - libFrank.a: The Frank server. This includes a built-in
+     selector engine called 'uiquery'.
+   - libShelley.a: A selector engine called 'shelley_compat'.
+   - libigor-0.4.0.a: The Igor selector engine, which finds views
      using a CSS-like syntax.
    - frank_static_resources.bundle: HTML and Javascript files
      for the Symbiote server, which allows you to explore your
@@ -14,10 +16,11 @@ application:
       (You may omit this README.txt file if you wish.)
 
    2. In the Link Binary with Libraries build phase, add
-      libFrank.a and libigor.a.
+      libFrank.a, libShelley.a, and libigor-0.4.0.a.
 
    3. In the Copy Bundle Resources build phase, add the
       frank_static_resources.bundle.
+
    4. In Build Settings, in the Linking section, edit the
       Other Linker Flags setting to include -ObjC and -all_load.
 

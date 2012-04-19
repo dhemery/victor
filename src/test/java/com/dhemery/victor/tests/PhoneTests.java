@@ -3,7 +3,7 @@ package com.dhemery.victor.tests;
 import static com.dhemery.polling.Has.has;
 import static com.dhemery.victor.ApplicationDriver.Orientation.LANDSCAPE;
 import static com.dhemery.victor.ApplicationDriver.Orientation.PORTRAIT;
-import static com.dhemery.victor.application.OrientationQuery.orientation;
+import static com.dhemery.victor.application.ApplicationExtensions.*;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
@@ -27,10 +27,8 @@ public class PhoneTests extends VictorTest {
 
 	@Test
 	public void orientationTests() throws InterruptedException, IOException {
-		// The following assertions all assert the same condition, with different styles.
 		assertThat(application, has(orientation(), equalTo(PORTRAIT)));
 
-		// The following waits all wait for the same condition, with different styles.
 		waitUntil(application, has(orientation(), equalTo(PORTRAIT)));
 
 		phone.rotateLeft();
@@ -45,4 +43,4 @@ public class PhoneTests extends VictorTest {
 		phone.rotateRight();
 		assertThat(application, eventually(), has(orientation(), equalTo(PORTRAIT)));
 	}
-	}
+}

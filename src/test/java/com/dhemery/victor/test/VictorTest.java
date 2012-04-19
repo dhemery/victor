@@ -3,6 +3,8 @@ package com.dhemery.victor.test;
 import java.io.IOException;
 
 import com.dhemery.polling.PollTimeoutException;
+import com.dhemery.victor.Action;
+import com.dhemery.victor.ViewDriver;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.junit.AfterClass;
@@ -57,8 +59,16 @@ public class VictorTest {
 		assertThat(subject, eventually(), matcher);
 	}
 
-	public <S> S when(S subject, Matcher<? super S> matcher) {
-		waitUntil(subject, matcher);
-		return subject;
-	}
+    public <S> void when(S subject, Matcher<? super S> matcher, Action<? super S> action) {
+        when(subject, eventually(), matcher, action);
+    }
+
+    public <S> void when(S subject, PollTimer timer, Matcher<? super S> matcher, Action<? super S> action) {
+        assertThat(subject, timer, matcher);
+        action.executeOn(subject);
+    }
+
+    public void view(ViewDriver view, Action<ViewDriver> action) {
+        action.executeOn(view);
+    }
 }

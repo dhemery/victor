@@ -1,6 +1,6 @@
 package com.dhemery.victor.tests;
 
-import static com.dhemery.victor.view.Visible.visible;
+import static com.dhemery.victor.view.ViewExtensions.*;
 import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
@@ -31,21 +31,19 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException {
-		when(masterView, is(visible())).flash();
-		when(detailLabel, is(visible())).flash();
+		when(masterView, isVisible(), flash());
+		when(detailLabel, isVisible(), flash());
+		detailLabel.call(touch());
 
-		detailLabel.touch();
+		when(detailView, eventually(), isVisible(), flash());
+		assertThat(masterButton, eventually(), isVisible());
+		masterButton.call(flash());
 
-		assertThat(detailView, eventually(), is(visible()));
-		detailView.flash();
-		assertThat(masterButton, eventually(), is(visible()));
-		masterButton.flash();
+		masterButton.call(touch());
 
-		masterButton.touch();
-
-		assertThat(masterView, eventually(), is(visible()));
-		assertThat(detailLabel, eventually(), is(visible()));
-		masterView.flash();
-		detailLabel.flash();
+		assertThat(masterView, eventually(), isVisible());
+		assertThat(detailLabel, eventually(), isVisible());
+		masterView.call(flash());
+		detailLabel.call(flash());
 	}
 }

@@ -14,8 +14,4 @@ public class OrientationQuery extends Query<ApplicationDriver, Orientation> {
 	public Orientation query(ApplicationDriver subject) {
 		return subject.orientation();
 	}
-	
-	public static Query<ApplicationDriver, Orientation> orientation() {
-		return new OrientationQuery();
-	}
 }
