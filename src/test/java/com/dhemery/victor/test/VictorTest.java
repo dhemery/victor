@@ -1,23 +1,20 @@
 package com.dhemery.victor.test;
 
-import java.io.IOException;
-
+import com.dhemery.polling.Action;
 import com.dhemery.polling.PollTimeoutException;
-import com.dhemery.victor.Action;
-import com.dhemery.victor.ViewDriver;
-import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
-import com.dhemery.polling.MatcherPoll;
 import com.dhemery.polling.PollTimer;
+import com.dhemery.polling.PollableExpressions;
 import com.dhemery.properties.RequiredProperties;
 import com.dhemery.victor.ApplicationDriver;
 import com.dhemery.victor.PhoneDriver;
+import com.dhemery.victor.ViewDriver;
 import com.dhemery.victor.simulator.Simulator;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
-public class VictorTest {
+import java.io.IOException;
+
+public class VictorTest extends PollableExpressions {
 	private static ApplicationDriver application;
 	private static PhoneDriver phone;
 	private static Simulator simulator;
@@ -43,31 +40,11 @@ public class VictorTest {
 	public ApplicationDriver application() { return application; }
 	public PhoneDriver phone() { return phone; }
 	
-	public PollTimer eventually() {
+	@Override
+    public PollTimer eventually() {
 		return timer;
 	}
 	
-	public static <S> void assertThat(S subject, Matcher<? super S> matcher) {
-		MatcherAssert.assertThat(subject, matcher);
-	}
-
-	public <S> void assertThat(S subject, PollTimer timer, Matcher<? super S> matcher) {
-		new MatcherPoll<S>(subject, matcher, eventually()).run();
-	}
-
-	public <S> void waitUntil(S subject, Matcher<? super S> matcher) {
-		assertThat(subject, eventually(), matcher);
-	}
-
-    public <S> void when(S subject, Matcher<? super S> matcher, Action<? super S> action) {
-        when(subject, eventually(), matcher, action);
-    }
-
-    public <S> void when(S subject, PollTimer timer, Matcher<? super S> matcher, Action<? super S> action) {
-        assertThat(subject, timer, matcher);
-        action.executeOn(subject);
-    }
-
     public void view(ViewDriver view, Action<ViewDriver> action) {
         action.executeOn(view);
     }

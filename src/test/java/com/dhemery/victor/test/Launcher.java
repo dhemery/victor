@@ -57,7 +57,7 @@ public class Launcher {
 			log.debug("Launching simulator");
 			simulator.launch(applicationPath, sdkVersion, false);
 		}
-		new MatcherPoll<FrankClient>(frank, is(ready()), timer()).run();
+		new MatcherPoll<FrankClient>(frank, timer(), is(ready())).run();
 	}
 
 	private Simulator launchLocalSimulator() throws IOException {

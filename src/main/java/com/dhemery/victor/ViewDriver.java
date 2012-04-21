@@ -1,5 +1,6 @@
 package com.dhemery.victor;
 
+import com.dhemery.polling.Action;
 import org.hamcrest.SelfDescribing;
 
 import java.util.List;

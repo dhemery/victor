@@ -3,7 +3,7 @@ package com.dhemery.victor.frank.drivers;
 import java.io.IOException;
 import java.util.List;
 
-import com.dhemery.victor.Action;
+import com.dhemery.polling.Action;
 import org.hamcrest.Description;
 
 import com.dhemery.victor.ViewSelector;

@@ -1,6 +1,6 @@
 package com.dhemery.victor.view;
 
-import com.dhemery.victor.Action;
+import com.dhemery.polling.Action;
 import com.dhemery.victor.ViewDriver;
 import org.hamcrest.Matcher;
 
@@ -9,15 +9,15 @@ public class ViewExtensions {
         return new Flash();
     }
 
-    public static Matcher<ViewDriver> isPresent() {
+    public static Matcher<ViewDriver> present() {
         return new Present();
-    }
-
-    public static Matcher<ViewDriver> isVisible() {
-        return new Visible();
     }
 
     public static Action<ViewDriver> touch() {
         return new Touch();
+    }
+
+    public static Matcher<ViewDriver> visible() {
+        return new Visible();
     }
 }

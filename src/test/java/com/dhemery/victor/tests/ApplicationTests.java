@@ -31,18 +31,18 @@ public class ApplicationTests extends VictorTest {
 
 	@Test
 	public void navigation() throws IOException {
-		when(masterView, isVisible(), flash());
-		when(detailLabel, isVisible(), flash());
+		when(masterView, is(visible()), flash());
+		when(detailLabel, is(visible()), flash());
 		detailLabel.call(touch());
 
-		when(detailView, eventually(), isVisible(), flash());
-		assertThat(masterButton, eventually(), isVisible());
+		when(detailView, eventually(), is(visible()), flash());
+		assertThat(masterButton, eventually(), is(visible()));
 		masterButton.call(flash());
 
 		masterButton.call(touch());
 
-		assertThat(masterView, eventually(), isVisible());
-		assertThat(detailLabel, eventually(), isVisible());
+		assertThat(masterView, eventually(), is(visible()));
+		assertThat(detailLabel, eventually(), is(visible()));
 		masterView.call(flash());
 		detailLabel.call(flash());
 	}
