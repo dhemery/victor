@@ -1,13 +1,16 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.agent;
 
 import com.dhemery.victor.By;
-import com.dhemery.victor.view.IosViewAgent;
-import com.dhemery.victor.frank.frankly.CheckAccessibility;
-import com.dhemery.victor.frank.frankly.GetApplicationOrientation;
-import com.dhemery.victor.frank.frankly.PerformViewOperation;
-import com.dhemery.victor.frank.frankly.Ping;
+import com.dhemery.victor.application.IosApplicationAgent;
+import com.dhemery.victor.application.OrientationResponse;
+import com.dhemery.victor.frankly.GetApplicationOrientation;
+import com.dhemery.victor.frankly.PerformViewOperation;
+import com.dhemery.victor.frankly.Ping;
 import com.dhemery.victor.http.HttpRequest;
 import com.dhemery.victor.http.HttpResponse;
+import com.dhemery.victor.view.IosViewAgent;
+import com.dhemery.victor.view.Operation;
+import com.dhemery.victor.view.OperationResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.hamcrest.Description;
@@ -23,7 +26,7 @@ import java.util.List;
  * @author Dale Emery
  *
  */
-public class FrankAgent implements SelfDescribing, IosViewAgent {
+public class FrankAgent implements SelfDescribing, IosViewAgent, IosApplicationAgent {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverUrl;
 	private final Gson gson;
@@ -34,19 +37,9 @@ public class FrankAgent implements SelfDescribing, IosViewAgent {
 	public FrankAgent(String serverUrl) {
 		this.serverUrl = serverUrl;
 		gson = new GsonBuilder()
-		.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
+		.registerTypeAdapter(OperationResponse.class, new ResultsResponseParser())
 		.disableHtmlEscaping()
 		.create();
-	}
-
-	/**
-	 * Determines whether accessibility is enabled in the phone or simulator
-	 * where the Frank server is running.
-	 * @return a response that describes whether accessibility is enabled.
-	 * @throws java.io.IOException
-	 */
-	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
-		return send(new CheckAccessibility(), AccessibilityCheckResponse.class);
 	}
 
 	@Override
@@ -63,21 +56,25 @@ public class FrankAgent implements SelfDescribing, IosViewAgent {
 		return true;
 	}
 
-	/**
-	 * Determines the current orientation (portrait or landscape)
-	 * of the application in which the Frank server is running.
-	 * @return a response that describes the application's orientation.
-	 * @throws java.io.IOException
-	 */
-	public OrientationResponse orientation() throws IOException {
-		return send(new GetApplicationOrientation(), OrientationResponse.class);
-	}
+	@Override
+    public OrientationResponse orientation() {
+        try {
+            return send(new GetApplicationOrientation(), OrientationResponse.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@Override
-    public List<String> perform(By query, Operation operation) throws IOException {
-		ResultsResponse response = send(new PerformViewOperation(query, operation), ResultsResponse.class);
+    public List<String> perform(By query, Operation operation) {
+        OperationResponse response = null;
+        try {
+            response = send(new PerformViewOperation(query, operation), OperationResponse.class);
+        } catch (IOException cause) {
+            throw new OperationIOException(operation, cause);
+        }
         if(!response.succeeded) {
-            throw new FrankViewOperationException(String.format("Error for query %s", query), operation, response);
+            throw new OperationException(String.format("Error for query %s", query), operation, response);
         }
         return response.results;
 	}

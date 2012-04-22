@@ -1,7 +1,7 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.By;
-import com.dhemery.victor.frank.Operation;
+import com.dhemery.victor.view.Operation;
 import com.dhemery.victor.http.HttpRequest;
 
 /**

@@ -1,23 +1,20 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.agent;
+
+import com.dhemery.victor.view.OperationResponse;
+import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-
 /**
- * Constructs a {@link com.dhemery.victor.frank.ResultsResponse} from a properly formatted JSON string.
+ * Constructs a {@link com.dhemery.victor.view.OperationResponse} from a properly formatted JSON string.
  * @author Dale Emery
  *
  */
-public class ResultsResponseParser implements JsonDeserializer<ResultsResponse> {
+public class ResultsResponseParser implements JsonDeserializer<OperationResponse> {
 	@Override
-	public ResultsResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+	public OperationResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
 		List<String> results = new ArrayList<String>();
 		String reason = "";
 		String details = "";
@@ -34,6 +31,6 @@ public class ResultsResponseParser implements JsonDeserializer<ResultsResponse> 
 			reason = body.get("reason").getAsString();
 			details = body.get("details").getAsString();
 		}
-		return new ResultsResponse(succeeded, results, reason, details);
+		return new OperationResponse(succeeded, results, reason, details);
 	}
 }

@@ -1,19 +1,19 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.view;
 
 import java.util.List;
 
 /**
- * An Frank response that may include a list of property values or return values.
+ * An response to an operation.
  * @author Dale Emery
  *
  */
-public class ResultsResponse {
+public class OperationResponse {
 	public final boolean succeeded;
 	public final List<String> results;
 	public final String reason;
 	public final String details;
 
-	public ResultsResponse(boolean succeeded, List<String> results, String reason, String details) {
+	public OperationResponse(boolean succeeded, List<String> results, String reason, String details) {
 		this.succeeded = succeeded;
 		this.results = results;
 		this.reason = reason;

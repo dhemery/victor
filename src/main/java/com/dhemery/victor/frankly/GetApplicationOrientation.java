@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.http.HttpRequest;
 

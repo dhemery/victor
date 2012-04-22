@@ -1,7 +1,7 @@
-package com.dhemery.victor.frank.frankly;
+package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.By;
-import com.dhemery.victor.frank.Operation;
+import com.dhemery.victor.view.Operation;
 
 /**
  * A command to invoke an operation on the set of views that match a query.
