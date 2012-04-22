@@ -6,22 +6,17 @@ import org.hamcrest.SelfDescribing;
 import java.util.List;
 
 /**
- * A driver that can interact with one or more views in an iOS application.
+ * Represents one or more views in an iOS application.
  * @author Dale Emery
  */
-public interface ViewDriver extends SelfDescribing {
+public interface IosView extends SelfDescribing {
     /**
-     * Call a given method on each view represented by this driver.
+     * Call a given method on each view represented by this IosView.
      * @param method the method to call (an Objective-C selector).
      * @param arguments arguments to pass to the method.
      * @return the from each represented view.
      */
 	List<String> call(String method, String... arguments);
 
-    void call(Action<? super ViewDriver> action);
-
-	/**
-	 * @return the selector that identifies the views represented by this driver.
-	 */
-	ViewSelector selector();
+    void call(Action<? super IosView> action);
 }

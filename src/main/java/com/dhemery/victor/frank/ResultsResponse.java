@@ -8,10 +8,10 @@ import java.util.List;
  *
  */
 public class ResultsResponse {
-	private final boolean succeeded;
-	private final List<String> results;
-	private final String reason;
-	private final String details;
+	public final boolean succeeded;
+	public final List<String> results;
+	public final String reason;
+	public final String details;
 
 	public ResultsResponse(boolean succeeded, List<String> results, String reason, String details) {
 		this.succeeded = succeeded;
@@ -20,32 +20,9 @@ public class ResultsResponse {
 		this.details = details;
 	}
 
-	/**
-	 * @return the detailed description of the failure, if the request failed. Otherwise null.
-	 */
-	public String details() { return details; }
-	
-	/**
-	 * @return a general description of the failure, if the request failed. Otherwise null.
-	 */
-	public String reason() { return reason; }
-	
-	/**
-	 * @return the list of results, if the request was successful. An empty list otherwise.
-	 */
-	public List<String> results() { return results; }
-
-	/**
-	 * @return true if the request was successful, false otherwise.
-	 */
-	public boolean succeeded() { return succeeded; }
-	
 	@Override
 	public String toString() {
-		if(succeeded()) {
-			return String.format("OK: %s", results);
-		} else {
-			return String.format("FAILED: %s (%s)", reason, details);
-		}
+		if(succeeded) return String.format("OK: %s", results);
+        return String.format("FAILED: %s (%s)", reason, details);
 	}
 }

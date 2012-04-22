@@ -23,8 +23,8 @@ import java.util.Collection;
  * @author Dale Emery
  */
 public class Operation {
-	private final String method_name;
-	private final Collection<String> arguments = new ArrayList<String>();
+	public final String method_name;
+	public final Collection<String> arguments = new ArrayList<String>();
 	
 	/**
 	 * @param name the name of the method to call or property to retrieve.
@@ -35,18 +35,8 @@ public class Operation {
 		this.arguments.addAll(Arrays.asList(arguments));
 	}
 
-	/**
-	 * @return the name of the method to be executed.
-	 */
-	public String methodName() { return method_name; }
-	
-	/**
-	 * @return the list of arguments for the method.
-	 */
-	public Collection<String> arguments() { return arguments; }
-	
 	@Override
 	public String toString() {
-		return String.format("%s%s", methodName(), arguments());
+		return String.format("%s%s", method_name, arguments);
 	}
 }

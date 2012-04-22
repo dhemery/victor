@@ -5,12 +5,10 @@ package com.dhemery.victor.frank;
  * @author Dale Emery
  */
 public class AccessibilityCheckResponse {
-	private String accessibility_enabled;
-
-	public String accessibilityEnabled() { return accessibility_enabled; }
+	public String accessibility_enabled;
 
 	@Override
 	public String toString() {
-		return String.format("Enabled: %s", accessibilityEnabled());
+		return String.format("Enabled: %s", accessibility_enabled);
 	}
 }

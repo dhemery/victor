@@ -1,30 +1,29 @@
 package com.dhemery.victor.frank;
 
-import java.io.IOException;
-import java.util.List;
-
-import com.dhemery.victor.frank.drivers.FrankViewOperationException;
-import org.hamcrest.Description;
-import org.hamcrest.SelfDescribing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.dhemery.victor.ViewSelector;
+import com.dhemery.victor.By;
+import com.dhemery.victor.view.IosViewAgent;
 import com.dhemery.victor.frank.frankly.CheckAccessibility;
-import com.dhemery.victor.frank.frankly.PerformViewOperation;
 import com.dhemery.victor.frank.frankly.GetApplicationOrientation;
+import com.dhemery.victor.frank.frankly.PerformViewOperation;
 import com.dhemery.victor.frank.frankly.Ping;
 import com.dhemery.victor.http.HttpRequest;
 import com.dhemery.victor.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hamcrest.Description;
+import org.hamcrest.SelfDescribing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
- * A client that interacts with an iOS application via a Frank server embedded into the application.
+ * An agent that interacts with an iOS application via a Frank server embedded into the application.
  * @author Dale Emery
  *
  */
-public class FrankClient implements SelfDescribing {
+public class FrankAgent implements SelfDescribing, IosViewAgent {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String serverUrl;
 	private final Gson gson;
@@ -32,7 +31,7 @@ public class FrankClient implements SelfDescribing {
 	/**
 	 * @param serverUrl The URL where the Frank server listens for requests.
 	 */
-	public FrankClient(String serverUrl) {
+	public FrankAgent(String serverUrl) {
 		this.serverUrl = serverUrl;
 		gson = new GsonBuilder()
 		.registerTypeAdapter(ResultsResponse.class, new ResultsResponseParser())
@@ -74,19 +73,13 @@ public class FrankClient implements SelfDescribing {
 		return send(new GetApplicationOrientation(), OrientationResponse.class);
 	}
 
-	/**
-	 * Instructs a set of views to perform an operation.
-	 * @param query identifies the views that will perform the operation.
-	 * @param operation the operation to perform.
-	 * @return a response that lists the results returned by each view that performed the operation.
-	 * @throws java.io.IOException
-	 */
-	public List<String> perform(ViewSelector query, Operation operation) throws IOException {
+	@Override
+    public List<String> perform(By query, Operation operation) throws IOException {
 		ResultsResponse response = send(new PerformViewOperation(query, operation), ResultsResponse.class);
-        if(!response.succeeded()) {
+        if(!response.succeeded) {
             throw new FrankViewOperationException(String.format("Error for query %s", query), operation, response);
         }
-        return response.results();
+        return response.results;
 	}
 
 	private <T> T send(HttpRequest request, Class<T> resultsClass) throws IOException {

@@ -15,11 +15,6 @@ public class FranklyOperation extends HttpPostBody {
 		this.operation = operation;
 	}
 	
-	/**
-	 * @return the operation to execute.
-	 */
-	public Operation operation() { return operation; }
-	
 	@Override
 	public String toString() {
 		return operation.toString();

@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.drivers;
+package com.dhemery.victor.frank;
 
 import com.dhemery.victor.frank.Operation;
 import com.dhemery.victor.frank.ResultsResponse;

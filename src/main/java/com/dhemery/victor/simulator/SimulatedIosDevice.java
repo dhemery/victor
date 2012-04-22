@@ -1,17 +1,16 @@
-package com.dhemery.victor.frank.drivers;
+package com.dhemery.victor.simulator;
 
-import com.dhemery.victor.PhoneDriver;
-import com.dhemery.victor.simulator.Simulator;
+import com.dhemery.victor.IosDevice;
 
 /**
  * A phone driver that interacts with a "phone" through a simulator and a Frank server.
  * @author Dale Emery
  *
  */
-public class FrankPhoneDriver implements PhoneDriver {
+public class SimulatedIosDevice implements IosDevice {
 	private final Simulator simulator;
 
-	public FrankPhoneDriver(Simulator simulator) {
+	public SimulatedIosDevice(Simulator simulator) {
 		this.simulator = simulator;
 	}
 

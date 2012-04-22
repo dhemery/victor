@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.victor.ViewSelector;
+import com.dhemery.victor.By;
 import com.dhemery.victor.frank.Operation;
 import com.dhemery.victor.http.HttpRequest;
 
@@ -15,7 +15,7 @@ public class PerformViewOperation extends HttpRequest {
 	 * @param query identifies the views that will execute the operation.
 	 * @param operation the operation for each matching view to execute.
 	 */
-	public PerformViewOperation(ViewSelector query, Operation operation) {
+	public PerformViewOperation(By query, Operation operation) {
 		super("map", new ViewOperation(query, operation));
 	}
 }

@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.victor.ViewSelector;
+import com.dhemery.victor.By;
 import com.dhemery.victor.frank.Operation;
 
 /**
@@ -17,20 +17,14 @@ public class ViewOperation extends FranklyOperation {
 	 * @param query identifies the views that will perform the operation.
 	 * @param operation the operation for the views to perform.
 	 */
-	public ViewOperation(ViewSelector query, Operation operation) {
+	public ViewOperation(By query, Operation operation) {
 		super(operation);
-		selector_engine = query.selectorEngine();
-		this.query = query.selector();
+		selector_engine = query.selectorEngine;
+		this.query = query.selector;
 	}
 
-	/**
-	 * @return the query that selects views to perform the operation.
-	 */
-	public String query() { return query; }
-	public String selectorEngine() { return selector_engine; }
-	
 	@Override
 	public String toString() {
-		return String.format("%s %s", query(), super.toString());
+		return String.format("%s:%s %s", selector_engine, query, super.toString());
 	}
 }
