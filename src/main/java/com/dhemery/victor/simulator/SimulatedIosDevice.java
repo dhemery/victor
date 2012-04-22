@@ -1,6 +1,7 @@
 package com.dhemery.victor.simulator;
 
 import com.dhemery.victor.IosDevice;
+import org.hamcrest.Description;
 
 /**
  * A phone driver that interacts with a "phone" through a simulator and a Frank server.
@@ -28,4 +29,9 @@ public class SimulatedIosDevice implements IosDevice {
 	public void saveScreenShot() {
 		simulator.touchMenuItem("File", "Save Screen Shot");
 	}
+
+    @Override
+    public void describeTo(Description description) {
+        description.appendText("the simulated device");
+    }
 }
