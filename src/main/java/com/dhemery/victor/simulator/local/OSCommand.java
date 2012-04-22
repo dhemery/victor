@@ -40,7 +40,7 @@ public class OSCommand {
     /**
 	 * Initiates the command.
 	 * @return a native process that can describe and control the invoked command.
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public Process run() {
 		log.debug("Executing command {} with environment {}", command, environment);

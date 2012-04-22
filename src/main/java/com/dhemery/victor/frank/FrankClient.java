@@ -44,7 +44,7 @@ public class FrankClient implements SelfDescribing {
 	 * Determines whether accessibility is enabled in the phone or simulator
 	 * where the Frank server is running.
 	 * @return a response that describes whether accessibility is enabled.
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public AccessibilityCheckResponse accessibilityCheck() throws IOException {
 		return send(new CheckAccessibility(), AccessibilityCheckResponse.class);
@@ -68,7 +68,7 @@ public class FrankClient implements SelfDescribing {
 	 * Determines the current orientation (portrait or landscape)
 	 * of the application in which the Frank server is running.
 	 * @return a response that describes the application's orientation.
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public OrientationResponse orientation() throws IOException {
 		return send(new GetApplicationOrientation(), OrientationResponse.class);
@@ -79,7 +79,7 @@ public class FrankClient implements SelfDescribing {
 	 * @param query identifies the views that will perform the operation.
 	 * @param operation the operation to perform.
 	 * @return a response that lists the results returned by each view that performed the operation.
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public List<String> perform(ViewSelector query, Operation operation) throws IOException {
 		ResultsResponse response = send(new PerformViewOperation(query, operation), ResultsResponse.class);

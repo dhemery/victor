@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 /**
- * Constructs a {@link ResultsResponse} from a properly formatted JSON string.
+ * Constructs a {@link com.dhemery.victor.frank.ResultsResponse} from a properly formatted JSON string.
  * @author Dale Emery
  *
  */

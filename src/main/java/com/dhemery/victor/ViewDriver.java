@@ -16,7 +16,7 @@ public interface ViewDriver extends SelfDescribing {
      * @param arguments arguments to pass to the method.
      * @return the from each represented view.
      */
-	List<String> call(String method, String...arguments);
+	List<String> call(String method, String... arguments);
 
     void call(Action<? super ViewDriver> action);
 
