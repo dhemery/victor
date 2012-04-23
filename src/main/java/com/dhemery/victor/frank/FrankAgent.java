@@ -1,13 +1,13 @@
 package com.dhemery.victor.frank;
 
 import com.dhemery.victor.By;
-import com.dhemery.victor.application.IosApplicationAgent;
-import com.dhemery.victor.application.OrientationResponse;
+import com.dhemery.victor.frank.messages.Message;
+import com.dhemery.victor.frank.messages.MessageResponse;
+import com.dhemery.victor.frank.messages.MessageResponseParser;
+import com.dhemery.victor.frank.messages.OrientationResponse;
+import com.dhemery.victor.frank.frankly.*;
 import com.dhemery.victor.http.HttpRequest;
 import com.dhemery.victor.http.HttpResponse;
-import com.dhemery.victor.message.Message;
-import com.dhemery.victor.message.MessageResponse;
-import com.dhemery.victor.view.IosViewAgent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
