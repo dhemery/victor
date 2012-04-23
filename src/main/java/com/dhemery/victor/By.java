@@ -1,15 +1,12 @@
 package com.dhemery.victor;
 
-import org.hamcrest.Description;
-import org.hamcrest.SelfDescribing;
-
 /**
  * Identifies one or more views in an iOS application.
  *
  * @author Dale Emery
  */
 
-public class By implements SelfDescribing {
+public class By {
     public final String selectorEngine;
     public final String selector;
 
@@ -33,10 +30,5 @@ public class By implements SelfDescribing {
     @Override
     public String toString() {
         return String.format("%s:%s", selectorEngine, selector);
-    }
-
-    @Override
-    public void describeTo(Description description) {
-        description.appendText(toString());
     }
 }

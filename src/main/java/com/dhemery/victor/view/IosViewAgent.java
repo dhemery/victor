@@ -3,9 +3,8 @@ package com.dhemery.victor.view;
 import com.dhemery.victor.By;
 import com.dhemery.victor.message.Message;
 import com.dhemery.victor.message.MessageResponse;
-import org.hamcrest.SelfDescribing;
 
-public interface IosViewAgent extends SelfDescribing {
+public interface IosViewAgent {
     /**
      * @return true if the agent is ready to communicate with views, otherwise false.
      */

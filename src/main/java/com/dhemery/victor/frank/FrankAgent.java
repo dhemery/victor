@@ -10,8 +10,6 @@ import com.dhemery.victor.message.MessageResponse;
 import com.dhemery.victor.view.IosViewAgent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.hamcrest.Description;
-import org.hamcrest.SelfDescribing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author Dale Emery
  *
  */
-public class FrankAgent implements SelfDescribing, IosViewAgent, IosApplicationAgent {
+public class FrankAgent implements IosViewAgent, IosApplicationAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String serverUrl;
     private final Gson gson;
@@ -34,11 +32,6 @@ public class FrankAgent implements SelfDescribing, IosViewAgent, IosApplicationA
                 .registerTypeAdapter(MessageResponse.class, new MessageResponseParser())
                 .disableHtmlEscaping()
                 .create();
-    }
-
-    @Override
-    public void describeTo(Description description) {
-        description.appendText(toString());
     }
 
     /**

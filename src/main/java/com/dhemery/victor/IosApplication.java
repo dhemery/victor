@@ -1,14 +1,11 @@
 package com.dhemery.victor;
 
-import org.hamcrest.SelfDescribing;
-
-
 /**
  * Represents an application running on an iOS device.
  * @author Dale Emery
  *
  */
-public interface IosApplication extends SelfDescribing {
+public interface IosApplication {
 	public enum Orientation {
 		LANDSCAPE,
 		PORTRAIT,
