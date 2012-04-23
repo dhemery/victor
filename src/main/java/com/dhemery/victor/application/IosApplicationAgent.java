@@ -2,9 +2,8 @@ package com.dhemery.victor.application;
 
 import com.dhemery.victor.message.Message;
 import com.dhemery.victor.message.MessageResponse;
-import org.hamcrest.SelfDescribing;
 
-public interface IosApplicationAgent extends SelfDescribing {
+public interface IosApplicationAgent {
     /**
      * @return true if the agent is ready to communicate with the application, otherwise false.
      */

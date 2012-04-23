@@ -1,13 +1,11 @@
 package com.dhemery.victor;
 
-import org.hamcrest.SelfDescribing;
-
 /**
  * Represents an iOS device (real or simulated).
  * @author Dale Emery
  *
  */
-public interface IosDevice extends SelfDescribing {
+public interface IosDevice {
 	public void rotateLeft();
 	public void rotateRight();
 

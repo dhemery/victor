@@ -2,10 +2,9 @@ package com.dhemery.victor.view;
 
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosView;
-import com.dhemery.victor.message.MessageException;
 import com.dhemery.victor.message.Message;
+import com.dhemery.victor.message.MessageException;
 import com.dhemery.victor.message.MessageResponse;
-import org.hamcrest.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +37,6 @@ public class AgentedIosView implements IosView {
         if(!response.succeeded) throw new MessageException(this, message, response);
         log.debug("{} {} returned {}", new Object[] {query, message, response.results});
         return response.results;
-    }
-
-    @Override
-    public void describeTo(Description description) {
-        description.appendText(toString());
     }
 
     @Override
