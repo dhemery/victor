@@ -1,7 +1,7 @@
 package com.dhemery.victor.application;
 
 /**
- * A response to a Frank server orientation() request.
+ * A response to an orientation() request.
  * @author Dale Emery
  *
  */

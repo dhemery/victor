@@ -2,12 +2,6 @@ package com.dhemery.victor.simulator;
 
 
 public interface Simulator {
-	/**
-	 * Launches an application in the simulator.
-	 * @param applicationPath the file path of the application to launch.
-	 */
-    public void launch(String applicationPath, String sdkVersion, Boolean headless);
-
         /**
        * Shuts down the simulator.
        */

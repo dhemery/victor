@@ -2,11 +2,11 @@ package com.dhemery.victor.simulator.remote;
 
 import com.dhemery.victor.http.HttpPostBody;
 
-public class TouchMenuItemCommand extends HttpPostBody {
+public class TouchMenuItemMessage extends HttpPostBody {
 	public final String menuName;
 	public final String menuItemName;
 
-	public TouchMenuItemCommand(String menuName, String menuItemName) {
+	public TouchMenuItemMessage(String menuName, String menuItemName) {
 		this.menuName = menuName;
 		this.menuItemName = menuItemName;
 	}

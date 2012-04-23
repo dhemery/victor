@@ -1,17 +1,17 @@
 package com.dhemery.victor.simulator.server;
 
+import com.dhemery.victor.simulator.local.LocalSimulator;
+import com.dhemery.victor.simulator.remote.LaunchApplicationMessage;
+
 import java.io.IOException;
 
-import com.dhemery.victor.simulator.local.LocalSimulator;
-import com.dhemery.victor.simulator.remote.LaunchApplicationCommand;
-
-public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApplicationCommand> {
+public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApplicationMessage> {
 	public LaunchApplicationHandler(LocalSimulator simulator) {
-		super(simulator, LaunchApplicationCommand.class);
+		super(simulator, LaunchApplicationMessage.class);
 	}
 
 	@Override
-	public void perform(LocalSimulator simulator, LaunchApplicationCommand command) throws IOException {
-		simulator.launch(command.applicationPath, "5.1", false);
+	public void perform(LocalSimulator simulator, LaunchApplicationMessage message) throws IOException {
+		simulator.launch();
 	}
 }

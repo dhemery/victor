@@ -33,5 +33,4 @@ public class SimulatedIosDevice implements IosDevice {
     public String toString() {
         return "the simulated device";
     }
-
 }

@@ -1,7 +1,7 @@
 package com.dhemery.victor;
 
 /**
- * Identifies one or more views in an iOS application.
+ * Identifies a set of views in an iOS application.
  *
  * @author Dale Emery
  */

@@ -22,5 +22,4 @@ public interface IosApplicationAgent {
      * @return the application delegate's response.
      */
     MessageResponse sendApplicationMessage(Message message);
-
 }

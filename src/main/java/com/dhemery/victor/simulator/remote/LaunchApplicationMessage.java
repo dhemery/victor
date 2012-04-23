@@ -2,10 +2,10 @@ package com.dhemery.victor.simulator.remote;
 
 import com.dhemery.victor.http.HttpPostBody;
 
-public class LaunchApplicationCommand extends HttpPostBody {
+public class LaunchApplicationMessage extends HttpPostBody {
 	public final String applicationPath;
 
-	public LaunchApplicationCommand(String applicationPath) {
+	public LaunchApplicationMessage(String applicationPath) {
 		this.applicationPath = applicationPath;
 	}
 

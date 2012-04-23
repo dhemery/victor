@@ -6,6 +6,6 @@ public class LaunchApplicationRequest extends HttpRequest {
 	public static final String VERB = "launchApplication";
 
 	public LaunchApplicationRequest(String applicationPath) {
-		super(VERB, new LaunchApplicationCommand(applicationPath));
+		super(VERB, new LaunchApplicationMessage(applicationPath));
 	}
 }

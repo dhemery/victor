@@ -3,7 +3,7 @@ package com.dhemery.victor;
 import java.util.List;
 
 /**
- * Represents one or more views in an iOS application.
+ * Represents a set of views in an iOS application.
  * @author Dale Emery
  */
 public interface IosView {
