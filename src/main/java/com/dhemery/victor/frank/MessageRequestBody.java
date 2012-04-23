@@ -4,7 +4,7 @@ import com.dhemery.victor.message.Message;
 import com.dhemery.victor.http.HttpPostBody;
 
 /**
- * Carries a message to an entity in the application.
+ * Carries a message to an object in an iOS application.
  * @author Dale Emery
  *
  */

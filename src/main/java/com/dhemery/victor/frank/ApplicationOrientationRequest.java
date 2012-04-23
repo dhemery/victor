@@ -5,7 +5,7 @@ import com.dhemery.victor.http.HttpRequest;
 
 
 /**
- * A request to learn the orientation of an application running with a Frank server. 
+ * Requests the orientation of an iOS application.
  * @author Dale Emery
  *
  */

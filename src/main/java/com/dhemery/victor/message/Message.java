@@ -6,8 +6,8 @@ import java.util.Collection;
 
 /**
  * <p>
- * An message to send to zero or more target objects in an iOS application.
- * An message is specified by a name and a list of arguments.
+ * A message to send objects in an iOS application.
+ * A message is specified by a name and a list of arguments.
  * </p>
  * @author Dale Emery
  */

@@ -5,7 +5,7 @@ import com.dhemery.victor.http.HttpRequest;
 
 
 /**
- * An request with no "verb."
+ * A request with no "verb."
  * Acts as a "ping" request.
  * @author Dale Emery
  */

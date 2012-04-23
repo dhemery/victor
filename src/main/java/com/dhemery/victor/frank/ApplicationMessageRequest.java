@@ -4,7 +4,7 @@ import com.dhemery.victor.message.Message;
 import com.dhemery.victor.http.HttpRequest;
 
 /**
- * <p>A request to send a message to an application's "application delegate."</p>
+ * <p>A request to send a message to an application's application delegate.</p>
  * @author Dale Emery
  */
 public class ApplicationMessageRequest extends HttpRequest {
