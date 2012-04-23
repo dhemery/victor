@@ -1,19 +1,19 @@
-package com.dhemery.victor.view;
+package com.dhemery.victor.message;
 
 import java.util.List;
 
 /**
- * An response to an operation.
+ * An response to an message.
  * @author Dale Emery
  *
  */
-public class OperationResponse {
+public class MessageResponse {
 	public final boolean succeeded;
 	public final List<String> results;
 	public final String reason;
 	public final String details;
 
-	public OperationResponse(boolean succeeded, List<String> results, String reason, String details) {
+	public MessageResponse(boolean succeeded, List<String> results, String reason, String details) {
 		this.succeeded = succeeded;
 		this.results = results;
 		this.reason = reason;

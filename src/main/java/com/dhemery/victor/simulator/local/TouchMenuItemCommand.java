@@ -21,10 +21,10 @@ public class TouchMenuItemCommand extends AppleScriptCommand {
 	}
 
 	/**
-	 * Constructs an AppleScript program to perform the menu operation.
+	 * Constructs an AppleScript program to perform the menu message.
 	 * @param menuName
 	 * @param menuItemName
-	 * @return A list of lines of AppleScript to perform the menu operation.
+	 * @return A list of lines of AppleScript to perform the menu message.
 	 */
 	private static List<String> menuTouchScriptFor(String menuName, String menuItemName) {
 		List<String> scriptLines = new ArrayList<String>();

@@ -1,8 +1,10 @@
 package com.dhemery.victor.view;
 
-import com.dhemery.polling.Action;
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosView;
+import com.dhemery.victor.message.MessageException;
+import com.dhemery.victor.message.Message;
+import com.dhemery.victor.message.MessageResponse;
 import org.hamcrest.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,7 @@ import java.util.List;
  * @author Dale Emery
  *
  */
-public class AgentBackedIosView implements IosView {
+public class AgentedIosView implements IosView {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final IosViewAgent agent;
     private final By query;
@@ -23,26 +25,19 @@ public class AgentBackedIosView implements IosView {
      * @param agent an agent that can interact with this view.
      * @param query a query that identifies the views represented by this driver.
      */
-    public AgentBackedIosView(IosViewAgent agent, By query) {
+    public AgentedIosView(IosViewAgent agent, By query) {
         this.agent = agent;
         this.query = query;
     }
 
     @Override
-    public List<String> call(String method, String...arguments) {
-        return perform(new Operation(method, arguments));
-    }
-
-    @Override
-    public void call(Action<? super IosView> action) {
-        action.executeOn(this);
-    }
-
-    private List<String> perform(Operation operation) {
-        log.debug("Send: {} {}", query, operation);
-        List<String> results = agent.perform(query, operation);
-        log.debug("{} {} returned {}", new Object[] {query, operation, results});
-        return results;
+    public List<String> sendMessage(String name, String... arguments) {
+        Message message = new Message(name, arguments);
+        log.debug("Send: {} {}", query, message);
+        MessageResponse response = agent.sendViewMessage(query, message);
+        if(!response.succeeded) throw new MessageException(this, message, response);
+        log.debug("{} {} returned {}", new Object[] {query, message, response.results});
+        return response.results;
     }
 
     @Override

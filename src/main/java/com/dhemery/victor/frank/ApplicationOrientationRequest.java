@@ -1,4 +1,4 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank;
 
 import com.dhemery.victor.http.HttpRequest;
 
@@ -9,8 +9,8 @@ import com.dhemery.victor.http.HttpRequest;
  * @author Dale Emery
  *
  */
-public class GetApplicationOrientation extends HttpRequest {
-	public GetApplicationOrientation() {
+public class ApplicationOrientationRequest extends HttpRequest {
+	public ApplicationOrientationRequest() {
 		super("orientation");
 	}
 }

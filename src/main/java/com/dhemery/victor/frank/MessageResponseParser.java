@@ -1,6 +1,6 @@
-package com.dhemery.victor.agent;
+package com.dhemery.victor.frank;
 
-import com.dhemery.victor.view.OperationResponse;
+import com.dhemery.victor.message.MessageResponse;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Constructs a {@link com.dhemery.victor.view.OperationResponse} from a properly formatted JSON string.
+ * Constructs a {@link com.dhemery.victor.message.MessageResponse} from a properly formatted JSON string.
  * @author Dale Emery
  *
  */
-public class ResultsResponseParser implements JsonDeserializer<OperationResponse> {
+public class MessageResponseParser implements JsonDeserializer<MessageResponse> {
 	@Override
-	public OperationResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+	public MessageResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
 		List<String> results = new ArrayList<String>();
 		String reason = "";
 		String details = "";
@@ -31,6 +31,6 @@ public class ResultsResponseParser implements JsonDeserializer<OperationResponse
 			reason = body.get("reason").getAsString();
 			details = body.get("details").getAsString();
 		}
-		return new OperationResponse(succeeded, results, reason, details);
+		return new MessageResponse(succeeded, results, reason, details);
 	}
 }

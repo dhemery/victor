@@ -1,10 +1,10 @@
 package com.dhemery.victor.http;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A request to an HTTP server.
@@ -62,6 +62,4 @@ public class HttpRequest {
 	public String toString() {
 		return String.format("%s %s", verb, body);
 	}
-
-
 }

@@ -1,12 +1,12 @@
 package com.dhemery.victor.http;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * The body of an HTTP POST request.
@@ -34,7 +34,7 @@ public class HttpPostBody extends HttpRequestBody {
 			out.write(json);
 			out.close();
 		} catch (IOException e) {
-			throw new HttpException(String.format("Exception while writing to %s", connection.getURL()), e);
+			throw new HttpException(String.format("Cannot write to %s", connection.getURL()), e);
 		}
 	}
 }

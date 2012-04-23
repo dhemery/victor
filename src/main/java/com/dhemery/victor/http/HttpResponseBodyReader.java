@@ -17,7 +17,7 @@ public class HttpResponseBodyReader {
 		try {
 			reader.close();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Error closing reader for %s", connection.getURL()), cause);
+			throw new HttpException(String.format("Cannot close reader for %s", connection.getURL()), cause);
 		}
 	}
 
@@ -25,7 +25,7 @@ public class HttpResponseBodyReader {
 		try {
 			return connection.getInputStream();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Error getting input stream for %s", connection.getURL()), cause);
+			throw new HttpException(String.format("Cannot get input stream for %s", connection.getURL()), cause);
 		}
 	}
 
@@ -33,7 +33,7 @@ public class HttpResponseBodyReader {
 		try {
 			return reader.readLine();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Error reading next line from %s", connection.getURL()), cause);
+			throw new HttpException(String.format("Cannot read next line from %s", connection.getURL()), cause);
 		}
 	}
 

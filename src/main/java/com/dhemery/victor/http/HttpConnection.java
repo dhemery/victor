@@ -1,12 +1,12 @@
 package com.dhemery.victor.http;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class HttpConnection {
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -28,7 +28,7 @@ public class HttpConnection {
 		try {
 			connection.connect();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Exception while connecting to %s", connection.getURL()), cause);
+			throw new HttpException(String.format("Cannot connect to %s", connection.getURL()), cause);
 		}
 	}
 
@@ -40,7 +40,7 @@ public class HttpConnection {
 		try {
 			return (HttpURLConnection) url.openConnection();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Exception opening connection to %s", url), cause);
+			throw new HttpException(String.format("Cannot open connection to %s", url), cause);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class HttpConnection {
 		try {
 			return connection.getResponseMessage();
 		} catch (IOException cause) {
-			throw new HttpException(String.format("Exception while reading response from %s", connection.getURL()), cause);
+			throw new HttpException(String.format("Cannot read response from %s", connection.getURL()), cause);
 		}
 	}
 
