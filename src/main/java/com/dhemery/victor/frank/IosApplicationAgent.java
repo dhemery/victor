@@ -6,7 +6,7 @@ import com.dhemery.victor.frank.messages.OrientationResponse;
 
 public interface IosApplicationAgent {
     /**
-     * @return true if the agent is ready to communicate with the application, otherwise false.
+     * @return true if the agent is ready to communicate with the application.
      */
     boolean isReady();
 

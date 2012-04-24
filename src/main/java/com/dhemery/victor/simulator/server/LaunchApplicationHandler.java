@@ -12,6 +12,6 @@ public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApp
 
 	@Override
 	public void perform(LocalSimulator simulator, LaunchApplicationMessage message) throws IOException {
-		simulator.launch();
+//		simulator.launch();
 	}
 }

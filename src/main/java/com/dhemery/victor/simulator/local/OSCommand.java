@@ -1,12 +1,11 @@
 package com.dhemery.victor.simulator.local;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A command to be performed by the operating system.
@@ -40,7 +39,6 @@ public class OSCommand {
     /**
 	 * Initiates the command.
 	 * @return a native process that can describe and control the invoked command.
-	 * @throws java.io.IOException
 	 */
 	public Process run() {
 		log.debug("Executing command {} with environment {}", command, environment);

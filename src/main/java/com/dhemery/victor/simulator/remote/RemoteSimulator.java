@@ -10,20 +10,9 @@ public class RemoteSimulator implements Simulator {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private final String simulatorUrl;
 
-	public RemoteSimulator(String simulatorUrl) {
+    public RemoteSimulator(String simulatorUrl) {
 		this.simulatorUrl = simulatorUrl;
-		log.debug("Using remote simulator at {}", simulatorUrl);
-	}
-
-    // todo Use configuration parameter.
-	public void launch(String applicationPath, String sdkRoot, Boolean headless) {
-		log.debug("Launching remote application {}", applicationPath);
-		perform(new LaunchApplicationRequest(applicationPath));
-	}
-
-	@Override
-	public void shutDown() {
-		perform(new CloseSimulatorRequest());
+        log.debug("Using remote simulator at {}", simulatorUrl);
 	}
 
 	private void perform(HttpRequest operation) {

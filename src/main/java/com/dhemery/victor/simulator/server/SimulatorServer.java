@@ -1,6 +1,5 @@
 package com.dhemery.victor.simulator.server;
 
-import com.dhemery.victor.simulator.SimulatorLaunchCommand;
 import com.dhemery.victor.simulator.local.LocalSimulator;
 import com.dhemery.victor.simulator.remote.CloseSimulatorRequest;
 import com.dhemery.victor.simulator.remote.LaunchApplicationRequest;
@@ -20,15 +19,15 @@ public class SimulatorServer {
     // todo configure the launch command.
     public static void main(String[] args) {
 		try {
-			new SimulatorServer(null).run();
+			new SimulatorServer().run();
 		} catch(Throwable e) {
 			log.error("SimulatorServer aborted with {}", e);
 		}
 	}
 	private final HttpServer server;
 
-    public SimulatorServer(SimulatorLaunchCommand launchCommand) throws IOException {
-        LocalSimulator simulator = new LocalSimulator(launchCommand);
+    public SimulatorServer() throws IOException {
+        LocalSimulator simulator = new LocalSimulator();
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
 		server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));

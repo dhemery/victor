@@ -6,7 +6,7 @@ import com.dhemery.victor.frank.messages.MessageResponse;
 
 public interface IosViewAgent {
     /**
-     * @return true if the agent is ready to communicate with views, otherwise false.
+     * @return true if the agent is ready to communicate with views.
      */
     boolean isReady();
 

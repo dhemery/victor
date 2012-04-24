@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Interacts with a view through an agent.
+ * Interacts with a view through an {@code IosViewAgent}.
  * @author Dale Emery
  *
  */

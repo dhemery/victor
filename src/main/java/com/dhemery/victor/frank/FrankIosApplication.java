@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An application driver that interacts with an application through a Frank server.
+ * Interacts with an application through an {@code IosApplicationAgent}.
  * @author Dale Emery
  */
 public class FrankIosApplication implements IosApplication {
@@ -17,7 +17,7 @@ public class FrankIosApplication implements IosApplication {
     private final IosApplicationAgent agent;
 
 	/**
-	 * @param agent a Frank client that can interact with this application.
+	 * @param agent an agent that can interact with this application.
 	 */
 	public FrankIosApplication(IosApplicationAgent agent) {
 		this.agent = agent;
