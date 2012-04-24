@@ -22,30 +22,15 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
     public static final String DEFAULT_FRANK_SERVER_DOMAIN_NAME = "localhost";
     public static final Long DEFAULT_FRANK_SERVER_PORT = 37265L;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final String serverUrl;
+    private final String frankServerUrl;
     private final Gson gson;
 
 
     /**
-     * Create an agent that interacts with the Frank server at the default domain name and port.
+     * @param frankServerUrl The URL where the Frank server listens for requests.
      */
-    public FrankAgent() {
-        this(DEFAULT_FRANK_SERVER_DOMAIN_NAME, DEFAULT_FRANK_SERVER_PORT);
-    }
-
-    /**
-     * @param domainName the Frank server's domain.
-     * @param port the port at which the Frank server listens.
-     */
-    public FrankAgent(String domainName, Long port) {
-        this(String.format("http://%s:%s", domainName, port));
-    }
-
-    /**
-     * @param serverUrl The URL where the Frank server listens for requests.
-     */
-    public FrankAgent(String serverUrl) {
-        this.serverUrl = serverUrl;
+    public FrankAgent(String frankServerUrl) {
+        this.frankServerUrl = frankServerUrl;
         gson = new GsonBuilder()
                 .registerTypeAdapter(MessageResponse.class, new MessageResponseParser())
                 .disableHtmlEscaping()
@@ -58,7 +43,7 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
      */
     @Override
     public boolean isReady() {
-        new PingRequest().sendTo(serverUrl);
+        new PingRequest().sendTo(frankServerUrl);
         return true;
     }
 
@@ -82,7 +67,7 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
     }
 
     private <T> T sendRequest(HttpRequest request, Class<T> resultsClass) {
-        HttpResponse response = request.sendTo(serverUrl);
+        HttpResponse response = request.sendTo(frankServerUrl);
         T results = gson.fromJson(response.body(), resultsClass);
         log.trace("Results from {} ==> {}", request, results);
         return results;
@@ -90,6 +75,6 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
 
     @Override
     public String toString() {
-        return String.format("Frank client (%s)", serverUrl);
+        return String.format("Frank client (%s)", frankServerUrl);
     }
 }

@@ -18,7 +18,15 @@ public class RemoteSimulator implements Simulator {
 		operation.sendTo(simulatorUrl);
 	}
 
-	@Override
+    @Override
+    public void startWithApplication(String applicationBinaryPath) {
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
 	public void touchMenuItem(String menuName, String menuItemName) {
 		perform(new TouchMenuItemRequest(menuName, menuItemName));
 	}

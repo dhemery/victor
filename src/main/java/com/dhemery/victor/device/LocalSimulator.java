@@ -19,12 +19,17 @@ public class LocalSimulator implements Simulator {
     private final String simulatorBinaryPath;
     private Process process;
 
+    /**
+     * @param sdkRoot the path to the SDK to use for the simulation.
+     * @param simulatorBinaryPath the path to the Simulator executable on this computer.
+     */
     public LocalSimulator(String sdkRoot, String simulatorBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
         baseArguments.add("-currentSdkRoot");
         baseArguments.add(sdkRoot);
     }
 
+    @Override
     public void startWithApplication(String applicationBinaryPath) {
         List<String> arguments = new ArrayList<String>(baseArguments);
         arguments.add("-SimulateApplication");
@@ -34,6 +39,7 @@ public class LocalSimulator implements Simulator {
         process = command.run();
     }
 
+    @Override
     public void stop() {
         log.debug("Stopping simulator by touching Quit menu item");
         touchMenuItem("iOS Simulator", "Quit iOS Simulator");
