@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator.local;
+package com.dhemery.victor.device.local;
 
 
 public class OSCommandException extends RuntimeException {

@@ -1,9 +1,9 @@
-package com.dhemery.victor.simulator.server;
+package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.simulator.local.LocalSimulator;
-import com.dhemery.victor.simulator.remote.CloseSimulatorRequest;
-import com.dhemery.victor.simulator.remote.LaunchApplicationRequest;
-import com.dhemery.victor.simulator.remote.TouchMenuItemRequest;
+import com.dhemery.victor.device.LocalSimulator;
+import com.dhemery.victor.device.remote.CloseSimulatorRequest;
+import com.dhemery.victor.device.remote.LaunchApplicationRequest;
+import com.dhemery.victor.device.remote.TouchMenuItemRequest;
 import com.sun.net.httpserver.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

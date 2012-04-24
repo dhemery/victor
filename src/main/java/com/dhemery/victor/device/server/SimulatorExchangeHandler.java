@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator.server;
+package com.dhemery.victor.device.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dhemery.victor.simulator.local.LocalSimulator;
+import com.dhemery.victor.device.LocalSimulator;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

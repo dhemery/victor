@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator;
+package com.dhemery.victor.device;
 
 import com.dhemery.victor.IosDevice;
 

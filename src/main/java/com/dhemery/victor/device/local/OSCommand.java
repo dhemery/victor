@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator.local;
+package com.dhemery.victor.device.local;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

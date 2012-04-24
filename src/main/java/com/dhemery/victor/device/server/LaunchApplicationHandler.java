@@ -1,7 +1,7 @@
-package com.dhemery.victor.simulator.server;
+package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.simulator.local.LocalSimulator;
-import com.dhemery.victor.simulator.remote.LaunchApplicationMessage;
+import com.dhemery.victor.device.LocalSimulator;
+import com.dhemery.victor.device.remote.LaunchApplicationMessage;
 
 import java.io.IOException;
 

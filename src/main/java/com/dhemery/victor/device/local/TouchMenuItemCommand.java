@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator.local;
+package com.dhemery.victor.device.local;
 
 import java.util.ArrayList;
 import java.util.List;

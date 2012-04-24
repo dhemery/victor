@@ -1,4 +1,4 @@
-package com.dhemery.victor.simulator.local;
+package com.dhemery.victor.device.local;
 
 public class SimulatorCommandException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
@@ -6,5 +6,4 @@ public class SimulatorCommandException extends RuntimeException {
 	public SimulatorCommandException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
 }
