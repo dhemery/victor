@@ -6,15 +6,19 @@ import java.util.Properties;
  * Factory methods to create Frank agents.
  */
 public class CreateFrankAgent {
+    public static final String VICTOR_FRANK_SERVER_PORT_PROPERTY = "victor.frank.server.port";
+    public static final String VICTOR_APPLICATION_HOST_PROPERTY = "victor.application.host";
+    public static final String DEFAULT_FRANK_SERVER_DOMAIN_NAME = "localhost";
+    public static final Long DEFAULT_FRANK_SERVER_PORT = 37265L;
+
     /**
      * Create a Frank agent that interacts with a Frank server
-     * at the default {@link FrankAgent#DEFAULT_FRANK_SERVER_DOMAIN_NAME host}
-     * and {@link FrankAgent#DEFAULT_FRANK_SERVER_PORT port}.
+     * at the default {@link #DEFAULT_FRANK_SERVER_DOMAIN_NAME host}
+     * and {@link #DEFAULT_FRANK_SERVER_PORT port}.
      * @return the Frank agent.
      */
     public static FrankAgent forDefaultFrankServerUrl() {
-        return forFrankServerUrl(FrankAgent.DEFAULT_FRANK_SERVER_DOMAIN_NAME,
-                FrankAgent.DEFAULT_FRANK_SERVER_PORT);
+        return forFrankServerUrl(DEFAULT_FRANK_SERVER_DOMAIN_NAME, DEFAULT_FRANK_SERVER_PORT);
     }
 
     /**
@@ -61,7 +65,7 @@ public class CreateFrankAgent {
 
     // todo Throw if there is no such property.
     private static String hostProperty(Properties properties) {
-        return properties.getProperty("victor.application.host");
+        return properties.getProperty(VICTOR_APPLICATION_HOST_PROPERTY);
     }
 
     private static String makeUrl(String host, Long port) {
@@ -70,6 +74,6 @@ public class CreateFrankAgent {
 
     // todo Throw if there is no such property, or if its value cannot be parsed.
     private static Long portProperty(Properties properties) {
-        return Long.parseLong(properties.getProperty("victor.frank.server.port"));
+        return Long.parseLong(properties.getProperty(VICTOR_FRANK_SERVER_PORT_PROPERTY));
     }
 }

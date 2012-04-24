@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class FrankAgent implements IosViewAgent, IosApplicationAgent {
-    public static final String DEFAULT_FRANK_SERVER_DOMAIN_NAME = "localhost";
-    public static final Long DEFAULT_FRANK_SERVER_PORT = 37265L;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String frankServerUrl;
     private final Gson gson;
