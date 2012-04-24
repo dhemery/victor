@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A command to be performed by the operating system.
@@ -14,15 +15,21 @@ import java.util.List;
  */
 public class OSCommand {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	private final List<String> command = new ArrayList<String>();
-    private final List<String> environment = new ArrayList<String>();
+    private final ProcessBuilder builder;
+
+    /**
+	 * @param path the file path of the command to perform.
+	 */
+	public OSCommand(String path) {
+        this(path, Collections.<String>emptyList());
+	}
 
     /**
 	 * @param path the file path of the command to perform.
 	 * @param arguments arguments sent to the command.
 	 */
 	public OSCommand(String path, List<String> arguments) {
-        this(path, arguments, new ArrayList<String>());
+        this(path, arguments, Collections.<String,String>emptyMap());
 	}
 
 	/**
@@ -30,10 +37,11 @@ public class OSCommand {
 	 * @param arguments arguments sent to the command.
      * @param environment environment variables for the command.
 	 */
-    public OSCommand(String path, List<String> arguments, List<String> environment) {
-        command.add(path);
-        command.addAll(arguments);
-        this.environment.addAll(environment);
+    public OSCommand(String path, List<String> arguments, Map<String,String> environment) {
+        builder = new ProcessBuilder();
+        builder.command().add(path);
+        builder.command().addAll(arguments);
+        builder.environment().putAll(environment);
     }
 
     /**
@@ -41,11 +49,16 @@ public class OSCommand {
 	 * @return a native process that can describe and control the invoked command.
 	 */
 	public Process run() {
-		log.debug("Executing command {} with environment {}", command, environment);
+		log.debug("Executing command {} with environment {}", builder.command(), builder.environment());
 		try {
-			return Runtime.getRuntime().exec(command.toArray(new String[command.size()]), environment.toArray(new String[environment.size()]));
-		} catch (IOException e) {
-			throw new OSCommandException(command.toString(), e);
+			return builder.start();
+		} catch (IOException cause) {
+			throw new OSCommandException(this, cause);
 		}
 	}
+
+    @Override
+    public String toString() {
+        return String.format("Command %s with environment %s", builder.command(), builder.environment());
+    }
 }
