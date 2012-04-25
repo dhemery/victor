@@ -40,6 +40,7 @@ public class LocalSimulator implements Simulator {
 
     @Override
     public void stop() {
+        if(process == null) return;
         log.debug("Stopping simulator by touching Quit menu item");
         touchMenuItem("iOS Simulator", "Quit iOS Simulator");
         try {
@@ -47,6 +48,7 @@ public class LocalSimulator implements Simulator {
         } catch (InterruptedException cause) {
             throw new RuntimeException("Interrupted while waiting for simulator process to stop.", cause);
         }
+        process = null;
     }
 
     @Override

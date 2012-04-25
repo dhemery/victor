@@ -6,19 +6,19 @@ import java.util.Properties;
  * Factory methods to create Frank agents.
  */
 public class CreateFrankAgent {
-    public static final String VICTOR_FRANK_SERVER_PORT_PROPERTY = "victor.frank.server.port";
-    public static final String VICTOR_APPLICATION_HOST_PROPERTY = "victor.application.host";
-    public static final String DEFAULT_FRANK_SERVER_DOMAIN_NAME = "localhost";
-    public static final Long DEFAULT_FRANK_SERVER_PORT = 37265L;
+    public static final String FRANK_PORT = "victor.frank.port";
+    public static final String FRANK_HOST = "victor.frank.host";
+    public static final String DEFAULT_FRANK_HOST = "localhost";
+    public static final Long DEFAULT_FRANK_PORT = 37265L;
 
     /**
      * Create a Frank agent that interacts with a Frank server
-     * at the default {@link #DEFAULT_FRANK_SERVER_DOMAIN_NAME host}
-     * and {@link #DEFAULT_FRANK_SERVER_PORT port}.
+     * at the default {@link #DEFAULT_FRANK_HOST host}
+     * and {@link #DEFAULT_FRANK_PORT port}.
      * @return the Frank agent.
      */
     public static FrankAgent forDefaultFrankServerUrl() {
-        return forFrankServerUrl(DEFAULT_FRANK_SERVER_DOMAIN_NAME, DEFAULT_FRANK_SERVER_PORT);
+        return forFrankServerUrl(DEFAULT_FRANK_HOST, DEFAULT_FRANK_PORT);
     }
 
     /**
@@ -65,15 +65,26 @@ public class CreateFrankAgent {
 
     // todo Throw if there is no such property.
     private static String hostProperty(Properties properties) {
-        return properties.getProperty(VICTOR_APPLICATION_HOST_PROPERTY);
+        return property(properties, FRANK_HOST);
+    }
+
+    // todo Throw if there is no such property, or if its value cannot be parsed.
+    private static Long portProperty(Properties properties) {
+        return longProperty(properties, FRANK_PORT);
     }
 
     private static String makeUrl(String host, Long port) {
         return String.format("http://%s:%s", host, port);
     }
 
-    // todo Throw if there is no such property, or if its value cannot be parsed.
-    private static Long portProperty(Properties properties) {
-        return Long.parseLong(properties.getProperty(VICTOR_FRANK_SERVER_PORT_PROPERTY));
+    private static Long longProperty(Properties properties, String propertyName) {
+        return Long.parseLong(property(properties, propertyName));
+    }
+
+    private static String property(Properties properties, String propertyName) {
+        if(!properties.stringPropertyNames().contains(propertyName)) {
+            throw new RuntimeException("Missing value for property " + propertyName);
+        }
+        return properties.getProperty(propertyName);
     }
 }
