@@ -11,20 +11,20 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Interacts with a view through an {@code IosViewAgent}.
+ * Interacts with a view through a {@code FrankViewAgent}.
  * @author Dale Emery
  *
  */
 public class FrankIosView implements IosView {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final IosViewAgent agent;
+    private final FrankViewAgent agent;
     private final By query;
 
     /**
      * @param agent an agent that can interact with this view.
      * @param query a query that identifies the views represented by this driver.
      */
-    public FrankIosView(IosViewAgent agent, By query) {
+    public FrankIosView(FrankViewAgent agent, By query) {
         this.agent = agent;
         this.query = query;
     }

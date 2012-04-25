@@ -1,15 +1,12 @@
 package com.dhemery.victor.frank;
 
+import com.dhemery.victor.By;
+import com.dhemery.victor.IosView;
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.frank.messages.MessageResponse;
 import com.dhemery.victor.frank.messages.OrientationResponse;
 
-public interface IosApplicationAgent {
-    /**
-     * @return true if the agent is ready to communicate with the application.
-     */
-    boolean isReady();
-
+public interface FrankApplicationAgent {
     /**
      * Determines the current orientation (portrait or landscape)
      * of the application in which the Frank server is running.
@@ -18,9 +15,16 @@ public interface IosApplicationAgent {
     OrientationResponse orientation();
 
     /**
-     * Send a message to the application's application delegate.
+     * Send a message to the application delegate.
      * @param message the message to send.
      * @return the application delegate's response.
      */
     MessageResponse sendApplicationMessage(Message message);
+
+    /**
+     * @param query identifies a set of views.
+     * @return a view driver that represents the identified views within this application.
+     */
+
+    IosView view(By query);
 }

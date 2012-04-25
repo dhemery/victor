@@ -1,6 +1,7 @@
 package com.dhemery.victor.frank;
 
 import com.dhemery.victor.By;
+import com.dhemery.victor.IosView;
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.frank.messages.MessageResponse;
 import com.dhemery.victor.frank.messages.MessageResponseParser;
@@ -18,11 +19,10 @@ import org.slf4j.LoggerFactory;
  * @author Dale Emery
  *
  */
-public class FrankAgent implements IosViewAgent, IosApplicationAgent {
+public class FrankAgent implements FrankViewAgent, FrankApplicationAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String frankServerUrl;
     private final Gson gson;
-
 
     /**
      * @param frankServerUrl The URL where the Frank server listens for requests.
@@ -36,10 +36,8 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
     }
 
     /**
-     * Sends a GET request to the Frank server.
-     * @return true if the Frank server responds to the request, otherwise false.
+     * @return true if the Frank server is ready to respond to requests.
      */
-    @Override
     public boolean isReady() {
         new PingRequest().sendTo(frankServerUrl);
         return true;
@@ -74,5 +72,10 @@ public class FrankAgent implements IosViewAgent, IosApplicationAgent {
     @Override
     public String toString() {
         return String.format("Frank client (%s)", frankServerUrl);
+    }
+
+    @Override
+    public IosView view(By query) {
+        return new FrankIosView(this, query);
     }
 }
