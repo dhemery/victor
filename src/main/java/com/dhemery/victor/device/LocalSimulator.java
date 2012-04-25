@@ -25,7 +25,7 @@ public class LocalSimulator implements Simulator {
      */
     public LocalSimulator(String sdkRoot, String simulatorBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
-        baseArguments.add("-currentSdkRoot");
+        baseArguments.add("-currentSDKRoot");
         baseArguments.add(sdkRoot);
     }
 
