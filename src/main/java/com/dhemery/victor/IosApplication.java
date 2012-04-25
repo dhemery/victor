@@ -24,4 +24,10 @@ public interface IosApplication {
 	 * @return the application's current orientation.
 	 */
 	Orientation orientation();
+
+    /**
+     * @param query identifies a set of views.
+     * @return a view driver that represents the identified views within this application.
+     */
+    IosView view(By query);
 }
