@@ -2,10 +2,7 @@ package com.dhemery.victor.device;
 
 
 public interface Simulator {
-    /**
-     * @param applicationBinaryPath
-     */
-    void startWithApplication(String applicationBinaryPath);
+    void start();
 
     void stop();
 

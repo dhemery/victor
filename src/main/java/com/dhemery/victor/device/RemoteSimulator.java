@@ -19,7 +19,7 @@ public class RemoteSimulator implements Simulator {
 	}
 
     @Override
-    public void startWithApplication(String applicationBinaryPath) {
+    public void start() {
     }
 
     @Override

@@ -30,6 +30,16 @@ public class SimulatedIosDevice implements IosDevice {
 	}
 
     @Override
+    public void start() {
+        simulator.start();
+    }
+
+    @Override
+    public void stop() {
+        simulator.stop();
+    }
+
+    @Override
     public String toString() {
         return "the simulated device";
     }

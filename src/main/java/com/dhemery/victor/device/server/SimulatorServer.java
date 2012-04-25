@@ -27,7 +27,7 @@ public class SimulatorServer {
 	private final HttpServer server;
 
     public SimulatorServer() throws IOException {
-        LocalSimulator simulator = new LocalSimulator(null, null);
+        LocalSimulator simulator = new LocalSimulator(null, null, null);
 		server = HttpServer.create();
 		server.bind(ADDRESS, PORT);
 		server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));

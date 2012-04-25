@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class LocalSimulator implements Simulator {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final List<String> baseArguments = new ArrayList<String>();
+    private final List<String> arguments = new ArrayList<String>();
     private final String simulatorBinaryPath;
     private Process process;
 
@@ -23,17 +23,16 @@ public class LocalSimulator implements Simulator {
      * @param sdkRoot the path to the SDK to use for the simulation.
      * @param simulatorBinaryPath the path to the Simulator executable on this computer.
      */
-    public LocalSimulator(String sdkRoot, String simulatorBinaryPath) {
+    public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
-        baseArguments.add("-currentSDKRoot");
-        baseArguments.add(sdkRoot);
+        arguments.add("-currentSDKRoot");
+        arguments.add(sdkRoot);
+        arguments.add("-SimulateApplication");
+        arguments.add(applicationBinaryPath);
     }
 
     @Override
-    public void startWithApplication(String applicationBinaryPath) {
-        List<String> arguments = new ArrayList<String>(baseArguments);
-        arguments.add("-SimulateApplication");
-        arguments.add(applicationBinaryPath);
+    public void start() {
         OSCommand command = new OSCommand(simulatorBinaryPath, arguments);
         log.debug("Launching simulator {}", command);
         process = command.run();

@@ -6,11 +6,14 @@ package com.dhemery.victor;
  *
  */
 public interface IosDevice {
-	public void rotateLeft();
-	public void rotateRight();
+	void rotateLeft();
+	void rotateRight();
 
 	/**
 	 * Saves an image of the screen to the desktop.
 	 */
-	public void saveScreenShot();
+	void saveScreenShot();
+
+    void start();
+    void stop();
 }
