@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * An iOS simulator running on this computer.
- * @author Dale Emery
  *
+ * @author Dale Emery
  */
 public class LocalSimulator implements Simulator {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -20,7 +20,7 @@ public class LocalSimulator implements Simulator {
     private Process process;
 
     /**
-     * @param sdkRoot the path to the SDK to use for the simulation.
+     * @param sdkRoot             the path to the SDK to use for the simulation.
      * @param simulatorBinaryPath the path to the Simulator executable on this computer.
      */
     public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath) {
@@ -40,7 +40,7 @@ public class LocalSimulator implements Simulator {
 
     @Override
     public void stop() {
-        if(process == null) return;
+        if (process == null) return;
         log.debug("Stopping simulator by touching Quit menu item");
         touchMenuItem("iOS Simulator", "Quit iOS Simulator");
         try {

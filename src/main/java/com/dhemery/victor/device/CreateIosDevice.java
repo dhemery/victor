@@ -20,24 +20,25 @@ public class CreateIosDevice {
      * <p>Create a simulated iOS device configured according to {@code configuration}.</p>
      * <p>Notes:</p>
      * <ol>
-     *     <li>
-     *         If the configuration does not define a value
-     *         for {@link IosDeviceConfiguration#APPLICATION_BINARY_PATH_PROPERTY_NAME APPLICATION_BINARY_PATH_PROPERTY_NAME},
-     *         this method throws an exception.
-     *     </li>
-     *     <li>
-     *         If the configuration does not define a value
-     *         for {@link IosDeviceConfiguration#SDK_ROOT_PROPERTY_NAME SDK_ROOT_PROPERTY_NAME},
-     *         this method obtains a default value
-     *         by calling {@link Xcode#newestSdkRoot()}.
-     *     </li>
-     *     <li>
-     *         If the configuration does not define a value
-     *         for {@link IosDeviceConfiguration#SIMULATOR_BINARY_PATH_PROPERTY_NAME SIMULATOR_BINARY_PATH_PROPERTY_NAME},
-     *         this method obtains a default value
-     *         by calling {@link Xcode#simulatorBinaryPath()}.
-     *     </li>
+     * <li>
+     * If the configuration does not define a value
+     * for {@link IosDeviceConfiguration#APPLICATION_BINARY_PATH_PROPERTY_NAME APPLICATION_BINARY_PATH_PROPERTY_NAME},
+     * this method throws an exception.
+     * </li>
+     * <li>
+     * If the configuration does not define a value
+     * for {@link IosDeviceConfiguration#SDK_ROOT_PROPERTY_NAME SDK_ROOT_PROPERTY_NAME},
+     * this method obtains a default value
+     * by calling {@link Xcode#newestSdkRoot()}.
+     * </li>
+     * <li>
+     * If the configuration does not define a value
+     * for {@link IosDeviceConfiguration#SIMULATOR_BINARY_PATH_PROPERTY_NAME SIMULATOR_BINARY_PATH_PROPERTY_NAME},
+     * this method obtains a default value
+     * by calling {@link Xcode#simulatorBinaryPath()}.
+     * </li>
      * </ol>
+     *
      * @param configuration specifies the configuration options.
      * @return a simulated device configured as specified.
      */
@@ -56,14 +57,14 @@ public class CreateIosDevice {
 
     private String applicationBinaryPath() {
         String applicationBinaryPath = configuration.getApplicationBinaryPath();
-        if(applicationBinaryPath != null) return applicationBinaryPath;
+        if (applicationBinaryPath != null) return applicationBinaryPath;
         String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH_PROPERTY_NAME);
         throw new IosDeviceConfigurationException(explanation);
     }
 
     private String sdkRoot() {
         String sdkRoot = configuration.getSdkRoot();
-        if(sdkRoot != null) return sdkRoot;
+        if (sdkRoot != null) return sdkRoot;
         sdkRoot = xcode.newestSdkRoot();
         log.trace("Configuration option {} not defined. Using default value {}", SDK_ROOT_PROPERTY_NAME, sdkRoot);
         return sdkRoot;
@@ -71,7 +72,7 @@ public class CreateIosDevice {
 
     private String simulatorBinaryPath() {
         String simulatorBinaryPath = configuration.getSimulatorBinaryPath();
-        if(simulatorBinaryPath != null) return simulatorBinaryPath;
+        if (simulatorBinaryPath != null) return simulatorBinaryPath;
         simulatorBinaryPath = xcode.simulatorBinaryPath();
         log.trace("Configuration option {} not defined. Using default value {}", SIMULATOR_BINARY_PATH_PROPERTY_NAME, simulatorBinaryPath);
         return simulatorBinaryPath;

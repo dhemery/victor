@@ -29,15 +29,17 @@ public class IosDeviceConfiguration {
      */
     public static final String SIMULATOR_BINARY_PATH_PROPERTY_NAME = "victor.simulator.binary.path";
 
-    private final Map<String,String> settings = new HashMap<String, String>();
+    private final Map<String, String> settings = new HashMap<String, String>();
 
     /**
      * Create an {@code IosDeviceConfiguration} with no settings defined.
      */
-    public IosDeviceConfiguration() {}
+    public IosDeviceConfiguration() {
+    }
 
     /**
      * Create an {@code IosDeviceConfiguration} with settings copied from the given map;
+     *
      * @param settings a map that defines settings.
      */
     public IosDeviceConfiguration(Map<String, String> settings) {

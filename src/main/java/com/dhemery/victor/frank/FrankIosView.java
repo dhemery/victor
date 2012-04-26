@@ -12,8 +12,8 @@ import java.util.List;
 
 /**
  * Interacts with a view through a {@code FrankViewAgent}.
- * @author Dale Emery
  *
+ * @author Dale Emery
  */
 public class FrankIosView implements IosView {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -34,8 +34,8 @@ public class FrankIosView implements IosView {
         Message message = new Message(name, arguments);
         log.debug("Send: {} {}", query, message);
         MessageResponse response = agent.sendViewMessage(query, message);
-        if(!response.succeeded) throw new MessageException(this, message, response);
-        log.debug("{} {} returned {}", new Object[] {query, message, response.results});
+        if (!response.succeeded) throw new MessageException(this, message, response);
+        log.debug("{} {} returned {}", new Object[]{query, message, response.results});
         return response.results;
     }
 

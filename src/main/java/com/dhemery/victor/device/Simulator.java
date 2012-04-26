@@ -13,10 +13,11 @@ public interface Simulator {
     void stop();
 
     /**
-	 * Invoke a menu item in the simulator.
-	 * @param menuName the name of the menu that includes the item.
-	 * @param menuItemName the name of the menu item to invoke.
-	 */
-	void touchMenuItem(String menuName, String menuItemName);
+     * Invoke a menu item in the simulator.
+     *
+     * @param menuName     the name of the menu that includes the item.
+     * @param menuItemName the name of the menu item to invoke.
+     */
+    void touchMenuItem(String menuName, String menuItemName);
 
 }

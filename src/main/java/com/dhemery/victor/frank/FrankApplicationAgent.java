@@ -10,12 +10,14 @@ public interface FrankApplicationAgent {
     /**
      * Determines the current orientation (portrait or landscape)
      * of the application in which the Frank server is running.
+     *
      * @return a response that describes the application's orientation.
      */
     OrientationResponse orientation();
 
     /**
      * Send a message to the application delegate.
+     *
      * @param message the message to send.
      * @return the application delegate's response.
      */

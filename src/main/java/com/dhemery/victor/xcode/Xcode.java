@@ -1,6 +1,5 @@
 package com.dhemery.victor.xcode;
 
-import com.dhemery.victor.device.IosDeviceConfiguration;
 import com.dhemery.victor.device.IosDeviceConfigurationException;
 
 import java.io.*;
@@ -27,10 +26,11 @@ public class Xcode {
     /**
      * Determine the current Xcode developer root
      * by running Run {@code xcode-select -print-path}.
+     *
      * @return the current developer root.
      */
     public String developerRoot() {
-        if(developerRoot != null) return developerRoot;
+        if (developerRoot != null) return developerRoot;
         try {
             Process xcodeSelect = new ProcessBuilder().command("xcode-select", "-print-path").start();
             return outputFromProcess(xcodeSelect);
@@ -53,14 +53,14 @@ public class Xcode {
      * <p>Determine the root path of the newest iPhoneSimulator SDK installed in the Xcode development environment.
      * This method looks for SDKs in {@link #DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT a fixed location}
      * below {@link #developerRoot() developer root}.</p>
-     *
+     * <p/>
      * <p><strong>WARNING.</strong> This method:</p>
      * <ul>
-     *     <li><strong>Assumes</strong> that iPhoneSimulator SDK roots are installed in the current developer environment
-     *     in a fixed location.
-     *     See the value of {@link #DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT}.
-     *     </li>
-     *     <li><strong>Assumes</strong> that the fixed location contains nothing but iOS SDKs.</li>
+     * <li><strong>Assumes</strong> that iPhoneSimulator SDK roots are installed in the current developer environment
+     * in a fixed location.
+     * See the value of {@link #DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT}.
+     * </li>
+     * <li><strong>Assumes</strong> that the fixed location contains nothing but iOS SDKs.</li>
      * </ul>
      *
      * @return the root path to the newest iPhoneSimulator SDK in the current Xcode development environment.
@@ -68,7 +68,7 @@ public class Xcode {
     public String newestSdkRoot() {
         String sdkRootsPath = String.format(DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT, developerRoot());
         File[] sdks = new File(sdkRootsPath).listFiles();
-        if(empty(sdks)) {
+        if (empty(sdks)) {
             throw new IosDeviceConfigurationException(String.format("Configuration option %s not defined, and no SDKs found in %s", DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT, sdkRootsPath));
         }
         return lexicographicallyLastFileIn(sdks).getAbsolutePath();
@@ -86,13 +86,13 @@ public class Xcode {
      * This method looks for the simulator executable
      * in {@link #DEFAULT_SIMULATOR_BINARY_PATH_FOR_DEVELOPER_ROOT a fixed location}
      * below {@link #developerRoot() developer root}.</p>
-     *
+     * <p/>
      * <p><strong>WARNING.</strong> This method:</p>
      * <ul>
-     *     <li><strong>Assumes</strong> that the simulator is installed in the current developer environment
-     *     in a fixed location.
-     *     <li><strong>Does not</strong> determine whether a file exists at that location,
-     *     or that the file is executable.</li>
+     * <li><strong>Assumes</strong> that the simulator is installed in the current developer environment
+     * in a fixed location.
+     * <li><strong>Does not</strong> determine whether a file exists at that location,
+     * or that the file is executable.</li>
      * </ul>
      *
      * @return the default path to the iPhoneSimulator Simulator executable for the current Xcode development environment.

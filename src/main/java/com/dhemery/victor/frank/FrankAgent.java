@@ -2,11 +2,14 @@ package com.dhemery.victor.frank;
 
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosView;
+import com.dhemery.victor.frank.frankly.ApplicationMessageRequest;
+import com.dhemery.victor.frank.frankly.ApplicationOrientationRequest;
+import com.dhemery.victor.frank.frankly.PingRequest;
+import com.dhemery.victor.frank.frankly.ViewMessageRequest;
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.frank.messages.MessageResponse;
 import com.dhemery.victor.frank.messages.MessageResponseParser;
 import com.dhemery.victor.frank.messages.OrientationResponse;
-import com.dhemery.victor.frank.frankly.*;
 import com.dhemery.victor.http.HttpRequest;
 import com.dhemery.victor.http.HttpResponse;
 import com.google.gson.Gson;

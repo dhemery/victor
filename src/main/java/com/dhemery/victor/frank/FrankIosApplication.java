@@ -12,25 +12,26 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Interacts with an application through a {@code FrankApplicationAgent}.
+ *
  * @author Dale Emery
  */
 public class FrankIosApplication implements IosApplication {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final FrankApplicationAgent agent;
 
-	/**
-	 * @param agent an agent that can interact with this application.
-	 */
-	public FrankIosApplication(FrankApplicationAgent agent) {
-		this.agent = agent;
-	}
+    /**
+     * @param agent an agent that can interact with this application.
+     */
+    public FrankIosApplication(FrankApplicationAgent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public String sendMessage(String name, String... arguments) {
         Message message = new Message(name, arguments);
         log.debug("Send: application delegate {}", message);
         MessageResponse response = agent.sendApplicationMessage(message);
-        if(!response.succeeded) throw new MessageException(this, message, response);
+        if (!response.succeeded) throw new MessageException(this, message, response);
         log.debug("Application delegate message {} returned {}", message, response.results);
         return response.results.get(0);
     }
@@ -48,7 +49,7 @@ public class FrankIosApplication implements IosApplication {
     }
 
     @Override
-	public String toString() {
-		return "the application";
-	}
+    public String toString() {
+        return "the application";
+    }
 }

@@ -2,18 +2,18 @@ package com.dhemery.victor;
 
 /**
  * Represents an iOS device (real or simulated).
- * @author Dale Emery
  *
+ * @author Dale Emery
  */
 public interface IosDevice {
-	void rotateLeft();
+    void rotateLeft();
 
-	void rotateRight();
+    void rotateRight();
 
-	/**
-	 * Save an image of the screen to the desktop.
-	 */
-	void saveScreenShot();
+    /**
+     * Save an image of the screen to the desktop.
+     */
+    void saveScreenShot();
 
     /**
      * Start the device.

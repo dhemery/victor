@@ -5,18 +5,18 @@ import com.dhemery.victor.http.HttpPostBody;
 
 /**
  * Carries a message to an object in an iOS application.
- * @author Dale Emery
  *
+ * @author Dale Emery
  */
 public class MessageRequestBody extends HttpPostBody {
-	public final Message operation;
-	
-	public MessageRequestBody(Message message) {
-		operation = message;
-	}
-	
-	@Override
-	public String toString() {
-		return operation.toString();
-	}
+    public final Message operation;
+
+    public MessageRequestBody(Message message) {
+        operation = message;
+    }
+
+    @Override
+    public String toString() {
+        return operation.toString();
+    }
 }

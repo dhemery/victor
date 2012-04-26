@@ -9,64 +9,64 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class HttpConnection {
-	private final Logger log = LoggerFactory.getLogger(getClass());
-	private final URL url;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final URL url;
 
-	public HttpConnection(URL url) {
-		this.url = url;
-	}
+    public HttpConnection(URL url) {
+        this.url = url;
+    }
 
-	private HttpURLConnection connection() {
-		HttpURLConnection connection = openHttpConnection();
-		connection.setReadTimeout(30000);
-		connection.setDoOutput(true);
-		connectTo(connection);
-		return connection;
-	}
-	
-	private void connectTo(URLConnection connection) {
-		try {
-			connection.connect();
-		} catch (IOException cause) {
-			throw new HttpException(String.format("Cannot connect to %s", connection.getURL()), cause);
-		}
-	}
+    private HttpURLConnection connection() {
+        HttpURLConnection connection = openHttpConnection();
+        connection.setReadTimeout(30000);
+        connection.setDoOutput(true);
+        connectTo(connection);
+        return connection;
+    }
 
-	private void disconnectFrom(HttpURLConnection connection) {
-		connection.disconnect();
-	}
+    private void connectTo(URLConnection connection) {
+        try {
+            connection.connect();
+        } catch (IOException cause) {
+            throw new HttpException(String.format("Cannot connect to %s", connection.getURL()), cause);
+        }
+    }
 
-	private HttpURLConnection openHttpConnection() {
-		try {
-			return (HttpURLConnection) url.openConnection();
-		} catch (IOException cause) {
-			throw new HttpException(String.format("Cannot open connection to %s", url), cause);
-		}
-	}
+    private void disconnectFrom(HttpURLConnection connection) {
+        connection.disconnect();
+    }
 
-	private HttpResponse responseFrom(HttpURLConnection connection) {
-		HttpResponse response = new HttpResponse(responseMessageFrom(connection), responseBodyFrom(connection));
-		log.trace("Response: {}", response);
-		return response;
-	}
+    private HttpURLConnection openHttpConnection() {
+        try {
+            return (HttpURLConnection) url.openConnection();
+        } catch (IOException cause) {
+            throw new HttpException(String.format("Cannot open connection to %s", url), cause);
+        }
+    }
 
-	private String responseBodyFrom(HttpURLConnection connection) {
-		return new HttpResponseBodyReader(connection).read();
-	}
+    private HttpResponse responseFrom(HttpURLConnection connection) {
+        HttpResponse response = new HttpResponse(responseMessageFrom(connection), responseBodyFrom(connection));
+        log.trace("Response: {}", response);
+        return response;
+    }
 
-	private String responseMessageFrom(HttpURLConnection connection) {
-		try {
-			return connection.getResponseMessage();
-		} catch (IOException cause) {
-			throw new HttpException(String.format("Cannot read response from %s", connection.getURL()), cause);
-		}
-	}
+    private String responseBodyFrom(HttpURLConnection connection) {
+        return new HttpResponseBodyReader(connection).read();
+    }
 
-	public HttpResponse send(HttpRequestBody body) {
-		HttpURLConnection connection = connection();
-		body.writeTo(connection);
-		HttpResponse response = responseFrom(connection);
-		disconnectFrom(connection);	
-		return response;
-	}
+    private String responseMessageFrom(HttpURLConnection connection) {
+        try {
+            return connection.getResponseMessage();
+        } catch (IOException cause) {
+            throw new HttpException(String.format("Cannot read response from %s", connection.getURL()), cause);
+        }
+    }
+
+    public HttpResponse send(HttpRequestBody body) {
+        HttpURLConnection connection = connection();
+        body.writeTo(connection);
+        HttpResponse response = responseFrom(connection);
+        disconnectFrom(connection);
+        return response;
+    }
 }
