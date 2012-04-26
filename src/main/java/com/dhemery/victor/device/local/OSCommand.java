@@ -45,7 +45,7 @@ public class OSCommand {
     }
 
     /**
-	 * Initiates the command.
+	 * Initiate the command.
 	 * @return a native process that can describe and control the invoked command.
 	 */
 	public Process run() {

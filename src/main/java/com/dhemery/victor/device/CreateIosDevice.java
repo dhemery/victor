@@ -1,20 +1,47 @@
 package com.dhemery.victor.device;
 
+
 import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.xcode.Xcode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import static com.dhemery.victor.device.IosDeviceConfiguration.*;
 
+/**
+ * Create a simulated iOS device.
+ */
 public class CreateIosDevice {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final IosDeviceConfiguration configuration;
-    private String developerRoot;
+    private final Xcode xcode = new Xcode();
 
-    public static IosDevice withCapabilities(IosDeviceConfiguration configuration) {
+    /**
+     * <p>Create a simulated iOS device configured according to {@code configuration}.</p>
+     * <p>Notes:</p>
+     * <ol>
+     *     <li>
+     *         If the configuration does not define a value
+     *         for {@link IosDeviceConfiguration#APPLICATION_BINARY_PATH_PROPERTY_NAME APPLICATION_BINARY_PATH_PROPERTY_NAME},
+     *         this method throws an exception.
+     *     </li>
+     *     <li>
+     *         If the configuration does not define a value
+     *         for {@link IosDeviceConfiguration#SDK_ROOT_PROPERTY_NAME SDK_ROOT_PROPERTY_NAME},
+     *         this method obtains a default value
+     *         by calling {@link Xcode#newestSdkRoot()}.
+     *     </li>
+     *     <li>
+     *         If the configuration does not define a value
+     *         for {@link IosDeviceConfiguration#SIMULATOR_BINARY_PATH_PROPERTY_NAME SIMULATOR_BINARY_PATH_PROPERTY_NAME},
+     *         this method obtains a default value
+     *         by calling {@link Xcode#simulatorBinaryPath()}.
+     *     </li>
+     * </ol>
+     * @param configuration specifies the configuration options.
+     * @return a simulated device configured as specified.
+     */
+    public static IosDevice withConfiguration(IosDeviceConfiguration configuration) {
         return new CreateIosDevice(configuration).device();
     }
 
@@ -30,63 +57,23 @@ public class CreateIosDevice {
     private String applicationBinaryPath() {
         String applicationBinaryPath = configuration.getApplicationBinaryPath();
         if(applicationBinaryPath != null) return applicationBinaryPath;
-        String explanation = String.format("Configuration option %s not defined", IosDeviceConfiguration.APPLICATION_BINARY_PATH);
+        String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH_PROPERTY_NAME);
         throw new IosDeviceConfigurationException(explanation);
-    }
-
-    private String simulatorBinaryPath() {
-        String simulatorBinaryPath = configuration.getSimulatorBinaryPath();
-        if(simulatorBinaryPath != null) return simulatorBinaryPath;
-        simulatorBinaryPath = defaultSimulatorBinaryPath();
-        log.trace("Configuration option {} not defined. Using default value {}", IosDeviceConfiguration.SIMULATOR_BINARY_PATH, simulatorBinaryPath);
-        return simulatorBinaryPath;
-    }
-
-    public String defaultSimulatorBinaryPath() {
-        return String.format(DEFAULT_SIMULATOR_BINARY_PATH_FOR_DEVELOPER_ROOT, developerRoot());
     }
 
     private String sdkRoot() {
         String sdkRoot = configuration.getSdkRoot();
         if(sdkRoot != null) return sdkRoot;
-        sdkRoot = defaultSdkRoot();
-        log.trace("Configuration option {} not defined. Using default value {}", IosDeviceConfiguration.SDK_ROOT, sdkRoot);
+        sdkRoot = xcode.newestSdkRoot();
+        log.trace("Configuration option {} not defined. Using default value {}", SDK_ROOT_PROPERTY_NAME, sdkRoot);
         return sdkRoot;
     }
 
-    private String defaultSdkRoot() {
-        String sdkRootsPath = String.format(SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT, developerRoot());
-        List<File> sdks = Arrays.asList(new File(sdkRootsPath).listFiles());
-        if(sdks.isEmpty()) throw new IosDeviceConfigurationException(String.format("Configuration option %s not defined, and no SDKs found in {}", IosDeviceConfiguration.SDK_ROOT, sdkRootsPath));
-        return latestSdkIn(sdks);
+    private String simulatorBinaryPath() {
+        String simulatorBinaryPath = configuration.getSimulatorBinaryPath();
+        if(simulatorBinaryPath != null) return simulatorBinaryPath;
+        simulatorBinaryPath = xcode.simulatorBinaryPath();
+        log.trace("Configuration option {} not defined. Using default value {}", SIMULATOR_BINARY_PATH_PROPERTY_NAME, simulatorBinaryPath);
+        return simulatorBinaryPath;
     }
-
-    private String latestSdkIn(List<File> sdks) {
-        Collections.sort(sdks);
-        return sdks.get(sdks.size()-1).getAbsolutePath();
-    }
-
-    public String developerRoot() {
-        if(developerRoot != null) return developerRoot;
-        try {
-            Process xcodeSelect = new ProcessBuilder().command("xcode-select", "-print-path").start();
-            developerRoot = outputFromProcess(xcodeSelect);
-            return developerRoot;
-        } catch (IOException cause) {
-            throw new IosDeviceConfigurationException("Error running xcode-select to discover developer root", cause);
-        }
-    }
-
-    private String outputFromProcess(Process process) throws IOException {
-        InputStream inputStream = process.getInputStream();
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        return bufferedReader.readLine();
-    }
-
-
-
-    public static final String SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT = "%s/Platforms/iPhoneSimulator.platform/Developer/SDKs";
-    public static final String DEFAULT_SDK_ROOT_FOR_DEVELOPER_ROOT_AND_SDK_VERSION = SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT + "/iPhoneSimulator%s.sdk";
-    public static final String DEFAULT_SIMULATOR_BINARY_PATH_FOR_DEVELOPER_ROOT = "%s/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
 }

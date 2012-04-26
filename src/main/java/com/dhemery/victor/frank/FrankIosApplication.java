@@ -42,6 +42,7 @@ public class FrankIosApplication implements IosApplication {
         return Orientation.valueOf(orientationName);
     }
 
+    @Override
     public IosView view(By query) {
         return agent.view(query);
     }

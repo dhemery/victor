@@ -16,7 +16,7 @@ import java.net.HttpURLConnection;
  */
 public class HttpPostBody extends HttpRequestBody {
 	/**
-	 * Writes this request body to the connection as a JSON string.
+	 * Write this request body to the connection as a JSON string.
 	 * This causes the request to be sent via HTTP POST.
 	 */
 	@Override

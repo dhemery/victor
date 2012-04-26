@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * An agent that interacts with an iOS application via a Frank server embedded into the application.
- * @author Dale Emery
  *
+ * @author Dale Emery
  */
 public class FrankAgent implements FrankViewAgent, FrankApplicationAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());

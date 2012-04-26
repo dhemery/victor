@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class HttpRequestBody {
 	protected transient final Logger log = LoggerFactory.getLogger(getClass()); 
 	/**
-	 * Writes the body of this request through the connection.
+	 * Write the body of this request through the connection.
 	 * In this class, the method does nothing, which causes the request to be sent via HTTP GET.
 	 * Derived classes may override this method and actually write bytes,
 	 * which causes the message to be sent via HTTP PUT.

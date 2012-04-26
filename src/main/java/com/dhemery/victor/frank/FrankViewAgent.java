@@ -6,7 +6,7 @@ import com.dhemery.victor.frank.messages.MessageResponse;
 
 public interface FrankViewAgent {
     /**
-     * Sends a message to a set of views and returns their answers.
+     * Send a message to a set of views and returns their answers.
      * @param query identifies the views that will receive the message.
      * @param message the message to send.
      * @return the results returned by the views that received the message.

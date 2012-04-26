@@ -16,11 +16,11 @@
     <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
     <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
     <option name="OPTION_DEPRECATED_LIST" value="true" />
-    <option name="OTHER_OPTIONS" />
+    <option name="OTHER_OPTIONS" value="-link http://docs.oracle.com/javase/6/docs/api/" />
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-    <option name="OPTION_INCLUDE_LIBS" value="false" />
+    <option name="OPTION_INCLUDE_LIBS" value="true" />
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>

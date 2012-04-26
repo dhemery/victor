@@ -5,10 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * <p>
  * A message to send objects in an iOS application.
  * A message is specified by a name and a list of arguments.
- * </p>
  * @author Dale Emery
  */
 public class Message {

@@ -17,7 +17,6 @@ public class HttpRequest {
 	public final HttpRequestBody body;
 	
 	/**
-	 * Creates an HTTP GET request.
 	 * @param verb the path portion of the URL to which to send the request.
 	 */
 	public HttpRequest(String verb) {
@@ -25,10 +24,6 @@ public class HttpRequest {
 	}
 
 	/**
-	 * Creates an HTTP request.
-	 * If the body writes bytes to the connection,
-	 * the request is sent as a POST request.
-	 * Otherwise it is sent as a GET request.
 	 * @param verb the path portion of the URL to which to send the request.
 	 * @param body the body of the request.
 	 */
@@ -38,8 +33,11 @@ public class HttpRequest {
 	}
 
     /**
-	 * Sends the request to the HTTP server and returns the server's response.
-	 * @param serverUrl The URL where the HTTP server listens for requests.
+	 * Send this request to the HTTP server and return the server's response.
+     * If the body writes bytes to the connection,
+     * the request is sent as a POST request.
+     * Otherwise it is sent as a GET request.
+     * @param serverUrl The URL where the HTTP server listens for requests.
 	 * @return The HTTP server's response to the request.
 	 */
 	public HttpResponse sendTo(String serverUrl) {

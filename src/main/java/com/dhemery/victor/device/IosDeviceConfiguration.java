@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <p>Configuration options used by {@link CreateIosDevice} to create devices.</p>
+ */
 public class IosDeviceConfiguration {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -14,54 +17,54 @@ public class IosDeviceConfiguration {
      * This is typically a file inside the application's .app package.
      * The file's executable flag must be set.
      */
-    public static final String APPLICATION_BINARY_PATH = "victor.application.binary.path";
+    public static final String APPLICATION_BINARY_PATH_PROPERTY_NAME = "victor.application.binary.path";
 
     /**
      * Specifies the path to the root directory of the iOS SDK with which to launch the simulator.
      */
-    public static final String SDK_ROOT = "victor.sdk.root";
+    public static final String SDK_ROOT_PROPERTY_NAME = "victor.sdk.root";
 
     /**
      * Specifies the path to the iOS Simulator executable file.
      */
-    public static final String SIMULATOR_BINARY_PATH = "victor.simulator.binary.path";
+    public static final String SIMULATOR_BINARY_PATH_PROPERTY_NAME = "victor.simulator.binary.path";
 
-    private final Map<String,String> options = new HashMap<String, String>();
+    private final Map<String,String> settings = new HashMap<String, String>();
 
     /**
-     * Create an {@code IosDeviceConfiguration} with no options defined.
+     * Create an {@code IosDeviceConfiguration} with no settings defined.
      */
     public IosDeviceConfiguration() {}
 
     /**
-     * Create an {@code IosDeviceConfiguration} with options copied from the given map;
-     * @param options a map that defines options.
+     * Create an {@code IosDeviceConfiguration} with settings copied from the given map;
+     * @param settings a map that defines settings.
      */
-    public IosDeviceConfiguration(Map<String, String> options) {
-        this.options.putAll(options);
+    public IosDeviceConfiguration(Map<String, String> settings) {
+        this.settings.putAll(settings);
     }
 
     public String getApplicationBinaryPath() {
-        return options.get(APPLICATION_BINARY_PATH);
+        return settings.get(APPLICATION_BINARY_PATH_PROPERTY_NAME);
     }
 
     public void setApplicationBinaryPath(String applicationBinaryPath) {
-        options.put(APPLICATION_BINARY_PATH, applicationBinaryPath);
+        settings.put(APPLICATION_BINARY_PATH_PROPERTY_NAME, applicationBinaryPath);
     }
 
     public String getSdkRoot() {
-        return options.get(SDK_ROOT);
+        return settings.get(SDK_ROOT_PROPERTY_NAME);
     }
 
     public void setSdkRoot(String sdkRoot) {
-        options.put(SDK_ROOT, sdkRoot);
+        settings.put(SDK_ROOT_PROPERTY_NAME, sdkRoot);
     }
 
     public String getSimulatorBinaryPath() {
-        return options.get(SIMULATOR_BINARY_PATH);
+        return settings.get(SIMULATOR_BINARY_PATH_PROPERTY_NAME);
     }
 
     public void setSimulatorBinaryPath(String simulatorBinaryPath) {
-        options.put(SIMULATOR_BINARY_PATH, simulatorBinaryPath);
+        settings.put(SIMULATOR_BINARY_PATH_PROPERTY_NAME, simulatorBinaryPath);
     }
 }
