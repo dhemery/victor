@@ -9,6 +9,9 @@ public interface IosApplication {
 	public enum Orientation {
 		LANDSCAPE,
 		PORTRAIT,
+        /**
+         * Victor cannot determine the application's orientation.
+         */
 		UNKNOWN,
 	}
 

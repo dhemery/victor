@@ -6,10 +6,26 @@ import java.util.Properties;
  * Factory methods to create Frank agents.
  */
 public class CreateFrankAgent {
-    public static final String FRANK_PORT = "victor.frank.port";
-    public static final String FRANK_HOST = "victor.frank.host";
+    /**
+     * The value of {@link #DEFAULT_FRANK_HOST} if the user does not supply a value.
+     */
     public static final String DEFAULT_FRANK_HOST = "localhost";
-    public static final Long DEFAULT_FRANK_PORT = 37265L;
+
+    /**
+     * The value of {@link #DEFAULT_FRANK_PORT} if the user does not supply a value.
+     */
+    public static final long DEFAULT_FRANK_PORT = 37265L;
+
+    /**
+     * Specifies the name of the host on which the Frank server listens for requests.
+     * Do not include a scheme (e.g. "http://") at the start of this value.
+     */
+    public static final String FRANK_HOST_PROPERTY = "victor.frank.host";
+
+    /**
+     * Specifies the port on which the Frank server listens for requests.
+     */
+    public static final String FRANK_PORT_PROPERTY = "victor.frank.port";
 
     /**
      * Create a Frank agent that interacts with a Frank server
@@ -44,33 +60,23 @@ public class CreateFrankAgent {
     }
 
     /**
-     * <p>Create a Frank agent that interacts with the Frank server
+     * Create a Frank agent that interacts with the Frank server
      * at a URL designated by property values.
-     *</p>
-     * <p>
-     * The host name is specified by the property {@code victor.application.host}.
-     * The host name must not include the HTTP scheme (e.g. "http://").
-     *</p>
-     * <p>
-     * The port number is specified by the property {@code victor.frank.server.port}.
-     * The port must be parseable by {@link Long#parseLong(String)}.
-     *</p>
-     * @param properties properties that specify the URL at which the Frank server listens
+     * See the field descriptions further information.
+     *
+     * @param properties properties that specify the URL at which the Frank server listens.
      * @return the Frank agent.
      */
-    // todo It's probably a bad idea to bind users to particular properties.
     public static FrankAgent fromProperties(Properties properties) {
         return forFrankServerUrl(makeUrl(hostProperty(properties), portProperty(properties)));
     }
 
-    // todo Throw if there is no such property.
     private static String hostProperty(Properties properties) {
-        return property(properties, FRANK_HOST);
+        return property(properties, FRANK_HOST_PROPERTY);
     }
 
-    // todo Throw if there is no such property, or if its value cannot be parsed.
     private static Long portProperty(Properties properties) {
-        return longProperty(properties, FRANK_PORT);
+        return longProperty(properties, FRANK_PORT_PROPERTY);
     }
 
     private static String makeUrl(String host, Long port) {

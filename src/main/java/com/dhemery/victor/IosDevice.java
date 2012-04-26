@@ -14,6 +14,13 @@ public interface IosDevice {
 	 */
 	void saveScreenShot();
 
+    /**
+     * Starts the device.
+     */
     void start();
+
+    /**
+     * Stops the device.
+     */
     void stop();
 }
