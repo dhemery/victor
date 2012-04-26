@@ -2,37 +2,30 @@ package com.dhemery.victor.frank;
 
 import java.util.Properties;
 
+import static com.dhemery.victor.frank.FrankAgentConfigurationProperties.HOST;
+import static com.dhemery.victor.frank.FrankAgentConfigurationProperties.PORT;
+
 /**
  * Factory methods to create Frank agents.
  */
 public class CreateFrankAgent {
     /**
-     * The value of {@link #FRANK_HOST_PROPERTY_NAME} if the user does not supply a value.
+     * The value of the {@link FrankAgentConfigurationProperties#HOST} property if the user does not supply a value.
      */
     public static final String DEFAULT_FRANK_HOST = "localhost";
 
     /**
-     * The value of {@link #FRANK_PORT_PROPERTY_NAME} if the user does not supply a value.
+     * The value of the {@link FrankAgentConfigurationProperties#PORT} property if the user does not supply a value.
      */
     public static final String DEFAULT_FRANK_PORT = "37265";
 
     /**
-     * Specifies the name of the host on which the Frank server listens for requests.
-     * Do not include a scheme (e.g. "http://") at the start of this value.
-     */
-    public static final String FRANK_HOST_PROPERTY_NAME = "victor.frank.host";
-
-    /**
-     * Specifies the port on which the Frank server listens for requests.
-     */
-    public static final String FRANK_PORT_PROPERTY_NAME = "victor.frank.port";
-
-    /**
      * Create a Frank agent that interacts with a Frank server
-     * at the default {@link #DEFAULT_FRANK_HOST host}
-     * and {@link #DEFAULT_FRANK_PORT port}.
+     * at the default host and port.
      *
      * @return the Frank agent.
+     * @see #DEFAULT_FRANK_HOST
+     * @see #DEFAULT_FRANK_PORT
      */
     public static FrankAgent forDefaultFrankServerUrl() {
         return fromProperties(new Properties());
@@ -65,7 +58,7 @@ public class CreateFrankAgent {
     /**
      * Create a Frank agent that interacts with the Frank server
      * at a URL designated by property values.
-     * See the field descriptions further information.
+     * See {@link FrankAgentConfigurationProperties} for definitions of properties.
      *
      * @param properties properties that specify the URL at which the Frank server listens.
      * @return the Frank agent.
@@ -76,11 +69,11 @@ public class CreateFrankAgent {
     }
 
     private static String hostProperty(Properties properties) {
-        return properties.getProperty(FRANK_HOST_PROPERTY_NAME, DEFAULT_FRANK_HOST);
+        return properties.getProperty(HOST, DEFAULT_FRANK_HOST);
     }
 
     private static String portProperty(Properties properties) {
-        return properties.getProperty(FRANK_PORT_PROPERTY_NAME, DEFAULT_FRANK_PORT);
+        return properties.getProperty(PORT, DEFAULT_FRANK_PORT);
     }
 
     private static String makeUrl(String host, Long port) {
