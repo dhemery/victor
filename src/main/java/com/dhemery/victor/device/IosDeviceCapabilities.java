@@ -1,14 +1,17 @@
 package com.dhemery.victor.device;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.jvm.hotspot.debugger.linux.sparc.LinuxSPARCThreadContext;
+import sun.management.*;
+import sun.rmi.rmic.iiop.DirectoryLoader;
+
+import java.io.*;
+import java.util.*;
 
 public class IosDeviceCapabilities {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     /**
      * Specifies path to the iOS application binary file to execute.
      * This is typically a file inside the application's .app package.
@@ -16,12 +19,13 @@ public class IosDeviceCapabilities {
      */
     public static final String APPLICATION_BINARY_PATH_PROPERTY = "victor.application.binary.path";
 
+    public static final String SDKS_PATH_FOR_DEVELOPER_ROOT = "%s/Platforms/iPhoneSimulator.platform/Developer/SDKs";
     /**
      * The value used for {@link #SDK_ROOT_PROPERTY} if the user does not supply a value.
      * The value is calculated based on the values of
      * {@link #DEVELOPER_ROOT_PROPERTY} and {@link #SDK_VERSION_PROPERTY}.
      */
-    public static final String DEFAULT_SDK_ROOT_FOR_DEVELOPER_ROOT_AND_SDK_VERSION = "%s/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator%s.sdk";
+    public static final String DEFAULT_SDK_ROOT_FOR_DEVELOPER_ROOT_AND_SDK_VERSION = SDKS_PATH_FOR_DEVELOPER_ROOT + "/iPhoneSimulator%s.sdk";
 
     /**
      * The value used for {@link #SDK_VERSION_PROPERTY} if the user does not supply a value.
@@ -56,6 +60,7 @@ public class IosDeviceCapabilities {
      * Specifies the path to the iOS Simulator executable file.
      */
     public static final String SIMULATOR_BINARY_PATH_PROPERTY = "victor.simulator.binary.path";
+    public static final String IPHONE_SDK_FILENAME_PATTERN = "iPhoneSimulator\\d\\.\\d\\.sdk";
 
     private final Map<String,String> capabilities = new HashMap<String, String>();
 
@@ -103,7 +108,9 @@ public class IosDeviceCapabilities {
     public String defaultDeveloperRoot() {
         try {
             Process process = new ProcessBuilder().command("xcode-select", "-print-path").start();
-            return outputFromProcess(process);
+            String defaultDeveloperRoot = outputFromProcess(process);
+            log.debug("Using default developer root {}", defaultDeveloperRoot);
+            return defaultDeveloperRoot;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -114,9 +121,23 @@ public class IosDeviceCapabilities {
         return String.format(DEFAULT_SDK_ROOT_FOR_DEVELOPER_ROOT_AND_SDK_VERSION, developerRoot(), sdkVersion());
     }
 
-    // todo Default to the latest installed SDK.
     public String defaultSdkVersion() {
-        return DEFAULT_SDK_VERSION;
+        FilenameFilter sdkFileFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File directory, String filename) {
+                log.debug("Filter checking filename {}", filename);
+                return filename.matches(IPHONE_SDK_FILENAME_PATTERN);
+            }
+        };
+        String sdksPath = String.format(SDKS_PATH_FOR_DEVELOPER_ROOT, developerRoot());
+        List<File> sdkFiles = Arrays.asList(new File(sdksPath).listFiles(sdkFileFilter));
+        if(sdkFiles.isEmpty()) throw new RuntimeException("Can't find any SDKs in " + SDKS_PATH_FOR_DEVELOPER_ROOT);
+        Collections.sort(sdkFiles);
+        String latestSdk = sdkFiles.get(sdkFiles.size()-1).getName();
+        int startOfVersion = "iPhoneSimulator".length();
+        String version = latestSdk.substring(startOfVersion, startOfVersion + 3);
+        log.debug("Using default SDK version {}", version);
+        return version;
     }
 
     public String defaultSimulatorBinaryPath() {
