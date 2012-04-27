@@ -24,6 +24,7 @@ public class CreateFrankAgent {
     public static final String DEFAULT_FRANK_PORT = "37265";
 
     private static final Map<String, String> DEFAULTS = new HashMap<String, String>();
+
     static {
         DEFAULTS.put(HOST, DEFAULT_FRANK_HOST);
         DEFAULTS.put(PORT, DEFAULT_FRANK_PORT);
