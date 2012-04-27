@@ -19,7 +19,7 @@ public class Xcode {
     /**
      * The default path from {@link #developerRoot() developer root} to the directory where iPhoneSimulator SDKs are installed.
      */
-    public static String DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT = "%s/Platforms/iPhoneSimulator.platform/Developer/SDKs";
+    public static final String DEFAULT_SDK_ROOTS_PATH_FOR_DEVELOPER_ROOT = "%s/Platforms/iPhoneSimulator.platform/Developer/SDKs";
 
     private String developerRoot;
 
