@@ -9,6 +9,11 @@ import java.util.List;
  */
 public interface IosView {
     /**
+     * @return the query that identifies the views represented by this IosView.
+     */
+    By query();
+
+    /**
      * Send a message to each view represented by this IosView.
      *
      * @param name      the name of the message to send (an Objective-C selector).

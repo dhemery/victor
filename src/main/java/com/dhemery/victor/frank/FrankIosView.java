@@ -32,11 +32,16 @@ public class FrankIosView implements IosView {
     @Override
     public List<String> sendMessage(String name, String... arguments) {
         Message message = new Message(name, arguments);
-        log.debug("Send: {} {}", query, message);
+        log.debug("--> {} {}", query, message);
         MessageResponse response = agent.sendViewMessage(query, message);
         if (!response.succeeded) throw new MessageException(this, message, response);
-        log.debug("{} {} returned {}", new Object[]{query, message, response.results});
+        log.debug("<-- {} {} returned {}", new Object[]{query, message, response.results});
         return response.results;
+    }
+
+    @Override
+    public By query() {
+        return query;
     }
 
     @Override
