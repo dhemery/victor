@@ -20,5 +20,5 @@ public interface IosView {
      * @param arguments arguments to send with the message.
      * @return the value returned from each represented view.
      */
-    List<String> sendMessage(String name, String... arguments);
+    List<String> sendMessage(String name, Object... arguments);
 }

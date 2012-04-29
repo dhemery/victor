@@ -12,13 +12,13 @@ import java.util.Collection;
  */
 public class Message {
     public final String method_name;
-    public final Collection<String> arguments = new ArrayList<String>();
+    public final Collection<Object> arguments = new ArrayList<Object>();
 
     /**
      * @param name      the name of the message to send.
      * @param arguments arguments to send with the message.
      */
-    public Message(String name, String... arguments) {
+    public Message(String name, Object... arguments) {
         this.method_name = name;
         this.arguments.addAll(Arrays.asList(arguments));
     }

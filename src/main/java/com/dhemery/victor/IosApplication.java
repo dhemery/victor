@@ -22,7 +22,7 @@ public interface IosApplication {
      * @param arguments arguments to send with the message.
      * @return the value returned by the application delegate.
      */
-    String sendMessage(String name, String... arguments);
+    String sendMessage(String name, Object... arguments);
 
     /**
      * @return the application's current orientation.
