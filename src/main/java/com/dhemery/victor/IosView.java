@@ -17,6 +17,14 @@ public interface IosView {
      * Send a message to each view represented by this IosView.
      *
      * @param name      the name of the message to send (an Objective-C selector).
+     * @return the value returned from each represented view.
+     */
+    List<String> sendMessage(String name);
+
+    /**
+     * Send a message with arguments to each view represented by this IosView.
+     *
+     * @param name      the name of the message to send (an Objective-C selector).
      * @param arguments arguments to send with the message.
      * @return the value returned from each represented view.
      */

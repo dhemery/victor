@@ -30,6 +30,11 @@ public class FrankIosView implements IosView {
     }
 
     @Override
+    public List<String> sendMessage(String name) {
+        return sendMessage(name, new Object[0]);
+    }
+
+    @Override
     public List<String> sendMessage(String name, Object... arguments) {
         Message message = new Message(name, arguments);
         log.debug("--> {} {}", query, message);
