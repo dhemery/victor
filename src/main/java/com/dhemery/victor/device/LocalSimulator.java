@@ -20,11 +20,20 @@ public class LocalSimulator implements Simulator {
     private Process process;
 
     /**
+     * Launch the simulator without specifying an application to run.
+     * @param simulatorBinaryPath  the path to the Simulator executable on this computer.
+     */
+    public LocalSimulator(String simulatorBinaryPath) {
+        this.simulatorBinaryPath = simulatorBinaryPath;
+    }
+
+    /**
      * @param sdkRoot             the path to the SDK to use for the simulation.
      * @param simulatorBinaryPath the path to the Simulator executable on this computer.
+     * @param applicationBinaryPath the path to the executable for the application to run.
      */
     public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath) {
-        this.simulatorBinaryPath = simulatorBinaryPath;
+        this(simulatorBinaryPath);
         arguments.add("-currentSDKRoot");
         arguments.add(sdkRoot);
         arguments.add("-SimulateApplication");

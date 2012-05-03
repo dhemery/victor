@@ -19,18 +19,16 @@ public interface IosApplication {
      * Send a message to the application delegate.
      *
      * @param name      the name of the message to send (an Objective-C selector).
-     * @return the value returned by the application delegate.
      */
-    String sendMessage(String name);
+    void sendMessage(String name);
 
     /**
      * Send a message with arguments to the application delegate.
      *
      * @param name      the name of the message to send (an Objective-C selector).
      * @param arguments arguments to send with the message.
-     * @return the value returned by the application delegate.
      */
-    String sendMessage(String name, Object... arguments);
+    void sendMessage(String name, Object... arguments);
 
     /**
      * @return the application's current orientation.

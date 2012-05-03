@@ -3,8 +3,10 @@ package com.dhemery.victor.device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
 

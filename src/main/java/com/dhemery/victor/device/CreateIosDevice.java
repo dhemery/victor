@@ -6,6 +6,9 @@ import com.dhemery.victor.xcode.Xcode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.util.Scanner;
+
 import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
 
 /**
@@ -68,6 +71,15 @@ public class CreateIosDevice {
         sdkRoot = xcode.newestSdkRoot();
         log.trace("Configuration option {} not defined. Using default value {}", SDK_ROOT, sdkRoot);
         return sdkRoot;
+    }
+
+    public String getSdkVersion() {
+        Scanner sdkNameScanner = new Scanner(new File(sdkRoot()).getName());
+        sdkNameScanner.skip("iPhoneSimulator");
+        Integer major = sdkNameScanner.nextInt();
+        sdkNameScanner.skip(".");
+        Integer minor = sdkNameScanner.nextInt();
+        return String.format("%d.%d", major, minor);
     }
 
     private String simulatorBinaryPath() {
