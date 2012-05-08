@@ -21,21 +21,25 @@ public class LocalSimulator implements Simulator {
 
     /**
      * Launch the simulator without specifying an application to run.
-     * @param simulatorBinaryPath  the path to the Simulator executable on this computer.
+     *
+     * @param simulatorBinaryPath the path to the Simulator executable on this computer.
      */
     public LocalSimulator(String simulatorBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
     }
 
     /**
-     * @param sdkRoot             the path to the SDK to use for the simulation.
-     * @param simulatorBinaryPath the path to the Simulator executable on this computer.
+     * @param sdkRoot               the path to the SDK to use for the simulation.
+     * @param simulatorBinaryPath   the path to the Simulator executable on this computer.
      * @param applicationBinaryPath the path to the executable for the application to run.
+     * @param deviceType            the kind of device to simulate. See the iOS Simulator's Device menu for possible values.
      */
-    public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath) {
+    public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
         this(simulatorBinaryPath);
         arguments.add("-currentSDKRoot");
         arguments.add(sdkRoot);
+        arguments.add("-SimulateDevice");
+        arguments.add(deviceType);
         arguments.add("-SimulateApplication");
         arguments.add(applicationBinaryPath);
     }

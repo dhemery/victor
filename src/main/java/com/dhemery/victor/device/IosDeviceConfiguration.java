@@ -3,10 +3,8 @@ package com.dhemery.victor.device;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
 
@@ -34,24 +32,32 @@ public class IosDeviceConfiguration {
         this.properties.putAll(properties);
     }
 
-    public String getApplicationBinaryPath() {
+    public String applicationBinaryPath() {
         return properties.get(APPLICATION_BINARY_PATH);
+    }
+
+    public String deviceType() {
+        return properties.get(DEVICE_TYPE);
+    }
+
+    public String sdkRoot() {
+        return properties.get(SDK_ROOT);
+    }
+
+    public String simulatorBinaryPath() {
+        return properties.get(SIMULATOR_BINARY_PATH);
     }
 
     public void setApplicationBinaryPath(String applicationBinaryPath) {
         properties.put(APPLICATION_BINARY_PATH, applicationBinaryPath);
     }
 
-    public String getSdkRoot() {
-        return properties.get(SDK_ROOT);
+    public void setDeviceType(String deviceType) {
+        properties.put(DEVICE_TYPE, deviceType);
     }
 
     public void setSdkRoot(String sdkRoot) {
         properties.put(SDK_ROOT, sdkRoot);
-    }
-
-    public String getSimulatorBinaryPath() {
-        return properties.get(SIMULATOR_BINARY_PATH);
     }
 
     public void setSimulatorBinaryPath(String simulatorBinaryPath) {

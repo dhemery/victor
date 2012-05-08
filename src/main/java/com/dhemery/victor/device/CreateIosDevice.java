@@ -15,6 +15,11 @@ import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
  * Create a simulated iOS device.
  */
 public class CreateIosDevice {
+    /**
+     * The value of the {@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE} property
+     * if the user does not supply a value.
+     */
+    public static final String DEFAULT_DEVICE_TYPE = "iPhone";
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final IosDeviceConfiguration configuration;
     private final Xcode xcode = new Xcode();
@@ -27,6 +32,11 @@ public class CreateIosDevice {
      * <dd>
      * If the configuration does not define a value for this property,
      * this method throws an exception.
+     * </dd>
+     * <dt>{@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE}</dt>
+     * <dd>
+     * If the configuration does not define a value for this property,
+     * this method uses {@link #DEFAULT_DEVICE_TYPE}.
      * </dd>
      * <dt>{@link IosDeviceConfigurationProperties#SDK_ROOT SDK_ROOT}</dt>
      * <dd>
@@ -54,25 +64,35 @@ public class CreateIosDevice {
     }
 
     private IosDevice device() {
-        Simulator simulator = new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath());
+        Simulator simulator = new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
         return new SimulatedIosDevice(simulator);
     }
 
+    private String deviceType() {
+        String deviceType = configuration.deviceType();
+        if (deviceType != null) return deviceType;
+        return DEFAULT_DEVICE_TYPE;
+    }
+
     private String applicationBinaryPath() {
-        String applicationBinaryPath = configuration.getApplicationBinaryPath();
+        String applicationBinaryPath = configuration.applicationBinaryPath();
         if (applicationBinaryPath != null) return applicationBinaryPath;
         String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH);
         throw new IosDeviceConfigurationException(explanation);
     }
 
     private String sdkRoot() {
-        String sdkRoot = configuration.getSdkRoot();
+        String sdkRoot = configuration.sdkRoot();
         if (sdkRoot != null) return sdkRoot;
         sdkRoot = xcode.newestSdkRoot();
         log.trace("Configuration option {} not defined. Using default value {}", SDK_ROOT, sdkRoot);
         return sdkRoot;
     }
 
+    /**
+     * Note: This method is misplaced, and will likely move elsewhere.
+     * @return the version number configured by the configuration.
+     */
     public String getSdkVersion() {
         Scanner sdkNameScanner = new Scanner(new File(sdkRoot()).getName());
         sdkNameScanner.skip("iPhoneSimulator");
@@ -83,7 +103,7 @@ public class CreateIosDevice {
     }
 
     private String simulatorBinaryPath() {
-        String simulatorBinaryPath = configuration.getSimulatorBinaryPath();
+        String simulatorBinaryPath = configuration.simulatorBinaryPath();
         if (simulatorBinaryPath != null) return simulatorBinaryPath;
         simulatorBinaryPath = xcode.simulatorBinaryPath();
         log.trace("Configuration option {} not defined. Using default value {}", SIMULATOR_BINARY_PATH, simulatorBinaryPath);

@@ -7,10 +7,18 @@ public class IosDeviceConfigurationProperties {
      * The file's executable flag must be set.
      */
     public static final String APPLICATION_BINARY_PATH = "victor.application.binary.path";
+
+    /**
+     * The type of device to simulate.
+     * See your iOS Simulator's Device menu for possible values.
+     */
+    public static final String DEVICE_TYPE = "victor.simulator.device.type";
+
     /**
      * The path to the root directory of the iOS SDK with which to launch the simulator.
      */
     public static final String SDK_ROOT = "victor.sdk.root";
+
     /**
      * The path to the iOS Simulator executable file.
      */
