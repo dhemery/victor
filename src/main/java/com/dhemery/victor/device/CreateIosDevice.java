@@ -78,8 +78,7 @@ public class CreateIosDevice {
     }
 
     private IosDevice device() {
-        Simulator simulator = victorOwnsSimulator() ? victorOwnedSimulator() : userOwnedSimulator();
-        return new SimulatedIosDevice(simulator);
+        return new SimulatedIosDevice(simulator());
     }
 
     private String deviceType() {
@@ -115,7 +114,12 @@ public class CreateIosDevice {
         Integer minor = sdkNameScanner.nextInt();
         return String.format("%d.%d", major, minor);
     }
-˚
+
+    private Simulator simulator() {
+        if (victorOwnsSimulator()) return victorOwnedSimulator();
+        return userOwnedSimulator();
+    }
+
     private String simulatorBinaryPath() {
         String simulatorBinaryPath = configuration.simulatorBinaryPath();
         if (simulatorBinaryPath != null) return simulatorBinaryPath;
