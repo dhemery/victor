@@ -16,10 +16,16 @@ import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
  */
 public class CreateIosDevice {
     /**
-     * The value of the {@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE} property
-     * if the user does not supply a value.
+     * If the user does not supply a value for the {@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE} property,
+     * Victor simulates an iPhone device with a non-retina display.
      */
     public static final String DEFAULT_DEVICE_TYPE = "iPhone";
+
+    /**
+     * If the user does not supply a value for the {@link IosDeviceConfigurationProperties#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER} property,
+     * Victor launches a simulator and shuts it down.
+     */
+    public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final IosDeviceConfiguration configuration;
     private final Xcode xcode = new Xcode();
@@ -33,10 +39,18 @@ public class CreateIosDevice {
      * If the configuration does not define a value for this property,
      * this method throws an exception.
      * </dd>
+     * <dt>{@link IosDeviceConfigurationProperties#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER}</dt>
+     * <dd>
+     * If the configuration does not define a value for this property,
+     * or if the configured value is "victor",
+     * Victor will launch its own simulator.
+     * If the configured value is any other value,
+     * Victor will attach to an already-running simulator.
+     * </dd>
      * <dt>{@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
-     * this method uses {@link #DEFAULT_DEVICE_TYPE}.
+     * Victor will simulate an iPhone with a non-retina display.
      * </dd>
      * <dt>{@link IosDeviceConfigurationProperties#SDK_ROOT SDK_ROOT}</dt>
      * <dd>
@@ -64,7 +78,7 @@ public class CreateIosDevice {
     }
 
     private IosDevice device() {
-        Simulator simulator = new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+        Simulator simulator = victorOwnsSimulator() ? victorOwnedSimulator() : userOwnedSimulator();
         return new SimulatedIosDevice(simulator);
     }
 
@@ -101,12 +115,30 @@ public class CreateIosDevice {
         Integer minor = sdkNameScanner.nextInt();
         return String.format("%d.%d", major, minor);
     }
-
+˚
     private String simulatorBinaryPath() {
         String simulatorBinaryPath = configuration.simulatorBinaryPath();
         if (simulatorBinaryPath != null) return simulatorBinaryPath;
         simulatorBinaryPath = xcode.simulatorBinaryPath();
         log.trace("Configuration option {} not defined. Using default value {}", SIMULATOR_BINARY_PATH, simulatorBinaryPath);
         return simulatorBinaryPath;
+    }
+
+    private String simulatorProcessOwner() {
+        String simulatorProcessOwner = configuration.simulatorProcessOwner();
+        if (simulatorProcessOwner != null) return simulatorProcessOwner;
+        return DEFAULT_SIMULATOR_PROCESS_OWNER;
+    }
+
+    private Simulator userOwnedSimulator() {
+        return new UserOwnedSimulator();
+    }
+
+    private LocalSimulator victorOwnedSimulator() {
+        return new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+    }
+
+    private boolean victorOwnsSimulator() {
+        return simulatorProcessOwner().equals("victor");
     }
 }

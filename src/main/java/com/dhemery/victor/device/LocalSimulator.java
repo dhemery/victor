@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * An iOS simulator running on this computer.
+ * The {@link #start()} method launches the simulator.
+ * The {@link #stop()} method shuts it down.
  *
  * @author Dale Emery
  */

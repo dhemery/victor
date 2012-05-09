@@ -23,4 +23,9 @@ public class IosDeviceConfigurationProperties {
      * The path to the iOS Simulator executable file.
      */
     public static final String SIMULATOR_BINARY_PATH = "victor.simulator.binary.path";
+
+    /**
+     * Who launches and shuts down the simulator: <strong>victor</strong> or <strong>user</strong>.
+     */
+    public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 }
