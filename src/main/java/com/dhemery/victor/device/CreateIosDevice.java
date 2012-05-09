@@ -1,6 +1,7 @@
 package com.dhemery.victor.device;
 
 
+import com.dhemery.victor.Configuration;
 import com.dhemery.victor.IosDevice;
 import com.dhemery.victor.xcode.Xcode;
 import org.slf4j.Logger;
@@ -9,37 +10,37 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Scanner;
 
-import static com.dhemery.victor.device.IosDeviceConfigurationProperties.*;
+import static com.dhemery.victor.device.IosDeviceConfigurationOptions.*;
 
 /**
  * Create a simulated iOS device.
  */
 public class CreateIosDevice {
     /**
-     * If the user does not supply a value for the {@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE} property,
+     * If the user does not supply a value for the {@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE} property,
      * Victor simulates an iPhone device with a non-retina display.
      */
     public static final String DEFAULT_DEVICE_TYPE = "iPhone";
 
     /**
-     * If the user does not supply a value for the {@link IosDeviceConfigurationProperties#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER} property,
+     * If the user does not supply a value for the {@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER} property,
      * Victor launches a simulator and shuts it down.
      */
     public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final IosDeviceConfiguration configuration;
+    private final Configuration configuration;
     private final Xcode xcode = new Xcode();
 
     /**
      * <p>Create a simulated iOS device configured according to {@code configuration}.</p>
      * <p>Notes about configuration properties:</p>
      * <dl>
-     * <dt>{@link IosDeviceConfigurationProperties#APPLICATION_BINARY_PATH APPLICATION_BINARY_PATH}</dt>
+     * <dt>{@link IosDeviceConfigurationOptions#APPLICATION_BINARY_PATH APPLICATION_BINARY_PATH}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
      * this method throws an exception.
      * </dd>
-     * <dt>{@link IosDeviceConfigurationProperties#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER}</dt>
+     * <dt>{@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
      * or if the configured value is "victor",
@@ -47,18 +48,18 @@ public class CreateIosDevice {
      * If the configured value is any other value,
      * Victor will attach to an already-running simulator.
      * </dd>
-     * <dt>{@link IosDeviceConfigurationProperties#DEVICE_TYPE DEVICE_TYPE}</dt>
+     * <dt>{@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
      * Victor will simulate an iPhone with a non-retina display.
      * </dd>
-     * <dt>{@link IosDeviceConfigurationProperties#SDK_ROOT SDK_ROOT}</dt>
+     * <dt>{@link IosDeviceConfigurationOptions#SDK_ROOT SDK_ROOT}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
      * this method obtains a default value
      * by calling {@link Xcode#newestSdkRoot()}.
      * </dd>
-     * <dt>{@link IosDeviceConfigurationProperties#SIMULATOR_BINARY_PATH SIMULATOR_BINARY_PATH}</dt>
+     * <dt>{@link IosDeviceConfigurationOptions#SIMULATOR_BINARY_PATH SIMULATOR_BINARY_PATH}</dt>
      * <dd>
      * If the configuration does not define a value for this property,
      * this method obtains a default value
@@ -69,11 +70,11 @@ public class CreateIosDevice {
      * @param configuration specifies the configuration properties.
      * @return a simulated device configured as specified.
      */
-    public static IosDevice withConfiguration(IosDeviceConfiguration configuration) {
+    public static IosDevice withConfiguration(Configuration configuration) {
         return new CreateIosDevice(configuration).device();
     }
 
-    private CreateIosDevice(IosDeviceConfiguration configuration) {
+    private CreateIosDevice(Configuration configuration) {
         this.configuration = configuration;
     }
 
@@ -82,20 +83,20 @@ public class CreateIosDevice {
     }
 
     private String deviceType() {
-        String deviceType = configuration.deviceType();
+        String deviceType = configuration.option(DEVICE_TYPE);
         if (deviceType != null) return deviceType;
         return DEFAULT_DEVICE_TYPE;
     }
 
     private String applicationBinaryPath() {
-        String applicationBinaryPath = configuration.applicationBinaryPath();
+        String applicationBinaryPath = configuration.option(APPLICATION_BINARY_PATH);
         if (applicationBinaryPath != null) return applicationBinaryPath;
         String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH);
         throw new IosDeviceConfigurationException(explanation);
     }
 
     private String sdkRoot() {
-        String sdkRoot = configuration.sdkRoot();
+        String sdkRoot = configuration.option(SDK_ROOT);
         if (sdkRoot != null) return sdkRoot;
         sdkRoot = xcode.newestSdkRoot();
         log.trace("Configuration option {} not defined. Using default value {}", SDK_ROOT, sdkRoot);
@@ -121,7 +122,7 @@ public class CreateIosDevice {
     }
 
     private String simulatorBinaryPath() {
-        String simulatorBinaryPath = configuration.simulatorBinaryPath();
+        String simulatorBinaryPath = configuration.option(SIMULATOR_BINARY_PATH);
         if (simulatorBinaryPath != null) return simulatorBinaryPath;
         simulatorBinaryPath = xcode.simulatorBinaryPath();
         log.trace("Configuration option {} not defined. Using default value {}", SIMULATOR_BINARY_PATH, simulatorBinaryPath);
@@ -129,7 +130,7 @@ public class CreateIosDevice {
     }
 
     private String simulatorProcessOwner() {
-        String simulatorProcessOwner = configuration.simulatorProcessOwner();
+        String simulatorProcessOwner = configuration.option(SIMULATOR_PROCESS_OWNER);
         if (simulatorProcessOwner != null) return simulatorProcessOwner;
         return DEFAULT_SIMULATOR_PROCESS_OWNER;
     }

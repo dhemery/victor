@@ -3,7 +3,7 @@ package com.dhemery.victor.frank;
 /**
  * Configuration options for {@link CreateFrankAgent}.
  */
-public class FrankAgentConfigurationProperties {
+public class FrankAgentConfigurationOptions {
     /**
      * The name of the host on which the Frank server listens for requests.
      * Do not include a scheme (e.g. "http://") at the start of this value.

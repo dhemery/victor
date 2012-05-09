@@ -1,10 +1,10 @@
 package com.dhemery.victor.device;
 
-public class IosDeviceConfigurationProperties {
+public class IosDeviceConfigurationOptions {
     /**
      * The path to the iOS application binary file to execute.
      * This is typically a file inside the application's .app package.
-     * The file's executable flag must be set.
+     * The file's executable flag must be setOption.
      */
     public static final String APPLICATION_BINARY_PATH = "victor.application.binary.path";
 

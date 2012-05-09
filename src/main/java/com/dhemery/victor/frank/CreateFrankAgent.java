@@ -1,24 +1,25 @@
 package com.dhemery.victor.frank;
 
-import java.util.Collections;
+import com.dhemery.victor.Configuration;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dhemery.victor.frank.FrankAgentConfigurationProperties.HOST;
-import static com.dhemery.victor.frank.FrankAgentConfigurationProperties.PORT;
+import static com.dhemery.victor.frank.FrankAgentConfigurationOptions.HOST;
+import static com.dhemery.victor.frank.FrankAgentConfigurationOptions.PORT;
 
 /**
  * Factory methods to create Frank agents.
  */
 public class CreateFrankAgent {
     /**
-     * The value of the {@link FrankAgentConfigurationProperties#HOST HOST} property
+     * The value of the {@link FrankAgentConfigurationOptions#HOST HOST} property
      * if the user does not supply a value.
      */
     public static final String DEFAULT_FRANK_HOST = "localhost";
 
     /**
-     * The value of the {@link FrankAgentConfigurationProperties#PORT PORT} property
+     * The value of the {@link FrankAgentConfigurationOptions#PORT PORT} property
      * if the user does not supply a value.
      */
     public static final String DEFAULT_FRANK_PORT = "37265";
@@ -39,7 +40,7 @@ public class CreateFrankAgent {
      * @see #DEFAULT_FRANK_PORT
      */
     public static FrankAgent forDefaultFrankServerUrl() {
-        return withConfiguration(Collections.<String, String>emptyMap());
+        return withConfiguration(new Configuration());
     }
 
     /**
@@ -55,26 +56,25 @@ public class CreateFrankAgent {
 
     /**
      * <p>Create a Frank agent that interacts with the Frank server
-     * at a URL designated by configuration property values.
+     * at a URL designated by a configuration.
      * </p>
      * <p>
-     * This method provides default values for properties
+     * This method provides default values for options
      * whose values are not defined in the given {@code configuration}.
      * </p>
      *
-     * @param configuration map that specify the properties for the Frank agent.
+     * @param userConfiguration configuration options for the Frank agent.
      * @return the Frank agent.
-     * @see FrankAgentConfigurationProperties
+     * @see FrankAgentConfigurationOptions
      * @see #DEFAULT_FRANK_HOST
      * @see #DEFAULT_FRANK_PORT
      */
-    public static FrankAgent withConfiguration(Map<String, String> configuration) {
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.putAll(DEFAULTS);
-        properties.putAll(configuration);
+    public static FrankAgent withConfiguration(Configuration userConfiguration) {
+        Configuration configuration = new Configuration(DEFAULTS);
+        configuration.merge(userConfiguration);
 
-        String host = properties.get(HOST);
-        String port = properties.get(PORT);
+        String host = configuration.option(HOST);
+        String port = configuration.option(PORT);
         String url = String.format("http://%s:%s", host, port);
         return forFrankServerUrl(url);
     }
