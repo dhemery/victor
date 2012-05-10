@@ -22,7 +22,7 @@ public class MessageResponseParser implements JsonDeserializer<MessageResponse> 
         boolean succeeded = body.get("outcome").getAsString().equals("SUCCESS");
 
         if (succeeded) {
-            if(body.get("results") != null) {
+            if (body.get("results") != null) {
                 for (JsonElement result : body.get("results").getAsJsonArray()) {
                     if (result.isJsonNull()) results.add(null);
                     else results.add(result.getAsString());

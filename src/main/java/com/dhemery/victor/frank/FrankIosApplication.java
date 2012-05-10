@@ -41,6 +41,11 @@ public class FrankIosApplication implements IosApplication {
     }
 
     @Override
+    public Boolean isRunning() {
+        return agent.isRunning();
+    }
+
+    @Override
     public Orientation orientation() {
         OrientationResponse response = agent.orientation();
         String orientationName = response.orientation.toUpperCase();
@@ -54,6 +59,6 @@ public class FrankIosApplication implements IosApplication {
 
     @Override
     public String toString() {
-        return "the application";
+        return "the application connected to " + agent;
     }
 }

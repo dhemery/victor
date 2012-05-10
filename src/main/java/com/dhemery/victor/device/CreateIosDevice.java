@@ -13,62 +13,55 @@ import java.util.Scanner;
 import static com.dhemery.victor.device.IosDeviceConfigurationOptions.*;
 
 /**
- * Create a simulated iOS device.
+ * Create a {@link SimulatedIosDevice} configured according to a set of configuration options.
  */
 public class CreateIosDevice {
     /**
-     * If the user does not supply a value for the {@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE} property,
-     * Victor simulates an iPhone device with a non-retina display.
+     * The default value for the {@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE} option.
      */
     public static final String DEFAULT_DEVICE_TYPE = "iPhone";
 
     /**
-     * If the user does not supply a value for the {@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER} property,
-     * Victor launches a simulator and shuts it down.
+     * The default value for the {@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER} option.
      */
     public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
+
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final Configuration configuration;
     private final Xcode xcode = new Xcode();
 
     /**
-     * <p>Create a simulated iOS device configured according to {@code configuration}.</p>
-     * <p>Notes about configuration properties:</p>
-     * <dl>
-     * <dt>{@link IosDeviceConfigurationOptions#APPLICATION_BINARY_PATH APPLICATION_BINARY_PATH}</dt>
-     * <dd>
-     * If the configuration does not define a value for this property,
-     * this method throws an exception.
-     * </dd>
-     * <dt>{@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER}</dt>
-     * <dd>
-     * If the configuration does not define a value for this property,
-     * or if the configured value is "victor",
-     * Victor will launch its own simulator.
-     * If the configured value is any other value,
-     * Victor will attach to an already-running simulator.
-     * </dd>
-     * <dt>{@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE}</dt>
-     * <dd>
-     * If the configuration does not define a value for this property,
-     * Victor will simulate an iPhone with a non-retina display.
-     * </dd>
-     * <dt>{@link IosDeviceConfigurationOptions#SDK_ROOT SDK_ROOT}</dt>
-     * <dd>
-     * If the configuration does not define a value for this property,
-     * this method obtains a default value
-     * by calling {@link Xcode#newestSdkRoot()}.
-     * </dd>
-     * <dt>{@link IosDeviceConfigurationOptions#SIMULATOR_BINARY_PATH SIMULATOR_BINARY_PATH}</dt>
-     * <dd>
-     * If the configuration does not define a value for this property,
-     * this method obtains a default value
-     * by calling {@link Xcode#simulatorBinaryPath()}.
-     * </dd>
-     * </dl>
+     * <p>
+     * Create a {@link SimulatedIosDevice} configured according to {@code configuration}.
+     * See {@link IosDeviceConfigurationOptions} for names and descriptions of the available options.
+     * </p>
+     * <p>
+     * The configuration must supply a value for
+     * {@link IosDeviceConfigurationOptions#APPLICATION_BINARY_PATH APPLICATION_BINARY_PATH}.
+     * </p>
+     * <p>This method supplies default values for other undefined configuration options as follows:</p>
+     * <table>
+     * <tr><th style="text-align:left">Option</th><th style="text-align:left">Default value</th></tr>
+     * <tr>
+     * <td>{@link IosDeviceConfigurationOptions#SIMULATOR_PROCESS_OWNER SIMULATOR_PROCESS_OWNER}</td>
+     * <td>The value of {@link #DEFAULT_SIMULATOR_PROCESS_OWNER}</td>
+     * </tr>
+     * <tr>
+     * <td>{@link IosDeviceConfigurationOptions#DEVICE_TYPE DEVICE_TYPE}</td>
+     * <td>The value of {@link #DEFAULT_DEVICE_TYPE}</td>
+     * </tr>
+     * <tr>
+     * <td>{@link IosDeviceConfigurationOptions#SDK_ROOT SDK_ROOT}</td>
+     * <td>The value returned from {@link Xcode#newestSdkRoot()}</td>
+     * </tr>
+     * <tr>
+     * <td>{@link IosDeviceConfigurationOptions#SIMULATOR_BINARY_PATH SIMULATOR_BINARY_PATH}</td>
+     * <td>The value returned form {@link Xcode#simulatorBinaryPath()}</td>
+     * </tr>
+     * </table>
      *
-     * @param configuration specifies the configuration properties.
-     * @return a simulated device configured as specified.
+     * @param configuration defines the configuration options.
+     * @return a {@link SimulatedIosDevice} configured as specified.
      */
     public static IosDevice withConfiguration(Configuration configuration) {
         return new CreateIosDevice(configuration).device();
@@ -105,6 +98,7 @@ public class CreateIosDevice {
 
     /**
      * Note: This method is misplaced, and will likely move elsewhere.
+     *
      * @return the version number configured by the configuration.
      */
     public String getSdkVersion() {

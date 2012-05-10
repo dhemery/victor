@@ -17,6 +17,7 @@ public class Configuration {
 
     /**
      * Create a configuration with options copied from the given map;
+     *
      * @param options a map that defines configuration options.
      */
     public Configuration(Map<String, String> options) {
@@ -34,6 +35,7 @@ public class Configuration {
      * Merge a set of configuration options into this configuration.
      * If both configurations have values for an option,
      * this configuration's value is replaced by the value from the given configuration.
+     *
      * @param configuration a set of configuration options.
      */
     public void merge(Configuration configuration) {
@@ -52,7 +54,8 @@ public class Configuration {
      * Supply a value for an option.
      * If the configuration already has a value for the option,
      * the old value is replaced by the given value.
-     * @param name the name of the option.
+     *
+     * @param name  the name of the option.
      * @param value the value for the option.
      */
     public void set(String name, String value) {

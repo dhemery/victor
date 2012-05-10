@@ -24,9 +24,15 @@ public interface FrankApplicationAgent {
     MessageResponse sendApplicationMessage(Message message);
 
     /**
+     * @return whether the agent is running.
+     */
+    Boolean isRunning();
+
+    /**
      * @param query identifies a set of views.
      * @return a view driver that represents the identified views within this application.
      */
 
     IosView view(By query);
+
 }

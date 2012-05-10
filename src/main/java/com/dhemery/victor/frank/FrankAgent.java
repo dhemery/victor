@@ -39,9 +39,9 @@ public class FrankAgent implements FrankViewAgent, FrankApplicationAgent {
     }
 
     /**
-     * @return true if the Frank server is ready to respond to requests.
+     * @return whether the Frank server is running.
      */
-    public boolean isReady() {
+    public Boolean isRunning() {
         new PingRequest().sendTo(frankServerUrl);
         return true;
     }
@@ -74,7 +74,7 @@ public class FrankAgent implements FrankViewAgent, FrankApplicationAgent {
 
     @Override
     public String toString() {
-        return String.format("Frank client (%s)", frankServerUrl);
+        return String.format("the Frank server at %s", frankServerUrl);
     }
 
     @Override

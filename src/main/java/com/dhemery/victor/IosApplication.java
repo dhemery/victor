@@ -18,7 +18,7 @@ public interface IosApplication {
     /**
      * Send a message to the application delegate.
      *
-     * @param name      the name of the message to send (an Objective-C selector).
+     * @param name the name of the message to send (an Objective-C selector).
      */
     void sendMessage(String name);
 
@@ -29,6 +29,11 @@ public interface IosApplication {
      * @param arguments arguments to send with the message.
      */
     void sendMessage(String name, Object... arguments);
+
+    /**
+     * @return whether the application is running.
+     */
+    Boolean isRunning();
 
     /**
      * @return the application's current orientation.
