@@ -3,14 +3,14 @@ package com.dhemery.victor.device;
 import com.dhemery.victor.IosDevice;
 
 /**
- * A phone driver that interacts with a "phone" through a simulator and a Frank server.
+ * Interacts with a simulated iOS device through a simulator agent.
  *
  * @author Dale Emery
  */
 public class SimulatedIosDevice implements IosDevice {
-    private final Simulator simulator;
+    private final SimulatorAgent simulator;
 
-    public SimulatedIosDevice(Simulator simulator) {
+    public SimulatedIosDevice(SimulatorAgent simulator) {
         this.simulator = simulator;
     }
 

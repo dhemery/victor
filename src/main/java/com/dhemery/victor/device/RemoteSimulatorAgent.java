@@ -5,11 +5,14 @@ import com.dhemery.victor.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RemoteSimulator implements Simulator {
+/**
+ * Interacts with a Simulator via a simulator server.
+ */
+public class RemoteSimulatorAgent implements SimulatorAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String simulatorUrl;
 
-    public RemoteSimulator(String simulatorUrl) {
+    public RemoteSimulatorAgent(String simulatorUrl) {
         this.simulatorUrl = simulatorUrl;
         log.debug("Using remote simulator at {}", simulatorUrl);
     }

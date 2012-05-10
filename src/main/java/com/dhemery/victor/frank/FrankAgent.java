@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An agent that interacts with an iOS application via a Frank server embedded into the application.
+ * Interacts with an iOS application via a Frank server embedded into the application.
  *
  * @author Dale Emery
  */

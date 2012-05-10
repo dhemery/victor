@@ -1,6 +1,6 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.LocalSimulator;
+import com.dhemery.victor.device.VictorSimulatorAgent;
 import com.dhemery.victor.device.remote.CloseSimulatorRequest;
 import com.dhemery.victor.device.remote.LaunchApplicationRequest;
 import com.dhemery.victor.device.remote.TouchMenuItemRequest;
@@ -28,7 +28,7 @@ public class SimulatorServer {
     private final HttpServer server;
 
     public SimulatorServer() throws IOException {
-        LocalSimulator simulator = new LocalSimulator(null, null, null, null);
+        VictorSimulatorAgent simulator = new VictorSimulatorAgent(null, null, null, null);
         server = HttpServer.create();
         server.bind(ADDRESS, PORT);
         server.createContext(String.format("/%s", LaunchApplicationRequest.VERB), new LaunchApplicationHandler(simulator));

@@ -1,7 +1,9 @@
 package com.dhemery.victor.device;
 
-
-public interface Simulator {
+/**
+ * An agent that interacts with an iOS Simulator.
+ */
+public interface SimulatorAgent {
     /**
      * Start the simulator process.
      */

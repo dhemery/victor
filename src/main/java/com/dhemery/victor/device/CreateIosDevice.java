@@ -116,9 +116,9 @@ public class CreateIosDevice {
         return String.format("%d.%d", major, minor);
     }
 
-    private Simulator simulator() {
-        if (victorOwnsSimulator()) return victorOwnedSimulator();
-        return userOwnedSimulator();
+    private SimulatorAgent simulator() {
+        if (victorOwnsSimulator()) return victorSimulatorAgent();
+        return userSimulatorAgent();
     }
 
     private String simulatorBinaryPath() {
@@ -135,12 +135,12 @@ public class CreateIosDevice {
         return DEFAULT_SIMULATOR_PROCESS_OWNER;
     }
 
-    private Simulator userOwnedSimulator() {
-        return new UserOwnedSimulator();
+    private SimulatorAgent userSimulatorAgent() {
+        return new UserSimulatorAgent();
     }
 
-    private LocalSimulator victorOwnedSimulator() {
-        return new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+    private VictorSimulatorAgent victorSimulatorAgent() {
+        return new VictorSimulatorAgent(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
     }
 
     private boolean victorOwnsSimulator() {

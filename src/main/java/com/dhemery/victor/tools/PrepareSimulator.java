@@ -1,7 +1,7 @@
 package com.dhemery.victor.tools;
 
-import com.dhemery.victor.device.LocalSimulator;
-import com.dhemery.victor.device.Simulator;
+import com.dhemery.victor.device.SimulatorAgent;
+import com.dhemery.victor.device.VictorSimulatorAgent;
 import com.dhemery.victor.xcode.Xcode;
 
 /**
@@ -22,7 +22,7 @@ public class PrepareSimulator {
     }
 
     public void run() throws InterruptedException {
-        Simulator simulator = new LocalSimulator(new Xcode().simulatorBinaryPath());
+        SimulatorAgent simulator = new VictorSimulatorAgent(new Xcode().simulatorBinaryPath());
         simulator.start();
         Thread.sleep(3000);
         simulator.stop();

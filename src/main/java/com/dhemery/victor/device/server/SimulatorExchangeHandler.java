@@ -1,6 +1,6 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.LocalSimulator;
+import com.dhemery.victor.device.VictorSimulatorAgent;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,10 +11,10 @@ import java.io.*;
 
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final LocalSimulator simulator;
+    private final VictorSimulatorAgent simulator;
     private final Class<T> type;
 
-    public SimulatorExchangeHandler(LocalSimulator simulator, Class<T> type) {
+    public SimulatorExchangeHandler(VictorSimulatorAgent simulator, Class<T> type) {
         this.simulator = simulator;
         this.type = type;
     }
@@ -46,7 +46,7 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
         sendResponse(request, body, "OK");
     }
 
-    public abstract void perform(LocalSimulator simulator, T body) throws IOException, InterruptedException;
+    public abstract void perform(VictorSimulatorAgent simulator, T body) throws IOException, InterruptedException;
 
     public void sendError(HttpExchange request, T body, Exception e) throws IOException {
         sendResponse(request, body, errorMessageFor(e));
