@@ -8,9 +8,9 @@ import com.dhemery.victor.IosDevice;
  * @author Dale Emery
  */
 public class SimulatedIosDevice implements IosDevice {
-    private final Simulator simulator;
+    private final SimulatorAgent simulator;
 
-    public SimulatedIosDevice(Simulator simulator) {
+    public SimulatedIosDevice(SimulatorAgent simulator) {
         this.simulator = simulator;
     }
 

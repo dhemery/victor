@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An iOS simulator running on this computer.
+ * An agent that interacts with an iOS simulator "owned" by Victor.
  * The {@link #start()} method launches the simulator.
  * The {@link #stop()} method shuts it down.
  *
  * @author Dale Emery
  */
-public class LocalSimulator implements Simulator {
+public class VictorSimulatorAgent implements SimulatorAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final List<String> arguments = new ArrayList<String>();
     private final String simulatorBinaryPath;
@@ -26,7 +26,7 @@ public class LocalSimulator implements Simulator {
      *
      * @param simulatorBinaryPath the path to the Simulator executable on this computer.
      */
-    public LocalSimulator(String simulatorBinaryPath) {
+    public VictorSimulatorAgent(String simulatorBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
     }
 
@@ -36,7 +36,7 @@ public class LocalSimulator implements Simulator {
      * @param applicationBinaryPath the path to the executable for the application to run.
      * @param deviceType            the kind of device to simulate. See the iOS Simulator's Device menu for possible values.
      */
-    public LocalSimulator(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
+    public VictorSimulatorAgent(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
         this(simulatorBinaryPath);
         arguments.add("-currentSDKRoot");
         arguments.add(sdkRoot);

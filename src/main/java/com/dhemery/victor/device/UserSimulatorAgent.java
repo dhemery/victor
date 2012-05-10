@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An iOS simulator started and stopped by the user.
+ * An agent that interacts with an iOS simulator started and stopped by the user.
  * The {@link #start()} and {@link #stop()} methods do nothing.
  *
  * @author Dale Emery
  */
-public class UserOwnedSimulator implements Simulator {
+public class UserSimulatorAgent implements SimulatorAgent {
     @Override
     public void start() {}
 

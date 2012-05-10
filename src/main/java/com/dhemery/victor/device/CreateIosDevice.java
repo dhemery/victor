@@ -136,11 +136,11 @@ public class CreateIosDevice {
     }
 
     private Simulator userOwnedSimulator() {
-        return new UserOwnedSimulator();
+        return new UserSimulatorAgent();
     }
 
-    private LocalSimulator victorOwnedSimulator() {
-        return new LocalSimulator(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+    private VictorSimulatorAgent victorOwnedSimulator() {
+        return new VictorSimulatorAgent(sdkRoot(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
     }
 
     private boolean victorOwnsSimulator() {
