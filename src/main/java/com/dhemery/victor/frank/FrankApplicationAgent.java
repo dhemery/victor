@@ -24,7 +24,7 @@ public interface FrankApplicationAgent {
     MessageResponse sendApplicationMessage(Message message);
 
     /**
-     * @param query identifies a setOption of views.
+     * @param query identifies a set of views.
      * @return a view driver that represents the identified views within this application.
      */
 

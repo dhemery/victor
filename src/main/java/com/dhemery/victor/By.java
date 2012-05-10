@@ -1,7 +1,7 @@
 package com.dhemery.victor;
 
 /**
- * Identifies a setOption of views in an iOS application.
+ * Identifies a set of views in an iOS application.
  *
  * @author Dale Emery
  */
@@ -28,7 +28,7 @@ public class By {
     public final String selectorEngine;
 
     /**
-     * A pattern by which the selector engine identifies a setOption of views.
+     * A pattern by which the selector engine identifies a set of views.
      */
     public final String selector;
 
@@ -36,7 +36,7 @@ public class By {
      * Uses the named selector engine and selector to identify views.
      *
      * @param selectorEngine the name of the selector engine to use to select the views identified by this {@code By}.
-     * @param selector       a pattern by which the selector engine identifies a setOption of views.
+     * @param selector       a pattern by which the selector engine identifies a set of views.
      */
     public By(String selectorEngine, String selector) {
         this.selectorEngine = selectorEngine;

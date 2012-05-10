@@ -28,7 +28,7 @@ public class TouchMenuItemCommand extends AppleScriptCommand {
      */
     private static List<String> menuTouchScriptFor(String menuName, String menuItemName) {
         List<String> scriptLines = new ArrayList<String>();
-        scriptLines.add("activate application \"iPhone SimulatorAgent\"");
+        scriptLines.add("activate application \"iPhone Simulator\"");
         scriptLines.add("tell application \"System Events\"");
         scriptLines.add(String.format(TOUCH_MENU_ITEM_TEMPLATE, menuItemName, menuName));
         scriptLines.add("end tell");

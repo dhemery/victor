@@ -3,7 +3,7 @@ package com.dhemery.victor;
 import java.util.List;
 
 /**
- * Represents a setOption of views in an iOS application.
+ * Represents a set of views in an iOS application.
  *
  * @author Dale Emery
  */

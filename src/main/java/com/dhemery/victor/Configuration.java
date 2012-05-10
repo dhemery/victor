@@ -24,6 +24,13 @@ public class Configuration {
     }
 
     /**
+     * Create a configuration with the options copied from another configuration.
+     */
+    public Configuration(Configuration configuration) {
+        this(configuration.options);
+    }
+
+    /**
      * Merge a set of configuration options into this configuration.
      * If both configurations have values for an option,
      * this configuration's value is replaced by the value from the given configuration.
