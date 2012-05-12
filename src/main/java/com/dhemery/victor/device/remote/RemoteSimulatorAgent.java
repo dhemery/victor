@@ -1,5 +1,6 @@
-package com.dhemery.victor.device;
+package com.dhemery.victor.device.remote;
 
+import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.remote.TouchMenuItemRequest;
 import com.dhemery.victor.http.HttpRequest;
 import org.slf4j.Logger;
@@ -23,10 +24,12 @@ public class RemoteSimulatorAgent implements SimulatorAgent {
 
     @Override
     public void start() {
+        log.debug("Start is not yet implemented.");
     }
 
     @Override
     public void stop() {
+        log.debug("Stop is not yet implemented.");
     }
 
     @Override

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Victor" pattern="src:com.dhemery.victor..*" />
+</component>

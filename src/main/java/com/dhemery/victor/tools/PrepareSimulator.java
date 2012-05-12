@@ -2,7 +2,7 @@ package com.dhemery.victor.tools;
 
 import com.dhemery.victor.configuration.XcodeBuild;
 import com.dhemery.victor.device.SimulatorAgent;
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 
 /**
  * <p>

@@ -1,6 +1,6 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import com.dhemery.victor.device.remote.CloseSimulatorRequest;
 import com.dhemery.victor.device.remote.LaunchApplicationRequest;
 import com.dhemery.victor.device.remote.TouchMenuItemRequest;

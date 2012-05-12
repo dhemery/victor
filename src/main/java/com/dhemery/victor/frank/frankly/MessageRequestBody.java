@@ -2,6 +2,7 @@ package com.dhemery.victor.frank.frankly;
 
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.http.HttpPostBody;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Carries a message to an object in an iOS application.
@@ -9,14 +10,15 @@ import com.dhemery.victor.http.HttpPostBody;
  * @author Dale Emery
  */
 public class MessageRequestBody extends HttpPostBody {
-    public final Message operation;
+    @SerializedName("operation")
+    private final Message message;
 
     public MessageRequestBody(Message message) {
-        operation = message;
+        this.message = message;
     }
 
     @Override
     public String toString() {
-        return operation.toString();
+        return message.toString();
     }
 }

@@ -1,9 +1,7 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import com.dhemery.victor.device.remote.TouchMenuItemMessage;
-
-import java.io.IOException;
 
 public class TouchMenuItemHandler extends SimulatorExchangeHandler<TouchMenuItemMessage> {
     public TouchMenuItemHandler(VictorSimulatorAgent simulator) {
@@ -11,7 +9,7 @@ public class TouchMenuItemHandler extends SimulatorExchangeHandler<TouchMenuItem
     }
 
     @Override
-    public void perform(VictorSimulatorAgent simulator, TouchMenuItemMessage message) throws IOException, InterruptedException {
-        simulator.touchMenuItem(message.menuName, message.menuItemName);
+    public void perform(VictorSimulatorAgent simulator, TouchMenuItemMessage message) {
+        simulator.touchMenuItem(message.menuName(), message.menuItemName());
     }
 }

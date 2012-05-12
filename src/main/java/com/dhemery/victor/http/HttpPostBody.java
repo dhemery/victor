@@ -2,6 +2,8 @@ package com.dhemery.victor.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +16,8 @@ import java.net.HttpURLConnection;
  *
  * @author Dale Emery
  */
-public class HttpPostBody extends HttpRequestBody {
+public class HttpPostBody implements HttpRequestBody {
+    private transient final Logger log = LoggerFactory.getLogger(getClass());
     /**
      * Write this request body to the connection as a JSON string.
      * This causes the request to be sent via HTTP POST.

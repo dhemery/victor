@@ -6,10 +6,14 @@ package com.dhemery.victor.frank.messages;
  * @author Dale Emery
  */
 public class OrientationResponse {
-    public final String orientation;
+    private final String orientation;
 
     public OrientationResponse(String orientation) {
         this.orientation = orientation;
+    }
+
+    public String orientation() {
+        return orientation;
     }
 
     @Override

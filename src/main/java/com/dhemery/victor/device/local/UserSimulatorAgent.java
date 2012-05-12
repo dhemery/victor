@@ -1,5 +1,6 @@
-package com.dhemery.victor.device;
+package com.dhemery.victor.device.local;
 
+import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.TouchMenuItemCommand;
 
 /**

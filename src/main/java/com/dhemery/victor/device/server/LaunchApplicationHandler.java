@@ -1,9 +1,7 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import com.dhemery.victor.device.remote.LaunchApplicationMessage;
-
-import java.io.IOException;
 
 public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApplicationMessage> {
     public LaunchApplicationHandler(VictorSimulatorAgent simulator) {
@@ -11,7 +9,7 @@ public class LaunchApplicationHandler extends SimulatorExchangeHandler<LaunchApp
     }
 
     @Override
-    public void perform(VictorSimulatorAgent simulator, LaunchApplicationMessage message) throws IOException {
+    public void perform(VictorSimulatorAgent simulator, LaunchApplicationMessage message) {
 //		simulator.launch();
     }
 }

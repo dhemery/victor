@@ -4,8 +4,8 @@ package com.dhemery.victor.configuration;
 import com.dhemery.victor.IosDevice;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
-import com.dhemery.victor.device.UserSimulatorAgent;
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.UserSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

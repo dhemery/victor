@@ -2,6 +2,7 @@ package com.dhemery.victor.frank;
 
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosApplication;
+import com.dhemery.victor.IosApplicationOrientation;
 import com.dhemery.victor.IosView;
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.frank.messages.MessageException;
@@ -36,8 +37,8 @@ public class FrankIosApplication implements IosApplication {
         Message message = new Message(name, arguments);
         log.debug("Send: application delegate {}", message);
         MessageResponse response = agent.sendApplicationMessage(message);
-        if (!response.succeeded) throw new MessageException(this, message, response);
-        log.debug("Application delegate message {} returned {}", message, response.results);
+        if (!response.succeeded()) throw new MessageException(this, message, response);
+        log.debug("Application delegate message {} returned {}", message, response.results());
     }
 
     @Override
@@ -46,10 +47,10 @@ public class FrankIosApplication implements IosApplication {
     }
 
     @Override
-    public Orientation orientation() {
+    public IosApplicationOrientation orientation() {
         OrientationResponse response = agent.orientation();
-        String orientationName = response.orientation.toUpperCase();
-        return Orientation.valueOf(orientationName);
+        String orientationName = response.orientation().toUpperCase();
+        return IosApplicationOrientation.valueOf(orientationName);
     }
 
     @Override
