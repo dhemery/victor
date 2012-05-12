@@ -6,7 +6,7 @@ package com.dhemery.victor;
  * @author Dale Emery
  */
 public interface IosApplication {
-    public enum Orientation {
+    enum Orientation {
         LANDSCAPE,
         PORTRAIT,
         /**

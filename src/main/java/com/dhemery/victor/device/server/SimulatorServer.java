@@ -20,7 +20,7 @@ public class SimulatorServer {
     public static void main(String[] args) {
         try {
             new SimulatorServer().run();
-        } catch (Throwable e) {
+        } catch (IOException e) {
             log.error("SimulatorServer aborted with {}", e);
         }
     }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
+    public static final int HTTP_OK = 200;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final VictorSimulatorAgent simulator;
     private final Class<T> type;
@@ -46,7 +47,7 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
         sendResponse(request, body, "OK");
     }
 
-    public abstract void perform(VictorSimulatorAgent simulator, T body) throws IOException, InterruptedException;
+    public abstract void perform(VictorSimulatorAgent simulator, T body);
 
     public void sendError(HttpExchange request, T body, Exception e) throws IOException {
         sendResponse(request, body, errorMessageFor(e));
@@ -60,7 +61,7 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
                 .append(" ")
                 .append(message)
                 .toString();
-        request.sendResponseHeaders(200, response.length());
+        request.sendResponseHeaders(HTTP_OK, response.length());
         OutputStream responseBody = request.getResponseBody();
         OutputStreamWriter responseWriter = new OutputStreamWriter(responseBody);
         responseWriter.append(response);
