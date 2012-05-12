@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
  * @author Dale Emery
  */
 public class HttpRequestBody {
-    protected transient final Logger log = LoggerFactory.getLogger(getClass());
+    protected final transient Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * Write the body of this request through the connection.

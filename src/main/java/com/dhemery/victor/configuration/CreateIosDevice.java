@@ -13,7 +13,7 @@ import static com.dhemery.victor.configuration.IosDeviceConfigurationOptions.*;
 
 /**
  * <p>
- * Create a {@link com.dhemery.victor.device.SimulatedIosDevice} configured according to a set of configuration options.
+ * Create a {@link SimulatedIosDevice} configured according to a set of configuration options.
  * See {@link IosDeviceConfigurationOptions} for descriptions, property names, and default values for the available options.
  * </p>
  * <p>
@@ -29,9 +29,9 @@ public class CreateIosDevice {
 
     /**
      * <p>
-     * Create a {@link com.dhemery.victor.device.SimulatedIosDevice} configured according to {@code configuration}.
+     * Create a {@link SimulatedIosDevice} configured according to {@code configuration}.
      * @param configuration defines the configuration options.
-     * @return a {@link com.dhemery.victor.device.SimulatedIosDevice} configured as specified.
+     * @return a {@link SimulatedIosDevice} configured as specified.
      */
     public static IosDevice withConfiguration(Configuration configuration) {
         return new CreateIosDevice(configuration).device();
@@ -44,7 +44,7 @@ public class CreateIosDevice {
 
     private Configuration defaultConfiguration() {
         Configuration defaultConfiguration = new Configuration();
-        defaultConfiguration.set(IosDeviceConfigurationOptions.SDK_VERSION, DEFAULT_SDK_VERSION);
+        defaultConfiguration.set(SDK_VERSION, DEFAULT_SDK_VERSION);
         defaultConfiguration.set(DEVICE_TYPE, DEFAULT_DEVICE_TYPE);
         defaultConfiguration.set(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
         return defaultConfiguration;
@@ -59,9 +59,9 @@ public class CreateIosDevice {
     }
 
     private String applicationBinaryPath() {
-        String applicationBinaryPath = configuration.option(IosDeviceConfigurationOptions.APPLICATION_BINARY_PATH);
+        String applicationBinaryPath = configuration.option(APPLICATION_BINARY_PATH);
         if (applicationBinaryPath != null) return applicationBinaryPath;
-        String explanation = String.format("Configuration option %s not defined", IosDeviceConfigurationOptions.APPLICATION_BINARY_PATH);
+        String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH);
         throw new IosDeviceConfigurationException(explanation);
     }
 
@@ -70,7 +70,7 @@ public class CreateIosDevice {
     }
 
     private String sdkVersion() {
-        return configuration.option(IosDeviceConfigurationOptions.SDK_VERSION);
+        return configuration.option(SDK_VERSION);
     }
 
     private SimulatorAgent simulator() {
@@ -94,7 +94,7 @@ public class CreateIosDevice {
         return simulatorProcessOwner().equals("victor");
     }
 
-    private VictorSimulatorAgent victorSimulatorAgent() {
+    private SimulatorAgent victorSimulatorAgent() {
         return new VictorSimulatorAgent(sdkPath(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
     }
 }

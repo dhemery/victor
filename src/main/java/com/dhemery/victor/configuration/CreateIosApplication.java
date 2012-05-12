@@ -9,7 +9,7 @@ import static com.dhemery.victor.configuration.IosApplicationConfigurationOption
 
 /**
  * <p>
- * Create a {@link com.dhemery.victor.frank.FrankIosApplication} configured according to a set of configuration options.
+ * Create a {@link FrankIosApplication} configured according to a set of configuration options.
  * See {@link IosApplicationConfigurationOptions} for descriptions, property names, and default values for the available options.
  * </p>
  * </table>
@@ -23,9 +23,9 @@ public class CreateIosApplication {
 
     /**
      * <p>
-     * Create a {@link com.dhemery.victor.frank.FrankIosApplication} configured according to {@code configuration}.
+     * Create a {@link FrankIosApplication} configured according to {@code configuration}.
      * @param configuration specifies the configuration options.
-     * @return a {@link com.dhemery.victor.frank.FrankIosApplication} configured as specified.
+     * @return a {@link FrankIosApplication} configured as specified.
      */
     public static IosApplication withConfiguration(Configuration configuration) {
         return new CreateIosApplication(configuration).application();

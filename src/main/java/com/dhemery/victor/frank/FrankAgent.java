@@ -41,6 +41,7 @@ public class FrankAgent implements FrankViewAgent, FrankApplicationAgent {
     /**
      * @return whether the Frank server is running.
      */
+    @Override
     public Boolean isRunning() {
         new PingRequest().sendTo(frankServerUrl);
         return true;
