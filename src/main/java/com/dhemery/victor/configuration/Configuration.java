@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.victor.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class Configuration {
     }
 
     /**
-     * Create a configuration with options copied from the given map;
+     * Create a configuration with options copied from the given map.
      *
      * @param options a map that defines configuration options.
      */

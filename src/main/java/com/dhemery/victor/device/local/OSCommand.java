@@ -3,7 +3,10 @@ package com.dhemery.victor.device.local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,27 @@ public class OSCommand {
     }
 
     /**
+     * Run the command and return its output.
+     * This method assumes that the command runs to completion
+     * and writes a single line to stdout.
+     *
+     * @return the text that the command wrote to stdout.
+     */
+    public String output() {
+        Process process = run();
+        InputStream inputStream = process.getInputStream();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        try {
+            String output = bufferedReader.readLine();
+            log.debug("   output: {}", this, output);
+            return output;
+        } catch (IOException cause) {
+            throw new OSCommandException(this, cause);
+        }
+    }
+
+    /**
      * Initiate the command.
      *
      * @return a native process that can describe and control the invoked command.
@@ -60,6 +84,6 @@ public class OSCommand {
 
     @Override
     public String toString() {
-        return String.format("Command %s with environment %s", builder.command(), builder.environment());
+        return String.format("command %s with environment %s", builder.command(), builder.environment());
     }
 }

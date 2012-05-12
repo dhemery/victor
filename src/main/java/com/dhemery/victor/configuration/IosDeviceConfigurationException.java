@@ -1,4 +1,4 @@
-package com.dhemery.victor.device;
+package com.dhemery.victor.configuration;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ public class IosDeviceConfigurationException extends RuntimeException {
         super(explanation);
     }
 
-    public IosDeviceConfigurationException(String explanation, IOException cause) {
+    public IosDeviceConfigurationException(String explanation, Throwable cause) {
         super(explanation, cause);
     }
 }

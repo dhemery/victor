@@ -1,5 +1,8 @@
-package com.dhemery.victor.device;
+package com.dhemery.victor.configuration;
 
+/**
+ * Configuration options for {@link CreateIosDevice}.
+ */
 public class IosDeviceConfigurationOptions {
     private IosDeviceConfigurationOptions(){}
 
@@ -11,20 +14,31 @@ public class IosDeviceConfigurationOptions {
     public static final String APPLICATION_BINARY_PATH = "victor.application.binary.path";
 
     /**
+     * The default value for the {@link #DEVICE_TYPE} option.
+     */
+    public static final String DEFAULT_DEVICE_TYPE = "iPhone";
+
+    /**
+     * The default value for the {@link #SDK_VERSION} option,
+     * obtained by calling {@link XcodeBuild#newestInstalledSdkVersion()}.
+     */
+    public static final String DEFAULT_SDK_VERSION = XcodeBuild.newestInstalledSdkVersion();
+
+    /**
+     * The default value for the {@link #SIMULATOR_PROCESS_OWNER} option.
+     */
+    public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
+
+    /**
      * The type of device to simulate.
-     * See your iOS Simulator's Device menu for possible values.
+     * See your iOS Simulator's <em>Hardware > Device</em> menu for possible values.
      */
     public static final String DEVICE_TYPE = "victor.simulator.device.type";
 
     /**
-     * The absolute path to the root directory of the iOS SDK with which to launch the simulator.
+     * The version of the SDK with which to launch the simulator.
      */
-    public static final String SDK_ROOT = "victor.sdk.root";
-
-    /**
-     * The absolute path to the iOS Simulator executable file.
-     */
-    public static final String SIMULATOR_BINARY_PATH = "victor.simulator.binary.path";
+    public static final String SDK_VERSION = "victor.simulator.sdk.version";
 
     /**
      * <p>Specifies who is responsible for starting and stopping the simulator.</p>
