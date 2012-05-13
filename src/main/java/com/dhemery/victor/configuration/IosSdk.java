@@ -1,54 +1,63 @@
 package com.dhemery.victor.configuration;
 
 import com.dhemery.victor.device.local.OSCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Utility methods that describe the {@code Xcode} development environment.
- */
-public class XcodeBuild {
-    public static final String CANONICAL_NAME_FOR_SDK_VERSION = "iphonesimulator%s";
-    public static final String CANONICAL_NAME_FOR_NEWEST_SDK = String.format(CANONICAL_NAME_FOR_SDK_VERSION, "");
+public class IosSdk {
+    public static final String GENERIC_SDK_NAME = "iphonesimulator";
+    public static final String NAME_FOR_SDK_VERSION = GENERIC_SDK_NAME + "%s";
     public static final String PLATFORM_PATH = "PlatformPath";
     public static final String SDK_PATH = "Path";
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
 
-    private XcodeBuild(){}
-
-    public static String canonicalNameForSdkVersion(String sdkVersion) {
-        return String.format(CANONICAL_NAME_FOR_SDK_VERSION, sdkVersion);
-    }
+    private final String canonicalName;
 
     /**
-     * @return the version of the newest installed iPhone Simulator SDK
+     * @return a representation of the newest installed SDK.
      */
-    public static String newestInstalledSdkVersion() {
-        return infoItem(SDK_VERSION);
+    public static IosSdk newest() {
+        return IosSdk.withCanonicalName(GENERIC_SDK_NAME);
     }
 
     /**
-     * @return the absolute path to the iPhone Simulator platform
+     * @param canonicalName the canonical name of an SDK.
+     * @return a representation of the SDK with that canonical name.
      */
-    public static String platformPath() {
-        return infoItem(PLATFORM_PATH);
+    public static IosSdk withCanonicalName(String canonicalName) {
+        return new IosSdk(canonicalName);
     }
 
     /**
-     * @param itemName the name of an SDK infoitem
-     * @return the value of an infoitem for the newest installed SDK
-     * @see #infoItem(String, String)
+     * @param version the version of an SDK.
+     * @return a representation of the SDK with that version.
      */
-    public static String infoItem(String itemName) {
-        return infoItem(itemName, CANONICAL_NAME_FOR_NEWEST_SDK);
+    public static IosSdk withVersion(String version) {
+        return withCanonicalName(String.format(NAME_FOR_SDK_VERSION, version));
+    }
+
+    private IosSdk(String canonicalName) {
+        this.canonicalName = canonicalName;
     }
 
     /**
-     * <p></p>Obtain the value of an infoitem for an installed SDK.</p>
+     * @return the canonical name of this SDK.
+     */
+    public String canonicalName() {
+        return String.format(NAME_FOR_SDK_VERSION, version());
+    }
+
+    /**
+     * @return whether the SDK is installed on this computer.
+     */
+    public boolean isInstalled() {
+        return infoItem(SDK_PATH).startsWith("/");
+    }
+
+    /**
+     * <p></p>Obtain information about the SDK.</p>
      * <p>
      * To learn the list of available infoitems,
      * see the {@code xcodebuild} manual page,
@@ -62,21 +71,30 @@ public class XcodeBuild {
      * run {@code xcodebuild -showsdks} on the command line.
      * </p>
      * @param itemName the name of an infoitem
-     * @param sdkCanonicalName the canonical name of an installed SDK
      * @return the value of the infoitem for the named SDK
      */
-    public static String infoItem(String itemName, String sdkCanonicalName) {
-        List<String> arguments = Arrays.asList("-sdk", sdkCanonicalName, "-version", itemName);
+    public String infoItem(String itemName) {
+        return infoItem(canonicalName, itemName);
+    }
+
+    private static String infoItem(String canonicalName, String itemName) {
+        List<String> arguments = Arrays.asList("-sdk", canonicalName, "-version", itemName);
         OSCommand command = new OSCommand("xcodebuild", arguments);
         return command.output();
     }
 
     /**
-     * @param sdkVersion the version of an installed SDK
-     * @return the absolute path to the SDK
+     * @return the absolute path to this SDK.
      */
-    public static String sdkPathForVersion(String sdkVersion) {
-        return infoItem(SDK_PATH, canonicalNameForSdkVersion(sdkVersion));
+    public String path() {
+        return infoItem(SDK_PATH);
+    }
+
+    /**
+     * @return the absolute path to the iPhone Simulator platform on this computer.
+     */
+    public static String platformPath() {
+        return infoItem(GENERIC_SDK_NAME, PLATFORM_PATH);
     }
 
     /**
@@ -96,5 +114,12 @@ public class XcodeBuild {
      */
     public static String simulatorBinaryPath() {
         return String.format(SIMULATOR_BINARY_PATH_FOR_PLATFORM, platformPath());
+    }
+
+    /**
+     * @return the version if this SDK.
+     */
+    public String version() {
+        return infoItem(SDK_VERSION);
     }
 }
