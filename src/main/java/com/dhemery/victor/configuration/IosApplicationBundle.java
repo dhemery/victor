@@ -1,34 +1,20 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.os.OSCommand;
+import com.dhemery.victor.configuration.generic.ContextItemCache;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 public class IosApplicationBundle {
+    private static final ContextItemCache defaults = new DefaultsCache();
     public static final String SDK_CANONICAL_NAME = "DTSDKName";
     public static final String EXECUTABLE_NAME = "CFBundleExecutable";
-    private static final ContextItemCache applicationInfo = new ContextItemCache(applicationInfoFetcher());
-
-    private static ContextItemFetcher applicationInfoFetcher() {
-        return new ContextItemFetcher() {
-            @Override
-            public String fetch(String domain, String item) {
-                List<String> arguments = Arrays.asList("read", domain, item);
-                OSCommand command = new OSCommand("defaults", arguments);
-                return command.output();
-
-            }
-        };
-    }
 
     private final String path;
-    private final String plistFilePath;
+    private final String plistPath;
 
     public IosApplicationBundle(String path) {
         this.path = path;
-        plistFilePath = path + "/Info";
+        plistPath = path + "/Info";
     }
 
     public boolean definesSdkCanonicalName() {
@@ -40,7 +26,7 @@ public class IosApplicationBundle {
     }
 
     private String applicationInfo(String item) {
-        return applicationInfo.value(plistFilePath, item);
+        return defaults.value(plistPath, item);
     }
 
     public boolean isExecutable() {

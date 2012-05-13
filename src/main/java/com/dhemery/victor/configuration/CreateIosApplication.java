@@ -1,6 +1,7 @@
 package com.dhemery.victor.configuration;
 
 import com.dhemery.victor.IosApplication;
+import com.dhemery.victor.configuration.generic.Configuration;
 import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.frank.FrankApplicationAgent;
 import com.dhemery.victor.frank.FrankIosApplication;

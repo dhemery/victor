@@ -1,4 +1,4 @@
-package com.dhemery.victor.configuration;
+package com.dhemery.victor.configuration.generic;
 
 import java.util.HashMap;
 import java.util.Map;

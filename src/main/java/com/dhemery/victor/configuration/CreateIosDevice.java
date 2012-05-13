@@ -2,6 +2,7 @@ package com.dhemery.victor.configuration;
 
 
 import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.configuration.generic.Configuration;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.UserSimulatorAgent;

@@ -1,9 +1,6 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.os.OSCommand;
-
-import java.util.Arrays;
-import java.util.List;
+import com.dhemery.victor.configuration.generic.ContextItemCache;
 
 public class IosSdk {
     public static final String GENERIC_SDK_NAME = "iphonesimulator";
@@ -13,18 +10,7 @@ public class IosSdk {
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
 
-    private static final ContextItemCache sdkInfo = new ContextItemCache(sdkInfoFetcher());
-
-    private static ContextItemFetcher sdkInfoFetcher() {
-        return new ContextItemFetcher() {
-            @Override
-            public String fetch(String sdkCanonicalName, String itemName) {
-                List<String> arguments = Arrays.asList("-sdk", sdkCanonicalName, "-version", itemName);
-                OSCommand command = new OSCommand("xcodebuild", arguments);
-                return command.output();
-            }
-        };
-    }
+    private static final ContextItemCache sdkInfo = new SdkInfoCache();
 
     private final String canonicalName;
 
