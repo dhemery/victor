@@ -1,10 +1,5 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.os.OSCommand;
-
-import java.util.Arrays;
-import java.util.List;
-
 public class IosSdk {
     public static final String GENERIC_SDK_NAME = "iphonesimulator";
     public static final String NAME_FOR_SDK_VERSION = GENERIC_SDK_NAME + "%s";
@@ -12,6 +7,8 @@ public class IosSdk {
     public static final String SDK_PATH = "Path";
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
+
+    private static final Cache sdkInfoCache = new Cache(new SdkInspector());
 
     private final String canonicalName;
 
@@ -53,7 +50,7 @@ public class IosSdk {
      * @return whether the SDK is installed on this computer.
      */
     public boolean isInstalled() {
-        return infoItem(SDK_PATH).startsWith("/");
+        return sdkInfo(SDK_PATH).startsWith("/");
     }
 
     /**
@@ -73,28 +70,26 @@ public class IosSdk {
      * @param itemName the name of an infoitem
      * @return the value of the infoitem for the named SDK
      */
-    public String infoItem(String itemName) {
-        return infoItem(canonicalName, itemName);
+    public String sdkInfo(String itemName) {
+        return sdkInfo(canonicalName, itemName);
     }
 
-    private static String infoItem(String canonicalName, String itemName) {
-        List<String> arguments = Arrays.asList("-sdk", canonicalName, "-version", itemName);
-        OSCommand command = new OSCommand("xcodebuild", arguments);
-        return command.output();
+    private static String sdkInfo(String canonicalName, String itemName) {
+        return sdkInfoCache.value(canonicalName, itemName);
     }
 
     /**
      * @return the absolute path to this SDK.
      */
     public String path() {
-        return infoItem(SDK_PATH);
+        return sdkInfo(SDK_PATH);
     }
 
     /**
      * @return the absolute path to the iPhone Simulator platform on this computer.
      */
     public static String platformPath() {
-        return infoItem(GENERIC_SDK_NAME, PLATFORM_PATH);
+        return sdkInfo(GENERIC_SDK_NAME, PLATFORM_PATH);
     }
 
     /**
@@ -110,16 +105,17 @@ public class IosSdk {
      * or that the file is executable.</li>
      * </ul>
      *
-     * @return the absolute path to the iPhoneSimulator Simulator executable
+     * @return the absolute path to the iPhoneSimulator Simulator executable.
      */
     public static String simulatorBinaryPath() {
         return String.format(SIMULATOR_BINARY_PATH_FOR_PLATFORM, platformPath());
     }
 
     /**
-     * @return the version if this SDK.
+     * @return the version of this SDK.
      */
     public String version() {
-        return infoItem(SDK_VERSION);
+        return sdkInfo(SDK_VERSION);
     }
+
 }

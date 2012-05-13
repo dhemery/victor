@@ -1,28 +1,29 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.device.local.OSCommand;
-
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 public class IosApplicationBundle {
     public static final String SDK_CANONICAL_NAME = "DTSDKName";
-    public static final String PATH_TO_EXECUTABLE = "CFBundleExecutable";
+    public static final String EXECUTABLE_NAME = "CFBundleExecutable";
+    private static final Cache applicationInfoCache = new Cache(new DefaultsInspector());
     private final String path;
+    private final String plistFilePath;
 
     public IosApplicationBundle(String path) {
         this.path = path;
+        plistFilePath = path + "/Info";
     }
 
     public boolean definesSdkCanonicalName() {
         return sdkCanonicalName().startsWith(IosSdk.GENERIC_SDK_NAME);
     }
 
-    private String infoItem(String itemName) {
-        List<String> arguments = Arrays.asList(path, itemName);
-        OSCommand command = new OSCommand("defaults", arguments);
-        return command.output();
+    private String executableName() {
+        return applicationInfo(EXECUTABLE_NAME);
+    }
+
+    private String applicationInfo(String item) {
+        return applicationInfoCache.value(plistFilePath, item);
     }
 
     public boolean isExecutable() {
@@ -30,10 +31,10 @@ public class IosApplicationBundle {
     }
 
     public String pathToExecutable() {
-        return infoItem(PATH_TO_EXECUTABLE);
+        return String.format("%s/%s", path, executableName());
     }
 
     public String sdkCanonicalName() {
-        return infoItem(SDK_CANONICAL_NAME);
+        return applicationInfo(SDK_CANONICAL_NAME);
     }
 }
