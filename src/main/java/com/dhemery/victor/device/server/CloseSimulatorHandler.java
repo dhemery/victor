@@ -1,8 +1,6 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.VictorSimulatorAgent;
-
-import java.io.IOException;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 
 public class CloseSimulatorHandler extends SimulatorExchangeHandler<Void> {
     public CloseSimulatorHandler(VictorSimulatorAgent simulator) {
@@ -10,7 +8,7 @@ public class CloseSimulatorHandler extends SimulatorExchangeHandler<Void> {
     }
 
     @Override
-    public void perform(VictorSimulatorAgent simulator, Void ignored) throws IOException, InterruptedException {
+    public void perform(VictorSimulatorAgent simulator, Void ignored) {
 //		simulator.shutDown();
     }
 }

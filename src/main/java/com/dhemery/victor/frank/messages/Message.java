@@ -1,8 +1,10 @@
 package com.dhemery.victor.frank.messages;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * A message to send objects in an iOS application.
@@ -11,20 +13,21 @@ import java.util.Collection;
  * @author Dale Emery
  */
 public class Message {
-    public final String method_name;
-    public final Collection<Object> arguments = new ArrayList<Object>();
+    @SerializedName("method_name")
+    private final String name;
+    private final List<Object> arguments = new ArrayList<Object>();
 
     /**
      * @param name      the name of the message to send.
      * @param arguments arguments to send with the message.
      */
     public Message(String name, Object... arguments) {
-        this.method_name = name;
+        this.name = name;
         this.arguments.addAll(Arrays.asList(arguments));
     }
 
     @Override
     public String toString() {
-        return String.format("%s%s", method_name, arguments);
+        return String.format("%s%s", name, arguments);
     }
 }

@@ -1,6 +1,7 @@
-package com.dhemery.victor.device;
+package com.dhemery.victor.device.local;
 
-import com.dhemery.victor.device.local.OSCommand;
+import com.dhemery.victor.device.SimulatorAgent;
+import com.dhemery.victor.os.OSCommand;
 import com.dhemery.victor.device.local.TouchMenuItemCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

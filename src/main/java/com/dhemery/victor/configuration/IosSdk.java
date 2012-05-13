@@ -1,6 +1,6 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.device.local.OSCommand;
+import com.dhemery.victor.os.OSCommand;
 
 import java.util.Arrays;
 import java.util.List;

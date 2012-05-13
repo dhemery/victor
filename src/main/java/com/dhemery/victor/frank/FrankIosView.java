@@ -39,9 +39,10 @@ public class FrankIosView implements IosView {
         Message message = new Message(name, arguments);
         log.debug("--> {} {}", query, message);
         MessageResponse response = agent.sendViewMessage(query, message);
-        if (!response.succeeded) throw new MessageException(this, message, response);
-        log.debug("<-- {} {} returned {}", new Object[]{query, message, response.results});
-        return response.results;
+        if (!response.succeeded()) throw new MessageException(this, message, response);
+        List<String> results = response.results();
+        log.debug("<-- {} {} returned {}", new Object[]{query, message, results});
+        return results;
     }
 
     @Override

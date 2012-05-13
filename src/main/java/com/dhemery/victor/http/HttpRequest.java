@@ -3,6 +3,7 @@ package com.dhemery.victor.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -11,16 +12,16 @@ import java.net.URL;
  *
  * @author Dale Emery
  */
-public class HttpRequest {
+public class HttpRequest implements Serializable {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    public final String verb;
-    public final HttpRequestBody body;
+    private final String verb;
+    private final HttpRequestBody body;
 
     /**
      * @param verb the path portion of the URL to which to send the request.
      */
     public HttpRequest(String verb) {
-        this(verb, new HttpRequestBody());
+        this(verb, new HttpGetBody());
     }
 
     /**

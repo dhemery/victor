@@ -1,6 +1,6 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
+    public static final int HTTP_OK = 200;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final VictorSimulatorAgent simulator;
     private final Class<T> type;
@@ -46,21 +47,15 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
         sendResponse(request, body, "OK");
     }
 
-    public abstract void perform(VictorSimulatorAgent simulator, T body) throws IOException, InterruptedException;
+    public abstract void perform(VictorSimulatorAgent simulator, T body);
 
     public void sendError(HttpExchange request, T body, Exception e) throws IOException {
         sendResponse(request, body, errorMessageFor(e));
     }
 
     public void sendResponse(HttpExchange request, T body, String message) throws IOException {
-        String response = new StringBuilder()
-                .append(request.getRequestURI())
-                .append(" ")
-                .append(body)
-                .append(" ")
-                .append(message)
-                .toString();
-        request.sendResponseHeaders(200, response.length());
+        String response = String.format("%s %s %s", request.getRequestURI(), body, message);
+        request.sendResponseHeaders(HTTP_OK, response.length());
         OutputStream responseBody = request.getResponseBody();
         OutputStreamWriter responseWriter = new OutputStreamWriter(responseBody);
         responseWriter.append(response);

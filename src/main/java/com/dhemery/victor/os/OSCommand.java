@@ -1,4 +1,4 @@
-package com.dhemery.victor.device.local;
+package com.dhemery.victor.os;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +61,7 @@ public class OSCommand {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         try {
             String output = bufferedReader.readLine();
-            log.debug("   output: {}", this, output);
+            log.debug("   output: {}", output);
             return output;
         } catch (IOException cause) {
             throw new OSCommandException(this, cause);

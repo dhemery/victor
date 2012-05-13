@@ -1,5 +1,7 @@
 package com.dhemery.victor.device.local;
 
+import com.dhemery.victor.os.OSCommand;
+
 import java.util.ArrayList;
 import java.util.List;
 

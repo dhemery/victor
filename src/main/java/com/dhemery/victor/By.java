@@ -23,52 +23,58 @@ public class By {
     public static final String UIQUERY_QUERY_ENGINE = "uiquery";
 
     /**
-     * The name of the selector engine to use to select the views identified by this {@code By}.
+     * The name of the query engine that will select the views.
      */
-    public final String selectorEngine;
+    private final String engine;
 
     /**
-     * A pattern by which the selector engine identifies a set of views.
+     * A pattern by which the query engine identifies a set of views.
      */
-    public final String selector;
+    private final String pattern;
 
     /**
-     * Uses the named selector engine and selector to identify views.
-     *
-     * @param selectorEngine the name of the selector engine to use to select the views identified by this {@code By}.
-     * @param selector       a pattern by which the selector engine identifies a set of views.
+     * @param engine the name of the query engine that will select the views.
+     * @param pattern a pattern by which the query engine identifies a set of views.
      */
-    public By(String selectorEngine, String selector) {
-        this.selectorEngine = selectorEngine;
-        this.selector = selector;
+    public By(String engine, String pattern) {
+        this.engine = engine;
+        this.pattern = pattern;
     }
 
     /**
-     * @param igorQuery a query in Igor Query Language format.
-     * @return a query that uses the Igor query engine to select views using the given query.
+     * @param pattern a pattern in the Igor Query Language.
+     * @return a query that uses Igor to select views that match the pattern.
      */
-    public static By igor(String igorQuery) {
-        return new By(IGOR_QUERY_ENGINE, igorQuery);
+    public static By igor(String pattern) {
+        return new By(IGOR_QUERY_ENGINE, pattern);
     }
 
     /**
-     * @param shelleyQuery a query in the format recognized by the Shelley query engine.
-     * @return a query that uses the Shelley query engine to select views using the given query.
+     * @param pattern a pattern in the Shelley query language.
+     * @return a query that uses Shelley to select views that match the pattern.
      */
-    public static By shelley(String shelleyQuery) {
-        return new By(SHELLEY_QUERY_ENGINE, shelleyQuery);
+    public static By shelley(String pattern) {
+        return new By(SHELLEY_QUERY_ENGINE, pattern);
     }
 
     /**
-     * @param uiQuery a query in the format recognized by the UIQuery query engine.
-     * @return a query that uses the UIQuery query engine to select views using the given query.
+     * @param pattern a pattern in the UIQuery query language.
+     * @return a query that uses UIQuery to select views that match the pattern.
      */
-    public static By uiQuery(String uiQuery) {
-        return new By(UIQUERY_QUERY_ENGINE, uiQuery);
+    public static By uiQuery(String pattern) {
+        return new By(UIQUERY_QUERY_ENGINE, pattern);
+    }
+
+    public String engine() {
+        return engine;
+    }
+
+    public String pattern() {
+        return pattern;
     }
 
     @Override
     public String toString() {
-        return String.format("%s:%s", selectorEngine, selector);
+        return String.format("%s:%s", engine, pattern);
     }
 }

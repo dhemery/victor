@@ -4,8 +4,8 @@ package com.dhemery.victor.configuration;
 import com.dhemery.victor.IosDevice;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
-import com.dhemery.victor.device.UserSimulatorAgent;
-import com.dhemery.victor.device.VictorSimulatorAgent;
+import com.dhemery.victor.device.local.UserSimulatorAgent;
+import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ import static com.dhemery.victor.configuration.IosDeviceConfigurationOptions.*;
 
 /**
  * <p>
- * Create a {@link com.dhemery.victor.device.SimulatedIosDevice} configured according to a set of configuration options.
+ * Create a {@link SimulatedIosDevice} configured according to a set of configuration options.
  * See {@link IosDeviceConfigurationOptions} for descriptions, property names, and default values for the available options.
  * </p>
  * <p>
@@ -30,9 +30,9 @@ public class CreateIosDevice {
 
     /**
      * <p>
-     * Create a {@link com.dhemery.victor.device.SimulatedIosDevice} configured according to {@code configuration}.
+     * Create a {@link SimulatedIosDevice} configured according to {@code configuration}.
      * @param configuration defines the configuration options.
-     * @return a {@link com.dhemery.victor.device.SimulatedIosDevice} configured as specified.
+     * @return a {@link SimulatedIosDevice} configured as specified.
      */
     public static IosDevice withConfiguration(Configuration configuration) {
         return new CreateIosDevice(configuration).device();
@@ -108,7 +108,7 @@ public class CreateIosDevice {
         return simulatorProcessOwner().equals("victor");
     }
 
-    private VictorSimulatorAgent victorSimulatorAgent() {
+    private SimulatorAgent victorSimulatorAgent() {
         return new VictorSimulatorAgent(sdkPath(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
     }
 

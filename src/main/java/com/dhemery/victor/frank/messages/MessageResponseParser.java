@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Constructs a {@link com.dhemery.victor.frank.messages.MessageResponse} from a properly formatted JSON string.
+ * Constructs a {@link MessageResponse} from a properly formatted JSON string.
  *
  * @author Dale Emery
  */
