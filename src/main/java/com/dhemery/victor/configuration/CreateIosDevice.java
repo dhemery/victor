@@ -44,6 +44,16 @@ public class CreateIosDevice {
         applicationBundle = new IosApplicationBundle(applicationBundlePath());
     }
 
+    private String applicationBinaryPath() {
+        return applicationBundle.pathToExecutable();
+    }
+
+    private String applicationBundlePath() {
+        if(configuration.defines(APPLICATION_BUNDLE_PATH)) return configuration.option(APPLICATION_BUNDLE_PATH);
+        String explanation = String.format("Configuration option %s not defined", APPLICATION_BUNDLE_PATH);
+        throw new IosDeviceConfigurationException(explanation);
+    }
+
     private Configuration defaultConfiguration() {
         Configuration defaultConfiguration = new Configuration();
         defaultConfiguration.set(DEVICE_TYPE, DEFAULT_DEVICE_TYPE);
@@ -59,12 +69,6 @@ public class CreateIosDevice {
         return configuration.option(DEVICE_TYPE);
     }
 
-    private String applicationBundlePath() {
-        if(configuration.defines(APPLICATION_BUNDLE_PATH)) return configuration.option(APPLICATION_BUNDLE_PATH);
-        String explanation = String.format("Configuration option %s not defined", APPLICATION_BUNDLE_PATH);
-        throw new IosDeviceConfigurationException(explanation);
-    }
-
     private String sdkPath() {
         return sdk().path();
     }
@@ -74,13 +78,13 @@ public class CreateIosDevice {
             String version = configuration.option(SDK_VERSION);
             IosSdk sdk = IosSdk.withVersion(version);
             if(sdk.isInstalled()) return sdk;
-            log.warn("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
+            log.debug("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
         }
         if(applicationBundle.definesSdkCanonicalName()) {
             String canonicalName = applicationBundle.sdkCanonicalName();
             IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
             if(sdk.isInstalled()) return sdk;
-            log.warn("Application bundle prefers SDK {}, but that SDK is not installed");
+            log.debug("Application bundle prefers SDK {}, but that SDK is not installed");
         }
         IosSdk sdk = IosSdk.newest();
         if(sdk.isInstalled()) return sdk;
@@ -110,9 +114,5 @@ public class CreateIosDevice {
 
     private SimulatorAgent victorSimulatorAgent() {
         return new VictorSimulatorAgent(sdkPath(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
-    }
-
-    private String applicationBinaryPath() {
-        return applicationBundle.pathToExecutable();
     }
 }
