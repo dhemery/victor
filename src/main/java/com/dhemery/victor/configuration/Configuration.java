@@ -32,6 +32,14 @@ public class Configuration {
     }
 
     /**
+     * @param name the name of an option.
+     * @return whether this configuration defines a value for the option.
+     */
+    public Boolean defines(String name) {
+        return options.containsKey(name);
+    }
+
+    /**
      * Merge a set of configuration options into this configuration.
      * If both configurations have values for an option,
      * this configuration's value is replaced by the value from the given configuration.

@@ -19,13 +19,14 @@ import static com.dhemery.victor.configuration.IosDeviceConfigurationOptions.*;
  * <p>
  * <strong>NOTE:</strong>
  * This class cannot provide a default value
- * for the {@link IosDeviceConfigurationOptions#APPLICATION_BINARY_PATH APPLICATION_BINARY_PATH} option.
+ * for the {@link IosDeviceConfigurationOptions#APPLICATION_BUNDLE_PATH APPLICATION_BUNDLE_PATH} option.
  * The configuration must define a value.
  * </p>
  */
 public class CreateIosDevice {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final Configuration configuration;
+    private final IosApplicationBundle applicationBundle;
 
     /**
      * <p>
@@ -40,11 +41,21 @@ public class CreateIosDevice {
     private CreateIosDevice(Configuration configuration) {
         this.configuration = defaultConfiguration();
         this.configuration.merge(configuration);
+        applicationBundle = new IosApplicationBundle(applicationBundlePath());
+    }
+
+    private String applicationBinaryPath() {
+        return applicationBundle.pathToExecutable();
+    }
+
+    private String applicationBundlePath() {
+        if(configuration.defines(APPLICATION_BUNDLE_PATH)) return configuration.option(APPLICATION_BUNDLE_PATH);
+        String explanation = String.format("Configuration option %s not defined", APPLICATION_BUNDLE_PATH);
+        throw new IosDeviceConfigurationException(explanation);
     }
 
     private Configuration defaultConfiguration() {
         Configuration defaultConfiguration = new Configuration();
-        defaultConfiguration.set(SDK_VERSION, DEFAULT_SDK_VERSION);
         defaultConfiguration.set(DEVICE_TYPE, DEFAULT_DEVICE_TYPE);
         defaultConfiguration.set(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
         return defaultConfiguration;
@@ -58,19 +69,26 @@ public class CreateIosDevice {
         return configuration.option(DEVICE_TYPE);
     }
 
-    private String applicationBinaryPath() {
-        String applicationBinaryPath = configuration.option(APPLICATION_BINARY_PATH);
-        if (applicationBinaryPath != null) return applicationBinaryPath;
-        String explanation = String.format("Configuration option %s not defined", APPLICATION_BINARY_PATH);
-        throw new IosDeviceConfigurationException(explanation);
-    }
-
     private String sdkPath() {
-        return XcodeBuild.sdkPathForVersion(sdkVersion());
+        return sdk().path();
     }
 
-    private String sdkVersion() {
-        return configuration.option(SDK_VERSION);
+    private IosSdk sdk() {
+        if(configuration.defines(SDK_VERSION)) {
+            String version = configuration.option(SDK_VERSION);
+            IosSdk sdk = IosSdk.withVersion(version);
+            if(sdk.isInstalled()) return sdk;
+            log.debug("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
+        }
+        if(applicationBundle.definesSdkCanonicalName()) {
+            String canonicalName = applicationBundle.sdkCanonicalName();
+            IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
+            if(sdk.isInstalled()) return sdk;
+            log.debug("Application bundle prefers SDK {}, but that SDK is not installed");
+        }
+        IosSdk sdk = IosSdk.newest();
+        if(sdk.isInstalled()) return sdk;
+        throw new IosDeviceConfigurationException("Cannot find an installed iphonesimulator SDK");
     }
 
     private SimulatorAgent simulator() {
@@ -79,7 +97,7 @@ public class CreateIosDevice {
     }
 
     private String simulatorBinaryPath() {
-        return XcodeBuild.simulatorBinaryPath();
+        return IosSdk.simulatorBinaryPath();
     }
 
     private String simulatorProcessOwner() {

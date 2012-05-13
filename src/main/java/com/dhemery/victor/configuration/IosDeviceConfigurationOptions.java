@@ -9,22 +9,15 @@ public class IosDeviceConfigurationOptions {
     private IosDeviceConfigurationOptions(){}
 
     /**
-     * The absolute path to the iOS application binary file to execute.
-     * This is typically a file inside the application's .app package.
-     * The file's executable flag must be set.
+     * The absolute path to the iOS application bundle to execute.
+     * This is typically the application's .app package.
      */
-    public static final String APPLICATION_BINARY_PATH = "victor.application.binary.path";
+    public static final String APPLICATION_BUNDLE_PATH = "victor.application.bundle.path";
 
     /**
      * The default value for the {@link #DEVICE_TYPE} option.
      */
     public static final String DEFAULT_DEVICE_TYPE = "iPhone";
-
-    /**
-     * The default value for the {@link #SDK_VERSION} option,
-     * obtained by calling {@link XcodeBuild#newestInstalledSdkVersion()}.
-     */
-    public static final String DEFAULT_SDK_VERSION = XcodeBuild.newestInstalledSdkVersion();
 
     /**
      * The default value for the {@link #SIMULATOR_PROCESS_OWNER} option.
