@@ -81,7 +81,7 @@ public class CreateIosDevice {
             if(sdk.isInstalled()) return sdk;
             log.debug("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
         }
-        if(applicationBundle.definesSdkCanonicalName()) {
+        if(applicationBundle.identifiesAnSdk()) {
             String canonicalName = applicationBundle.sdkCanonicalName();
             IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
             if(sdk.isInstalled()) return sdk;
