@@ -1,6 +1,6 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.victor.configuration.generic.ContextItemCache;
+import com.dhemery.configuration.ContextItemCache;
 
 public class IosSdk {
     public static final String GENERIC_SDK_NAME = "iphonesimulator";
