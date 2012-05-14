@@ -1,8 +1,8 @@
 package com.dhemery.victor.configuration;
 
 
+import com.dhemery.configuration.Configuration;
 import com.dhemery.victor.IosDevice;
-import com.dhemery.victor.configuration.generic.Configuration;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.UserSimulatorAgent;
@@ -81,7 +81,7 @@ public class CreateIosDevice {
             if(sdk.isInstalled()) return sdk;
             log.debug("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
         }
-        if(applicationBundle.definesSdkCanonicalName()) {
+        if(applicationBundle.identifiesAnSdk()) {
             String canonicalName = applicationBundle.sdkCanonicalName();
             IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
             if(sdk.isInstalled()) return sdk;
