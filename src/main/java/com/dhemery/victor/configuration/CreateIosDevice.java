@@ -7,6 +7,7 @@ import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.UserSimulatorAgent;
 import com.dhemery.victor.device.local.VictorSimulatorAgent;
+import com.dhemery.victor.discovery.IosSdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,17 +43,15 @@ public class CreateIosDevice {
     private CreateIosDevice(Configuration configuration) {
         this.configuration = defaultConfiguration();
         this.configuration.merge(configuration);
-        applicationBundle = new IosApplicationBundle(applicationBundlePath());
+        applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
     }
 
     private String applicationBinaryPath() {
-        return applicationBundle.pathToExecutable();
-    }
-
-    private String applicationBundlePath() {
-        if(configuration.defines(APPLICATION_BUNDLE_PATH)) return configuration.option(APPLICATION_BUNDLE_PATH);
-        String explanation = String.format("Configuration option %s not defined", APPLICATION_BUNDLE_PATH);
-        throw new IosDeviceConfigurationException(explanation);
+        String applicationBinary = applicationBundle.pathToExecutable();
+        if(applicationBundle.isExecutable()) {
+            return applicationBinary;
+        }
+        throw new IosDeviceConfigurationException("Application binary is not executable: " + applicationBinary);
     }
 
     private Configuration defaultConfiguration() {
@@ -70,26 +69,8 @@ public class CreateIosDevice {
         return configuration.option(DEVICE_TYPE);
     }
 
-    private String sdkPath() {
-        return sdk().path();
-    }
-
     private IosSdk sdk() {
-        if(configuration.defines(SDK_VERSION)) {
-            String version = configuration.option(SDK_VERSION);
-            IosSdk sdk = IosSdk.withVersion(version);
-            if(sdk.isInstalled()) return sdk;
-            log.debug("Property {} specifies SDK version {}, but that SDK version is not installed", SDK_VERSION, version);
-        }
-        if(applicationBundle.identifiesAnSdk()) {
-            String canonicalName = applicationBundle.sdkCanonicalName();
-            IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
-            if(sdk.isInstalled()) return sdk;
-            log.debug("Application bundle prefers SDK {}, but that SDK is not installed");
-        }
-        IosSdk sdk = IosSdk.newest();
-        if(sdk.isInstalled()) return sdk;
-        throw new IosDeviceConfigurationException("Cannot find an installed iphonesimulator SDK");
+        return FindSdk.withConfiguration(configuration);
     }
 
     private SimulatorAgent simulator() {
@@ -110,10 +91,10 @@ public class CreateIosDevice {
     }
 
     private boolean victorOwnsSimulator() {
-        return simulatorProcessOwner().equals("victor");
+        return simulatorProcessOwner().equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
     }
 
     private SimulatorAgent victorSimulatorAgent() {
-        return new VictorSimulatorAgent(sdkPath(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+        return new VictorSimulatorAgent(sdk().path(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
     }
 }

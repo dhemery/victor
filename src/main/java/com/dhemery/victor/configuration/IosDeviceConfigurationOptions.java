@@ -31,7 +31,7 @@ public class IosDeviceConfigurationOptions {
     public static final String DEVICE_TYPE = "victor.simulator.device.type";
 
     /**
-     * The version of the SDK with which to launch the simulator.
+     * The version of SDK to use to run the simulator.
      */
     public static final String SDK_VERSION = "victor.simulator.sdk.version";
 

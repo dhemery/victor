@@ -1,6 +1,6 @@
 package com.dhemery.victor.tools;
 
-import com.dhemery.victor.configuration.IosSdk;
+import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.VictorSimulatorAgent;
 

@@ -1,4 +1,4 @@
-package com.dhemery.victor.configuration;
+package com.dhemery.victor.discovery;
 
 import com.dhemery.configuration.ContextItemCache;
 
@@ -12,16 +12,18 @@ public class IosSdk {
     public static final String SDK_PATH = "Path";
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
-
     private static final ContextItemCache sdkInfo = new SdkInfoCache();
+    protected final String canonicalName;
 
-    private final String canonicalName;
+    public IosSdk(String canonicalName) {
+        this.canonicalName = canonicalName;
+    }
 
     /**
      * @return a representation of the newest installed SDK.
      */
     public static IosSdk newest() {
-        return IosSdk.withCanonicalName(GENERIC_SDK_NAME);
+        return withCanonicalName(GENERIC_SDK_NAME);
     }
 
     /**
@@ -40,54 +42,24 @@ public class IosSdk {
         return withCanonicalName(String.format(NAME_FOR_SDK_VERSION, version));
     }
 
-    private IosSdk(String canonicalName) {
-        this.canonicalName = canonicalName;
-    }
-
-    /**
-     * @return the canonical name of this SDK.
-     */
     public String canonicalName() {
-        return String.format(NAME_FOR_SDK_VERSION, version());
+        return canonicalName;
     }
 
-    /**
-     * @return whether the SDK is installed on this computer.
-     */
     public boolean isInstalled() {
-        return sdkInfo(SDK_PATH).startsWith("/");
+        return path().startsWith("/");
     }
 
-    /**
-     * <p></p>Obtain information about the SDK.</p>
-     * <p>
-     * To learn the list of available infoitems,
-     * see the {@code xcodebuild} manual page,
-     * especially the description of the {@code -version} option.
-     * For examples of infoitems and values,
-     * run {@code xcodebuild -sdk iphonesimulator -version}
-     * on the command line.
-     * </p>
-     * <p>
-     * To learn the list of installed SDKs and their canonical names,
-     * run {@code xcodebuild -showsdks} on the command line.
-     * </p>
-     * @param itemName the name of an infoitem
-     * @return the value of the infoitem for the named SDK
-     */
     public String sdkInfo(String itemName) {
         return sdkInfo(canonicalName, itemName);
     }
 
-    private static String sdkInfo(String canonicalName, String itemName) {
-        return sdkInfo.value(canonicalName, itemName);
+    public String path(){
+        return sdkInfo(SDK_PATH);
     }
 
-    /**
-     * @return the absolute path to this SDK.
-     */
-    public String path() {
-        return sdkInfo(SDK_PATH);
+    public String version() {
+        return sdkInfo(SDK_VERSION);
     }
 
     /**
@@ -95,6 +67,10 @@ public class IosSdk {
      */
     public static String platformPath() {
         return sdkInfo(GENERIC_SDK_NAME, PLATFORM_PATH);
+    }
+
+    private static String sdkInfo(String canonicalName, String itemName) {
+        return sdkInfo.value(canonicalName, itemName);
     }
 
     /**
@@ -115,12 +91,4 @@ public class IosSdk {
     public static String simulatorBinaryPath() {
         return String.format(SIMULATOR_BINARY_PATH_FOR_PLATFORM, platformPath());
     }
-
-    /**
-     * @return the version of this SDK.
-     */
-    public String version() {
-        return sdkInfo(SDK_VERSION);
-    }
-
 }
