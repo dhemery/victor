@@ -8,19 +8,12 @@ package com.dhemery.victor;
 public interface IosApplication {
 
     /**
-     * Send a message to the application delegate.
-     *
-     * @param name the name of the message to send (an Objective-C query).
-     */
-    void sendMessage(String name);
-
-    /**
      * Send a message with arguments to the application delegate.
      *
      * @param name      the name of the message to send (an Objective-C query).
      * @param arguments arguments to send with the message.
      */
-    void sendMessage(String name, Object... arguments);
+    String sendMessage(String name, Object... arguments);
 
     /**
      * @return whether the application is running.

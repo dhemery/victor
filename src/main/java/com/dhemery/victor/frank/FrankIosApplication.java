@@ -28,17 +28,13 @@ public class FrankIosApplication implements IosApplication {
     }
 
     @Override
-    public void sendMessage(String name) {
-        sendMessage(name, new Object[0]);
-    }
-
-    @Override
-    public void sendMessage(String name, Object... arguments) {
+    public String sendMessage(String name, Object... arguments) {
         Message message = new Message(name, arguments);
         log.debug("Send: application delegate {}", message);
         MessageResponse response = agent.sendApplicationMessage(message);
         if (!response.succeeded()) throw new MessageException(this, message, response);
         log.debug("Application delegate message {} returned {}", message, response.results());
+        return response.results().get(0);
     }
 
     @Override
