@@ -1,0 +1,1 @@
+See the [Victor project page](http://dhemery.github.com/victor) for further information.
