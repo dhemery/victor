@@ -11,6 +11,8 @@ import com.dhemery.victor.discovery.IosSdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import static com.dhemery.victor.configuration.IosDeviceConfigurationOptions.*;
 
 /**
@@ -33,6 +35,7 @@ public class CreateIosDevice {
     /**
      * <p>
      * Create a {@link SimulatedIosDevice} configured according to {@code configuration}.
+     * </p>
      * @param configuration defines the configuration options.
      * @return a {@link SimulatedIosDevice} configured as specified.
      */
@@ -41,8 +44,7 @@ public class CreateIosDevice {
     }
 
     private CreateIosDevice(Configuration configuration) {
-        this.configuration = defaultConfiguration();
-        this.configuration.merge(configuration);
+        this.configuration = new Configuration(configuration);
         applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
     }
 
@@ -54,11 +56,10 @@ public class CreateIosDevice {
         throw new IosDeviceConfigurationException("Application binary is not executable: " + applicationBinary);
     }
 
-    private Configuration defaultConfiguration() {
-        Configuration defaultConfiguration = new Configuration();
-        defaultConfiguration.set(DEVICE_TYPE, DEFAULT_DEVICE_TYPE);
-        defaultConfiguration.set(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
-        return defaultConfiguration;
+    private String defaultDeviceType() {
+        List<String> deviceTypes = applicationBundle.deviceTypes();
+        if(deviceTypes.size() == 1) return deviceTypes.get(0);
+        return DEFAULT_DEVICE_TYPE;
     }
 
     private IosDevice device() {
@@ -66,6 +67,9 @@ public class CreateIosDevice {
     }
 
     private String deviceType() {
+        if(!configuration.defines(DEVICE_TYPE)) {
+            configuration.set(DEVICE_TYPE, defaultDeviceType());
+        }
         return configuration.option(DEVICE_TYPE);
     }
 
@@ -83,6 +87,7 @@ public class CreateIosDevice {
     }
 
     private String simulatorProcessOwner() {
+        if(!configuration.defines(SIMULATOR_PROCESS_OWNER)) configuration.set(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
         return configuration.option(SIMULATOR_PROCESS_OWNER);
     }
 
