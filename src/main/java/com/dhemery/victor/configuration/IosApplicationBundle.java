@@ -1,10 +1,6 @@
 package com.dhemery.victor.configuration;
 
-import com.dhemery.configuration.ContextItemCache;
-import com.dhemery.victor.discovery.DefaultsCache;
-import com.dhemery.victor.discovery.PList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dhemery.victor.os.PList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,10 +8,7 @@ import java.util.List;
 
 /**
  */
-@SuppressWarnings("UnusedDeclaration")
 public class IosApplicationBundle {
-    private static final Logger log = LoggerFactory.getLogger(IosApplicationBundle.class);
-    private static final ContextItemCache defaults = new DefaultsCache();
     public static final String BUNDLE_VERSION = "CFBundleVersion";
     public static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     public static final String EXECUTABLE_NAME = "CFBundleExecutable";
