@@ -70,7 +70,7 @@ public class IosApplicationBundle {
     private void requireFile(String path, String description) {
         File file = new File(path);
         if(!file.exists()) {
-            throw new IosDeviceConfigurationException(String.format("No %s:", description, path));
+            throw new IosDeviceConfigurationException(String.format("Can not find %s at %s", description, path));
         }
     }
 
