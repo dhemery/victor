@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents an application bundle.
  */
 public class IosApplicationBundle {
     private static final Logger log = LoggerFactory.getLogger(IosApplicationBundle.class);
@@ -27,7 +26,10 @@ public class IosApplicationBundle {
 
     public IosApplicationBundle(String path) {
         this.path = path;
-        plist = new PList(path + "/Info.plist");
+        String plistPath = path + "/Info.plist";
+        requireFile(path, "application bundle");
+        requireFile(plistPath, "Info.plist in application bundle");
+        plist = new PList(plistPath);
     }
 
     /**
@@ -63,6 +65,13 @@ public class IosApplicationBundle {
      */
     public String executableName() {
         return plist.stringValue(EXECUTABLE_NAME);
+    }
+
+    private void requireFile(String path, String description) {
+        File file = new File(path);
+        if(!file.exists()) {
+            throw new IosDeviceConfigurationException(String.format("No %s:", description, path));
+        }
     }
 
     /**
