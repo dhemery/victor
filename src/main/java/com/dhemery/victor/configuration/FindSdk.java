@@ -2,6 +2,7 @@ package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.Configuration;
 import com.dhemery.victor.discovery.IosSdk;
+import com.sun.tools.javac.resources.version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,16 +30,18 @@ public class FindSdk {
     public static IosSdk withConfiguration(Configuration configuration) {
         IosSdk sdk;
         if(configuration.defines(SDK_VERSION)) {
-            String version = configuration.option(SDK_VERSION);
-            sdk = IosSdk.withVersion(version);
+            sdk = IosSdk.withVersion(configuration.option(SDK_VERSION));
             if(sdk.isInstalled()) return sdk;
+            log.debug("Can not find the {} SDK specified by {}", sdk.canonicalName(), SDK_VERSION);
         }
 
-        IosApplicationBundle bundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
+        String bundlePath = configuration.requiredOption(APPLICATION_BUNDLE_PATH);
+        IosApplicationBundle bundle = new IosApplicationBundle(bundlePath);
         String canonicalName = bundle.sdkCanonicalName();
         if(canonicalName != null) {
             sdk = IosSdk.withCanonicalName(canonicalName);
             if(sdk.isInstalled()) return sdk;
+            log.debug("Can not find the {} SDK that built the application {}.", canonicalName, bundlePath);
         }
 
         sdk = IosSdk.newest();
