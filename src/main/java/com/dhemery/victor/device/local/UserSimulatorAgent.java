@@ -1,7 +1,6 @@
 package com.dhemery.victor.device.local;
 
 import com.dhemery.victor.device.SimulatorAgent;
-import com.dhemery.victor.device.local.TouchMenuItemCommand;
 
 /**
  * Interacts with an iOS simulator owned (i.e. started and stopped) by the user.

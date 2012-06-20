@@ -16,8 +16,7 @@ public class SimulatorServer {
     private static final Logger log = LoggerFactory.getLogger(SimulatorServer.class);
     private static final InetSocketAddress ADDRESS = new InetSocketAddress(PORT);
 
-    // todo configure the launch command.
-    public static void main(String[] args) {
+    public static void main(String... args) {
         try {
             new SimulatorServer().run();
         } catch (IOException e) {

@@ -5,6 +5,7 @@ public class IosDeviceConfigurationException extends RuntimeException {
         super(explanation);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public IosDeviceConfigurationException(String explanation, Throwable cause) {
         super(explanation, cause);
     }

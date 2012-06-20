@@ -3,32 +3,76 @@ package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.Configuration;
 import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.VictorEntryPoint;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.UserSimulatorAgent;
 import com.dhemery.victor.device.local.VictorSimulatorAgent;
 import com.dhemery.victor.discovery.IosSdk;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
-import static com.dhemery.victor.configuration.IosDeviceConfigurationOptions.*;
 
 /**
  * <p>
  * Create a {@link SimulatedIosDevice} configured according to a set of configuration options.
- * See {@link IosDeviceConfigurationOptions} for descriptions, property names, and default values for the available options.
+ * See individual fields for descriptions, property names, and default values for the available options.
  * </p>
  * <p>
  * <strong>NOTE:</strong>
  * This class cannot provide a default value
- * for the {@link IosDeviceConfigurationOptions#APPLICATION_BUNDLE_PATH APPLICATION_BUNDLE_PATH} option.
+ * for the {@link #APPLICATION_BUNDLE_PATH APPLICATION_BUNDLE_PATH} option.
  * The configuration must define a value.
  * </p>
  */
+@VictorEntryPoint
 public class CreateIosDevice {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    /**
+     * The absolute path to the iOS application bundle to execute.
+     * This is typically the application's .app package.
+     */
+    public static final String APPLICATION_BUNDLE_PATH = "victor.application.bundle.path";
+
+    /**
+     * The default value for the {@link #DEVICE_TYPE} option.
+     */
+    public static final String DEFAULT_DEVICE_TYPE = "iPhone";
+
+    /**
+     * The default value for the {@link #SIMULATOR_PROCESS_OWNER} option.
+     */
+    public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
+
+    /**
+     * The type of device to simulate.
+     * See your iOS Simulator's <em>Hardware > Device</em> menu for possible values.
+     */
+    public static final String DEVICE_TYPE = "victor.simulator.device.type";
+
+    /**
+     * The version of SDK to use to run the simulator.
+     */
+    public static final String SDK_VERSION = "victor.simulator.sdk.version";
+
+    /**
+     * <p>Specifies who is responsible for starting and stopping the simulator.</p>
+     * <p>If the value is <strong>victor</strong>,
+     * the constructed {@link IosDevice IosDevice}'s
+     * {@link IosDevice#start() start()} method will launch the simulator,
+     * and its {@link IosDevice#stop() stop()} method will shut it down.
+     * </p>
+     * <p>
+     * If this option has any other value,
+     * the constructed {@link IosDevice IosDevice}
+     * will neither start nor stop the simulator.
+     * Instead, the user must start and stop the simulator in some other way.
+     * This is useful for experimenting.
+     * It allows you to launch the application on your own,
+     * manually execute preparatory steps to bring the application to a desired state,
+     * then run an automated test against the prepared application.
+     * </p>
+     */
+    public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
+
     private final Configuration configuration;
     private final IosApplicationBundle applicationBundle;
 
@@ -39,6 +83,7 @@ public class CreateIosDevice {
      * @param configuration defines the configuration options.
      * @return a {@link SimulatedIosDevice} configured as specified.
      */
+    @VictorEntryPoint
     public static IosDevice withConfiguration(Configuration configuration) {
         return new CreateIosDevice(configuration).device();
     }
@@ -74,7 +119,24 @@ public class CreateIosDevice {
     }
 
     private IosSdk sdk() {
-        return FindSdk.withConfiguration(configuration);
+        IosSdk sdk;
+        if(configuration.defines(SDK_VERSION)) {
+            String version = configuration.option(SDK_VERSION);
+            sdk = IosSdk.withVersion(version);
+            if(sdk.isInstalled()) return sdk;
+        }
+
+        IosApplicationBundle bundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
+        String canonicalName = bundle.sdkCanonicalName();
+        if(canonicalName != null) {
+            sdk = IosSdk.withCanonicalName(canonicalName);
+            if(sdk.isInstalled()) return sdk;
+        }
+
+        sdk = IosSdk.newest();
+        if(sdk.isInstalled()) return sdk;
+
+        throw new IosDeviceConfigurationException("No iphonesimulator SDK installed on this computer");
     }
 
     private SimulatorAgent simulator() {

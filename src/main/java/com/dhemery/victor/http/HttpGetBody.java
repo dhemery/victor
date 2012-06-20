@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
  * The "body" of an HTTP GET request.
  */
 public class HttpGetBody implements HttpRequestBody {
-    private transient final Logger log = LoggerFactory.getLogger(getClass());
+    private final transient Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * This method refrains from writing to the connection,

@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  */
+@SuppressWarnings("UnusedDeclaration")
 public class IosApplicationBundle {
     private static final Logger log = LoggerFactory.getLogger(IosApplicationBundle.class);
     private static final ContextItemCache defaults = new DefaultsCache();

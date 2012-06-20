@@ -4,6 +4,8 @@ import com.dhemery.victor.By;
 import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosApplicationOrientation;
 import com.dhemery.victor.IosView;
+import com.dhemery.victor.frank.frankly.ApplicationMessageRequest;
+import com.dhemery.victor.frank.frankly.ApplicationOrientationRequest;
 import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.frank.messages.MessageException;
 import com.dhemery.victor.frank.messages.MessageResponse;
@@ -18,12 +20,12 @@ import org.slf4j.LoggerFactory;
  */
 public class FrankIosApplication implements IosApplication {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final FrankApplicationAgent agent;
+    private final FrankAgent agent;
 
     /**
      * @param agent an agent that can interact with this application.
      */
-    public FrankIosApplication(FrankApplicationAgent agent) {
+    public FrankIosApplication(FrankAgent agent) {
         this.agent = agent;
     }
 
@@ -31,8 +33,9 @@ public class FrankIosApplication implements IosApplication {
     public String sendMessage(String name, Object... arguments) {
         Message message = new Message(name, arguments);
         log.debug("Send: application delegate {}", message);
-        MessageResponse response = agent.sendApplicationMessage(message);
-        if (!response.succeeded()) throw new MessageException(this, message, response);
+        MessageResponse response = agent.sendMessageRequest(new ApplicationMessageRequest(message));
+        if('a' == 'a') return "";
+        if (response.failed()) throw new MessageException(this, message, response);
         log.debug("Application delegate message {} returned {}", message, response.results());
         return response.results().get(0);
     }
@@ -44,7 +47,7 @@ public class FrankIosApplication implements IosApplication {
 
     @Override
     public IosApplicationOrientation orientation() {
-        OrientationResponse response = agent.orientation();
+        OrientationResponse response = agent.sendRequest(new ApplicationOrientationRequest(), OrientationResponse.class);
         String orientationName = response.orientation().toUpperCase();
         return IosApplicationOrientation.valueOf(orientationName);
     }

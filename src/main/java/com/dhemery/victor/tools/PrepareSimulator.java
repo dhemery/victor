@@ -1,8 +1,8 @@
 package com.dhemery.victor.tools;
 
-import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.device.local.VictorSimulatorAgent;
+import com.dhemery.victor.discovery.IosSdk;
 
 /**
  * <p>
@@ -17,14 +17,16 @@ import com.dhemery.victor.device.local.VictorSimulatorAgent;
  * </p>
  */
 public class PrepareSimulator {
-    public static void main(String[] args) throws InterruptedException {
+    public static final int SIMULATOR_PREPARATION_DELAY = 3000;
+
+    public static void main(String... args) throws InterruptedException {
         new PrepareSimulator().run();
     }
 
     public void run() throws InterruptedException {
         SimulatorAgent simulator = new VictorSimulatorAgent(IosSdk.simulatorBinaryPath());
         simulator.start();
-        Thread.sleep(3000);
+        Thread.sleep(SIMULATOR_PREPARATION_DELAY);
         simulator.stop();
     }
 }

@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
  * @author Dale Emery
  */
 public class HttpPostBody implements HttpRequestBody {
-    private transient final Logger log = LoggerFactory.getLogger(getClass());
+    private final transient Logger log = LoggerFactory.getLogger(getClass());
     /**
      * Write this request body to the connection as a JSON string.
      * This causes the request to be sent via HTTP POST.

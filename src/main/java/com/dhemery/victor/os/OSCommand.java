@@ -21,13 +21,6 @@ public class OSCommand {
     private final ProcessBuilder builder;
 
     /**
-     * @param path the file path of the command to perform.
-     */
-    public OSCommand(String path) {
-        this(path, Collections.<String>emptyList());
-    }
-
-    /**
      * @param path      the file path of the command to perform.
      * @param arguments arguments sent to the command.
      */
@@ -74,7 +67,7 @@ public class OSCommand {
      * @return a native process that can describe and control the invoked command.
      */
     public Process run() {
-        log.debug("Executing command {} with environment {}", builder.command(), builder.environment());
+        log.debug("Executing command {}", builder.command());
         try {
             return builder.start();
         } catch (IOException cause) {
@@ -84,6 +77,6 @@ public class OSCommand {
 
     @Override
     public String toString() {
-        return String.format("command %s with environment %s", builder.command(), builder.environment());
+        return String.format("command %s", builder.command());
     }
 }

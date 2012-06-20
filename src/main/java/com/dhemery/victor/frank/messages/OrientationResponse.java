@@ -1,5 +1,7 @@
 package com.dhemery.victor.frank.messages;
 
+import com.dhemery.victor.VictorEntryPoint;
+
 /**
  * A response to an orientation() request.
  *
@@ -8,6 +10,7 @@ package com.dhemery.victor.frank.messages;
 public class OrientationResponse {
     private final String orientation;
 
+    @VictorEntryPoint
     public OrientationResponse(String orientation) {
         this.orientation = orientation;
     }

@@ -1,14 +1,14 @@
 package com.dhemery.victor.device.server;
 
-import com.dhemery.victor.device.local.VictorSimulatorAgent;
+import com.dhemery.victor.device.SimulatorAgent;
 
 public class CloseSimulatorHandler extends SimulatorExchangeHandler<Void> {
-    public CloseSimulatorHandler(VictorSimulatorAgent simulator) {
+    public CloseSimulatorHandler(SimulatorAgent simulator) {
         super(simulator, Void.class);
     }
 
     @Override
-    public void perform(VictorSimulatorAgent simulator, Void ignored) {
+    public void perform(SimulatorAgent simulator, Void ignored) {
 //		simulator.shutDown();
     }
 }

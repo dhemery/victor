@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class HttpConnection {
+    public static final int READ_TIMEOUT = 30000;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final URL url;
 
@@ -18,7 +19,7 @@ public class HttpConnection {
 
     private HttpURLConnection connection() {
         HttpURLConnection connection = openHttpConnection();
-        connection.setReadTimeout(30000);
+        connection.setReadTimeout(READ_TIMEOUT);
         connection.setDoOutput(true);
         connectTo(connection);
         return connection;

@@ -13,7 +13,7 @@ public class IosSdk {
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
     private static final ContextItemCache sdkInfo = new SdkInfoCache();
-    protected final String canonicalName;
+    private final String canonicalName;
 
     public IosSdk(String canonicalName) {
         this.canonicalName = canonicalName;

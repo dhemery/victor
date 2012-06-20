@@ -53,8 +53,8 @@ public class HttpRequest implements Serializable {
         String fullUrl = String.format("%s/%s", serverUrl, verb);
         try {
             return new URL(fullUrl);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+        } catch (MalformedURLException cause) {
+            throw new HttpException(cause);
         }
     }
 

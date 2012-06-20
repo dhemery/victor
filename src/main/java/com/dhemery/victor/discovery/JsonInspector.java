@@ -1,11 +1,15 @@
 package com.dhemery.victor.discovery;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.*;
 
+@SuppressWarnings("UnusedDeclaration")
 public class JsonInspector {
-    protected final JsonElement root;
+    private final JsonElement root;
 
     public JsonInspector(String jsonString) {
         root = new JsonParser().parse(jsonString);
@@ -32,11 +36,12 @@ public class JsonInspector {
     }
 
     private JsonElement element(JsonElement element, Object...specifiers) {
+        JsonElement specifiedElement = element;
         for(Object specifier : specifiers) {
-            element = child(element, specifier);
-            if(element == null) return null;
+            specifiedElement = child(element, specifier);
+            if(specifiedElement == null) return null;
         }
-        return element;
+        return specifiedElement;
     }
 
     public List<String> names(Object... specifiers) {

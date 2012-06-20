@@ -1,6 +1,7 @@
 package com.dhemery.victor.frank.messages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,17 +17,17 @@ public class MessageResponse {
 
     public MessageResponse(boolean succeeded, List<String> results, String reason, String details) {
         this.succeeded = succeeded;
-        this.results = results;
+        this.results = new ArrayList<String>(results);
         this.reason = reason;
         this.details = details;
     }
 
     public List<String> results() {
-        return results;
+        return Collections.unmodifiableList(results);
     }
 
-    public boolean succeeded() {
-        return succeeded;
+    public boolean failed() {
+        return !succeeded;
     }
 
     @Override

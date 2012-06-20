@@ -2,7 +2,6 @@ package com.dhemery.victor.device.local;
 
 import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.os.OSCommand;
-import com.dhemery.victor.device.local.TouchMenuItemCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,7 @@ public class VictorSimulatorAgent implements SimulatorAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final List<String> arguments = new ArrayList<String>();
     private final String simulatorBinaryPath;
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private Process process;
 
     /**
@@ -62,8 +62,9 @@ public class VictorSimulatorAgent implements SimulatorAgent {
         try {
             process.waitFor();
         } catch (InterruptedException cause) {
-            throw new RuntimeException("Interrupted while waiting for simulator process to stop.", cause);
+            throw new SimulatorException("Interrupted while waiting for simulator process to stop.", cause);
         }
+        //noinspection AssignmentToNull
         process = null;
     }
 
