@@ -5,6 +5,7 @@ import com.dhemery.configuration.ContextItemCache;
 /**
  * Represents an iOS SDK.
  */
+@SuppressWarnings("UnusedDeclaration")
 public class IosSdk {
     public static final String GENERIC_SDK_NAME = "iphonesimulator";
     public static final String NAME_FOR_SDK_VERSION = GENERIC_SDK_NAME + "%s";

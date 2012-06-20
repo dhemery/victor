@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  */
+@SuppressWarnings("UnusedDeclaration")
 public class IosApplicationBundle {
     public static final String BUNDLE_VERSION = "CFBundleVersion";
     public static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
