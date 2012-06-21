@@ -34,7 +34,6 @@ public class FrankIosApplication implements IosApplication {
         Message message = new Message(name, arguments);
         log.debug("Send: application delegate {}", message);
         MessageResponse response = agent.sendMessageRequest(new ApplicationMessageRequest(message));
-        if('a' == 'a') return "";
         if (response.failed()) throw new MessageException(this, message, response);
         log.debug("Application delegate message {} returned {}", message, response.results());
         return response.results().get(0);

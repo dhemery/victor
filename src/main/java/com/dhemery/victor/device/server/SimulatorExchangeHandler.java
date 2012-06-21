@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
+@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
     private static final int HTTP_OK = 200;
     private final Logger log = LoggerFactory.getLogger(getClass());

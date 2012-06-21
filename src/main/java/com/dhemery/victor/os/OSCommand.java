@@ -47,6 +47,7 @@ public class OSCommand {
      *
      * @return the text that the command wrote to stdout.
      */
+    @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
     public String output() {
         Process process = run();
         InputStream inputStream = process.getInputStream();

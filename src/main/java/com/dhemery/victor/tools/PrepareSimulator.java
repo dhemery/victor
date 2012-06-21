@@ -17,7 +17,7 @@ import com.dhemery.victor.discovery.IosSdk;
  * </p>
  */
 public class PrepareSimulator {
-    public static final int SIMULATOR_PREPARATION_DELAY = 3000;
+    public static final long SIMULATOR_PREPARATION_DELAY = 3000L;
 
     public static void main(String... args) throws InterruptedException {
         new PrepareSimulator().run();
