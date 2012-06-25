@@ -13,14 +13,13 @@ import java.net.InetSocketAddress;
 
 public class SimulatorServer {
     private static final int PORT = 4567;
-    private static final Logger log = LoggerFactory.getLogger(SimulatorServer.class);
+    private final Logger log = LoggerFactory.getLogger(SimulatorServer.class);
     private static final InetSocketAddress ADDRESS = new InetSocketAddress(PORT);
 
     public static void main(String... args) {
         try {
             new SimulatorServer().run();
-        } catch (IOException e) {
-            log.error("SimulatorServer aborted with {}", e);
+        } catch (IOException ignored) {
         }
     }
 

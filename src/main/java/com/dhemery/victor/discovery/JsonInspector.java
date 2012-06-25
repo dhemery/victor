@@ -7,7 +7,6 @@ import com.google.gson.JsonParser;
 
 import java.util.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ReturnOfNull"})
 public class JsonInspector {
     private final JsonElement root;
 

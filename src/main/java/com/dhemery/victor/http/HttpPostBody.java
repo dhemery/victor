@@ -30,7 +30,6 @@ public class HttpPostBody implements HttpRequestBody {
         write(connection, json);
     }
 
-    @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
     private void write(HttpURLConnection connection, String json) {
         try {
             OutputStream outputStream = connection.getOutputStream();

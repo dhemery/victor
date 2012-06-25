@@ -55,7 +55,6 @@ public class CreateIosDevice {
         return configuration.deviceType();
     }
 
-    @SuppressWarnings("MethodWithMultipleReturnPoints")
     private IosSdk sdk() {
         IosSdk sdk = configuration.sdk();
         if(sdk.isInstalled()) return sdk;

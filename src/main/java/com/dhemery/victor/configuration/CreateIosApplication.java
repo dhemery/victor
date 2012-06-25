@@ -2,7 +2,6 @@ package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.Configuration;
 import com.dhemery.victor.IosApplication;
-import com.dhemery.victor.VictorEntryPoint;
 import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.frank.FrankIosApplication;
 
@@ -13,7 +12,6 @@ import com.dhemery.victor.frank.FrankIosApplication;
  * </p>
  * </table>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class CreateIosApplication {
     /**
      * The value of the {@link #FRANK_HOST} option
@@ -50,7 +48,6 @@ public class CreateIosApplication {
      * @param configuration specifies the configuration options.
      * @return a {@link FrankIosApplication} configured as specified.
      */
-    @VictorEntryPoint
     public static IosApplication withConfiguration(Configuration configuration) {
         return new CreateIosApplication(configuration).application();
     }

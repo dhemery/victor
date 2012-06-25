@@ -19,7 +19,6 @@ public class VictorSimulatorAgent implements SimulatorAgent {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final List<String> arguments = new ArrayList<String>();
     private final String simulatorBinaryPath;
-    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private Process process;
 
     /**
@@ -64,7 +63,6 @@ public class VictorSimulatorAgent implements SimulatorAgent {
         } catch (InterruptedException cause) {
             throw new SimulatorException("Interrupted while waiting for simulator process to stop.", cause);
         }
-        //noinspection AssignmentToNull
         process = null;
     }
 

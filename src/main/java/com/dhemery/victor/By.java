@@ -44,7 +44,6 @@ public class By {
      * @param pattern a pattern in the Igor Query Language.
      * @return a query that uses Igor to select views that match the pattern.
      */
-    @VictorEntryPoint
     public static By igor(String pattern) {
         return new By(IGOR_QUERY_ENGINE, pattern);
     }
@@ -53,7 +52,6 @@ public class By {
      * @param pattern a pattern in the Shelley query language.
      * @return a query that uses Shelley to select views that match the pattern.
      */
-    @VictorEntryPoint
     public static By shelley(String pattern) {
         return new By(SHELLEY_QUERY_ENGINE, pattern);
     }
@@ -62,7 +60,6 @@ public class By {
      * @param pattern a pattern in the UIQuery query language.
      * @return a query that uses UIQuery to select views that match the pattern.
      */
-    @VictorEntryPoint
     public static By uiQuery(String pattern) {
         return new By(UIQUERY_QUERY_ENGINE, pattern);
     }

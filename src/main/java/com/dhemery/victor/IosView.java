@@ -11,7 +11,6 @@ public interface IosView {
     /**
      * @return the query that identifies the views represented by this IosView.
      */
-    @VictorEntryPoint
     By query();
 
     /**
@@ -21,6 +20,5 @@ public interface IosView {
      * @param arguments arguments to send with the message.
      * @return the value returned from each represented view.
      */
-    @VictorEntryPoint
     List<String> sendMessage(String name, Object... arguments);
 }
