@@ -37,8 +37,8 @@ public class JsonInspector {
     private JsonElement element(JsonElement element, Object...specifiers) {
         JsonElement specifiedElement = element;
         for(Object specifier : specifiers) {
-            specifiedElement = child(element, specifier);
-            if(specifiedElement == null) return null;
+            specifiedElement = child(specifiedElement, specifier);
+            if(specifiedElement == null)  return null;
         }
         return specifiedElement;
     }
