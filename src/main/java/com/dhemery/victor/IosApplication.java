@@ -26,6 +26,13 @@ public interface IosApplication {
     IosApplicationOrientation orientation();
 
     /**
+     * Types text into the keyboard.
+     * This method assumes that the keyboard is displayed.
+     * @param text the text to type.
+     */
+    void typeIntoKeyboard(String text);
+
+    /**
      * @param query identifies a set of views.
      * @return a view driver that represents the identified views within this application.
      */

@@ -1,6 +1,5 @@
 package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.victor.frank.messages.Message;
 import com.dhemery.victor.http.HttpRequest;
 
 /**

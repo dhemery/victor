@@ -4,12 +4,8 @@ import com.dhemery.victor.By;
 import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosApplicationOrientation;
 import com.dhemery.victor.IosView;
-import com.dhemery.victor.frank.frankly.ApplicationMessageRequest;
-import com.dhemery.victor.frank.frankly.ApplicationOrientationRequest;
-import com.dhemery.victor.frank.messages.Message;
-import com.dhemery.victor.frank.messages.MessageException;
-import com.dhemery.victor.frank.messages.MessageResponse;
-import com.dhemery.victor.frank.messages.OrientationResponse;
+import com.dhemery.victor.frank.frankly.*;
+import com.dhemery.victor.frank.frankly.TypeIntoKeyboardRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +45,12 @@ public class FrankIosApplication implements IosApplication {
         OrientationResponse response = agent.sendRequest(new ApplicationOrientationRequest(), OrientationResponse.class);
         String orientationName = response.orientation().toUpperCase();
         return IosApplicationOrientation.valueOf(orientationName);
+    }
+
+    @Override
+    public void typeIntoKeyboard(String text) {
+        log.debug("Send: type text {}", text);
+        agent.sendRequest(new TypeIntoKeyboardRequest(text), MessageResponse.class);
     }
 
     @Override

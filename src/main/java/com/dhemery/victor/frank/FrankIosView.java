@@ -3,9 +3,9 @@ package com.dhemery.victor.frank;
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosView;
 import com.dhemery.victor.frank.frankly.ViewMessageRequest;
-import com.dhemery.victor.frank.messages.Message;
-import com.dhemery.victor.frank.messages.MessageException;
-import com.dhemery.victor.frank.messages.MessageResponse;
+import com.dhemery.victor.frank.frankly.Message;
+import com.dhemery.victor.frank.frankly.MessageException;
+import com.dhemery.victor.frank.frankly.MessageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

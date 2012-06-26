@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.messages;
+package com.dhemery.victor.frank.frankly;
 
 /**
  * A response to an orientation() request.

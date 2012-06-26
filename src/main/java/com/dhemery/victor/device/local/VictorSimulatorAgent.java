@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,8 +57,14 @@ public class VictorSimulatorAgent implements SimulatorAgent {
     @Override
     public void stop() {
         if (process == null) return;
-        log.debug("Stopping simulator by touching Quit menu item");
-        touchMenuItem("iOS Simulator", "Quit iOS Simulator");
+        log.debug("Stopping simulator by typing CMD-Q");
+        List<String> stopLines = Arrays.asList(
+                "activate application \"iPhone Simulator\"",
+                "tell application \"System Events\"",
+                "\tkeystroke \"q\" using {command down}",
+                "end tell");
+        AppleScriptCommand stopSimulator = new AppleScriptCommand(stopLines);
+        stopSimulator.run();
         try {
             process.waitFor();
         } catch (InterruptedException cause) {

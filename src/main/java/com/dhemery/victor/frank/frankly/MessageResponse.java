@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.messages;
+package com.dhemery.victor.frank.frankly;
 
 import java.util.ArrayList;
 import java.util.Collections;
