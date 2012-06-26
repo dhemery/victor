@@ -21,4 +21,9 @@ public class UserSimulatorAgent implements SimulatorAgent {
     public void touchMenuItem(String menuName, String menuItemName) {
         new TouchMenuItemCommand(menuName, menuItemName).run();
     }
+
+    @Override
+    public void touchMenuItem(String menuName, String menuItemName, String menuSubItemName) {
+        new TouchMenuItemCommand(menuName, menuItemName, menuSubItemName).run();
+    }
 }

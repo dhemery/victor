@@ -36,4 +36,9 @@ public class RemoteSimulatorAgent implements SimulatorAgent {
     public void touchMenuItem(String menuName, String menuItemName) {
         perform(new TouchMenuItemRequest(menuName, menuItemName));
     }
+
+    @Override
+    public void touchMenuItem(String menuName, String menuItemName, String menuSubItemName) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
