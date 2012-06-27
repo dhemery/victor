@@ -78,6 +78,10 @@ public class CreateIosDevice {
     }
 
     private Service victorSimulatorProcess() {
-        return new VictorSimulatorProcess(sdk().path(), simulatorBinaryPath(), applicationBinaryPath(), deviceType());
+        String sdkPath = sdk().path();
+        String simulatorBinaryPath = simulatorBinaryPath();
+        String applicationBinaryPath = applicationBinaryPath();
+        String deviceType = deviceType();
+        return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
     }
 }

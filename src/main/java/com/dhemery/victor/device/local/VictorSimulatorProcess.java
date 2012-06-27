@@ -1,10 +1,11 @@
 package com.dhemery.victor.device.local;
 
-import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.os.OSCommand;
+import com.dhemery.victor.os.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,19 +17,25 @@ import java.util.List;
  *
  * @author Dale Emery
  */
-public class VictorSimulatorAgent implements SimulatorAgent {
+public class VictorSimulatorProcess implements Service {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final List<String> arguments = new ArrayList<String>();
+    private Process simulatorProcess;
     private final String simulatorBinaryPath;
-    private Process process;
+    private final String simulatedProcessName;
 
     /**
      * Launch the simulator without specifying an application to run.
      *
      * @param simulatorBinaryPath the path to the Simulator executable on this computer.
      */
-    public VictorSimulatorAgent(String simulatorBinaryPath) {
+    public VictorSimulatorProcess(String simulatorBinaryPath) {
+        this(simulatorBinaryPath, null);
+    }
+
+    private VictorSimulatorProcess(String simulatorBinaryPath, String applicationBinaryPath) {
         this.simulatorBinaryPath = simulatorBinaryPath;
+        simulatedProcessName = applicationBinaryPath == null ? null : new File(applicationBinaryPath).getName();
     }
 
     /**
@@ -37,8 +44,8 @@ public class VictorSimulatorAgent implements SimulatorAgent {
      * @param applicationBinaryPath the path to the executable for the application to run.
      * @param deviceType            the kind of device to simulate. See the iOS Simulator's Device menu for possible values.
      */
-    public VictorSimulatorAgent(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
-        this(simulatorBinaryPath);
+    public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
+        this(simulatorBinaryPath, applicationBinaryPath);
         arguments.add("-currentSDKRoot");
         arguments.add(sdkRoot);
         arguments.add("-SimulateDevice");
@@ -51,35 +58,27 @@ public class VictorSimulatorAgent implements SimulatorAgent {
     public void start() {
         OSCommand command = new OSCommand(simulatorBinaryPath, arguments);
         log.debug("Launching simulator {}", command);
-        process = command.run();
+        simulatorProcess = command.run();
     }
 
     @Override
     public void stop() {
-        if (process == null) return;
-        log.debug("Stopping simulator by typing CMD-Q");
-        List<String> stopLines = Arrays.asList(
-                "activate application \"iPhone Simulator\"",
-                "tell application \"System Events\"",
-                "\tkeystroke \"q\" using {command down}",
-                "end tell");
-        AppleScriptCommand stopSimulator = new AppleScriptCommand(stopLines);
-        stopSimulator.run();
-        try {
-            process.waitFor();
-        } catch (InterruptedException cause) {
-            throw new SimulatorException("Interrupted while waiting for simulator process to stop.", cause);
-        }
-        process = null;
+        killSimulator();
+        killApplication();
     }
 
-    @Override
-    public void touchMenuItem(String menuName, String menuItemName) {
-        new TouchMenuItemCommand(menuName, menuItemName).run();
+    private void killApplication() {
+        if(simulatedProcessName == null) return;
+        kill(simulatedProcessName);
     }
 
-    @Override
-    public void touchMenuItem(String menuName, String menuItemName, String menuSubItemName) {
-        new TouchMenuItemCommand(menuName, menuItemName, menuSubItemName).run();
+    private void killSimulator() {
+        if (simulatorProcess == null) return;
+        kill("iPhone Simulator");
+        simulatorProcess = null;
+    }
+
+    private static void kill(String processName) {
+        new OSCommand("killall", Arrays.asList(processName)).run();
     }
 }

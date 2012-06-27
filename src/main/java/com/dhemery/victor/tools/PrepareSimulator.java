@@ -1,8 +1,8 @@
 package com.dhemery.victor.tools;
 
-import com.dhemery.victor.device.SimulatorAgent;
-import com.dhemery.victor.device.local.VictorSimulatorAgent;
-import com.dhemery.victor.discovery.IosSdk;
+import com.dhemery.victor.configuration.IosSdk;
+import com.dhemery.victor.device.local.VictorSimulatorProcess;
+import com.dhemery.victor.os.Service;
 
 /**
  * <p>
@@ -24,7 +24,7 @@ public class PrepareSimulator {
     }
 
     public void run() throws InterruptedException {
-        SimulatorAgent simulator = new VictorSimulatorAgent(IosSdk.simulatorBinaryPath());
+        Service simulator = new VictorSimulatorProcess(IosSdk.simulatorBinaryPath());
         simulator.start();
         Thread.sleep(SIMULATOR_PREPARATION_DELAY);
         simulator.stop();

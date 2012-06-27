@@ -1,7 +1,9 @@
 package com.dhemery.victor.device.remote;
 
-import com.dhemery.victor.device.SimulatorAgent;
 import com.dhemery.victor.http.HttpRequest;
+import com.dhemery.victor.os.MetaKey;
+import com.dhemery.victor.os.OsxApplication;
+import com.dhemery.victor.os.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,11 +11,11 @@ import org.slf4j.LoggerFactory;
  * Interacts with a Simulator via a simulator server.
  */
 
-public class RemoteSimulatorAgent implements SimulatorAgent {
+public class RemoteSimulator implements OsxApplication, Service {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String simulatorUrl;
 
-    public RemoteSimulatorAgent(String simulatorUrl) {
+    public RemoteSimulator(String simulatorUrl) {
         this.simulatorUrl = simulatorUrl;
         log.debug("Using remote simulator at {}", simulatorUrl);
     }
@@ -33,12 +35,14 @@ public class RemoteSimulatorAgent implements SimulatorAgent {
     }
 
     @Override
-    public void touchMenuItem(String menuName, String menuItemName) {
-        perform(new TouchMenuItemRequest(menuName, menuItemName));
+    public void touchMenuItem(String menu, String item) {
     }
 
     @Override
-    public void touchMenuItem(String menuName, String menuItemName, String menuSubItemName) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void touchMenuItem(String menu, String submenu, String item) {
+    }
+
+    @Override
+    public void typeKey(char key, MetaKey metaKey) {
     }
 }

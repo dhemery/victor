@@ -1,4 +1,4 @@
-package com.dhemery.victor.discovery;
+package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.ContextItemCache;
 

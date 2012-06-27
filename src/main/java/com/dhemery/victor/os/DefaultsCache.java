@@ -1,9 +1,8 @@
-package com.dhemery.victor.discovery;
+package com.dhemery.victor.os;
 
 import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.ContextItem;
 import com.dhemery.configuration.ContextItemCache;
-import com.dhemery.victor.os.OSCommand;
 
 import java.util.Arrays;
 import java.util.List;

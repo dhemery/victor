@@ -1,6 +1,8 @@
 package com.dhemery.victor.device;
 
 import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.os.OsxApplication;
+import com.dhemery.victor.os.Service;
 
 /**
  * Interacts with a simulated iOS device through a simulator agent.
@@ -8,35 +10,38 @@ import com.dhemery.victor.IosDevice;
  * @author Dale Emery
  */
 public class SimulatedIosDevice implements IosDevice {
-    private final SimulatorAgent simulator;
 
-    public SimulatedIosDevice(SimulatorAgent simulator) {
-        this.simulator = simulator;
+    private final OsxApplication simulatorApplication;
+    private final Service simulatorProcess;
+
+    public SimulatedIosDevice(OsxApplication simulatorApplication, Service simulatorProcess) {
+        this.simulatorApplication = simulatorApplication;
+        this.simulatorProcess = simulatorProcess;
     }
 
     @Override
     public void rotateLeft() {
-        simulator.touchMenuItem("Hardware", "Rotate Left");
+        simulatorApplication.touchMenuItem("Hardware", "Rotate Left");
     }
 
     @Override
     public void rotateRight() {
-        simulator.touchMenuItem("Hardware", "Rotate Right");
+        simulatorApplication.touchMenuItem("Hardware", "Rotate Right");
     }
 
     @Override
     public void saveScreenShot() {
-        simulator.touchMenuItem("File", "Save Screen Shot");
+        simulatorApplication.touchMenuItem("File", "Save Screen Shot");
     }
 
     @Override
     public void start() {
-        simulator.start();
+        simulatorProcess.start();
     }
 
     @Override
     public void stop() {
-        simulator.stop();
+        simulatorProcess.stop();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.dhemery.victor.discovery;
+package com.dhemery.victor.os;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

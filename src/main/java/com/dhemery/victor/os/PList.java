@@ -1,6 +1,4 @@
-package com.dhemery.victor.discovery;
-
-import com.dhemery.victor.os.OSCommand;
+package com.dhemery.victor.os;
 
 import java.util.Arrays;
 import java.util.List;

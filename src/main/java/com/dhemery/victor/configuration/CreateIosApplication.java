@@ -13,33 +13,10 @@ import com.dhemery.victor.frank.FrankIosApplication;
  * </table>
  */
 public class CreateIosApplication {
-    /**
-     * The value of the {@link #FRANK_HOST} option
-     * if the user does not supply a value.
-     */
-    public static final String DEFAULT_FRANK_HOST = "localhost";
-
-    /**
-     * The value of the {@link #FRANK_PORT} option
-     * if the user does not supply a value.
-     */
-    public static final String DEFAULT_FRANK_PORT = "37265";
-
-    /**
-     * The name of the host on which the Frank server listens for requests.
-     * Do not include a scheme (e.g. "http://") at the start of this value.
-     */
-    public static final String FRANK_HOST = "victor.frank.host";
-
-    /**
-     * The port on which the Frank server listens for requests.
-     */
-    public static final String FRANK_PORT = "victor.frank.port";
-
-    private final Configuration configuration = defaultConfiguration();
+    private final VictorConfiguration configuration;
 
     private CreateIosApplication(Configuration configuration) {
-        this.configuration.merge(configuration);
+        this.configuration = new VictorConfiguration(configuration);
     }
 
     /**
@@ -56,17 +33,8 @@ public class CreateIosApplication {
         return new FrankIosApplication(frankAgent());
     }
 
-    private Configuration defaultConfiguration() {
-        Configuration defaultConfiguration = new Configuration();
-        defaultConfiguration.set(FRANK_HOST, DEFAULT_FRANK_HOST);
-        defaultConfiguration.set(FRANK_PORT, DEFAULT_FRANK_PORT);
-        return defaultConfiguration;
-    }
-
     private FrankAgent frankAgent() {
-        String host = configuration.option(FRANK_HOST);
-        String port = configuration.option(FRANK_PORT);
-        String url = String.format("http://%s:%s", host, port);
+        String url = String.format("http://%s:%s", configuration.frankHost(), configuration.frankPort());
         return new FrankAgent(url);
     }
 }
