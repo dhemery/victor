@@ -21,6 +21,6 @@ on run argv
 	activate application "iPhone Simulator"
 	tell application "System Events" to tell menu bar of process "iOS Simulator"
 		click menu item device_type of menu "Device" of menu item "Device" of menu "Hardware"
-		click menu item "Quit iOS Simulator" of menu "iOS Simulator"
+		click menu "iOS Simulator"'s menu item "Quit iOS Simulator"
 	end tell
 end run
