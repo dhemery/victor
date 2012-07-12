@@ -1,10 +1,19 @@
 package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.Configuration;
+import com.dhemery.victor.IosApplication;
+import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.device.SimulatedIosDevice;
+import com.dhemery.victor.device.local.SimulatorApplication;
+import com.dhemery.victor.device.local.UserSimulatorProcess;
+import com.dhemery.victor.device.local.VictorSimulatorProcess;
+import com.dhemery.victor.frank.FrankAgent;
+import com.dhemery.victor.frank.FrankIosApplication;
+import com.dhemery.victor.os.Service;
 
 import java.util.List;
 
-public class VictorConfiguration {
+public class Victor {
     /**
      * The absolute path to the iOS application bundle to execute.
      * This is typically the application's .app package.
@@ -77,14 +86,62 @@ public class VictorConfiguration {
 
     private final Configuration configuration;
     private final IosApplicationBundle applicationBundle;
+    private IosSdk sdk;
 
-    public VictorConfiguration(Configuration configuration) {
-        this.configuration = configuration;
+    public Victor(Configuration configuration) {
+        this.configuration = new Configuration(configuration);
         applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
     }
 
     public IosApplicationBundle applicationBundle() {
         return applicationBundle;
+    }
+
+    public IosApplication createApplication() {
+        return new FrankIosApplication(frankAgent());
+    }
+
+    public IosDevice createDevice() {
+        return new SimulatedIosDevice(new SimulatorApplication(), simulator());
+    }
+
+    public String deviceType() {
+        return option(DEVICE_TYPE, defaultDeviceType());
+    }
+
+    public String frankHost() {
+        return option(FRANK_HOST, DEFAULT_FRANK_HOST);
+    }
+
+    public long frankPort() {
+        return Long.parseLong(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+    }
+
+    public IosSdk sdk() {
+        if(sdk == null) sdk = discoverSdk();
+        if (sdk.isInstalled()) return sdk;
+        throw new IosDeviceConfigurationException("No iphonesimulator SDK installed on this computer");
+    }
+
+    public boolean victorOwnsSimulator() {
+        String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
+        return processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
+    }
+
+
+
+
+
+    private String applicationBinaryPath() {
+        if(applicationBundle.isExecutable()) {
+            return applicationBundle.pathToExecutable();
+        }
+        throw new IosDeviceConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
+    }
+
+    private FrankAgent frankAgent() {
+        String url = String.format("http://%s:%s", frankHost(), frankPort());
+        return new FrankAgent(url);
     }
 
     private String defaultDeviceType() {
@@ -93,44 +150,46 @@ public class VictorConfiguration {
         return DEFAULT_DEVICE_TYPE;
     }
 
-    public String deviceType() {
-        return property(DEVICE_TYPE, defaultDeviceType());
+    private IosSdk discoverSdk() {
+        if(configuration.defines(SDK_VERSION)) {
+            String version = configuration.option(SDK_VERSION);
+            IosSdk sdk = IosSdk.withVersion(version);
+            if (sdk.isInstalled()) return sdk;
+        }
+
+        String canonicalName = applicationBundle.sdkCanonicalName();
+        if(canonicalName != null) {
+            IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
+            if (sdk.isInstalled()) return sdk;
+        }
+
+        return IosSdk.newest();
     }
 
-    public String frankHost() {
-        return property(FRANK_HOST, DEFAULT_FRANK_HOST);
-    }
-
-    public long frankPort() {
-        return Long.parseLong(property(FRANK_PORT, DEFAULT_FRANK_PORT));
-    }
-
-    private String property(String property, String defaultValue) {
+    private String option(String property, String defaultValue) {
         if(!configuration.defines(property)) {
             configuration.set(property, defaultValue);
         }
         return configuration.option(property);
     }
 
-    public IosSdk sdk() {
-        if(configuration.defines(SDK_VERSION)) {
-            String version = configuration.option(SDK_VERSION);
-            IosSdk sdk = IosSdk.withVersion(version);
-            if(sdk.isInstalled()) return sdk;
-        }
-
-        IosApplicationBundle bundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
-        String canonicalName = bundle.sdkCanonicalName();
-        if(canonicalName != null) {
-            IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
-            if(sdk.isInstalled()) return sdk;
-        }
-
-        return IosSdk.newest();
+    private Service simulator() {
+        return victorOwnsSimulator() ? victorSimulatorProcess() : userSimulatorProcess();
     }
 
-    public boolean victorOwnsSimulator() {
-        String processOwner = property(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
-        return processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
+    private String simulatorBinaryPath() {
+        return IosSdk.simulatorBinaryPath();
+    }
+
+    private Service userSimulatorProcess() {
+        return new UserSimulatorProcess();
+    }
+
+    private Service victorSimulatorProcess() {
+        String sdkPath = sdk().path();
+        String simulatorBinaryPath = simulatorBinaryPath();
+        String applicationBinaryPath = applicationBinaryPath();
+        String deviceType = deviceType();
+        return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
     }
 }
