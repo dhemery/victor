@@ -1,6 +1,6 @@
 package com.dhemery.victor.os;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,16 +8,23 @@ import java.util.List;
  *
  * @author Dale Emery
  */
-public class AppleScriptCommand extends OSCommand {
+public class AppleScriptCommand implements Command {
     private static final String APPLESCRIPT_RUNNER = "osascript";
+    private final ShellCommand command;
 
     /**
      * Construct a command to run the AppleScript program.
-     *
-     * @param scriptLines the lines of the AppleScript program.
      */
-    public AppleScriptCommand(List<String> scriptLines) {
-        super(APPLESCRIPT_RUNNER, argumentsToRun(scriptLines));
+    public AppleScriptCommand() {
+        command = new ShellCommand(APPLESCRIPT_RUNNER);
+    }
+
+    public AppleScriptCommand withLine(String line) {
+        return withLines(line);
+    }
+
+    public AppleScriptCommand withLines(String... lines) {
+        return withLines(Arrays.asList(lines));
     }
 
     /**
@@ -27,12 +34,15 @@ public class AppleScriptCommand extends OSCommand {
      * @param scriptLines the lines of an AppleScript program.
      * @return a list of arguments to pass to osascript to run the AppleScript program.
      */
-    private static List<String> argumentsToRun(List<String> scriptLines) {
-        List<String> osascriptArguments = new ArrayList<String>();
+    public AppleScriptCommand withLines(List<String> scriptLines) {
         for (String line : scriptLines) {
-            osascriptArguments.add("-e");
-            osascriptArguments.add(line);
+            command.withArguments("-e", line);
         }
-        return osascriptArguments;
+        return this;
+    }
+
+    @Override
+    public void buildTo(ProcessBuilder builder) {
+        command.buildTo(builder);
     }
 }

@@ -1,8 +1,5 @@
 package com.dhemery.victor.http;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -12,7 +9,6 @@ import java.net.URL;
  * @author Dale Emery
  */
 public class HttpRequest {
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final String verb;
     private final HttpRequestBody body;
 
@@ -43,9 +39,7 @@ public class HttpRequest {
      */
     public HttpResponse sendTo(String serverUrl) {
         URL url = urlFor(serverUrl, verb);
-        log.trace("Sending: {} {}", url.toString(), this);
-        HttpConnection connection = new HttpConnection(url);
-        return connection.send(body);
+        return new HttpConnection(url).send(body);
     }
 
     protected URL urlFor(String serverUrl, String verb) {

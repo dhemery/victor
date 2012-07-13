@@ -4,18 +4,15 @@ import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.ContextItem;
 import com.dhemery.configuration.ContextItemCache;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * A cache of information obtained from the Mac OS X {@code defaults} command.
  */
 public class DefaultsCache extends ContextItemCache {
-    public DefaultsCache() {
-        super(defaults());
+    private DefaultsCache(Shell shell) {
+        super(defaults(shell));
     }
 
-    private static CacheSource<ContextItem,String> defaults() {
+    private static CacheSource<ContextItem,String> defaults(final Shell shell) {
         return new CacheSource<ContextItem,String>() {
         /**
          * <p>
@@ -32,9 +29,7 @@ public class DefaultsCache extends ContextItemCache {
          */
         @Override
             public String value(ContextItem item) {
-                List<String> arguments = Arrays.asList("read", item.context(), item.name());
-                OSCommand command = new OSCommand("defaults", arguments);
-                return command.output();
+                return shell.outputFrom(new ShellCommand("defaults").withArguments("read", item.context(), item.name()));
             }
         };
     }

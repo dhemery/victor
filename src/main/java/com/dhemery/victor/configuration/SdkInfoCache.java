@@ -3,20 +3,19 @@ package com.dhemery.victor.configuration;
 import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.ContextItem;
 import com.dhemery.configuration.ContextItemCache;
-import com.dhemery.victor.os.OSCommand;
-
-import java.util.Arrays;
-import java.util.List;
+import com.dhemery.victor.os.Command;
+import com.dhemery.victor.os.Shell;
+import com.dhemery.victor.os.ShellCommand;
 
 /**
  * A cache of SDK information obtained from the Mac OS X {@code xcodebuild} command.
  */
 public class SdkInfoCache extends ContextItemCache {
-    public SdkInfoCache() {
-        super(sdkInfoSource());
+    public SdkInfoCache(Shell shell) {
+        super(sdkInfoSource(shell));
     }
 
-    private static CacheSource<ContextItem,String> sdkInfoSource() {
+    private static CacheSource<ContextItem,String> sdkInfoSource(final Shell shell) {
         return new CacheSource<ContextItem,String>() {
             /**
              * <p>
@@ -33,9 +32,9 @@ public class SdkInfoCache extends ContextItemCache {
              */
             @Override
             public String value(ContextItem item) {
-                List<String> arguments = Arrays.asList("-sdk", item.context(), "-version", item.name());
-                OSCommand command = new OSCommand("xcodebuild", arguments);
-                return command.output();
+                Command command = new ShellCommand("xcodebuild")
+                                        .withArguments("-sdk", item.context(), "-version", item.name());
+                return shell.outputFrom(command);
             }
         };
     }

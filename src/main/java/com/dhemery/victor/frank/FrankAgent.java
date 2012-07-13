@@ -2,15 +2,16 @@ package com.dhemery.victor.frank;
 
 import com.dhemery.victor.By;
 import com.dhemery.victor.IosView;
-import com.dhemery.victor.frank.frankly.PingRequest;
 import com.dhemery.victor.frank.frankly.MessageResponse;
 import com.dhemery.victor.frank.frankly.MessageResponseParser;
+import com.dhemery.victor.frank.frankly.PingRequest;
 import com.dhemery.victor.http.HttpRequest;
 import com.dhemery.victor.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Interacts with an iOS application via a Frank server embedded into the application.
@@ -18,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * @author Dale Emery
  */
 public class FrankAgent {
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final String frankServerUrl;
     private final Gson gson;
+    private Set<FranklyListener> listeners = new HashSet<FranklyListener>();
 
     /**
      * @param frankServerUrl The URL where the Frank server listens for requests.
@@ -47,14 +48,34 @@ public class FrankAgent {
 
     public MessageResponse sendMessageRequest(HttpRequest request) {
         return sendRequest(request, MessageResponse.class);
-
     }
 
     public <T> T sendRequest(HttpRequest request, Class<T> resultsClass) {
+        notifyWillSendRequest(request);
         HttpResponse response = request.sendTo(frankServerUrl);
         T results = gson.fromJson(response.body(), resultsClass);
-        log.trace("Results from {} ==> {}", request, results);
+        notifyReceivedResponse(request, results);
         return results;
+    }
+
+    public void addListener(FranklyListener listener) {
+        listeners.add(listener);
+    }
+
+    private void notifyWillSendRequest(HttpRequest request) {
+        for(FranklyListener listener : listeners) {
+            listener.willSendRequest(request);
+        }
+    }
+
+    private <T> void notifyReceivedResponse(HttpRequest request, T response) {
+        for(FranklyListener listener : listeners) {
+            listener.receivedResponse(request, response);
+        }
+    }
+
+    public void removeListener(FranklyListener listener) {
+        listeners.remove(listener);
     }
 
     @Override

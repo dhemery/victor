@@ -4,14 +4,11 @@ import com.dhemery.victor.device.local.SimulatorApplication;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
     private static final int HTTP_OK = 200;
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final SimulatorApplication simulator;
     private final Class<T> type;
 
@@ -38,7 +35,6 @@ public abstract class SimulatorExchangeHandler<T> implements HttpHandler {
     @Override
     public void handle(HttpExchange request) throws IOException {
         T body = body(request);
-        log.info("Received {} {}", request.getRequestURI(), body);
         try {
             perform(simulator, body);
         } catch (Exception e) {

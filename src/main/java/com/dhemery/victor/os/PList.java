@@ -1,17 +1,12 @@
 package com.dhemery.victor.os;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class PList extends JsonInspector {
-
-    public PList(String path) {
-        super(plistAsJson(path));
+    public PList(Shell shell, String path) {
+        super(plistAsJson(shell, path));
     }
 
-    private static String plistAsJson(String path) {
-        List<String> arguments = Arrays.asList("-convert", "json", "-o", "-", "--", path);
-        OSCommand command = new OSCommand("plutil", arguments);
-        return command.output();
+    private static String plistAsJson(Shell shell, String path) {
+        Command command = new ShellCommand("plutil").withArguments("-convert", "json", "-o", "-", "--", path);
+        return shell.outputFrom(command);
     }
 }

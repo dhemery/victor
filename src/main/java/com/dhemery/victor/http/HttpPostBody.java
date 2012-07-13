@@ -2,8 +2,6 @@ package com.dhemery.victor.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +15,6 @@ import java.net.HttpURLConnection;
  * @author Dale Emery
  */
 public class HttpPostBody implements HttpRequestBody {
-    private final transient Logger log = LoggerFactory.getLogger(getClass());
     /**
      * Write this request body to the connection as a JSON string.
      * This causes the request to be sent via HTTP POST.
@@ -26,7 +23,6 @@ public class HttpPostBody implements HttpRequestBody {
     public void writeTo(HttpURLConnection connection) {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String json = gson.toJson(this);
-        log.trace("Writing body as Json: {}", json);
         write(connection, json);
     }
 

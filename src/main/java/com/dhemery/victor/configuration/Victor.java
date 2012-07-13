@@ -1,6 +1,7 @@
 package com.dhemery.victor.configuration;
 
 import com.dhemery.configuration.Configuration;
+import com.dhemery.configuration.ContextItemCache;
 import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosDevice;
 import com.dhemery.victor.device.SimulatedIosDevice;
@@ -10,6 +11,7 @@ import com.dhemery.victor.device.local.VictorSimulatorProcess;
 import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.frank.FrankIosApplication;
 import com.dhemery.victor.os.Service;
+import com.dhemery.victor.os.Shell;
 
 import java.util.List;
 
@@ -86,27 +88,52 @@ public class Victor {
 
     private final Configuration configuration;
     private final IosApplicationBundle applicationBundle;
+    private final Shell shell;
     private IosSdk sdk;
+    private ContextItemCache sdkInfo;
+    private FrankAgent frankAgent;
+    private IosApplication application;
+    private IosDevice device;
 
+    /**
+     * Create a Victor factory according to the specified configuration.
+     * @param configuration the configuration options for Victor.
+     */
     public Victor(Configuration configuration) {
+        shell = new Shell();
+        sdkInfo = new SdkInfoCache(shell);
         this.configuration = new Configuration(configuration);
-        applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
+        applicationBundle = new IosApplicationBundle(shell, configuration.requiredOption(APPLICATION_BUNDLE_PATH));
     }
 
     public IosApplicationBundle applicationBundle() {
         return applicationBundle;
     }
 
-    public IosApplication createApplication() {
-        return new FrankIosApplication(frankAgent());
+    public IosApplication application() {
+        if(application == null) {
+            application = new FrankIosApplication(frankAgent());
+        }
+        return application;
     }
 
-    public IosDevice createDevice() {
-        return new SimulatedIosDevice(new SimulatorApplication(), simulator());
+    public IosDevice device() {
+        if(device == null) {
+            device = new SimulatedIosDevice(new SimulatorApplication(shell), simulator());
+        }
+        return device;
     }
 
     public String deviceType() {
         return option(DEVICE_TYPE, defaultDeviceType());
+    }
+
+    public FrankAgent frankAgent() {
+        if(frankAgent == null) {
+            String url = String.format("http://%s:%s", frankHost(), frankPort());
+            frankAgent =new FrankAgent(url);
+        }
+        return frankAgent;
     }
 
     public String frankHost() {
@@ -118,9 +145,12 @@ public class Victor {
     }
 
     public IosSdk sdk() {
-        if(sdk == null) sdk = discoverSdk();
-        if (sdk.isInstalled()) return sdk;
-        throw new IosDeviceConfigurationException("No iphonesimulator SDK installed on this computer");
+        if(sdk == null) { initializeSdk(); }
+        return sdk;
+    }
+
+    public Shell shell() {
+        return shell;
     }
 
     public boolean victorOwnsSimulator() {
@@ -136,12 +166,7 @@ public class Victor {
         if(applicationBundle.isExecutable()) {
             return applicationBundle.pathToExecutable();
         }
-        throw new IosDeviceConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
-    }
-
-    private FrankAgent frankAgent() {
-        String url = String.format("http://%s:%s", frankHost(), frankPort());
-        return new FrankAgent(url);
+        throw new VictorConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
     }
 
     private String defaultDeviceType() {
@@ -150,20 +175,23 @@ public class Victor {
         return DEFAULT_DEVICE_TYPE;
     }
 
-    private IosSdk discoverSdk() {
+    private void initializeSdk() {
         if(configuration.defines(SDK_VERSION)) {
             String version = configuration.option(SDK_VERSION);
-            IosSdk sdk = IosSdk.withVersion(version);
-            if (sdk.isInstalled()) return sdk;
+            sdk = IosSdk.withVersion(sdkInfo, version);
+            if (sdk.isInstalled()) return;
         }
 
         String canonicalName = applicationBundle.sdkCanonicalName();
         if(canonicalName != null) {
-            IosSdk sdk = IosSdk.withCanonicalName(canonicalName);
-            if (sdk.isInstalled()) return sdk;
+            sdk = IosSdk.withCanonicalName(sdkInfo, canonicalName);
+            if (sdk.isInstalled()) return;
         }
 
-        return IosSdk.newest();
+        sdk = IosSdk.newest(sdkInfo);
+        if (sdk.isInstalled()) return;
+
+        throw new VictorConfigurationException("No iphonesimulator SDK installed on this computer");
     }
 
     private String option(String property, String defaultValue) {
@@ -178,7 +206,7 @@ public class Victor {
     }
 
     private String simulatorBinaryPath() {
-        return IosSdk.simulatorBinaryPath();
+        return sdk().simulatorBinaryPath();
     }
 
     private Service userSimulatorProcess() {
@@ -190,6 +218,6 @@ public class Victor {
         String simulatorBinaryPath = simulatorBinaryPath();
         String applicationBinaryPath = applicationBinaryPath();
         String deviceType = deviceType();
-        return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
+        return new VictorSimulatorProcess(shell, sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
     }
 }

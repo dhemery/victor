@@ -5,9 +5,6 @@ import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosApplicationOrientation;
 import com.dhemery.victor.IosView;
 import com.dhemery.victor.frank.frankly.*;
-import com.dhemery.victor.frank.frankly.TypeIntoKeyboardRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Interacts with an application through a {@code FrankApplicationAgent}.
@@ -15,7 +12,6 @@ import org.slf4j.LoggerFactory;
  * @author Dale Emery
  */
 public class FrankIosApplication implements IosApplication {
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final FrankAgent agent;
 
     /**
@@ -28,10 +24,8 @@ public class FrankIosApplication implements IosApplication {
     @Override
     public String sendMessage(String name, Object... arguments) {
         Message message = new Message(name, arguments);
-        log.debug("Send: application delegate {}", message);
         MessageResponse response = agent.sendMessageRequest(new ApplicationMessageRequest(message));
         if (response.failed()) throw new MessageException(this, message, response);
-        log.debug("Application delegate message {} returned {}", message, response.results());
         return response.results().get(0);
     }
 
@@ -49,7 +43,6 @@ public class FrankIosApplication implements IosApplication {
 
     @Override
     public void typeIntoKeyboard(String text) {
-        log.debug("Send: type text {}", text);
         agent.sendRequest(new TypeIntoKeyboardRequest(text), MessageResponse.class);
     }
 

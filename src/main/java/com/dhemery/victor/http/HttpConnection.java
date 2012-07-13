@@ -1,8 +1,5 @@
 package com.dhemery.victor.http;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,7 +7,6 @@ import java.net.URLConnection;
 
 public class HttpConnection {
     public static final int READ_TIMEOUT = 30000;
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final URL url;
 
     public HttpConnection(URL url) {
@@ -46,9 +42,7 @@ public class HttpConnection {
     }
 
     private HttpResponse responseFrom(HttpURLConnection connection) {
-        HttpResponse response = new HttpResponse(responseMessageFrom(connection), responseBodyFrom(connection));
-        log.trace("Response: {}", response);
-        return response;
+        return new HttpResponse(responseMessageFrom(connection), responseBodyFrom(connection));
     }
 
     private String responseBodyFrom(HttpURLConnection connection) {
