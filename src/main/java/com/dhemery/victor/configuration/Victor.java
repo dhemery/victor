@@ -10,6 +10,8 @@ import com.dhemery.victor.device.local.UserSimulatorProcess;
 import com.dhemery.victor.device.local.VictorSimulatorProcess;
 import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.frank.FrankIosApplication;
+import com.dhemery.victor.frank.MessageListener;
+import com.dhemery.victor.os.CommandListener;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
 
@@ -106,6 +108,14 @@ public class Victor {
         applicationBundle = new IosApplicationBundle(shell, configuration.requiredOption(APPLICATION_BUNDLE_PATH));
     }
 
+    public void addMessageListener(MessageListener listener) {
+        frankAgent().addListener(listener);
+    }
+
+    public void addCommandListener(CommandListener listener) {
+        shell.addListener(listener);
+    }
+
     public IosApplicationBundle applicationBundle() {
         return applicationBundle;
     }
@@ -128,14 +138,6 @@ public class Victor {
         return option(DEVICE_TYPE, defaultDeviceType());
     }
 
-    public FrankAgent frankAgent() {
-        if(frankAgent == null) {
-            String url = String.format("http://%s:%s", frankHost(), frankPort());
-            frankAgent =new FrankAgent(url);
-        }
-        return frankAgent;
-    }
-
     public String frankHost() {
         return option(FRANK_HOST, DEFAULT_FRANK_HOST);
     }
@@ -149,8 +151,12 @@ public class Victor {
         return sdk;
     }
 
-    public Shell shell() {
-        return shell;
+    public void removeMessageListener(MessageListener listener) {
+        frankAgent().removeListener(listener);
+    }
+
+    public void removeCommandListener(CommandListener listener) {
+        shell.removeListener(listener);
     }
 
     public boolean victorOwnsSimulator() {
@@ -173,6 +179,14 @@ public class Victor {
         List<String> deviceTypes = applicationBundle.deviceTypes();
         if(deviceTypes.size() == 1) return deviceTypes.get(0);
         return DEFAULT_DEVICE_TYPE;
+    }
+
+    private FrankAgent frankAgent() {
+        if(frankAgent == null) {
+            String url = String.format("http://%s:%s", frankHost(), frankPort());
+            frankAgent =new FrankAgent(url);
+        }
+        return frankAgent;
     }
 
     private void initializeSdk() {

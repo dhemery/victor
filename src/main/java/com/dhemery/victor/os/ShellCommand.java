@@ -8,6 +8,7 @@ import java.util.*;
  * @author Dale Emery
  */
 public class ShellCommand implements Command {
+    private final String description;
     private final String path;
     private final List<String> arguments = new ArrayList<String>();
     private final Map<String, String> environment = new HashMap<String, String>();
@@ -15,7 +16,8 @@ public class ShellCommand implements Command {
     /**
      * @param path      the file path of the command to perform.
      */
-    public ShellCommand(String path) {
+    public ShellCommand(String description, String path) {
+        this.description = description;
         this.path = path;
     }
 
@@ -39,16 +41,24 @@ public class ShellCommand implements Command {
         return this;
     }
 
-    public String path() {
-        return path;
-    }
-
+    @Override
     public List<String> arguments() {
         return Collections.unmodifiableList(arguments);
     }
 
+    @Override
+    public String description() {
+        return description;
+    }
+
+    @Override
     public Map<String,String> environment() {
         return Collections.unmodifiableMap(environment);
+    }
+
+    @Override
+    public String path() {
+        return path;
     }
 
     @Override

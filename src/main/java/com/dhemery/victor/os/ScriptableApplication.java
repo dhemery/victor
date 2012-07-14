@@ -23,7 +23,7 @@ public class ScriptableApplication implements OsxApplication {
 
     @Override
     public void typeKey(char key, MetaKey metaKeys) {
-        Command command = new AppleScriptCommand()
+        Command command = new AppleScriptCommand("Type Simulator Keys")
                 .withLine(activateApplication)
                 .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()));
         shell.run(command);
@@ -31,7 +31,7 @@ public class ScriptableApplication implements OsxApplication {
 
     @Override
     public void touchMenuItem(String menu, String item) {
-        Command command = new AppleScriptCommand()
+        Command command = new AppleScriptCommand("Touch Simulator Menu")
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)
@@ -43,7 +43,7 @@ public class ScriptableApplication implements OsxApplication {
 
     @Override
     public void touchMenuItem(String menu, String submenu, String item) {
-        Command command = new AppleScriptCommand()
+        Command command = new AppleScriptCommand("Touch Simulator Menu")
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)

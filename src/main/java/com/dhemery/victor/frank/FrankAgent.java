@@ -21,7 +21,7 @@ import java.util.Set;
 public class FrankAgent {
     private final String frankServerUrl;
     private final Gson gson;
-    private Set<FranklyListener> listeners = new HashSet<FranklyListener>();
+    private Set<MessageListener> listeners = new HashSet<MessageListener>();
 
     /**
      * @param frankServerUrl The URL where the Frank server listens for requests.
@@ -58,23 +58,23 @@ public class FrankAgent {
         return results;
     }
 
-    public void addListener(FranklyListener listener) {
+    public void addListener(MessageListener listener) {
         listeners.add(listener);
     }
 
     private void notifyWillSendRequest(HttpRequest request) {
-        for(FranklyListener listener : listeners) {
+        for(MessageListener listener : listeners) {
             listener.willSendRequest(request);
         }
     }
 
     private <T> void notifyReceivedResponse(HttpRequest request, T response) {
-        for(FranklyListener listener : listeners) {
+        for(MessageListener listener : listeners) {
             listener.receivedResponse(request, response);
         }
     }
 
-    public void removeListener(FranklyListener listener) {
+    public void removeListener(MessageListener listener) {
         listeners.remove(listener);
     }
 

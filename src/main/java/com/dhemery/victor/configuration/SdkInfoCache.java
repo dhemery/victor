@@ -32,7 +32,7 @@ public class SdkInfoCache extends ContextItemCache {
              */
             @Override
             public String value(ContextItem item) {
-                Command command = new ShellCommand("xcodebuild")
+                Command command = new ShellCommand("Request SDK Information", "xcodebuild")
                                         .withArguments("-sdk", item.context(), "-version", item.name());
                 return shell.outputFrom(command);
             }

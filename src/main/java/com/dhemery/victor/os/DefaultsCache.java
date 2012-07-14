@@ -29,7 +29,7 @@ public class DefaultsCache extends ContextItemCache {
          */
         @Override
             public String value(ContextItem item) {
-                return shell.outputFrom(new ShellCommand("defaults").withArguments("read", item.context(), item.name()));
+                return shell.outputFrom(new ShellCommand("Read Defaults", "defaults").withArguments("read", item.context(), item.name()));
             }
         };
     }

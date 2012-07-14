@@ -31,7 +31,7 @@ public class VictorSimulatorProcess implements Service {
     public VictorSimulatorProcess(Shell shell, String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
         this.shell = shell;
         this.simulatorBinaryPath = simulatorBinaryPath;
-        command = new ShellCommand(simulatorBinaryPath)
+        command = new ShellCommand("Start Simulator", simulatorBinaryPath)
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath);
@@ -40,7 +40,7 @@ public class VictorSimulatorProcess implements Service {
 
     @Override
     public void start() {
-        shell.run(new ShellCommand(simulatorBinaryPath).withArguments(arguments));
+        shell.run(command);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class VictorSimulatorProcess implements Service {
     }
 
     private void kill(String processName) {
-        shell.run(new ShellCommand("killall").withArgument(processName));
+        String commandName = "Kill " + processName;
+        shell.run(new ShellCommand(commandName, "killall").withArgument(processName));
     }
 }

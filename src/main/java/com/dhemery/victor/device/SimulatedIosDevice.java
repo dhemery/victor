@@ -10,7 +10,6 @@ import com.dhemery.victor.os.Service;
  * @author Dale Emery
  */
 public class SimulatedIosDevice implements IosDevice {
-
     private final OsxApplication simulatorApplication;
     private final Service simulatorProcess;
 

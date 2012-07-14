@@ -6,7 +6,7 @@ public class PList extends JsonInspector {
     }
 
     private static String plistAsJson(Shell shell, String path) {
-        Command command = new ShellCommand("plutil").withArguments("-convert", "json", "-o", "-", "--", path);
+        Command command = new ShellCommand("Read PList", "plutil").withArguments("-convert", "json", "-o", "-", "--", path);
         return shell.outputFrom(command);
     }
 }
