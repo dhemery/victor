@@ -177,8 +177,7 @@ public class Victor {
 
     private void initializeSdk() {
         if(configuration.defines(SDK_VERSION)) {
-            String version = configuration.option(SDK_VERSION);
-            sdk = IosSdk.withVersion(sdkInfo, version);
+            sdk = IosSdk.withVersion(sdkInfo, configuration.option(SDK_VERSION));
             if (sdk.isInstalled()) return;
         }
 
