@@ -16,6 +16,7 @@ import com.dhemery.victor.frankly.FranklyEncoder;
 import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.JsonEndpoint;
 import com.dhemery.victor.io.Endpoint;
+import com.dhemery.victor.io.Json;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
 
@@ -152,7 +153,11 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            frank = new FranklyFrank(frankEndpoint());
+            String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
+            int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+            Json encoder = new FranklyEncoder();
+            Endpoint endpoint = new JsonEndpoint("http", host, port, encoder);
+            frank = new FranklyFrank(endpoint);
         }
         return frank;
     }
@@ -163,14 +168,14 @@ public class Victor {
      */
     public IosSdk sdk() {
         if(sdk == null) {
-            initializeSdk();
+            sdk = findSdk();
         }
         return sdk;
     }
 
     /**
-     * Return the shell that Victor uses to run OS commands.
-     * @return the shell that Victor uses to run OS commands.
+     * Return the shell that Victor and its creations use to run OS commands.
+     * @return the shell that Victor and its creations use to run OS commands.
      */
     public Shell shell() {
         if(shell == null) {
@@ -200,8 +205,8 @@ public class Victor {
     }
 
     /**
-     * Return a factory to create views.
-     * @return a factory to create views.
+     * Return a factory to create views backed by Victor's view agent.
+     * @return a factory to create views backed by Victor's view agent.
      */
     public IosViewFactory viewFactory() {
         if(viewFactory == null) {
@@ -214,14 +219,14 @@ public class Victor {
 
 
     private String applicationBinaryPath() {
-        if(applicationBundle.isExecutable()) {
+        if(applicationBundle().isExecutable()) {
             return applicationBundle.pathToExecutable();
         }
         throw new VictorConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
     }
 
     private String defaultDeviceType() {
-        List<String> deviceTypes = applicationBundle.deviceTypes();
+        List<String> deviceTypes = applicationBundle().deviceTypes();
         if(deviceTypes.size() == 1) return deviceTypes.get(0);
         return DEFAULT_DEVICE_TYPE;
     }
@@ -230,27 +235,21 @@ public class Victor {
         return option(DEVICE_TYPE, defaultDeviceType());
     }
 
-    private Endpoint frankEndpoint() {
-        String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
-        int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-        return new JsonEndpoint("http", host, port, new FranklyEncoder());
-    }
-
-    private void initializeSdk() {
+    private IosSdk findSdk() {
         ContextItemCache sdkInfo = new SdkInfoCache(shell());
         if(configuration.defines(SDK_VERSION)) {
-            sdk = IosSdk.withVersion(sdkInfo, configuration.option(SDK_VERSION));
-            if (sdk.isInstalled()) return;
+            IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfo, configuration.option(SDK_VERSION));
+            if (userPreferredSdk.isInstalled()) return userPreferredSdk;
         }
 
         String canonicalName = applicationBundle.sdkCanonicalName();
         if(canonicalName != null) {
-            sdk = IosSdk.withCanonicalName(sdkInfo, canonicalName);
-            if (sdk.isInstalled()) return;
+            IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfo, canonicalName);
+            if (bundlePreferredSdk.isInstalled()) return bundlePreferredSdk;
         }
 
-        sdk = IosSdk.newest(sdkInfo);
-        if (sdk.isInstalled()) return;
+        IosSdk newestInstalledSdk = IosSdk.newest(sdkInfo);
+        if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
 
         throw new VictorConfigurationException("No iphonesimulator SDK installed on this computer");
     }
@@ -263,22 +262,13 @@ public class Victor {
     }
 
     private Service simulator() {
-        return victorOwnsSimulator() ? victorSimulatorProcess() : userSimulatorProcess();
-    }
-
-    private String simulatorBinaryPath() {
-        return sdk().simulatorBinaryPath();
-    }
-
-    private Service userSimulatorProcess() {
+        if (victorOwnsSimulator()) {
+            String sdkPath = sdk().path();
+            String simulatorBinaryPath = sdk().simulatorBinaryPath();
+            String applicationBinaryPath = applicationBinaryPath();
+            String deviceType = deviceType();
+            return new VictorSimulatorProcess(shell, sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
+        }
         return new UserSimulatorProcess();
-    }
-
-    private Service victorSimulatorProcess() {
-        String sdkPath = sdk().path();
-        String simulatorBinaryPath = simulatorBinaryPath();
-        String applicationBinaryPath = applicationBinaryPath();
-        String deviceType = deviceType();
-        return new VictorSimulatorProcess(shell, sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
     }
 }
