@@ -9,11 +9,11 @@ import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorApplication;
 import com.dhemery.victor.device.UserSimulatorProcess;
 import com.dhemery.victor.device.VictorSimulatorProcess;
+import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frank.FranklyAgent;
-import com.dhemery.victor.frank.JsonEndpoint;
-import com.dhemery.victor.frankly.EndpointFranklyAgent;
+import com.dhemery.victor.frankly.FranklyEndpoint;
+import com.dhemery.victor.frankly.FranklyFrankAgent;
 import com.dhemery.victor.io.Endpoint;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
@@ -96,7 +96,7 @@ public class Victor {
     private IosApplicationBundle applicationBundle;
     private IosDevice device;
     private Endpoint endpoint;
-    private FranklyAgent frankly;
+    private FrankAgent frank;
     private IosSdk sdk;
     private ContextItemCache sdkInfo;
     private Shell shell;
@@ -127,7 +127,7 @@ public class Victor {
      */
     public IosApplication application() {
         if(application == null) {
-            application = new FrankApplication(franklyAgent());
+            application = new FrankApplication(frankAgent());
         }
         return application;
     }
@@ -152,22 +152,22 @@ public class Victor {
     }
 
     /**
+     * Return the Frank agent that backs the application and view agents.
+     * @return the Frank agent that backs the application and view agents.
+     */
+    public FrankAgent frankAgent() {
+        if(frank == null) {
+            frank = new FranklyFrankAgent(frankServerEndpoint());
+        }
+        return frank;
+    }
+
+    /**
      * Return the name of the Frank server's host.
      * @return the name of the Frank server's host.
      */
     public String frankHost() {
         return option(FRANK_HOST, DEFAULT_FRANK_HOST);
-    }
-
-    /**
-     * Return the Frankly agent that backs the application and view agents.
-     * @return the Frankly agent that backs the application and view agents.
-     */
-    public FranklyAgent franklyAgent() {
-        if(frankly == null) {
-            frankly = new EndpointFranklyAgent(frankServerEndpoint());
-        }
-        return frankly;
     }
 
     /**
@@ -185,7 +185,7 @@ public class Victor {
     public Endpoint frankServerEndpoint() {
         if(endpoint == null) {
             String frankServerUrl = String.format("%s:%s", frankHost(), frankPort());
-            endpoint = new JsonEndpoint(frankServerUrl);
+            endpoint = new FranklyEndpoint(frankServerUrl);
         }
         return endpoint;
     }
@@ -213,7 +213,7 @@ public class Victor {
     }
 
     /**
-     * Indicate whether Victor owns the simulator.
+     * Report whether Victor owns the simulator.
      * @return whether Victor owns the simulator.
      */
     public boolean victorOwnsSimulator() {
@@ -227,7 +227,7 @@ public class Victor {
      */
     public IosViewAgent viewAgent() {
         if(viewAgent == null) {
-            viewAgent = new FrankViewAgent(franklyAgent());
+            viewAgent = new FrankViewAgent(frankAgent());
         }
         return viewAgent;
     }

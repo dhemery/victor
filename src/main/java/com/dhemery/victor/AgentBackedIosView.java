@@ -3,7 +3,7 @@ package com.dhemery.victor;
 import java.util.List;
 
 /**
- * A view driver that with views through an {@code IosViewAgent}.
+ * A view driver that interacts with views through an {@link IosViewAgent}.
  *
  * @author Dale Emery
  */

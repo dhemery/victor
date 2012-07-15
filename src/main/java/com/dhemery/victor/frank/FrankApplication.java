@@ -4,9 +4,9 @@ import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosApplicationOrientation;
 
 public class FrankApplication implements IosApplication {
-    private final FranklyAgent frankly;
+    private final FrankAgent frankly;
 
-    public FrankApplication(FranklyAgent frankly) {
+    public FrankApplication(FrankAgent frankly) {
         this.frankly = frankly;
     }
 

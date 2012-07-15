@@ -8,9 +8,9 @@ import com.dhemery.victor.IosViewAgent;
 import java.util.List;
 
 public class FrankViewAgent implements IosViewAgent {
-    private final FranklyAgent frankly;
+    private final FrankAgent frankly;
 
-    public FrankViewAgent(FranklyAgent frankly) {
+    public FrankViewAgent(FrankAgent frankly) {
         this.frankly = frankly;
     }
 

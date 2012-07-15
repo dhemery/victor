@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank;
+package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.http.HttpConnection;
 import com.dhemery.victor.io.Connection;
@@ -7,11 +7,11 @@ import com.dhemery.victor.io.Request;
 import com.dhemery.victor.io.Response;
 import com.google.gson.Gson;
 
-public class JsonEndpoint implements Endpoint {
+public class FranklyEndpoint implements Endpoint {
     private final String url;
     private final Gson gson;
 
-    public JsonEndpoint(String url) {
+    public FranklyEndpoint(String url) {
         this.url = url;
         gson = new Gson();
     }

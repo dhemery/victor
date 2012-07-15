@@ -1,17 +1,17 @@
 package com.dhemery.victor.frankly;
 
-import com.dhemery.victor.frank.FranklyAgent;
+import com.dhemery.victor.frank.FrankAgent;
 import com.dhemery.victor.io.Endpoint;
 
 import java.util.List;
 
 /**
- * A Frankly agent that communicates with a Frank server through an {@link Endpoint}.
+ * A Frank agent that sends and receives messages using the "Frankly" protocol.
  */
-public class EndpointFranklyAgent implements FranklyAgent {
+public class FranklyFrankAgent implements FrankAgent {
     private final Endpoint endpoint;
 
-    public EndpointFranklyAgent(Endpoint endpoint) {
+    public FranklyFrankAgent(Endpoint endpoint) {
         this.endpoint = endpoint;
     }
 
