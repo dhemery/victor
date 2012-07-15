@@ -13,6 +13,6 @@ public class FrankViewAgent implements IosViewAgent {
 
     @Override
     public List<String> sendMessage(By query, String name, Object... arguments) {
-        return frank.map(query.engine(), query.pattern(), name, arguments);
+        return frank.map(query.language(), query.pattern(), name, arguments);
     }
 }
