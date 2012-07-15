@@ -1,27 +1,28 @@
 package com.dhemery.victor.os;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import com.dhemery.victor.OSCommand;
+
+import java.util.*;
 
 /**
  * An command to run an AppleScript program on this computer.
  *
  * @author Dale Emery
  */
-public class AppleScriptCommand implements Command {
+public class AppleScriptCommand implements OSCommand {
     private static final String APPLESCRIPT_RUNNER = "osascript";
-    private final ShellCommand command;
+    private static final String DEFAULT_DESCRIPTION = "(applescript program)";
+    private final List<String> arguments = new ArrayList<String>();
+    private String description = DEFAULT_DESCRIPTION;
 
-    /**
-     * Construct a command to run the AppleScript program.
-     */
-    public AppleScriptCommand(String description) {
-        command = new ShellCommand(description, APPLESCRIPT_RUNNER);
+    public AppleScriptCommand describedAs(String description) {
+        this.description = description;
+        return this;
     }
-
     public AppleScriptCommand withLine(String line) {
-        return withLines(line);
+        arguments.add("-e");
+        arguments.add(line);
+        return this;
     }
 
     public AppleScriptCommand withLines(String... lines) {
@@ -37,33 +38,28 @@ public class AppleScriptCommand implements Command {
      */
     public AppleScriptCommand withLines(List<String> scriptLines) {
         for (String line : scriptLines) {
-            command.withArguments("-e", line);
+            withLine(line);
         }
         return this;
     }
 
     @Override
     public List<String> arguments() {
-        return command.arguments();
-    }
-
-    @Override
-    public void buildTo(ProcessBuilder builder) {
-        command.buildTo(builder);
+        return Collections.unmodifiableList(arguments);
     }
 
     @Override
     public String description() {
-        return command.description();
+        return description;
     }
 
     @Override
     public Map<String,String> environment() {
-        return command.environment();
+        return Collections.emptyMap();
     }
 
     @Override
     public String path() {
-        return command.path();
+        return APPLESCRIPT_RUNNER;
     }
 }

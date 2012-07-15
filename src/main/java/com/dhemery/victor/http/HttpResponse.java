@@ -1,11 +1,8 @@
 package com.dhemery.victor.http;
 
-/**
- * An HTTP server response from a request that returns JSON strings.
- *
- * @author Dale Emery
- */
-public class HttpResponse {
+import com.dhemery.victor.io.Response;
+
+public class HttpResponse implements Response {
     private final String status;
     private final String body;
 
@@ -14,22 +11,6 @@ public class HttpResponse {
         this.body = body;
     }
 
-    /**
-     * @return body of the response.
-     */
-    public String body() {
-        return body;
-    }
-
-    /**
-     * @return the HTTP response status of the response.
-     */
-    public String status() {
-        return status;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s: %s", status(), body());
-    }
+    @Override public String body() { return body; }
+    @Override public String status() { return status; }
 }

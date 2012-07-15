@@ -8,33 +8,30 @@ package com.dhemery.victor;
 public interface IosApplication {
 
     /**
-     * Send a message with arguments to the application delegate.
-     *
-     * @param name      the name of the message to send (an Objective-C query).
-     * @param arguments arguments to send with the message.
-     */
-    String sendMessage(String name, Object... arguments);
-
-    /**
+     * Discover whether the application is running.
      * @return whether the application is running.
      */
-    Boolean isRunning();
+    boolean isRunning();
 
     /**
-     * @return the application's current orientation.
+     * Discover the application's orientation.
+     * @return the application's orientation.
      */
     IosApplicationOrientation orientation();
 
     /**
-     * Types text into the keyboard.
+     * Send a message with arguments to the application delegate.
+     *
+     * @param name      the name of the message to send (an Objective-C selector).
+     * @param arguments arguments to send with the message.
+     * @return          the application delegate's response.
+     */
+    String sendMessage(String name, Object... arguments);
+
+    /**
+     * Types text into the device's keyboard.
      * This method assumes that the keyboard is displayed.
      * @param text the text to type.
      */
     void typeIntoKeyboard(String text);
-
-    /**
-     * @param query identifies a set of views.
-     * @return a view driver that represents the identified views within this application.
-     */
-    IosView view(By query);
 }

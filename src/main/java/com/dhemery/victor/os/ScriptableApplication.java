@@ -1,5 +1,7 @@
 package com.dhemery.victor.os;
 
+import com.dhemery.victor.OSCommand;
+
 public class ScriptableApplication implements OsxApplication {
     private static final String MENU_ITEM_OF_MENU = "menu item \"%s\" of menu \"%s\"";
     private static final String TELL_SYSTEM_EVENTS = "tell application \"System Events\"";
@@ -23,27 +25,29 @@ public class ScriptableApplication implements OsxApplication {
 
     @Override
     public void typeKey(char key, MetaKey metaKeys) {
-        Command command = new AppleScriptCommand("Type Simulator Keys")
+        OSCommand command = new AppleScriptCommand()
                 .withLine(activateApplication)
-                .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()));
+                .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()))
+                .describedAs("Type Simulator Keys");
         shell.run(command);
     }
 
     @Override
     public void touchMenuItem(String menu, String item) {
-        Command command = new AppleScriptCommand("Touch Simulator Menu")
+        OSCommand command = new AppleScriptCommand()
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)
                 .withLine(String.format(CLICK_MENU_ITEM_OF_MENU, item, menu))
                 .withLine(END_TELL)
-                .withLine(END_TELL);
+                .withLine(END_TELL)
+                .describedAs("Touch Simulator Menu");
         shell.run(command);
     }
 
     @Override
     public void touchMenuItem(String menu, String submenu, String item) {
-        Command command = new AppleScriptCommand("Touch Simulator Menu")
+        OSCommand command = new AppleScriptCommand()
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)
@@ -51,7 +55,8 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(String.format(CLICK_MENU_ITEM_OF_MENU, item, submenu))
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .withLine(END_TELL);
+                .withLine(END_TELL)
+                .describedAs("Touch Simulator Menu");
         shell.run(command);
     }
 }

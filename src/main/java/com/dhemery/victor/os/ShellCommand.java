@@ -1,5 +1,7 @@
 package com.dhemery.victor.os;
 
+import com.dhemery.victor.OSCommand;
+
 import java.util.*;
 
 /**
@@ -7,18 +9,23 @@ import java.util.*;
  *
  * @author Dale Emery
  */
-public class ShellCommand implements Command {
-    private final String description;
+public class ShellCommand implements OSCommand {
+    private static final String DEFAULT_DESCRIPTION = "(command)";
     private final String path;
     private final List<String> arguments = new ArrayList<String>();
     private final Map<String, String> environment = new HashMap<String, String>();
+    private String description = DEFAULT_DESCRIPTION;
 
     /**
      * @param path      the file path of the command to perform.
      */
-    public ShellCommand(String description, String path) {
-        this.description = description;
+    public ShellCommand(String path) {
         this.path = path;
+    }
+
+    public ShellCommand describedAs(String description) {
+        this.description = description;
+        return this;
     }
 
     public ShellCommand withArgument(String argument) {
@@ -59,13 +66,5 @@ public class ShellCommand implements Command {
     @Override
     public String path() {
         return path;
-    }
-
-    @Override
-    public void buildTo(ProcessBuilder builder) {
-        builder.command(path);
-        builder.command().addAll(arguments);
-        builder.environment().clear();
-        builder.environment().putAll(environment);
     }
 }

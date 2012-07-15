@@ -1,5 +1,6 @@
 package com.dhemery.victor.configuration;
 
+import com.dhemery.victor.VictorConfigurationException;
 import com.dhemery.victor.os.PList;
 import com.dhemery.victor.os.Shell;
 

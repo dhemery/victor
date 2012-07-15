@@ -3,7 +3,7 @@ package com.dhemery.victor.configuration;
 import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.ContextItem;
 import com.dhemery.configuration.ContextItemCache;
-import com.dhemery.victor.os.Command;
+import com.dhemery.victor.OSCommand;
 import com.dhemery.victor.os.Shell;
 import com.dhemery.victor.os.ShellCommand;
 
@@ -32,8 +32,9 @@ public class SdkInfoCache extends ContextItemCache {
              */
             @Override
             public String value(ContextItem item) {
-                Command command = new ShellCommand("Request SDK Information", "xcodebuild")
-                                        .withArguments("-sdk", item.context(), "-version", item.name());
+                OSCommand command = new ShellCommand("xcodebuild")
+                                        .withArguments("-sdk", item.context(), "-version", item.name())
+                                        .describedAs("Request SDK Information");
                 return shell.outputFrom(command);
             }
         };
