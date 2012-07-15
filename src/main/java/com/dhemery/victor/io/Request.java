@@ -1,5 +1,7 @@
 package com.dhemery.victor.io;
 
-public interface Request {
+import java.io.Serializable;
+
+public interface Request extends Serializable {
     String verb();
 }

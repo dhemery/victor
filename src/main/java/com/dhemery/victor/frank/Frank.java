@@ -1,11 +1,13 @@
 package com.dhemery.victor.frank;
 
+import com.dhemery.victor.io.Endpoint;
+
 import java.util.List;
 
 /**
  * An agent that can communicate with a Frank server.
  */
-public interface FrankAgent {
+public interface Frank {
     /**
      * Send a message to the application delegate.
      * @param name the name of the message.
@@ -13,6 +15,11 @@ public interface FrankAgent {
      * @return the application delegate's response to the message.
      */
     String appExec(String name, Object... arguments);
+
+    /**
+     * The endpoint through which this Frank agent communicates with the Frank server.
+     */
+    Endpoint endpoint();
 
     /**
      * Send a message to a set of iOS views.

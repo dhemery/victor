@@ -9,17 +9,21 @@ import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorApplication;
 import com.dhemery.victor.device.UserSimulatorProcess;
 import com.dhemery.victor.device.VictorSimulatorProcess;
-import com.dhemery.victor.frank.FrankAgent;
+import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frankly.FranklyEndpoint;
-import com.dhemery.victor.frankly.FranklyFrankAgent;
+import com.dhemery.victor.frankly.FranklyEncoder;
+import com.dhemery.victor.frankly.FranklyFrank;
+import com.dhemery.victor.frankly.JsonEndpoint;
 import com.dhemery.victor.io.Endpoint;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
 
 import java.util.List;
 
+/**
+ * A Victor environment configured according to specified configuration options.
+ */
 public class Victor {
     /**
      * The absolute path to the iOS application bundle to execute.
@@ -95,15 +99,14 @@ public class Victor {
     private IosApplication application;
     private IosApplicationBundle applicationBundle;
     private IosDevice device;
-    private Endpoint endpoint;
-    private FrankAgent frank;
+    private Frank frank;
     private IosSdk sdk;
-    private ContextItemCache sdkInfo;
     private Shell shell;
     private IosViewAgent viewAgent;
+    private IosViewFactory viewFactory;
 
     /**
-     * Create a Victor factory according to the specified configuration.
+     * Create a Victor factory with the specified configuration options.
      * @param configuration the configuration options for Victor.
      */
     public Victor(Configuration configuration) {
@@ -122,77 +125,41 @@ public class Victor {
     }
 
     /**
-     * Return the configured iOS application.
-     * @return the configured iOS application.
+     * Return a driver for the configured application.
+     * @return a driver for the configured application.
      */
     public IosApplication application() {
         if(application == null) {
-            application = new FrankApplication(frankAgent());
+            application = new FrankApplication(frank());
         }
         return application;
     }
 
     /**
-     * Return the configured iOS device.
-     * @return the configured iOS device.
+     * Return a driver for the configured device.
+     * @return a driver for the configured device.
      */
     public IosDevice device() {
         if(device == null) {
-            device = new SimulatedIosDevice(new SimulatorApplication(shell), simulator());
+            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(shell), simulator());
         }
         return device;
     }
 
     /**
-     * Return the type of device that will be simulated.
-     * @return the type of device that will be simulated.
+     * Return the Frank agent used by the application and by view agents.
+     * @return the Frank agent used by the application and by view agents.
      */
-    public String deviceType() {
-        return option(DEVICE_TYPE, defaultDeviceType());
-    }
-
-    /**
-     * Return the Frank agent that backs the application and view agents.
-     * @return the Frank agent that backs the application and view agents.
-     */
-    public FrankAgent frankAgent() {
+    public Frank frank() {
         if(frank == null) {
-            frank = new FranklyFrankAgent(frankServerEndpoint());
+            frank = new FranklyFrank(frankEndpoint());
         }
         return frank;
     }
 
     /**
-     * Return the name of the Frank server's host.
-     * @return the name of the Frank server's host.
-     */
-    public String frankHost() {
-        return option(FRANK_HOST, DEFAULT_FRANK_HOST);
-    }
-
-    /**
-     * Return the port on which the Frank server listens for requests.
-     * @return the port on which the Frank server listens for requests.
-     */
-    public long frankPort() {
-        return Long.parseLong(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-    }
-
-    /**
-     * Return the endpoint that represents the Frank server.
-     * @return the endpoint that represents the Frank server.
-     */
-    public Endpoint frankServerEndpoint() {
-        if(endpoint == null) {
-            String frankServerUrl = String.format("%s:%s", frankHost(), frankPort());
-            endpoint = new FranklyEndpoint(frankServerUrl);
-        }
-        return endpoint;
-    }
-
-    /**
-     * Return the SDK that will be used to run the simulated device and application.
-     * @return the SDK that will be used to run the simulated device and application.
+     * Return the SDK used to run the device and application.
+     * @return the SDK used to run the device and application.
      */
     public IosSdk sdk() {
         if(sdk == null) {
@@ -202,8 +169,8 @@ public class Victor {
     }
 
     /**
-     * Return the shell that Victor and its creations will use to run OS commands.
-     * @return the shell that Victor and its creations will use to run OS commands.
+     * Return the shell that Victor uses to run OS commands.
+     * @return the shell that Victor uses to run OS commands.
      */
     public Shell shell() {
         if(shell == null) {
@@ -222,16 +189,26 @@ public class Victor {
     }
 
     /**
-     * Return the view agent that backs all iOS views.
-     * @return the view agent that backs all iOS views.
+     * Return the view agent used by views created by Victor's view factory.
+     * @return the view agent used by views created by Victor's view factory.
      */
     public IosViewAgent viewAgent() {
         if(viewAgent == null) {
-            viewAgent = new FrankViewAgent(frankAgent());
+            viewAgent = new FrankViewAgent(frank());
         }
         return viewAgent;
     }
 
+    /**
+     * Return a factory to create views.
+     * @return a factory to create views.
+     */
+    public IosViewFactory viewFactory() {
+        if(viewFactory == null) {
+            viewFactory = new AgentBackedViewFactory(viewAgent());
+        }
+        return viewFactory;
+    }
 
 
 
@@ -249,19 +226,30 @@ public class Victor {
         return DEFAULT_DEVICE_TYPE;
     }
 
+    private String deviceType() {
+        return option(DEVICE_TYPE, defaultDeviceType());
+    }
+
+    private Endpoint frankEndpoint() {
+        String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
+        int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+        return new JsonEndpoint("http", host, port, new FranklyEncoder());
+    }
+
     private void initializeSdk() {
+        ContextItemCache sdkInfo = new SdkInfoCache(shell());
         if(configuration.defines(SDK_VERSION)) {
-            sdk = IosSdk.withVersion(sdkInfo(), configuration.option(SDK_VERSION));
+            sdk = IosSdk.withVersion(sdkInfo, configuration.option(SDK_VERSION));
             if (sdk.isInstalled()) return;
         }
 
         String canonicalName = applicationBundle.sdkCanonicalName();
         if(canonicalName != null) {
-            sdk = IosSdk.withCanonicalName(sdkInfo(), canonicalName);
+            sdk = IosSdk.withCanonicalName(sdkInfo, canonicalName);
             if (sdk.isInstalled()) return;
         }
 
-        sdk = IosSdk.newest(sdkInfo());
+        sdk = IosSdk.newest(sdkInfo);
         if (sdk.isInstalled()) return;
 
         throw new VictorConfigurationException("No iphonesimulator SDK installed on this computer");
@@ -272,13 +260,6 @@ public class Victor {
             configuration.set(property, defaultValue);
         }
         return configuration.option(property);
-    }
-
-    private ContextItemCache sdkInfo() {
-        if(sdkInfo == null) {
-            sdkInfo = new SdkInfoCache(shell());
-        }
-        return sdkInfo;
     }
 
     private Service simulator() {

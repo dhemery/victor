@@ -10,13 +10,17 @@ import com.dhemery.victor.os.Service;
  * @author Dale Emery
  */
 public class SimulatedIosDevice implements IosDevice {
+    private final String deviceType;
     private final OsxApplication simulatorApplication;
     private final Service simulatorProcess;
 
-    public SimulatedIosDevice(OsxApplication simulatorApplication, Service simulatorProcess) {
+    public SimulatedIosDevice(String deviceType, OsxApplication simulatorApplication, Service simulatorProcess) {
+        this.deviceType = deviceType;
         this.simulatorApplication = simulatorApplication;
         this.simulatorProcess = simulatorProcess;
     }
+
+    @Override public String type() { return deviceType; }
 
     @Override
     public void rotateLeft() {
@@ -45,6 +49,6 @@ public class SimulatedIosDevice implements IosDevice {
 
     @Override
     public String toString() {
-        return "the simulated device";
+        return String.format("the simulated %s device", type());
     }
 }

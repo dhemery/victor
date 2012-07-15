@@ -5,7 +5,6 @@ import com.dhemery.victor.io.Response;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -13,8 +12,8 @@ public class HttpConnection implements Connection {
     public static final int READ_TIMEOUT = 30000;
     private final HttpURLConnection connection;
 
-    public HttpConnection(String url) {
-        connection = connectTo(makeUrl(url));
+    public HttpConnection(URL url) {
+        connection = connectTo(url);
     }
 
     @Override
@@ -31,14 +30,6 @@ public class HttpConnection implements Connection {
         Response response = responseFrom(connection);
         disconnectFrom(connection);
         return response;
-    }
-
-    static URL makeUrl(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException cause) {
-            throw new HttpException(String.format("Cannot create URL %s", url), cause);
-        }
     }
 
     HttpURLConnection connectTo(URL url) {

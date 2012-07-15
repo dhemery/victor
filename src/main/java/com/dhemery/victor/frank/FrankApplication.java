@@ -4,20 +4,20 @@ import com.dhemery.victor.IosApplication;
 import com.dhemery.victor.IosApplicationOrientation;
 
 public class FrankApplication implements IosApplication {
-    private final FrankAgent frankly;
+    private final Frank frank;
 
-    public FrankApplication(FrankAgent frankly) {
-        this.frankly = frankly;
+    public FrankApplication(Frank frank) {
+        this.frank = frank;
     }
 
     @Override
     public boolean isRunning() {
-        return frankly.ping();
+        return frank.ping();
     }
 
     @Override
     public IosApplicationOrientation orientation() {
-        String orientationName = frankly.orientation();
+        String orientationName = frank.orientation();
         try {
             return IosApplicationOrientation.valueOf(orientationName.toUpperCase());
         } catch (IllegalArgumentException ignored) {
@@ -27,11 +27,11 @@ public class FrankApplication implements IosApplication {
 
     @Override
     public String sendMessage(String name, Object... arguments) {
-        return frankly.appExec(name, arguments);
+        return frank.appExec(name, arguments);
     }
 
     @Override
     public void typeIntoKeyboard(String text) {
-        frankly.typeIntoKeyboard(text);
+        frank.typeIntoKeyboard(text);
     }
 }

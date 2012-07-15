@@ -14,11 +14,4 @@ public interface IosViewAgent {
      * @return The views' responses to the message.
      */
     List<String> sendMessage(By query, String name, Object... arguments);
-
-    /**
-     * Create a view driver backed by this agent.
-     * @param query a query that identifies a set of views.
-     * @return a view driver backed by this agent, which represents the views identified by the query.
-     */
-    IosView view(By query);
 }

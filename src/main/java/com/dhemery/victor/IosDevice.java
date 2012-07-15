@@ -24,4 +24,10 @@ public interface IosDevice {
      * Stop the device.
      */
     void stop();
+
+    /**
+     * Return the type of device.
+     * @return the type of device.
+     */
+    String type();
 }

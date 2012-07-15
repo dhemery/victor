@@ -1,6 +1,6 @@
 package com.dhemery.victor.frankly;
 
-import com.dhemery.victor.frank.FrankAgent;
+import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.io.Endpoint;
 
 import java.util.List;
@@ -8,12 +8,14 @@ import java.util.List;
 /**
  * A Frank agent that sends and receives messages using the "Frankly" protocol.
  */
-public class FranklyFrankAgent implements FrankAgent {
+public class FranklyFrank implements Frank {
     private final Endpoint endpoint;
 
-    public FranklyFrankAgent(Endpoint endpoint) {
+    public FranklyFrank(Endpoint endpoint) {
         this.endpoint = endpoint;
     }
+
+    @Override public Endpoint endpoint() { return endpoint; }
 
     @Override
     public String appExec(String name, Object...arguments) {
