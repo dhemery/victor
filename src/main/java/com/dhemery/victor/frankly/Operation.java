@@ -1,6 +1,8 @@
 package com.dhemery.victor.frankly;
 
-public class Operation {
+import java.io.Serializable;
+
+public class Operation implements Serializable {
     private final String method;
     private final Object[] arguments;
 

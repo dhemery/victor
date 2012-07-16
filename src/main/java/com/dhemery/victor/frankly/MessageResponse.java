@@ -1,9 +1,11 @@
 package com.dhemery.victor.frankly;
 
+import com.dhemery.victor.io.Response;
+
 import java.util.Collections;
 import java.util.List;
 
-public class MessageResponse {
+public class MessageResponse implements Response {
     private final String details;
     private final String reason;
     private final List<String> results;

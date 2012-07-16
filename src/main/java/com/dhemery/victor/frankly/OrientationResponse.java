@@ -2,14 +2,14 @@ package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.io.Response;
 
-public class OrientationResponse {
+public class OrientationResponse implements Response {
     private final String orientation;
 
-    public OrientationResponse(Response response) {
-        orientation = response.body();
+    public OrientationResponse(String orientation) {
+        this.orientation = orientation;
     }
 
     public String orientation() {
-        return null;
+        return orientation;
     }
 }

@@ -4,6 +4,6 @@ public interface Endpoint {
     String protocol();
     String host();
     int port();
-    Response get(Request request);
-    Response put(Request request);
+    <R extends Response> R get(String path);
+    <R extends Response> R put(String path, String body);
 }

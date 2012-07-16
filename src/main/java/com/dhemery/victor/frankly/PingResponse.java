@@ -1,6 +1,8 @@
 package com.dhemery.victor.frankly;
 
-public class PingResponse {
+import com.dhemery.victor.io.Response;
+
+public class PingResponse implements Response {
     private final boolean responded;
 
     public PingResponse(boolean responded) {

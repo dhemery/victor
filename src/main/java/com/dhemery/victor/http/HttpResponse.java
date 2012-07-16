@@ -11,6 +11,6 @@ public class HttpResponse implements Response {
         this.body = body;
     }
 
-    @Override public String body() { return body; }
-    @Override public String status() { return status; }
+    public String body() { return body; }
+    public String status() { return status; }
 }

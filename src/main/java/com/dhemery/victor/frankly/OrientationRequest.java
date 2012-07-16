@@ -5,9 +5,9 @@ import com.dhemery.victor.io.Request;
 
 public class OrientationRequest implements Request {
     public OrientationResponse sendTo(Endpoint endpoint) {
-        OrientationResponse response = new OrientationResponse(endpoint.get(this));
+        OrientationResponse response = endpoint.get(path());
         return response;
     }
 
-    @Override public String verb() { return "orientation"; }
+    @Override public String path() { return "orientation"; }
 }

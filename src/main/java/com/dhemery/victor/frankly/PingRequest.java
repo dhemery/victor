@@ -6,12 +6,11 @@ import com.dhemery.victor.io.Request;
 public class PingRequest implements Request {
     public PingResponse sendTo(Endpoint endpoint) {
         try {
-            endpoint.get(this);
-            return new PingResponse(true);
+            return endpoint.get(path());
         } catch (Throwable ignored) {
             return new PingResponse(false);
         }
     }
 
-    @Override public String verb() { return "ping"; }
+    @Override public String path() { return "ping"; }
 }

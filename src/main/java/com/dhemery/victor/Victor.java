@@ -16,7 +16,7 @@ import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
 import com.dhemery.victor.frankly.FranklyEncoder;
 import com.dhemery.victor.frankly.FranklyFrank;
-import com.dhemery.victor.frankly.JsonEndpoint;
+import com.dhemery.victor.http.HttpEndpoint;
 import com.dhemery.victor.io.Endpoint;
 import com.dhemery.victor.io.Json;
 import com.dhemery.victor.os.Service;
@@ -152,8 +152,8 @@ public class Victor {
             String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
             int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
             Json encoder = new FranklyEncoder();
-            Endpoint endpoint = new JsonEndpoint("http", host, port, encoder);
-            frank = new FranklyFrank(endpoint);
+            Endpoint endpoint = new HttpEndpoint(host, port);
+            frank = new FranklyFrank(endpoint, encoder);
         }
         return frank;
     }
