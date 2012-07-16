@@ -1,14 +1,16 @@
 package com.dhemery.victor;
 
+import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.Configuration;
-import com.dhemery.configuration.ContextItemCache;
-import com.dhemery.victor.configuration.IosApplicationBundle;
-import com.dhemery.victor.configuration.IosSdk;
-import com.dhemery.victor.configuration.SdkInfoCache;
+import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorApplication;
 import com.dhemery.victor.device.UserSimulatorProcess;
 import com.dhemery.victor.device.VictorSimulatorProcess;
+import com.dhemery.victor.discovery.IosApplicationBundle;
+import com.dhemery.victor.discovery.IosSdk;
+import com.dhemery.victor.discovery.SdkItemKey;
+import com.dhemery.victor.discovery.SdkItemSource;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
@@ -118,7 +120,7 @@ public class Victor {
      */
     public IosApplicationBundle applicationBundle() {
         if(applicationBundle == null) {
-            applicationBundle = new IosApplicationBundle(shell(), configuration.requiredOption(APPLICATION_BUNDLE_PATH));
+            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell());
         }
         return applicationBundle;
     }
@@ -234,19 +236,20 @@ public class Victor {
     }
 
     private IosSdk findSdk() {
-        ContextItemCache sdkInfo = new SdkInfoCache(shell());
+        CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell());
+        SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
         if(configuration.defines(SDK_VERSION)) {
-            IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfo, configuration.option(SDK_VERSION));
+            IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
             if (userPreferredSdk.isInstalled()) return userPreferredSdk;
         }
 
         String canonicalName = applicationBundle.sdkCanonicalName();
         if(canonicalName != null) {
-            IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfo, canonicalName);
+            IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfoCache, canonicalName);
             if (bundlePreferredSdk.isInstalled()) return bundlePreferredSdk;
         }
 
-        IosSdk newestInstalledSdk = IosSdk.newest(sdkInfo);
+        IosSdk newestInstalledSdk = IosSdk.newest(sdkInfoCache);
         if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
 
         throw new VictorConfigurationException("No iphonesimulator SDK installed on this computer");

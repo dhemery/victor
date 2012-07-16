@@ -1,7 +1,6 @@
-package com.dhemery.victor.configuration;
+package com.dhemery.victor.discovery;
 
 import com.dhemery.victor.VictorConfigurationException;
-import com.dhemery.victor.os.PList;
 import com.dhemery.victor.os.Shell;
 
 import java.io.File;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents an iOS application bundle.
  */
 public class IosApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
@@ -19,30 +19,37 @@ public class IosApplicationBundle {
 
     private final Shell shell;
     private final String path;
-    private PList plist;
+    private PListInspector plist;
 
-    public IosApplicationBundle(Shell shell, String path) {
+    /**
+     * Create a representation of the iOS application bundle at the specified path.
+     * Uses the given shell to run commands to discover information about the bundle.
+     * @param path the absolute file path to the application bundle.
+     * @param shell the shell used to run commands to discover information from the application bundle.
+     */
+    public IosApplicationBundle(String path, Shell shell) {
         this.shell = shell;
         this.path = path;
         requireFile(path, "application bundle");
 
     }
+
     /**
-     * @return the bundle's identifier.
+     * The bundle version from the bundle's Info.plist file.
      */
     public String bundleIdentifier() {
         return plist().stringValue(BUNDLE_IDENTIFIER);
     }
 
     /**
-     * @return the bundle's version.
+     * The bundle version from the bundle's Info.plist file.
      */
     public String bundleVersion() {
         return plist().stringValue(BUNDLE_VERSION);
     }
 
     /**
-     * @return the list of device types on which this bundle can run.
+     * The list of device types on which this application can run.
      */
     public List<String> deviceTypes() {
         Integer count = plist().size(DEVICE_FAMILIES);
@@ -56,7 +63,7 @@ public class IosApplicationBundle {
     }
 
     /**
-     * @return the name of the executable file in the bundle.
+     * The name of the bundle's executable file.
      */
     public String executableName() {
         return plist().stringValue(EXECUTABLE_NAME);
@@ -70,33 +77,34 @@ public class IosApplicationBundle {
     }
 
     /**
-     * @return whether Victor can execute the bundle's executable file.
+     * Report whether Victor can execute the bundle's executable file.
+     * Victor can execute the file if it exists and its "executable" bit is set.
      */
     public boolean isExecutable() {
         return new File(pathToExecutable()).canExecute();
     }
 
     /**
-     * @return the absolute path to the bundle's executable file.
+     * The absolute path to the bundle's executable file.
      */
     public String pathToExecutable() {
         return String.format("%s/%s", path, executableName());
     }
 
     /**
-     * @return a {@link PList} that represents the bundle's Info.plist file.
+     * A {@link PListInspector} with the contents of the bundle's Info.plist file.
      */
-    public PList plist() {
+    public PListInspector plist() {
         if(plist == null) {
             String plistPath = path + "/Info.plist";
             requireFile(plistPath, "Info.plist in application bundle");
-            plist = new PList(shell, plistPath);
+            plist = new PListInspector(plistPath, shell);
         }
         return plist;
     }
 
     /**
-     * @return the SDK canonical name with which the bundle was created.
+     * The canonical name of the bundle's target iOS SDK.
      */
     public String sdkCanonicalName() {
         return plist().stringValue(SDK_CANONICAL_NAME);
