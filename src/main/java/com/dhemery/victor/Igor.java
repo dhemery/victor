@@ -29,7 +29,6 @@ public class Igor implements By {
     /**
      * Create a query that uses the Igor selector engine to find views that match a pattern.
      * @param pattern a pattern in the Igor Query Language.
-     * @return a query that uses the Igor selector engine to find views that match  {@code pattern}.
      */
     public static Igor igor(String pattern) {
         return new Igor(pattern);

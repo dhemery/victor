@@ -29,7 +29,6 @@ public class UIQuery implements By {
     /**
      * Create a query that uses UIQuery to find views that match a pattern.
      * @param pattern a pattern recognized by the UIQuery selector engine.
-     * @return a query that uses UIQuery to find views that match {@code pattern}.
      */
     public static UIQuery uiquery(String pattern) {
         return new UIQuery(pattern);

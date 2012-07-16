@@ -115,8 +115,7 @@ public class Victor {
     }
 
     /**
-     * Return the application bundle of the configured application.
-     * @return the application bundle of the configured application.
+     * The application bundle of the configured application.
      */
     public IosApplicationBundle applicationBundle() {
         if(applicationBundle == null) {
@@ -126,8 +125,7 @@ public class Victor {
     }
 
     /**
-     * Return a driver for the configured application.
-     * @return a driver for the configured application.
+     * A driver for the configured application.
      */
     public IosApplication application() {
         if(application == null) {
@@ -137,8 +135,7 @@ public class Victor {
     }
 
     /**
-     * Return a driver for the configured device.
-     * @return a driver for the configured device.
+     * A driver for the configured device.
      */
     public IosDevice device() {
         if(device == null) {
@@ -148,8 +145,7 @@ public class Victor {
     }
 
     /**
-     * Return the Frank agent used by the application and by view agents.
-     * @return the Frank agent used by the application and by view agents.
+     * The Frank agent used by the application and by view agents.
      */
     public Frank frank() {
         if(frank == null) {
@@ -163,8 +159,7 @@ public class Victor {
     }
 
     /**
-     * Return the SDK used to run the device and application.
-     * @return the SDK used to run the device and application.
+     * The iOS SDK used to run the device and application.
      */
     public IosSdk sdk() {
         if(sdk == null) {
@@ -174,8 +169,7 @@ public class Victor {
     }
 
     /**
-     * Return the shell that Victor and its creations use to run OS commands.
-     * @return the shell that Victor and its creations use to run OS commands.
+     * The shell that Victor and its creations use to run OS commands.
      */
     public Shell shell() {
         if(shell == null) {
@@ -186,7 +180,6 @@ public class Victor {
 
     /**
      * Report whether Victor owns the simulator.
-     * @return whether Victor owns the simulator.
      */
     public boolean victorOwnsSimulator() {
         String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
@@ -194,8 +187,7 @@ public class Victor {
     }
 
     /**
-     * Return the view agent used by views created by Victor's view factory.
-     * @return the view agent used by views created by Victor's view factory.
+     * The view agent that Victor's view factory uses to create view drivers.
      */
     public IosViewAgent viewAgent() {
         if(viewAgent == null) {
@@ -205,8 +197,7 @@ public class Victor {
     }
 
     /**
-     * Return a factory to create views backed by Victor's view agent.
-     * @return a factory to create views backed by Victor's view agent.
+     * A factory that creates views backed by Victor's view agent.
      */
     public IosViewFactory viewFactory() {
         if(viewFactory == null) {

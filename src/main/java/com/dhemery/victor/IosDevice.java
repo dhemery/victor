@@ -32,8 +32,7 @@ public interface IosDevice {
     void stop();
 
     /**
-     * Report the type of device simulated by this driver.
-     * @return the type of device.
+     * The type of device simulated by this driver.
      */
     String type();
 }

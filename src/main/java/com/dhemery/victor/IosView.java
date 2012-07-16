@@ -10,7 +10,6 @@ import java.util.List;
 public interface IosView {
     /**
      * The query that identifies the views represented by this driver.
-     * @return the query that identifies the views represented by this driver.
      */
     By query();
 

@@ -17,7 +17,6 @@ public class AgentBackedViewFactory implements IosViewFactory {
     /**
      * Create a view backed by this factory's view agent.
      * @param query a query that identifies a set of views.
-     * @return a view backed by this factory's view agent.
      */
     @Override
     public IosView view(By query) {

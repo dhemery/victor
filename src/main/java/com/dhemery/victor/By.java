@@ -12,13 +12,11 @@ package com.dhemery.victor;
 public interface By {
     /**
      * The name of the query's language.
-     * @return the name of the query's language.
      */
     String language();
 
     /**
      * A pattern that matches a set of views.
-     * @return a pattern that matches a set of views.
      */
     String pattern();
 }

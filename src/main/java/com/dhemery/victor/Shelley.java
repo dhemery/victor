@@ -29,7 +29,6 @@ public class Shelley implements By {
     /**
      * Create a query that uses Shelley to find views that match a pattern.
      * @param pattern a pattern recognized by the Shelley selector engine.
-     * @return a query that uses Shelley to find views that match {@code pattern}.
      */
     public static Shelley shelley(String pattern) {
         return new Shelley(pattern);

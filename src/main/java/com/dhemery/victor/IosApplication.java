@@ -9,13 +9,11 @@ public interface IosApplication {
 
     /**
      * Report whether the application is running.
-     * @return whether the application is running.
      */
     boolean isRunning();
 
     /**
      * Report the application's orientation.
-     * @return the application's orientation.
      */
     IosApplicationOrientation orientation();
 
