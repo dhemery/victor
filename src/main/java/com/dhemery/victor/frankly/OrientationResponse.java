@@ -1,8 +1,6 @@
 package com.dhemery.victor.frankly;
 
-import com.dhemery.victor.io.Response;
-
-public class OrientationResponse implements Response {
+public class OrientationResponse {
     private final String orientation;
 
     public OrientationResponse(String orientation) {

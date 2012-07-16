@@ -1,5 +1,6 @@
 package com.dhemery.victor.os;
 
+import com.dhemery.victor.OSCommandException;
 import com.dhemery.victor.ListeningOSCommandPublisher;
 import com.dhemery.victor.OSCommand;
 import com.dhemery.victor.OSCommandSubscriber;
@@ -19,7 +20,7 @@ public class Shell {
             publish.started(command);
             return process;
         } catch (IOException cause) {
-            throw new CommandException(command, cause);
+            throw new OSCommandException(command, cause);
         }
     }
 
@@ -33,7 +34,7 @@ public class Shell {
             publish.returned(command, output);
             return output;
         } catch (IOException cause) {
-            throw new CommandException(command, cause);
+            throw new OSCommandException(command, cause);
         }
     }
 

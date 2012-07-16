@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MessageResponseParser implements JsonDeserializer<MessageResponse> {
     @Override
-    public MessageResponse deserialize(JsonElement element, Type type, JsonDeserializationContext context) {
+    public MessageResponse deserialize(JsonElement element, Type alsoIgnored, JsonDeserializationContext ignored) {
         List<String> results = new ArrayList<String>();
         String reason = "";
         String details = "";

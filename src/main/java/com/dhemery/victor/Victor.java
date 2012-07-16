@@ -14,11 +14,13 @@ import com.dhemery.victor.discovery.SdkItemSource;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frankly.FranklyEncoder;
+import com.dhemery.victor.frankly.FranklyJsonEncoder;
 import com.dhemery.victor.frankly.FranklyFrank;
-import com.dhemery.victor.http.HttpEndpoint;
+import com.dhemery.victor.io.JsonEncoder;
+import com.dhemery.victor.io.RoutedEndpoint;
+import com.dhemery.victor.http.HttpRouter;
 import com.dhemery.victor.io.Endpoint;
-import com.dhemery.victor.io.Json;
+import com.dhemery.victor.io.Router;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
 
@@ -151,8 +153,9 @@ public class Victor {
         if(frank == null) {
             String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
             int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-            Json encoder = new FranklyEncoder();
-            Endpoint endpoint = new HttpEndpoint(host, port);
+            JsonEncoder encoder = new FranklyJsonEncoder();
+            Router router = new HttpRouter();
+            Endpoint endpoint = new RoutedEndpoint(host, port, router);
             frank = new FranklyFrank(endpoint, encoder);
         }
         return frank;
@@ -213,7 +216,7 @@ public class Victor {
         if(applicationBundle().isExecutable()) {
             return applicationBundle.pathToExecutable();
         }
-        throw new VictorConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
+        throw new ConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
     }
 
     private String defaultDeviceType() {
@@ -243,7 +246,7 @@ public class Victor {
         IosSdk newestInstalledSdk = IosSdk.newest(sdkInfoCache);
         if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
 
-        throw new VictorConfigurationException("No iphonesimulator SDK installed on this computer");
+        throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
     }
 
     private String option(String property, String defaultValue) {

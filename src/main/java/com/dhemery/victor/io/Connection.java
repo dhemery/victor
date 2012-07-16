@@ -1,6 +1,9 @@
 package com.dhemery.victor.io;
 
-public interface Connection<R> {
-    public void write(String body);
-    public R response();
+public interface Connection {
+    void connect();
+    void write(String body);
+    String responseStatus();
+    String responseBody();
+    void disconnect();
 }

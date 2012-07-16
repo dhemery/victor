@@ -1,6 +1,6 @@
 package com.dhemery.victor.discovery;
 
-import com.dhemery.victor.VictorConfigurationException;
+import com.dhemery.victor.ConfigurationException;
 import com.dhemery.victor.os.Shell;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class IosApplicationBundle {
     private void requireFile(String path, String description) {
         File file = new File(path);
         if(!file.exists()) {
-            throw new VictorConfigurationException(String.format("Can not find %s at %s", description, path));
+            throw new ConfigurationException(String.format("Can not find %s at %s", description, path));
         }
     }
 
