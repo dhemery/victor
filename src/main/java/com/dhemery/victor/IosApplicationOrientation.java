@@ -1,7 +1,7 @@
 package com.dhemery.victor;
 
 /**
- * Possible application orientations.
+ * Enumeration of application orientations.
  */
 public enum IosApplicationOrientation {
     LANDSCAPE,

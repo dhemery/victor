@@ -1,32 +1,38 @@
 package com.dhemery.victor;
 
 /**
- * Represents an iOS device (real or simulated).
+ * A driver that interacts with a simulated iOS device.
  *
  * @author Dale Emery
  */
 public interface IosDevice {
+    /**
+     * Rotate the simulated device left.
+     */
     void rotateLeft();
 
+    /**
+     * Rotate the simulated device right.
+     */
     void rotateRight();
 
     /**
-     * Save an image of the screen to the desktop.
+     * Save an image of the simulated device's screen to the desktop.
      */
     void saveScreenShot();
 
     /**
-     * Start the device.
+     * Start the simulated device.
      */
     void start();
 
     /**
-     * Stop the device.
+     * Stop the simulated device.
      */
     void stop();
 
     /**
-     * Return the type of device.
+     * Report the type of device simulated by this driver.
      * @return the type of device.
      */
     String type();

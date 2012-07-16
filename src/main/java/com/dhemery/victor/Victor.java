@@ -38,14 +38,12 @@ public class Victor {
     public static final String DEFAULT_DEVICE_TYPE = "iPhone";
 
     /**
-     * The value of the {@link #FRANK_HOST} option
-     * if the user does not supply a value.
+     * The default value for the {@link #FRANK_HOST} option.
      */
     public static final String DEFAULT_FRANK_HOST = "localhost";
 
     /**
-     * The value of the {@link #FRANK_PORT} option
-     * if the user does not supply a value.
+     * The default value for the {@link #FRANK_PORT} option.
      */
     public static final String DEFAULT_FRANK_PORT = "37265";
 

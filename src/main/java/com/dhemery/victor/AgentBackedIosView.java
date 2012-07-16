@@ -12,6 +12,7 @@ public class AgentBackedIosView implements IosView {
     private final By query;
 
     /**
+     * Create a driver that uses a view agent to interact with the views identified by a query.
      * @param agent an agent that can interact with view.
      * @param query a query that identifies the views represented by this driver.
      */
@@ -28,10 +29,5 @@ public class AgentBackedIosView implements IosView {
     @Override
     public By query() {
         return query;
-    }
-
-    @Override
-    public String toString() {
-        return query.toString();
     }
 }

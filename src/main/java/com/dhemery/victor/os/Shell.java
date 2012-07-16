@@ -1,8 +1,8 @@
 package com.dhemery.victor.os;
 
+import com.dhemery.victor.ListeningOSCommandPublisher;
 import com.dhemery.victor.OSCommand;
-import com.dhemery.victor.OSCommandListener;
-import com.dhemery.victor.OSCommandPublisher;
+import com.dhemery.victor.OSCommandSubscriber;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Shell {
-    private final OSCommandPublisher publish = new OSCommandPublisher();
+    private final ListeningOSCommandPublisher publish = new ListeningOSCommandPublisher();
 
     public Process run(OSCommand command) {
         publish.willRun(command);
         try {
             Process process = processBuilderFor(command).start();
-            publish.started(command, process);
+            publish.started(command);
             return process;
         } catch (IOException cause) {
             throw new CommandException(command, cause);
@@ -37,11 +37,11 @@ public class Shell {
         }
     }
 
-    public void addListener(OSCommandListener listener) {
+    public void addListener(OSCommandSubscriber listener) {
         publish.subscribe(listener);
     }
 
-    public void removeListener(OSCommandListener listener) {
+    public void removeListener(OSCommandSubscriber listener) {
         publish.unsubscribe(listener);
     }
 

@@ -1,32 +1,22 @@
 package com.dhemery.victor;
 
-import java.util.HashSet;
-import java.util.Set;
+/**
+ * Publishes events related to OSCommand execution.
+ */
+public interface OSCommandPublisher {
+    /**
+     * Enroll a new subscriber.
+     * As long as the subscriber remains subscribed,
+     * the publisher informs the subscriber of OScommand events.
+     * @param subscriber a subscriber to inform of OSCommand events.
+     */
+    void subscribe(OSCommandSubscriber subscriber);
 
-public class OSCommandPublisher implements OSCommandListener {
-    private final Set<OSCommandListener> subscribers = new HashSet<OSCommandListener>();
-
-
-    public void subscribe(OSCommandListener subscriber) {
-        subscribers.add(subscriber);
-    }
-
-    @Override
-    public void willRun(OSCommand command) {
-        for(OSCommandListener subscriber : subscribers) subscriber.willRun(command);
-    }
-
-    @Override
-    public void started(OSCommand command, Process process) {
-        for(OSCommandListener subscriber : subscribers) subscriber.started(command, process);
-    }
-
-    @Override
-    public void returned(OSCommand command, String output) {
-        for(OSCommandListener subscriber : subscribers) subscriber.returned(command, output);
-    }
-
-    public void unsubscribe(OSCommandListener subscriber) {
-        subscribers.remove(subscriber);
-    }
+    /**
+     * Unsubscribe a subscriber.
+     * As long as the subscriber remains unsubscribed,
+     * the publisher does not inform the subscriber of OSCommand events.
+     * @param subscriber a subscriber not to inform of OSCommand events.
+     */
+    void unsubscribe(OSCommandSubscriber subscriber);
 }

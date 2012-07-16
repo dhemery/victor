@@ -1,20 +1,20 @@
 package com.dhemery.victor;
 
 /**
- * Represents an application running on an iOS device.
+ * A driver that interacts with an application running on an iOS device.
  *
  * @author Dale Emery
  */
 public interface IosApplication {
 
     /**
-     * Discover whether the application is running.
+     * Report whether the application is running.
      * @return whether the application is running.
      */
     boolean isRunning();
 
     /**
-     * Discover the application's orientation.
+     * Report the application's orientation.
      * @return the application's orientation.
      */
     IosApplicationOrientation orientation();
@@ -29,7 +29,7 @@ public interface IosApplication {
     String sendMessage(String name, Object... arguments);
 
     /**
-     * Types text into the device's keyboard.
+     * Type text into the device's keyboard.
      * This method assumes that the keyboard is displayed.
      * @param text the text to type.
      */
