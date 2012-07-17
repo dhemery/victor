@@ -15,8 +15,7 @@ import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
 import com.dhemery.victor.frankly.FranklyFrank;
-import com.dhemery.victor.frankly.FranklyJsonEncoder;
-import com.dhemery.victor.http.HttpProtocol;
+import com.dhemery.victor.frankly.FranklyJsonCodec;
 import com.dhemery.victor.io.*;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
@@ -78,13 +77,13 @@ public class Victor {
     /**
      * <p>Specifies who is responsible for starting and stopping the simulator.</p>
      * <p>If the value is <strong>victor</strong>,
-     * the constructed {@link com.dhemery.victor.IosDevice IosDevice}'s
-     * {@link com.dhemery.victor.IosDevice#start() start()} method will launch the simulator,
-     * and its {@link com.dhemery.victor.IosDevice#stop() stop()} method will shut it down.
+     * the constructed {@link IosDevice IosDevice}'s
+     * {@link IosDevice#start() start()} method will launch the simulator,
+     * and its {@link IosDevice#stop() stop()} method will shut it down.
      * </p>
      * <p>
      * If this option has any other value,
-     * the constructed {@link com.dhemery.victor.IosDevice IosDevice}
+     * the constructed {@link IosDevice IosDevice}
      * will neither start nor stop the simulator.
      * Instead, the user must start and stop the simulator in some other way.
      * This is useful for experimenting.
@@ -150,11 +149,10 @@ public class Victor {
         if(frank == null) {
             String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
             int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-            JsonEncoder encoder = new FranklyJsonEncoder();
-            Protocol http = new HttpProtocol();
-            //TODO: construct endpoint.
-            Endpoint endpoint = null;
-            frank = new FranklyFrank(http, endpoint, encoder);
+            Codec jsonCodec = new FranklyJsonCodec();
+            Router router = new URLResourceRouter("http");
+            Endpoint endpoint = new RoutedEndpoint(router, host, port);
+            frank = new FranklyFrank(endpoint, jsonCodec);
         }
         return frank;
     }

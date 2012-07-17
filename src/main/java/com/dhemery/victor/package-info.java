@@ -1,7 +1,7 @@
 /**
  * <p>
- * Victor is a Java driver for iOS applications.
- * It is designed for use with a Frank server embedded into the iOS application.
+ * Interact with iOS applications.
+ * Victor is designed for use with a Frank server embedded into the iOS application.
  * Victor includes an API and reasonable implementations
  * to use all of the Frank server's features through Java.
  * </p>

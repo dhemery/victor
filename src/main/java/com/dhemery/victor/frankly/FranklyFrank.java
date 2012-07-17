@@ -14,14 +14,12 @@ public class FranklyFrank implements Frank {
     private static final String APP_EXEC = "app_exec";
     private static final String MAP = "map";
     private static final String TYPE_INTO_KEYBOARD = "type_into_keyboard";
-    private final Protocol protocol;
     private final Endpoint endpoint;
-    private final JsonEncoder encoder;
+    private final Codec codec;
 
-    public FranklyFrank(Protocol protocol, Endpoint endpoint, JsonEncoder encoder) {
-        this.protocol = protocol;
+    public FranklyFrank(Endpoint endpoint, Codec codec) {
         this.endpoint = endpoint;
-        this.encoder = encoder;
+        this.codec = codec;
     }
 
     @Override
@@ -56,11 +54,6 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
-    public Protocol protocol() {
-        return protocol;
-    }
-
-    @Override
     public void typeIntoKeyboard(String text) {
         TextToType textToType = new TextToType(text);
         put(TYPE_INTO_KEYBOARD, textToType);
@@ -69,12 +62,12 @@ public class FranklyFrank implements Frank {
     @Override public Endpoint endpoint() { return endpoint; }
 
     private String get(String path) {
-        return protocol.get(endpoint, path);
+        return endpoint.get(path);
     }
 
     private MessageResponse put(String path, Object payload) {
-        String message = encoder.toJson(payload);
-        String response = protocol.put(endpoint, path, message);
-        return encoder.fromJson(response, MessageResponse.class);
+        String message = codec.encode(payload);
+        String response = endpoint.put(path, message);
+        return codec.decode(response, MessageResponse.class);
     }
 }
