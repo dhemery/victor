@@ -2,6 +2,7 @@ package com.dhemery.victor;
 
 import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.Configuration;
+import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.victor.device.SimulatedIosDevice;
 import com.dhemery.victor.device.SimulatorApplication;
@@ -16,9 +17,9 @@ import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
 import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
-import com.dhemery.victor.io.*;
-import com.dhemery.victor.os.Service;
-import com.dhemery.victor.os.Shell;
+import com.dhemery.network.*;
+import com.dhemery.victor.device.Service;
+import com.dhemery.os.Shell;
 
 import java.util.List;
 

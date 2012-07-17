@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.os;
 
 /**
  * Allows the implementor to subscribe be informed of OSCommand events.

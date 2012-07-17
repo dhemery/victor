@@ -8,7 +8,6 @@ public class SdkItemKey {
     private final String infoitem;
 
     /**
-     * Create a key for an infoitem in an iOS SDK.
      * @param sdkname the canonical name of an iOS SDK.
      * @param infoitem the name of an infoitem.
      */

@@ -11,7 +11,7 @@ public class FrankViewAgent implements IosViewAgent {
     private final Frank frank;
 
     /**
-     * Create a view agent that communicates with views through the specified Frank agent.
+     * @param frank the Frank agent through which this view agent communicates with views.
      */
     public FrankViewAgent(Frank frank) {
         this.frank = frank;

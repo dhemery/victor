@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.os;
 
 import java.util.List;
 import java.util.Map;

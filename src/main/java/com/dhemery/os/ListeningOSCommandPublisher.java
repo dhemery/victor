@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.os;
 
 import java.util.HashSet;
 import java.util.Set;

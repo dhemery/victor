@@ -1,4 +1,4 @@
-package com.dhemery.victor.os;
+package com.dhemery.victor.device;
 
 public interface Service {
     void start();

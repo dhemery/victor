@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Constructs a {@link MessageResponse} from a properly formatted JSON string.
- *
- * @author Dale Emery
+ * Deserializes a {@link MessageResponse} from a properly formatted JSON string.
+ * The serialized JSON format of a message response is defined in the "Frankly wire protocol."
+ * See the Frank website for details.
  */
 public class MessageResponseParser implements JsonDeserializer<MessageResponse> {
+    /**
+     * Create a {@code MessageResponse} object from a serialized JSON representation.
+     */
     @Override
     public MessageResponse deserialize(JsonElement element, Type alsoIgnored, JsonDeserializationContext ignored) {
         List<String> results = new ArrayList<String>();

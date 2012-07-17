@@ -1,7 +1,5 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.victor.os.Service;
-
 /**
  * Interacts with an iOS simulator owned (i.e. started and stopped) by the user.
  * The {@link #start()} and {@link #stop()} methods do nothing.

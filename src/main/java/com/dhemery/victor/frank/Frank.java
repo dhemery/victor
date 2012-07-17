@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.victor.io.Endpoint;
+import com.dhemery.network.Endpoint;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import java.util.List;
  * An agent that can communicate with a Frank server.
  */
 public interface Frank {
+    //TODO: explain null return value.
     /**
      * Send a message to the application delegate.
      * @param name the name of the message.
@@ -21,31 +22,29 @@ public interface Frank {
      */
     Endpoint endpoint();
 
+    //TODO: explain empty list and null value.
     /**
-     * Send a message to a set of iOS views.
-     * @param engine the selector engine that will find views to which to send the message.
-     * @param query a query that identifies a set of views.
-     * @param name the name of the message.
-     * @param arguments the message arguments.
-     * @return the list of responses returned by the views.
+     * Send a message to a set of views.
+     * @param engine the name of the selector engine to select recipients for the message
+     * @param query the pattern for the selector engine to use to select recipients
+     * @param name the name of the message
+     * @param arguments the message arguments
+     * @return the list of responses, one from each recipient
      */
     List<String> map(String engine, String query, String name, Object... arguments);
 
     /**
      * Report the application's orientation.
-     * @return the application's orientation as a string.
      */
     String orientation();
 
     /**
-     * Report whether the application responds to requests.
-     * @return whether the application responds to requests.
+     * Report whether the Frank server responds to requests.
      */
     boolean ping();
 
     /**
      * Type text using the device's keyboard.
-     * @param text the text to type.
      */
     void typeIntoKeyboard(String text);
 }

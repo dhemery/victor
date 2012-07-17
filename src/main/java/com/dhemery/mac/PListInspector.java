@@ -1,15 +1,15 @@
-package com.dhemery.victor.discovery;
+package com.dhemery.mac;
 
-import com.dhemery.victor.OSCommand;
-import com.dhemery.victor.os.Shell;
-import com.dhemery.victor.os.ShellCommand;
+import com.dhemery.os.Shell;
+import com.dhemery.os.ShellCommand;
+import com.dhemery.os.OSCommand;
+import com.dhemery.configuration.JsonInspector;
 
 /**
  * A JSON inspector for properties read from a plist file.
  */
 public class PListInspector extends JsonInspector {
     /**
-     * Create an inspector by reading a plist file as JSON.
      * @param path the absolute path to the plist file to read.
      * @param shell the shell to use to run the {@code plist} command.
      */

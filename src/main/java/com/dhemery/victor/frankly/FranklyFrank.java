@@ -1,12 +1,65 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.io.*;
+import com.dhemery.network.*;
 
 import java.util.List;
 
 /**
- * A Frank agent that sends and receives messages using the "Frankly" protocol.
+ * <p>
+ * A Frank agent that sends and receives messages using the Frankly wire protocol.
+ * For a description of the Frankly wire protocol, see the Frank website.
+ * </p>
+ * <p>
+ * This table summarizes how {@code FranklyFrank} translates method calls into Frankly messages:
+ * </p>
+ * <table>
+ *     <tr>
+ *         <th>Method</th>
+ *         <th>Franky Message</th>
+ *         <th>Payload Type</th>
+ *         <th>Result Type</th>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #appExec}</td>
+ *         <td>{@code "app_exec"}</td>
+ *         <td>{@link Operation}</td>
+ *         <td>{@link MessageResponse}</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #map}</td>
+ *         <td>{@code "map"}</td>
+ *         <td>{@link MapOperation}</td>
+ *         <td>{@link MessageResponse}</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #orientation}</td>
+ *         <td>{@code "orientation"}</td>
+ *         <td>none</td>
+ *         <td>{@link String}</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #ping}</td>
+ *         <td>{@code "ping"}</td>
+ *         <td>none</td>
+ *         <td>{@code boolean}</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #typeIntoKeyboard}</td>
+ *         <td>{@code "type_into_keyboard"}</td>
+ *         <td>{@link TextToType}</td>
+ *         <td>none</td>
+ *     </tr>
+ * </table>
+ * <p>
+ * Messages that carry a payload are sent using HTTP PUT.
+ * Messages that do not carry a payload are sent using HTTP GET.
+ * </p>
+ * <p>
+ * Note that {@code "ping"} is not a valid Frankly message.
+ * {@code FranklyFrank} sends {@code "ping"} only to generate an HTTP response
+ * to determine whether the Frank server responds to messages.
+ * </p>
  */
 public class FranklyFrank implements Frank {
     private static final String ORIENTATION_REQUEST = "orientation";
@@ -20,7 +73,7 @@ public class FranklyFrank implements Frank {
     /**
      * Create a Frank agent to communicate with the Frank server at the given endpoint.
      * @param endpoint the endpoint at which the Frank server can be accessed.
-     * @param codec coded to serialize and deserialize Frankly messages.
+     * @param codec codec to serialize Frankly payloads and deserialize Frankly responses.
      */
     public FranklyFrank(Endpoint endpoint, Codec codec) {
         this.endpoint = endpoint;
@@ -64,7 +117,9 @@ public class FranklyFrank implements Frank {
         put(TYPE_INTO_KEYBOARD, textToType);
     }
 
-    @Override public Endpoint endpoint() { return endpoint; }
+    @Override public Endpoint endpoint() {
+        return endpoint;
+    }
 
     private String get(String path) {
         return endpoint.get(path);

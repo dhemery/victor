@@ -1,9 +1,9 @@
 package com.dhemery.victor.discovery;
 
 import com.dhemery.configuration.CacheSource;
-import com.dhemery.victor.OSCommand;
-import com.dhemery.victor.os.Shell;
-import com.dhemery.victor.os.ShellCommand;
+import com.dhemery.os.OSCommand;
+import com.dhemery.os.Shell;
+import com.dhemery.os.ShellCommand;
 
 /**
  * Discovers information about iOS SDKs in the active development environment.
@@ -13,8 +13,6 @@ public class SdkItemSource implements CacheSource<SdkItemKey,String> {
     private final Shell shell;
 
     /**
-     * Create an iOS SDK information source that uses a shell to query
-     * the active development environment.
      * @param shell the shell that will run commands for this source.
      */
     public SdkItemSource(Shell shell) {

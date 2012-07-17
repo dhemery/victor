@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.os;
 
 /**
  * Reports that Victor had a problem while running an OS command.

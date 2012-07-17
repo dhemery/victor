@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.configuration;
 
 /**
  * Reports that an element of the Victor configuration is invalid.

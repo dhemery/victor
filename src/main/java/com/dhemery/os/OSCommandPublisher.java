@@ -1,4 +1,4 @@
-package com.dhemery.victor;
+package com.dhemery.os;
 
 /**
  * Publishes events related to OSCommand execution.

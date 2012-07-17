@@ -1,6 +1,4 @@
-package com.dhemery.victor.os;
-
-import com.dhemery.victor.OSCommand;
+package com.dhemery.os;
 
 import java.util.*;
 
@@ -17,7 +15,7 @@ public class ShellCommand implements OSCommand {
     private String description = DEFAULT_DESCRIPTION;
 
     /**
-     * @param path      the file path of the command to perform.
+     * @param path the file path of the command to perform.
      */
     public ShellCommand(String path) {
         this.path = path;

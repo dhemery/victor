@@ -1,9 +1,4 @@
-package com.dhemery.victor.os;
-
-import com.dhemery.victor.OSCommandException;
-import com.dhemery.victor.ListeningOSCommandPublisher;
-import com.dhemery.victor.OSCommand;
-import com.dhemery.victor.OSCommandSubscriber;
+package com.dhemery.os;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,8 +1,7 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.victor.os.Service;
-import com.dhemery.victor.os.Shell;
-import com.dhemery.victor.os.ShellCommand;
+import com.dhemery.os.Shell;
+import com.dhemery.os.ShellCommand;
 
 import java.io.File;
 import java.util.ArrayList;

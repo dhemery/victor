@@ -10,7 +10,7 @@ public class FrankApplication implements IosApplication {
     private final Frank frank;
 
     /**
-     * Create an application agent that communicates with an application through the specified Frank agent.
+     * @param frank the Frank agent through which this application agent communicates with the application.
      */
     public FrankApplication(Frank frank) {
         this.frank = frank;
