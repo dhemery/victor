@@ -1,4 +1,4 @@
-package com.dhemery.mac;
+package com.dhemery.osx;
 
 import com.dhemery.os.Shell;
 import com.dhemery.os.ShellCommand;

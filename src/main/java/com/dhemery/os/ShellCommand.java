@@ -3,9 +3,7 @@ package com.dhemery.os;
 import java.util.*;
 
 /**
- * A command to be performed by the operating system.
- *
- * @author Dale Emery
+ * A command to be executed by the operating system.
  */
 public class ShellCommand implements OSCommand {
     private static final String DEFAULT_DESCRIPTION = "(command)";

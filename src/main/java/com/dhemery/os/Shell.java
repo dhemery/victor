@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+//todo: Document this class
 public class Shell {
     private final ListeningOSCommandPublisher publish = new ListeningOSCommandPublisher();
 

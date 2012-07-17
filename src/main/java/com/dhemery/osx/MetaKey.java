@@ -1,4 +1,4 @@
-package com.dhemery.victor.os;
+package com.dhemery.osx;
 
 public enum MetaKey {
     COMMAND("command"),

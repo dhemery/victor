@@ -5,6 +5,7 @@ import java.util.Set;
 
 /**
  * Listens for OSCommand events and republishes them to its own subscribers.
+ * Kinda like a neighborhood gossip.
  */
 public class ListeningOSCommandPublisher implements OSCommandPublisher, OSCommandSubscriber {
     private final Set<OSCommandSubscriber> subscribers = new HashSet<OSCommandSubscriber>();

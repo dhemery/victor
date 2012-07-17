@@ -1,6 +1,7 @@
-package com.dhemery.victor.os;
+package com.dhemery.osx;
 
-import com.dhemery.victor.OSCommand;
+import com.dhemery.os.Shell;
+import com.dhemery.os.OSCommand;
 
 public class ScriptableApplication implements OsxApplication {
     private static final String MENU_ITEM_OF_MENU = "menu item \"%s\" of menu \"%s\"";

@@ -1,7 +1,7 @@
 package com.dhemery.os;
 
 /**
- * Publishes events related to OSCommand execution.
+ * Publishes OSCommand execution events to {@link OSCommandSubscriber}s.
  */
 public interface OSCommandPublisher {
     /**

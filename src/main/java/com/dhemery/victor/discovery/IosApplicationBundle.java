@@ -1,6 +1,6 @@
 package com.dhemery.victor.discovery;
 
-import com.dhemery.mac.ApplicationBundle;
+import com.dhemery.osx.ApplicationBundle;
 import com.dhemery.os.Shell;
 
 import java.util.ArrayList;

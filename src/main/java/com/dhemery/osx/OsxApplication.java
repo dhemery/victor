@@ -1,4 +1,4 @@
-package com.dhemery.mac;
+package com.dhemery.osx;
 
 public interface OsxApplication {
     void touchMenuItem(String menu, String item);

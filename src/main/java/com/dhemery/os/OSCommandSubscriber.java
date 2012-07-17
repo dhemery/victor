@@ -1,7 +1,7 @@
 package com.dhemery.os;
 
 /**
- * Allows the implementor to subscribe be informed of OSCommand events.
+ * Subscribes to be informed of OSCommand execution events.
  */
 public interface OSCommandSubscriber {
     /**

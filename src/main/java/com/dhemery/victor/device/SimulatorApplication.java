@@ -1,6 +1,6 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.mac.ScriptableApplication;
+import com.dhemery.osx.ScriptableApplication;
 import com.dhemery.os.Shell;
 
 public class SimulatorApplication extends ScriptableApplication {

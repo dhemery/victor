@@ -1,7 +1,7 @@
 package com.dhemery.victor.device;
 
 import com.dhemery.victor.IosDevice;
-import com.dhemery.mac.OsxApplication;
+import com.dhemery.osx.OsxApplication;
 
 /**
  * Interacts with a simulated iOS device through a simulator agent.

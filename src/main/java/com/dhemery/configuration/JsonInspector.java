@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 
 import java.util.*;
 
+//todo: Describe paths.
+//todo: Throw exception instead of returning null. Will need to give users a way to determine whether an element exists.
 /**
  * Retrieves information from a JSON representation of an object.
  */
@@ -21,14 +23,14 @@ public class JsonInspector {
     }
 
     /**
-     * Retrieve the names of the objects inside the target object.
-     * @param path the path to the target object
+     * The names of the name/value pairs in a JSON object.
+     * @param path the path to the JSON object
      */
-    public List<String> names(Object... path) {
+    public Set<String> names(Object... path) {
         JsonElement element = element(root, path);
-        if(element == null || !element.isJsonObject()) return Collections.emptyList();
+        if(element == null || !element.isJsonObject()) return Collections.emptySet();
         Set<Map.Entry<String, JsonElement>> entries = element.getAsJsonObject().entrySet();
-        List<String> keys = new ArrayList<String>();
+        Set<String> keys = new HashSet<String>();
         for(Map.Entry<String,JsonElement> entry : entries) {
             keys.add(entry.getKey());
         }
@@ -36,8 +38,8 @@ public class JsonInspector {
     }
 
     /**
-     * The number of objects inside a target object.
-     * @param path the path to the target object
+     * The number of values in a JSON array.
+     * @param path the path to the JSON array
      */
     public Integer size(Object... path) {
         JsonElement element = element(root, path);
@@ -46,8 +48,8 @@ public class JsonInspector {
     }
 
     /**
-     * The string value of a target object.
-     * @param path the path to the target object
+     * The string representation of a JSON value.
+     * @param path the path to the JSON value
      */
     public String stringValue(Object... path) {
         return asString(element(root, path));
