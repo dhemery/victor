@@ -2,13 +2,17 @@ package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.io.Codec;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class FranklyJsonCodec implements Codec {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(MessageResponse.class, new MessageResponseParser())
+                .disableHtmlEscaping()
+                .create();
 
     @Override
-    public <T> T decode(String put, Class<T> resultType) {
-        return null;
+    public <T> T decode(String representation, Class<T> resultType) {
+        return gson.fromJson(representation, resultType);
     }
 
     @Override
