@@ -5,7 +5,7 @@ package com.dhemery.victor.io;
  */
 public interface Resource {
     /**
-     * Get the content of the resource.
+     * Retrieve the content of the resource.
      */
     String get();
 

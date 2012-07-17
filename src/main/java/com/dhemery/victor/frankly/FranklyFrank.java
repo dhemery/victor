@@ -17,6 +17,11 @@ public class FranklyFrank implements Frank {
     private final Endpoint endpoint;
     private final Codec codec;
 
+    /**
+     * Create a Frank agent to communicate with the Frank server at the given endpoint.
+     * @param endpoint the endpoint at which the Frank server can be accessed.
+     * @param codec coded to serialize and deserialize Frankly messages.
+     */
     public FranklyFrank(Endpoint endpoint, Codec codec) {
         this.endpoint = endpoint;
         this.codec = codec;
