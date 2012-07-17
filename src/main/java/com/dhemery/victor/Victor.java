@@ -14,13 +14,10 @@ import com.dhemery.victor.discovery.SdkItemSource;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frankly.FranklyJsonEncoder;
 import com.dhemery.victor.frankly.FranklyFrank;
-import com.dhemery.victor.io.JsonEncoder;
-import com.dhemery.victor.io.RoutedEndpoint;
-import com.dhemery.victor.http.HttpRouter;
-import com.dhemery.victor.io.Endpoint;
-import com.dhemery.victor.io.Router;
+import com.dhemery.victor.frankly.FranklyJsonEncoder;
+import com.dhemery.victor.http.HttpProtocol;
+import com.dhemery.victor.io.*;
 import com.dhemery.victor.os.Service;
 import com.dhemery.victor.os.Shell;
 
@@ -154,9 +151,10 @@ public class Victor {
             String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
             int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
             JsonEncoder encoder = new FranklyJsonEncoder();
-            Router router = new HttpRouter();
-            Endpoint endpoint = new RoutedEndpoint(host, port, router);
-            frank = new FranklyFrank(endpoint, encoder);
+            Protocol http = new HttpProtocol();
+            //TODO: construct endpoint.
+            Endpoint endpoint = null;
+            frank = new FranklyFrank(http, endpoint, encoder);
         }
         return frank;
     }

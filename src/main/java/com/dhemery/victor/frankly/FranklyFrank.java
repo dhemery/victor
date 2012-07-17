@@ -1,10 +1,8 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.io.Endpoint;
-import com.dhemery.victor.io.JsonEncoder;
+import com.dhemery.victor.io.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,10 +14,12 @@ public class FranklyFrank implements Frank {
     private static final String APP_EXEC = "app_exec";
     private static final String MAP = "map";
     private static final String TYPE_INTO_KEYBOARD = "type_into_keyboard";
+    private final Protocol protocol;
     private final Endpoint endpoint;
     private final JsonEncoder encoder;
 
-    public FranklyFrank(Endpoint endpoint, JsonEncoder encoder) {
+    public FranklyFrank(Protocol protocol, Endpoint endpoint, JsonEncoder encoder) {
+        this.protocol = protocol;
         this.endpoint = endpoint;
         this.encoder = encoder;
     }
@@ -56,6 +56,11 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
+    public Protocol protocol() {
+        return protocol;
+    }
+
+    @Override
     public void typeIntoKeyboard(String text) {
         TextToType textToType = new TextToType(text);
         put(TYPE_INTO_KEYBOARD, textToType);
@@ -64,13 +69,12 @@ public class FranklyFrank implements Frank {
     @Override public Endpoint endpoint() { return endpoint; }
 
     private String get(String path) {
-        return endpoint().get(path);
+        return protocol.get(endpoint, path);
     }
 
-    private MessageResponse put(String path, Serializable payload) {
-        String body = encoder.toJson(payload);
-        String response = endpoint().put(path, body);
+    private MessageResponse put(String path, Object payload) {
+        String message = encoder.toJson(payload);
+        String response = protocol.put(endpoint, path, message);
         return encoder.fromJson(response, MessageResponse.class);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.dhemery.victor.frank;
 
 import com.dhemery.victor.io.Endpoint;
+import com.dhemery.victor.io.Protocol;
 
 import java.util.List;
 
@@ -42,6 +43,11 @@ public interface Frank {
      * @return whether the application responds to requests.
      */
     boolean ping();
+
+    /**
+     * The protocol through which this agent communicates with the Frank server.
+     */
+    Protocol protocol();
 
     /**
      * Type text using the device's keyboard.

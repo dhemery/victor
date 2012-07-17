@@ -17,8 +17,18 @@ public class HttpConnection implements Connection {
     private final HttpURLConnection connection;
     private final StreamReader streamReader = new StreamReader();
 
-    public HttpConnection(String host, int port, String path) {
-        connection = httpUrlConnectionFor(urlFor(host, port, path));
+    public HttpConnection(String protocol, String host, int port, String path) {
+        connection = httpUrlConnectionFor(makeUrl(protocol, host, port, path));
+    }
+
+    private URL makeUrl(String protocol, String host, int port, String path) {
+        try {
+            return new URL(protocol, host, port, path);
+        } catch (MalformedURLException cause) {
+            String explanationFormat = "Cannot create URL for protocol %s host %s port %s path %s";
+            String explanation = String.format(explanationFormat, protocol, host, port, path);
+            throw new HttpException(explanation, cause);
+        }
     }
 
     @Override
@@ -57,14 +67,6 @@ public class HttpConnection implements Connection {
     @Override
     public void disconnect() {
         connection.disconnect();
-    }
-
-    private URL urlFor(String host, int port, String path) {
-        try {
-            return new URL(PROTOCOL, host, port, path);
-        } catch (MalformedURLException cause) {
-            throw new HttpException("Cannot create URL", cause);
-        }
     }
 
     private InputStream inputStream() {
