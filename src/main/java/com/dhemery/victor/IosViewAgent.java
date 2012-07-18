@@ -3,7 +3,7 @@ package com.dhemery.victor;
 import java.util.List;
 
 /**
- * An agent that transmits messages and responses between Victor and iOS views.
+ * Transmits messages and responses between Victor and iOS views.
  */
 public interface IosViewAgent {
     /**

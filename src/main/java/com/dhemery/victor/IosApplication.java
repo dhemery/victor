@@ -1,7 +1,7 @@
 package com.dhemery.victor;
 
 /**
- * A driver that interacts with an application running on an iOS device.
+ * Interacts with an application running on an iOS device.
  *
  * @author Dale Emery
  */

@@ -6,19 +6,22 @@ import com.dhemery.configuration.ConfigurationException;
 import java.io.File;
 
 /**
- * Represents an application bundle.
+ * Retrieves information from an application bundle.
+ * This "inspector" reads information from the bundle's {@code Info.plist} file,
+ * and also examines the permissions of the bundle's executable file.
  */
 public class ApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
-    protected final Shell shell;
-    protected final String path;
+    private final Shell shell;
+    private final String path;
     private PListInspector plist;
 
     /**
+     * Create an "inspector" that retrieves information from a specified application bundle.
      * @param path the absolute file path to the application bundle.
-     * @param shell the shell used to run commands to discover information from the application bundle.
+     * @param shell the shell used to run commands to retrieve information from the application bundle.
      */
     public ApplicationBundle(Shell shell, String path) {
         this.shell = shell;
@@ -27,14 +30,14 @@ public class ApplicationBundle {
     }
 
     /**
-     * The bundle version from the bundle's Info.plist file.
+     * The bundle's version.
      */
     public String bundleIdentifier() {
         return plist().stringValue(BUNDLE_IDENTIFIER);
     }
 
     /**
-     * The bundle version from the bundle's Info.plist file.
+     * The bundle's version.
      */
     public String bundleVersion() {
         return plist().stringValue(BUNDLE_VERSION);
@@ -42,14 +45,15 @@ public class ApplicationBundle {
 
     /**
      * The name of the bundle's executable file.
+     * This method does not verify that the file exists or that its "executable" bit is set.
      */
     public String executableName() {
         return plist().stringValue(EXECUTABLE_NAME);
     }
 
     /**
-     * Report whether Victor can execute the bundle's executable file.
-     * Victor can execute the file if it exists and its "executable" bit is set.
+     * Report whether the bundle's executable file is executable.
+     * The file is executable if it exists and its "executable" bit is set.
      */
     public boolean isExecutable() {
         return new File(pathToExecutable()).canExecute();

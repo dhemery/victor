@@ -15,17 +15,17 @@ public interface OSCommand {
 
     /**
      * The path to command's executable file.
-     * The path is such that invoking it on a command line would run the command.
+     * The path is such that invoking it on a command line would execute the file.
      */
     String path();
 
     /**
-     * Arguments to pass to the command.
+     * The list of arguments to pass to the command.
      */
     List<String> arguments();
 
     /**
-     * Environment variables to add to the command's execution environment.
+     * The map of environment variables to add to the command's execution environment.
      * This map does not include environment variables supplied by the operating system.
      */
     Map<String,String> environment();

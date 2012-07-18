@@ -4,15 +4,18 @@ import com.dhemery.victor.IosDevice;
 import com.dhemery.osx.OsxApplication;
 
 /**
- * Interacts with a simulated iOS device through a simulator agent.
- *
- * @author Dale Emery
+ * Interacts with a simulated iOS device through a various agents.
  */
 public class SimulatedIosDevice implements IosDevice {
     private final String deviceType;
     private final OsxApplication simulatorApplication;
     private final Service simulatorProcess;
 
+    /**
+     * @param deviceType the type of device simulated by this driver
+     * @param simulatorApplication a driver to interact with the simulator application
+     * @param simulatorProcess a driver to start and stop the simulator
+     */
     public SimulatedIosDevice(String deviceType, OsxApplication simulatorApplication, Service simulatorProcess) {
         this.deviceType = deviceType;
         this.simulatorApplication = simulatorApplication;

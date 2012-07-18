@@ -5,12 +5,12 @@ package com.dhemery.network;
  */
 public interface Endpoint {
     /**
-     * The service's host.
+     * The name of the endpoint's host.
      */
     String host();
 
     /**
-     * The port at which the service listens for requests.
+     * The port at which the endpoint listens for requests.
      */
     int port();
 

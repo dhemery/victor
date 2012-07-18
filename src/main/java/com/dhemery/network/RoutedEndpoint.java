@@ -10,9 +10,9 @@ public class RoutedEndpoint implements Endpoint {
 
     /**
      * Create a routed endpoint at the given host and port.
-     * @param router the router that locates resources for this endpoint.
-     * @param host the endpoint's host.
-     * @param port the endpoint's port.
+     * @param router the router that locates resources for this endpoint
+     * @param host the endpoint's host
+     * @param port the endpoint's port
      */
     public RoutedEndpoint(Router router, String host, int port) {
         this.router = router;
