@@ -1,7 +1,7 @@
 package com.dhemery.victor.discovery;
 
+import com.dhemery.os.OSCommandRepublisher;
 import com.dhemery.osx.ApplicationBundle;
-import com.dhemery.os.Shell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,9 @@ public class IosApplicationBundle extends ApplicationBundle {
 
     /**
      * @param path the absolute file path to the application bundle.
-     * @param shell the shell used to run commands to discover information from the application bundle.
      */
-    public IosApplicationBundle(String path, Shell shell) {
-        super(shell, path);
+    public IosApplicationBundle(String path, OSCommandRepublisher publisher) {
+        super(publisher, path);
 
     }
 

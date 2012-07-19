@@ -8,9 +8,9 @@ import java.util.*;
  * To build the command:
  * </p>
  * <ul>
- * <li>Call {@link #withArgument(String)}, {@link #withArguments(String...)}, and {@link #withArguments(java.util.List)}
+ * <li>Call {@link #withArgument(String)}, {@link #withArguments(String...)}, and {@link #withArguments(List)}
  * any number of times to append command arguments.</li>
- * <li>Call {@link #withEnvironment(java.util.Map)}
+ * <li>Call {@link #withEnvironment(Map)}
  * any number of times to add a set of environment variables
  * to the command's execution environment.</li>
  * </ul>
@@ -19,41 +19,21 @@ import java.util.*;
  * in the order they were added.
  * </p>
  * <p>
- * The default description of the command is {@code "(command)"}.
- * To provide a more meaningful description, call {@link #describedAs(String)}.
- * </p>
- * <p>
- * Many {@code ShellCommand} methods are "builder" methods.
- * Each builder method returns {@code this},
+ * Each method except {@link #build} returns {@code this},
  * so you can chain calls in a fluent builder expression.
  * </p>
  */
-public class ShellCommand implements OSCommand {
-    private static final String DEFAULT_DESCRIPTION = "(command)";
+public class PublishingCommandBuilder {
+    private final OSCommandSubscriber publisher;
+    private final String description;
     private final String path;
     private final List<String> arguments = new ArrayList<String>();
     private final Map<String, String> environment = new HashMap<String, String>();
-    private String description = DEFAULT_DESCRIPTION;
 
-    /**
-     * Create a command builder to execute the file at the given path.
-     * The path must be such that invoking it on the command line would execute the file.
-     * The constructed builder has a default description
-     * and no arguments or environment variables.
-     * @param path the path to the command to execute
-     */
-    public ShellCommand(String path) {
-        this.path = path;
-    }
-
-    /**
-     * Set the command's description.
-     * @param description the description
-     * @return this command builder
-     */
-    public ShellCommand describedAs(String description) {
+    public PublishingCommandBuilder(OSCommandSubscriber publisher, String description, String path) {
+        this.publisher = publisher;
         this.description = description;
-        return this;
+        this.path = path;
     }
 
     /**
@@ -61,7 +41,7 @@ public class ShellCommand implements OSCommand {
      * @param argument the argument to append
      * @return this command builder
      */
-    public ShellCommand withArgument(String argument) {
+    public PublishingCommandBuilder withArgument(String argument) {
         arguments.add(argument);
         return this;
     }
@@ -71,7 +51,7 @@ public class ShellCommand implements OSCommand {
      * @param arguments the arguments to append
      * @return this command builder
      */
-    public ShellCommand withArguments(String... arguments) {
+    public PublishingCommandBuilder withArguments(String... arguments) {
         this.arguments.addAll(Arrays.asList(arguments));
         return this;
     }
@@ -81,7 +61,7 @@ public class ShellCommand implements OSCommand {
      * @param arguments the arguments to append
      * @return this command builder
      */
-    public ShellCommand withArguments(List<String> arguments) {
+    public PublishingCommandBuilder withArguments(List<String> arguments) {
         this.arguments.addAll(arguments);
         return this;
     }
@@ -94,28 +74,15 @@ public class ShellCommand implements OSCommand {
      * @param environment a map containing the variables to add
      * @return this command builder
      */
-    public ShellCommand withEnvironment(Map<String,String> environment) {
+    public PublishingCommandBuilder withEnvironment(Map<String, String> environment) {
         this.environment.putAll(environment);
         return this;
     }
 
-    @Override
-    public List<String> arguments() {
-        return Collections.unmodifiableList(arguments);
-    }
-
-    @Override
-    public String description() {
-        return description;
-    }
-
-    @Override
-    public Map<String,String> environment() {
-        return Collections.unmodifiableMap(environment);
-    }
-
-    @Override
-    public String path() {
-        return path;
+    /**
+     * Create a command from the current state of this builder.
+     */
+    public OSCommand build() {
+        return new PublishingCommand(publisher, description, path, arguments, environment);
     }
 }

@@ -9,8 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- * A Frank agent that sends and receives messages using the Frankly wire protocol.
- * For a description of the Frankly wire protocol, see the Frank website.
+ * A Frank agent that publishes each Frank request and response.
  * </p>
  * <p>
  * This table summarizes how {@code FranklyFrank} translates method calls into Frankly messages:
@@ -68,24 +67,24 @@ import java.util.List;
  * because it's a cheap way to test whether the server responds.
  * </p>
  */
-public class FranklyFrank implements Frank {
+public class PublishingFrank implements Frank {
     private static final String ACCESSIBILITY_CHECK_REQUEST = "accessibility_check";
     private static final String DUMP_REQUEST = "dump";
     private static final String ORIENTATION_REQUEST = "orientation";
     private static final String APP_EXEC_REQUEST = "app_exec";
     private static final String MAP_REQUEST = "map";
     private static final String TYPE_INTO_KEYBOARD_REQUEST = "type_into_keyboard";
-    private final FrankPublisher publish = new FrankPublisher();
+    private final FrankSubscriber publish;
     private final Endpoint endpoint;
     private final Codec codec;
-    private FrankPublisher subscribers = new FrankPublisher();
 
     /**
      * Create a Frank agent to communicate with the Frank server at the given endpoint.
      * @param endpoint the endpoint at which the Frank server can be accessed.
      * @param codec codec to serialize Frankly payloads and deserialize Frankly responses.
      */
-    public FranklyFrank(Endpoint endpoint, Codec codec) {
+    public PublishingFrank(FrankSubscriber subscriber, Endpoint endpoint, Codec codec) {
+        publish = subscriber;
         this.endpoint = endpoint;
         this.codec = codec;
     }
@@ -135,21 +134,11 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
-    public void subscribe(FrankSubscriber subscriber) {
-        subscribers.subscribe(subscriber);
-    }
-
-    @Override
     public void typeIntoKeyboard(String text) {
         publish.typeIntoKeyboardRequest(text);
         TextToType textToType = new TextToType(text);
         put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
         publish.typeIntoKeyboardResponse();
-    }
-
-    @Override
-    public void unsubscribe(FrankSubscriber subscriber) {
-        subscribers.unsubscribe(subscriber);
     }
 
     @Override

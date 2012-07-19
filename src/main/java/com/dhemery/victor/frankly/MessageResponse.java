@@ -6,7 +6,7 @@ import java.util.List;
 //TODO: Describe success, failure, reason, and details.
 /**
  * A response to a Frankly {@link Operation}.
- * @see FranklyFrank
+ * @see PublishingFrank
  */
 public class MessageResponse {
     public final String details;

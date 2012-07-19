@@ -1,7 +1,7 @@
 package com.dhemery.osx;
 
-import com.dhemery.os.Shell;
 import com.dhemery.configuration.ConfigurationException;
+import com.dhemery.os.OSCommandSubscriber;
 
 import java.io.File;
 
@@ -14,17 +14,16 @@ public class ApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
-    private final Shell shell;
+    private final OSCommandSubscriber publisher;
     private final String path;
     private PListInspector plist;
 
     /**
      * Create an "inspector" that retrieves information from a specified application bundle.
      * @param path the absolute file path to the application bundle.
-     * @param shell the shell used to run commands to retrieve information from the application bundle.
      */
-    public ApplicationBundle(Shell shell, String path) {
-        this.shell = shell;
+    public ApplicationBundle(OSCommandSubscriber publisher, String path) {
+        this.publisher = publisher;
         this.path = path;
         requireFile(path, "application bundle");
     }
@@ -73,7 +72,7 @@ public class ApplicationBundle {
         if(plist == null) {
             String plistPath = path + "/Info.plist";
             requireFile(plistPath, "Info.plist in application bundle");
-            plist = new PListInspector(plistPath, shell);
+            plist = new PListInspector(publisher, plistPath);
         }
         return plist;
     }

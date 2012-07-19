@@ -4,22 +4,17 @@ import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
-import com.dhemery.victor.device.SimulatedIosDevice;
-import com.dhemery.victor.device.SimulatorApplication;
-import com.dhemery.victor.device.UserSimulatorProcess;
-import com.dhemery.victor.device.VictorSimulatorProcess;
+import com.dhemery.network.*;
+import com.dhemery.os.OSCommandPublisher;
+import com.dhemery.os.OSCommandRepublisher;
+import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkItemKey;
 import com.dhemery.victor.discovery.SdkItemSource;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FrankApplication;
-import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frankly.FranklyFrank;
+import com.dhemery.victor.frank.*;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
-import com.dhemery.network.*;
-import com.dhemery.victor.device.Service;
-import com.dhemery.os.Shell;
+import com.dhemery.victor.frankly.PublishingFrank;
 
 import java.util.List;
 
@@ -95,15 +90,22 @@ public class Victor {
      */
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 
+    private final Codec codec = new FranklyJsonCodec();
+    private final FrankRepublisher frankPublisher = new FrankRepublisher();
+    private final Router router = new URLResourceRouter("http");
+    private final OSCommandRepublisher commandPublisher = new OSCommandRepublisher();
+    private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(commandPublisher);
+    private final SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
+
     private final Configuration configuration;
     private IosApplication application;
     private IosApplicationBundle applicationBundle;
     private IosDevice device;
     private Frank frank;
     private IosSdk sdk;
-    private Shell shell;
     private IosViewAgent viewAgent;
     private IosViewFactory viewFactory;
+    private Endpoint frankEndpoint;
 
     /**
      * Create a Victor factory with the specified configuration options.
@@ -118,7 +120,7 @@ public class Victor {
      */
     public IosApplicationBundle applicationBundle() {
         if(applicationBundle == null) {
-            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell());
+            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), commandPublisher);
         }
         return applicationBundle;
     }
@@ -134,11 +136,18 @@ public class Victor {
     }
 
     /**
+     * A publisher that publishes events related to OSCommand execution.
+     */
+    public OSCommandPublisher commandEvents() {
+        return commandPublisher;
+    }
+
+    /**
      * A driver for the configured device.
      */
     public IosDevice device() {
         if(device == null) {
-            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(shell), simulator());
+            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(commandPublisher), simulator());
         }
         return device;
     }
@@ -148,14 +157,22 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
-            int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-            Codec jsonCodec = new FranklyJsonCodec();
-            Router router = new URLResourceRouter("http");
-            Endpoint endpoint = new RoutedEndpoint(router, host, port);
-            frank = new FranklyFrank(endpoint, jsonCodec);
+            frank = new PublishingFrank(frankPublisher, frankEndpoint(), codec);
         }
         return frank;
+    }
+
+    private Endpoint frankEndpoint() {
+        if(frankEndpoint == null) {
+            String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
+            int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+            frankEndpoint = new RoutedEndpoint(router, host, port);
+        }
+        return frankEndpoint;
+    }
+
+    public FrankPublisher frankEvents() {
+        return frankPublisher;
     }
 
     /**
@@ -166,16 +183,6 @@ public class Victor {
             sdk = findSdk();
         }
         return sdk;
-    }
-
-    /**
-     * The shell that Victor and its creations use to run OS commands.
-     */
-    public Shell shell() {
-        if(shell == null) {
-            shell = new Shell();
-        }
-        return shell;
     }
 
     /**
@@ -227,8 +234,6 @@ public class Victor {
     }
 
     private IosSdk findSdk() {
-        CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell());
-        SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
         if(configuration.defines(SDK_VERSION)) {
             IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
             if (userPreferredSdk.isInstalled()) return userPreferredSdk;
@@ -259,7 +264,7 @@ public class Victor {
             String simulatorBinaryPath = sdk().simulatorBinaryPath();
             String applicationBinaryPath = applicationBinaryPath();
             String deviceType = deviceType();
-            return new VictorSimulatorProcess(shell, sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType);
+            return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType, commandPublisher);
         }
         return new UserSimulatorProcess();
     }

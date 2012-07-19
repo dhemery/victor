@@ -1,9 +1,8 @@
 package com.dhemery.osx;
 
-import com.dhemery.os.Shell;
-import com.dhemery.os.ShellCommand;
-import com.dhemery.os.OSCommand;
 import com.dhemery.configuration.JsonInspector;
+import com.dhemery.os.OSCommandSubscriber;
+import com.dhemery.os.PublishingCommandBuilder;
 
 /**
  * A JSON inspector for properties read from a plist file.
@@ -11,16 +10,16 @@ import com.dhemery.configuration.JsonInspector;
 public class PListInspector extends JsonInspector {
     /**
      * @param path the absolute path to the plist file to read.
-     * @param shell the shell to use to run the {@code plist} command.
      */
-    public PListInspector(String path, Shell shell) {
-        super(plistAsJson(path, shell));
+    public PListInspector(OSCommandSubscriber publisher, String path) {
+        super(plistAsJson(publisher, path));
     }
 
-    private static String plistAsJson(String path, Shell shell) {
-        OSCommand command = new ShellCommand("plutil")
+    private static String plistAsJson(OSCommandSubscriber publisher, String path) {
+        return new PublishingCommandBuilder(publisher, "Read PList", "plutil")
                                 .withArguments("-convert", "json", "-o", "-", "--", path)
-                                .describedAs("Read PList");
-        return shell.outputFrom(command);
+                                .build()
+                                .run()
+                                .output();
     }
 }

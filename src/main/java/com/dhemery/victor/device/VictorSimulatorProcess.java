@@ -1,7 +1,7 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.os.Shell;
-import com.dhemery.os.ShellCommand;
+import com.dhemery.os.*;
+import com.dhemery.os.PublishingCommandBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class VictorSimulatorProcess implements Service {
     private final List<String> arguments = new ArrayList<String>();
-    private final Shell shell;
     private final String simulatedProcessName;
-    private final ShellCommand command;
+    private final OSCommand command;
+    private final OSCommandSubscriber publisher;
 
     /**
      * @param sdkRoot               the path to the SDK to use for the simulation
@@ -26,13 +26,13 @@ public class VictorSimulatorProcess implements Service {
      * @param applicationBinaryPath the path to the executable for the application to run
      * @param deviceType            the kind of device to simulate
      */
-    public VictorSimulatorProcess(Shell shell, String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType) {
-        this.shell = shell;
-        command = new ShellCommand(simulatorBinaryPath)
+    public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType, OSCommandSubscriber publisher) {
+        this.publisher = publisher;
+        command = new PublishingCommandBuilder(publisher, "Start Simulator", simulatorBinaryPath)
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
-                .describedAs("Start Simulator");
+                .build();
         simulatedProcessName = new File(applicationBinaryPath).getName();
     }
 
@@ -41,7 +41,7 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void start() {
-        shell.run(command);
+        command.run();
     }
 
     /**
@@ -63,6 +63,9 @@ public class VictorSimulatorProcess implements Service {
 
     private void kill(String processName) {
         String commandName = "Kill " + processName;
-        shell.run(new ShellCommand("killall").withArgument(processName).describedAs(commandName));
+        new PublishingCommandBuilder(publisher, commandName, "killall")
+                .withArgument(processName)
+                .build()
+                .run();
     }
 }

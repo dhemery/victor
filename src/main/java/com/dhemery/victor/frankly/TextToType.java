@@ -6,7 +6,7 @@ import com.dhemery.victor.frank.Frank;
  * Represents the text to type into the device's keyboard.
  * {@code TextToType} is a serializable representation of the argument to
  * {@link Frank#typeIntoKeyboard(String)}.
- * @see FranklyFrank
+ * @see PublishingFrank
  */
 public class TextToType {
     private final String text_to_type;

@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 
 /**
  * Serializes Frankly payloads and deserializes Frankly responses.
- * @see FranklyFrank
+ * @see PublishingFrank
  */
 public class FranklyJsonCodec implements Codec {
     private final Gson gson = new GsonBuilder()

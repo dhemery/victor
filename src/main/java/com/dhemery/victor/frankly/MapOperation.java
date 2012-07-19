@@ -8,7 +8,7 @@ import java.io.Serializable;
  * An operation to send a message to a set of views.
  * {@code MapOperation} is the serializable representation
  * of the arguments to {@link Frank#map}.
- * @see FranklyFrank
+ * @see PublishingFrank
  */
 public class MapOperation implements Serializable {
     private final String selector_engine;

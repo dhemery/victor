@@ -29,4 +29,6 @@ public interface OSCommand {
      * This map does not include environment variables supplied by the operating system.
      */
     Map<String,String> environment();
+
+    OSProcess run();
 }

@@ -52,17 +52,7 @@ public interface Frank {
     String orientation();
 
     /**
-     * Start publishing Frank events to a subscriber.
-     */
-    void subscribe(FrankSubscriber subscriber);
-
-    /**
      * Type text using the device's keyboard.
      */
     void typeIntoKeyboard(String text);
-
-    /**
-     * Stop publishing Frank events to a subscriber.
-     */
-    void unsubscribe(FrankSubscriber subscriber);
 }

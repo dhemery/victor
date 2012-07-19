@@ -31,9 +31,9 @@ public class OSCommandRepublisher implements OSCommandPublisher, OSCommandSubscr
      * @param command the command that started executing
      */
     @Override
-    public void started(OSCommand command) {
+    public void ran(OSCommand command) {
         for(OSCommandSubscriber subscriber : subscribers) {
-            subscriber.started(command);
+            subscriber.ran(command);
         }
     }
 

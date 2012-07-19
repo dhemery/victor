@@ -17,7 +17,7 @@ public interface OSCommandSubscriber {
      * @param command the command that started executing
      *
      */
-    void started(OSCommand command);
+    void ran(OSCommand command);
 
     /**
      * Report the output written by a command.
