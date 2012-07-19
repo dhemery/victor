@@ -9,10 +9,10 @@ import java.util.List;
  * @see FranklyFrank
  */
 public class MessageResponse {
-    private final String details;
-    private final String reason;
-    private final List<String> results;
-    private final boolean succeeded;
+    public final String details;
+    public final String reason;
+    public final List<String> results;
+    public final boolean succeeded;
 
     /**
      * Create a response to a Frankly operation.

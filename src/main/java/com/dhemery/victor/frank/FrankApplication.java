@@ -18,7 +18,12 @@ public class FrankApplication implements IosApplication {
 
     @Override
     public boolean isRunning() {
-        return frank.ping();
+        try {
+            frank.accessibilityCheck();
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     @Override

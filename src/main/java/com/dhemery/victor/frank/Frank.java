@@ -8,6 +8,13 @@ import java.util.List;
  * An agent that can communicate with a Frank server.
  */
 public interface Frank {
+    /**
+     * Report whether accessibility is enabled in the device.
+     * Note that Frank automatically enables accessibility,
+     * so this method is obsolete.
+     */
+    boolean accessibilityCheck();
+
     //TODO: explain null return value.
     /**
      * Send a message to the application delegate.
@@ -16,6 +23,12 @@ public interface Frank {
      * @return the application delegate's response to the message.
      */
     String appExec(String name, Object... arguments);
+
+    //todo: Describe the plist files that define what properties are dumped.
+    /**
+     * Retrieve a JSON description of the tree of views in the application's main window.
+     */
+    String dump();
 
     /**
      * The endpoint through which this Frank agent communicates with the Frank server.
@@ -39,12 +52,17 @@ public interface Frank {
     String orientation();
 
     /**
-     * Report whether the Frank server responds to requests.
+     * Start publishing Frank events to a subscriber.
      */
-    boolean ping();
+    void subscribe(FrankSubscriber subscriber);
 
     /**
      * Type text using the device's keyboard.
      */
     void typeIntoKeyboard(String text);
+
+    /**
+     * Stop publishing Frank events to a subscriber.
+     */
+    void unsubscribe(FrankSubscriber subscriber);
 }

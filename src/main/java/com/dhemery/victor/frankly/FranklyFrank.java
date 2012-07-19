@@ -1,7 +1,9 @@
 package com.dhemery.victor.frankly;
 
+import com.dhemery.network.Codec;
+import com.dhemery.network.Endpoint;
 import com.dhemery.victor.frank.Frank;
-import com.dhemery.network.*;
+import com.dhemery.victor.frank.FrankSubscriber;
 
 import java.util.List;
 
@@ -21,31 +23,37 @@ import java.util.List;
  *         <th>Result Type</th>
  *     </tr>
  *     <tr>
- *         <td>{@link #appExec}</td>
+ *         <td>{@link #accessibilityCheck()}</td>
+ *         <td>{@code "accessibility_check"}</td>
+ *         <td>none</td>
+ *         <td>{@link AccessibilityCheckResponse}</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #appExec(String, Object...)}</td>
  *         <td>{@code "app_exec"}</td>
  *         <td>{@link Operation}</td>
  *         <td>{@link MessageResponse}</td>
  *     </tr>
  *     <tr>
- *         <td>{@link #map}</td>
+ *         <td>{@link #dump()}</td>
+ *         <td>{@code "dump"}</td>
+ *         <td>none</td>
+ *         <td>String</td>
+ *     </tr>
+ *     <tr>
+ *         <td>{@link #map(String, String, String, Object...)}</td>
  *         <td>{@code "map"}</td>
  *         <td>{@link MapOperation}</td>
  *         <td>{@link MessageResponse}</td>
  *     </tr>
  *     <tr>
- *         <td>{@link #orientation}</td>
+ *         <td>{@link #orientation()}</td>
  *         <td>{@code "orientation"}</td>
  *         <td>none</td>
  *         <td>{@link String}</td>
  *     </tr>
  *     <tr>
- *         <td>{@link #ping}</td>
- *         <td>{@code "ping"}</td>
- *         <td>none</td>
- *         <td>{@code boolean}</td>
- *     </tr>
- *     <tr>
- *         <td>{@link #typeIntoKeyboard}</td>
+ *         <td>{@link #typeIntoKeyboard(String)}</td>
  *         <td>{@code "type_into_keyboard"}</td>
  *         <td>{@link TextToType}</td>
  *         <td>none</td>
@@ -56,19 +64,21 @@ import java.util.List;
  * Messages that do not carry a payload are sent using HTTP GET.
  * </p>
  * <p>
- * Note that {@code "ping"} is not a valid Frankly message.
- * {@code FranklyFrank} sends {@code "ping"} only to generate an HTTP response
- * to determine whether the Frank server responds to messages.
+ * The {@code ping} method sends the {@code "accessibility_check"} message
+ * because it's a cheap way to test whether the server responds.
  * </p>
  */
 public class FranklyFrank implements Frank {
+    private static final String ACCESSIBILITY_CHECK_REQUEST = "accessibility_check";
+    private static final String DUMP_REQUEST = "dump";
     private static final String ORIENTATION_REQUEST = "orientation";
-    private static final String PING_REQUEST = "ping";
-    private static final String APP_EXEC = "app_exec";
-    private static final String MAP = "map";
-    private static final String TYPE_INTO_KEYBOARD = "type_into_keyboard";
+    private static final String APP_EXEC_REQUEST = "app_exec";
+    private static final String MAP_REQUEST = "map";
+    private static final String TYPE_INTO_KEYBOARD_REQUEST = "type_into_keyboard";
+    private final FrankPublisher publish = new FrankPublisher();
     private final Endpoint endpoint;
     private final Codec codec;
+    private FrankPublisher subscribers = new FrankPublisher();
 
     /**
      * Create a Frank agent to communicate with the Frank server at the given endpoint.
@@ -81,43 +91,69 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
+    public boolean accessibilityCheck() {
+        publish.accessibilityCheckRequest();
+        AccessibilityCheckResponse response = get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
+        boolean accessibilityEnabled = response.accessibilityEnabled();
+        publish.accessibilityCheckResponse(response);
+        return accessibilityEnabled;
+    }
+
+    @Override
     public String appExec(String name, Object...arguments) {
+        publish.appExecRequest(name, arguments);
         Operation operation = new Operation(name, arguments);
-        MessageResponse response = put(APP_EXEC, operation);
+        MessageResponse response = put(APP_EXEC_REQUEST, operation, MessageResponse.class);
+        publish.appExecResponse(name, arguments, response);
         return response.results().get(0);
     }
 
     @Override
+    public String dump() {
+        publish.dumpRequest();
+        String response = get(DUMP_REQUEST);
+        publish.dumpResponse(response);
+        return response;
+    }
+
+    @Override
     public List<String> map(String engine, String query, String name, Object...arguments) {
+        publish.mapRequest(engine, query, name, arguments);
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
-        MessageResponse response = put(MAP, mapOperation);
+        MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
+        publish.mapResponse(engine, query, name, arguments, response);
         return response.results();
     }
 
     @Override
     public String orientation() {
-        String response = get(ORIENTATION_REQUEST);
-        return response;
+        publish.orientationRequest();
+        OrientationResponse response = get(ORIENTATION_REQUEST, OrientationResponse.class);
+        publish.orientationResponse(response);
+        return response.orientation();
     }
 
     @Override
-    public boolean ping() {
-        try {
-            get(PING_REQUEST);
-            return true;
-        } catch (Throwable ignored) {
-            return false;
-        }
+    public void subscribe(FrankSubscriber subscriber) {
+        subscribers.subscribe(subscriber);
     }
 
     @Override
     public void typeIntoKeyboard(String text) {
+        publish.typeIntoKeyboardRequest(text);
         TextToType textToType = new TextToType(text);
-        put(TYPE_INTO_KEYBOARD, textToType);
+        put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
+        publish.typeIntoKeyboardResponse();
     }
 
-    @Override public Endpoint endpoint() {
+    @Override
+    public void unsubscribe(FrankSubscriber subscriber) {
+        subscribers.unsubscribe(subscriber);
+    }
+
+    @Override
+    public Endpoint endpoint() {
         return endpoint;
     }
 
@@ -125,9 +161,14 @@ public class FranklyFrank implements Frank {
         return endpoint.get(path);
     }
 
-    private MessageResponse put(String path, Object payload) {
+    private <T> T get(String request, Class<T> responseType) {
+        String rawResponse = get(request);
+        return codec.decode(rawResponse, responseType);
+    }
+
+    private <T> T put(String path, Object payload, Class<T> responseType) {
         String message = codec.encode(payload);
-        String response = endpoint.put(path, message);
-        return codec.decode(response, MessageResponse.class);
+        String rawResponse = endpoint.put(path, message);
+        return codec.decode(rawResponse, responseType);
     }
 }
