@@ -5,16 +5,19 @@ import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
-import com.dhemery.os.PublishingShell;
-import com.dhemery.os.Shell;
+import com.dhemery.os.*;
+import com.dhemery.osx.AppleScriptShell;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkItemKey;
 import com.dhemery.victor.discovery.SdkItemSource;
-import com.dhemery.victor.frank.*;
+import com.dhemery.victor.frank.Frank;
+import com.dhemery.victor.frank.FrankApplication;
+import com.dhemery.victor.frank.FrankViewAgent;
+import com.dhemery.victor.frank.PublishedFrank;
+import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
-import com.dhemery.victor.frankly.PublishingFrank;
 import com.google.common.eventbus.EventBus;
 
 import java.util.List;
@@ -94,7 +97,8 @@ public class Victor {
     private final Codec codec = new FranklyJsonCodec();
     private final Router router = new URLResourceRouter("http");
     private final EventBus eventBus = new EventBus("Victor");
-    private final Shell shell = new PublishingShell(eventBus);
+    private final Shell shell = new PublishedShell(eventBus, shell());
+
     private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell);
     private final SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
 
@@ -141,7 +145,9 @@ public class Victor {
      */
     public IosDevice device() {
         if(device == null) {
-            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(shell), simulator());
+            AppleScriptShell appleScriptShell = new AppleScriptShell(shell);
+            SimulatorApplication simulatorApplication = new SimulatorApplication(appleScriptShell);
+            device = new SimulatedIosDevice(deviceType(), simulatorApplication, simulator());
         }
         return device;
     }
@@ -155,7 +161,7 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            frank = new PublishingFrank(eventBus, frankEndpoint(), codec);
+            frank = new PublishedFrank(eventBus, new FranklyFrank(frankEndpoint(), codec));
         }
         return frank;
     }
@@ -252,6 +258,10 @@ public class Victor {
         return configuration.option(property);
     }
 
+    private static Shell shell() {
+        return new FactoryBasedShell(new RuntimeCommandFactory());
+    }
+
     private Service simulator() {
         if (victorOwnsSimulator()) {
             String sdkPath = sdk().path();
@@ -262,4 +272,5 @@ public class Victor {
         }
         return new UserSimulatorProcess();
     }
+
 }

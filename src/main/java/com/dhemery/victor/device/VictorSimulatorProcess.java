@@ -1,11 +1,9 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.os.*;
-import com.dhemery.os.OSCommandBuilder;
+import com.dhemery.os.RunnableCommand;
+import com.dhemery.os.Shell;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Interacts with an iOS simulator process owned by Victor.
@@ -15,9 +13,8 @@ import java.util.List;
  * @author Dale Emery
  */
 public class VictorSimulatorProcess implements Service {
-    private final List<String> arguments = new ArrayList<String>();
     private final String simulatedProcessName;
-    private final OSCommand command;
+    private final RunnableCommand startCommand;
     private final Shell shell;
 
     /**
@@ -28,7 +25,7 @@ public class VictorSimulatorProcess implements Service {
      */
     public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType, Shell shell) {
         this.shell = shell;
-        command = new OSCommandBuilder("Start Simulator", simulatorBinaryPath)
+        startCommand = shell.command("Start Simulator", simulatorBinaryPath)
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
@@ -41,7 +38,7 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void start() {
-        shell.run(command);
+        startCommand.run();
     }
 
     /**
@@ -63,9 +60,9 @@ public class VictorSimulatorProcess implements Service {
 
     private void kill(String processName) {
         String commandName = "Kill " + processName;
-        OSCommand command = new OSCommandBuilder(commandName, "killall")
+        shell.command(commandName, "killall")
                 .withArgument(processName)
-                .build();
-        shell.run(command);
+                .build()
+                .run();
     }
 }

@@ -1,8 +1,6 @@
 package com.dhemery.victor.discovery;
 
 import com.dhemery.configuration.CacheSource;
-import com.dhemery.os.OSCommand;
-import com.dhemery.os.OSCommandBuilder;
 import com.dhemery.os.Shell;
 
 /**
@@ -28,9 +26,10 @@ public class SdkItemSource implements CacheSource<SdkItemKey,String> {
      */
     @Override
     public String value(SdkItemKey key) {
-        OSCommand command = new OSCommandBuilder("Request SDK Information", "xcodebuild")
+        return shell.command("Request SDK Information", "xcodebuild")
                 .withArguments("-sdk", key.sdkname(), "-version", key.infoitem())
-                .build();
-        return shell.run(command).output();
+                .build()
+                .run()
+                .output();
     }
 }

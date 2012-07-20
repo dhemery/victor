@@ -12,7 +12,7 @@ import java.util.List;
  * of the argument to {@link Frank#appExec}
  * and of the final two arguments to {@link Frank#map}.
  * </ul>
- * @see PublishingFrank
+ * @see FranklyFrank
  */
 public class Operation {
     public final String method;

@@ -1,4 +1,4 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +73,7 @@ public class FrankEvent {
             this.query = query;
             this.name = name;
             this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
-            this.returnValues = Collections.unmodifiableList(returnValues);;
+            this.returnValues = Collections.unmodifiableList(returnValues);
         }
     }
 

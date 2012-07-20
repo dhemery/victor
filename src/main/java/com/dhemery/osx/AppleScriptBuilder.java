@@ -1,16 +1,16 @@
 package com.dhemery.osx;
 
-import com.dhemery.os.OSCommandBuilder;
-import com.dhemery.os.OSCommand;
+import com.dhemery.Builder;
+import com.dhemery.os.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AppleScriptBuilder {
-    private final OSCommandBuilder builder;
+public class AppleScriptBuilder implements Builder<RunnableCommand> {
+    private final OSCommandBuilder<RunnableCommand> builder;
 
-    public AppleScriptBuilder(String description) {
-        builder = new OSCommandBuilder(description, "osascript");
+    public AppleScriptBuilder(Shell shell, String description) {
+        builder = shell.command(description, "osascript");
     }
 
     /**
@@ -44,7 +44,8 @@ public class AppleScriptBuilder {
         return this;
     }
 
-    public OSCommand build() {
+    @Override
+    public RunnableCommand build() {
         return builder.build();
     }
 }

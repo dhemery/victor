@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * An operation to send a message to a set of views.
  * {@code MapOperation} is the serializable representation
  * of the arguments to {@link Frank#map}.
- * @see PublishingFrank
+ * @see FranklyFrank
  */
 public class MapOperation {
     /**
