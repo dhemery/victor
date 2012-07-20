@@ -29,7 +29,7 @@ public class VictorSimulatorProcess implements Service {
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
-                .build();
+                .get();
         simulatedProcessName = new File(applicationBinaryPath).getName();
     }
 
@@ -62,7 +62,6 @@ public class VictorSimulatorProcess implements Service {
         String commandName = "Kill " + processName;
         shell.command(commandName, "killall")
                 .withArgument(processName)
-                .build()
-                .run();
+                .get().run();
     }
 }

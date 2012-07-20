@@ -1,12 +1,14 @@
 package com.dhemery.osx;
 
-import com.dhemery.Builder;
-import com.dhemery.os.*;
+import com.dhemery.os.OSCommandBuilder;
+import com.dhemery.os.RunnableCommand;
+import com.dhemery.os.Shell;
+import com.google.common.base.Supplier;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AppleScriptBuilder implements Builder<RunnableCommand> {
+public class AppleScriptBuilder implements Supplier<RunnableCommand> {
     private final OSCommandBuilder<RunnableCommand> builder;
 
     public AppleScriptBuilder(Shell shell, String description) {
@@ -45,7 +47,7 @@ public class AppleScriptBuilder implements Builder<RunnableCommand> {
     }
 
     @Override
-    public RunnableCommand build() {
-        return builder.build();
+    public RunnableCommand get() {
+        return builder.get();
     }
 }

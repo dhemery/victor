@@ -36,8 +36,7 @@ public class ScriptableApplication implements OsxApplication {
         apple.script("Type Simulator Keys")
                 .withLine(activateApplication)
                 .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()))
-                .build()
-                .run();
+                .get().run();
     }
 
     @Override
@@ -49,8 +48,7 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(String.format(CLICK_MENU_ITEM_OF_MENU, item, menu))
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .build()
-                .run();
+                .get().run();
     }
 
     @Override
@@ -64,7 +62,6 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(END_TELL)
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .build()
-                .run();
+                .get().run();
     }
 }

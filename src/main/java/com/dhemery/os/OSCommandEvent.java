@@ -1,6 +1,6 @@
 package com.dhemery.os;
 
-public class OSCommandEvent {
+public interface OSCommandEvent {
     public static class WillRun {
         public final OSCommand command;
 

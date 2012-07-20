@@ -28,8 +28,6 @@ public class SdkItemSource implements CacheSource<SdkItemKey,String> {
     public String value(SdkItemKey key) {
         return shell.command("Request SDK Information", "xcodebuild")
                 .withArguments("-sdk", key.sdkname(), "-version", key.infoitem())
-                .build()
-                .run()
-                .output();
+                .get().run().output();
     }
 }

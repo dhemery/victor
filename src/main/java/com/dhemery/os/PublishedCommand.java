@@ -1,15 +1,15 @@
 package com.dhemery.os;
 
-import com.google.common.eventbus.EventBus;
+import com.dhemery.publishing.Publisher;
 
 import java.util.List;
 import java.util.Map;
 
 public class PublishedCommand implements RunnableCommand {
-    private final EventBus publisher;
+    private final Publisher<Object> publisher;
     private final RunnableCommand command;
 
-    public PublishedCommand(EventBus publisher, RunnableCommand command) {
+    public PublishedCommand(Publisher<Object> publisher, RunnableCommand command) {
         this.publisher = publisher;
         this.command = command;
     }
@@ -36,9 +36,9 @@ public class PublishedCommand implements RunnableCommand {
 
     @Override
     public OSProcess run() {
-        publisher.post(new OSCommandEvent.WillRun(command));
+        publisher.publish(new OSCommandEvent.WillRun(command));
         OSProcess process = command.run();
-        publisher.post(new OSCommandEvent.Ran(command));
+        publisher.publish(new OSCommandEvent.Ran(command));
         return new PublishedProcess(publisher, command, process);
     }
 }

@@ -1,11 +1,17 @@
 package com.dhemery.victor;
 
+import com.dhemery.publishing.Distributor;
+import com.dhemery.publishing.EventBusPublisher;
+import com.dhemery.publishing.Publisher;
 import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
-import com.dhemery.os.*;
+import com.dhemery.os.FactoryBasedShell;
+import com.dhemery.os.PublishedShell;
+import com.dhemery.os.RuntimeCommandFactory;
+import com.dhemery.os.Shell;
 import com.dhemery.osx.AppleScriptShell;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
@@ -95,9 +101,9 @@ public class Victor {
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 
     private final Codec codec = new FranklyJsonCodec();
+    private final EventBusPublisher publisher = eventBusPublisher("Victor");
     private final Router router = new URLResourceRouter("http");
-    private final EventBus eventBus = new EventBus("Victor");
-    private final Shell shell = new PublishedShell(eventBus, shell());
+    private final Shell shell = publishedShell(publisher);
 
     private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell);
     private final SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
@@ -152,8 +158,8 @@ public class Victor {
         return device;
     }
 
-    public EventBus events() {
-        return eventBus;
+    public Distributor<Object> events() {
+        return publisher;
     }
 
     /**
@@ -161,7 +167,7 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            frank = new PublishedFrank(eventBus, new FranklyFrank(frankEndpoint(), codec));
+            frank = new PublishedFrank(new EventBus("Victor"), new FranklyFrank(frankEndpoint(), codec));
         }
         return frank;
     }
@@ -233,6 +239,11 @@ public class Victor {
         return option(DEVICE_TYPE, defaultDeviceType());
     }
 
+    private static EventBusPublisher eventBusPublisher(String name) {
+        EventBus eventBus = new EventBus(name);
+        return new EventBusPublisher(eventBus);
+    }
+
     private IosSdk findSdk() {
         if(configuration.defines(SDK_VERSION)) {
             IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
@@ -258,8 +269,10 @@ public class Victor {
         return configuration.option(property);
     }
 
-    private static Shell shell() {
-        return new FactoryBasedShell(new RuntimeCommandFactory());
+    private static Shell publishedShell(Publisher<Object> publisher) {
+        RuntimeCommandFactory commandFactory = new RuntimeCommandFactory();
+        FactoryBasedShell factoryBasedShell = new FactoryBasedShell(commandFactory);
+        return new PublishedShell(publisher, factoryBasedShell);
     }
 
     private Service simulator() {

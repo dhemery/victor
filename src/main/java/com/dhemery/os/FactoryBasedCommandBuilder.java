@@ -19,7 +19,7 @@ import java.util.*;
  * in the order they were added.
  * </p>
  * <p>
- * Each method except {@link #build} returns {@code this},
+ * Each method except {@link #get} returns {@code this},
  * so you can chain calls in a fluent builder expression.
  * </p>
  */
@@ -84,7 +84,7 @@ public class FactoryBasedCommandBuilder implements OSCommandBuilder<RunnableComm
     }
 
     @Override
-    public RunnableCommand build() {
+    public RunnableCommand get() {
         return factory.command(description, path, arguments, environment);
     }
 }

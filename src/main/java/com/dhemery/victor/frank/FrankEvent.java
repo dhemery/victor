@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class FrankEvent {
+public interface FrankEvent {
     public static class WillRequestAccessibilityCheck {}
 
     public static class AccessibilityCheckReturned {
