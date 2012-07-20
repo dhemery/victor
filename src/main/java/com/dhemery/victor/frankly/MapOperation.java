@@ -1,8 +1,7 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
-
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * An operation to send a message to a set of views.
@@ -10,10 +9,22 @@ import java.io.Serializable;
  * of the arguments to {@link Frank#map}.
  * @see PublishingFrank
  */
-public class MapOperation implements Serializable {
-    private final String selector_engine;
-    private final String query;
-    private final Operation operation;
+public class MapOperation {
+    /**
+     * The name of the selector engine that will select recipients for the message.
+     */
+    @SerializedName("selector_engine")
+    public final String engine;
+
+    /**
+     * The pattern that the selector engine will use to select recipients for the message.
+     */
+    public final String query;
+
+    /**
+     * The message to send to each recipient selected by the selector engine.
+     */
+    public final Operation operation;
 
     /**
      * Create an operation to send a message to a set of views.
@@ -22,23 +33,8 @@ public class MapOperation implements Serializable {
      * @param operation the message to send to each recipient
      */
     public MapOperation(String engine, String query, Operation operation) {
-        selector_engine = engine;
+        this.engine = engine;
         this.query = query;
         this.operation = operation;
     }
-
-    /**
-     * The name of the selector engine that will select recipients for the message.
-     */
-    public String engine() { return selector_engine; }
-
-    /**
-     * The pattern that the selector engine will use to select recipients for the message.
-     */
-    public String query() { return query; }
-
-    /**
-     * The message to send to each recipient selected by the selector engine.
-     */
-    public Operation operation() { return operation; }
 }

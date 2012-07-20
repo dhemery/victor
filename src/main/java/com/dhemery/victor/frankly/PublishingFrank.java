@@ -93,8 +93,8 @@ public class PublishingFrank implements Frank {
     public boolean accessibilityCheck() {
         publisher.post(new FrankEvent.WillRequestAccessibilityCheck());
         AccessibilityCheckResponse response = get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
-        boolean accessibilityEnabled = response.accessibilityEnabled();
-        publisher.post(new FrankEvent.AccessibilityCheckReturned(response));
+        boolean accessibilityEnabled = response.accessibilityEnabled;
+        publisher.post(new FrankEvent.AccessibilityCheckReturned(accessibilityEnabled));
         return accessibilityEnabled;
     }
 
@@ -103,8 +103,9 @@ public class PublishingFrank implements Frank {
         publisher.post(new FrankEvent.WillRequestAppExec(name, arguments));
         Operation operation = new Operation(name, arguments);
         MessageResponse response = put(APP_EXEC_REQUEST, operation, MessageResponse.class);
-        publisher.post(new FrankEvent.AppExecReturned(name, arguments, response));
-        return response.results().get(0);
+        String result = response.results.get(0);
+        publisher.post(new FrankEvent.AppExecReturned(name, arguments, result));
+        return result;
     }
 
     @Override
@@ -121,23 +122,25 @@ public class PublishingFrank implements Frank {
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
         MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
-        publisher.post(new FrankEvent.MapReturned(engine, query, name, arguments, response));
-        return response.results();
+        List<String> results = response.results;
+        publisher.post(new FrankEvent.MapReturned(engine, query, name, arguments, results));
+        return results;
     }
 
     @Override
     public String orientation() {
         publisher.post(new FrankEvent.WillRequestOrientation());
         OrientationResponse response = get(ORIENTATION_REQUEST, OrientationResponse.class);
-        publisher.post(new FrankEvent.OrientationReturned(response));
-        return response.orientation();
+        String orientation = response.orientation;
+        publisher.post(new FrankEvent.OrientationReturned(orientation));
+        return orientation;
     }
 
     @Override
     public void typeIntoKeyboard(String text) {
         publisher.post(new FrankEvent.WillRequestTypeIntoKeyboard(text));
         TextToType textToType = new TextToType(text);
-        put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
+        MessageResponse response = put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
         publisher.post(new FrankEvent.TypeIntoKeyboardReturned());
     }
 

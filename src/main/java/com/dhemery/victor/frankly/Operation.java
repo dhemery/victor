@@ -1,9 +1,8 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
+import com.google.common.collect.ImmutableList;
 
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,9 +14,9 @@ import java.util.List;
  * </ul>
  * @see PublishingFrank
  */
-public class Operation implements Serializable {
-    private final String method;
-    private final Object[] arguments;
+public class Operation {
+    public final String method;
+    public final List<Object> arguments;
 
     /**
      * Create a message to send to a set of objects.
@@ -26,16 +25,6 @@ public class Operation implements Serializable {
      */
     public Operation(String method, Object... arguments) {
         this.method = method;
-        this.arguments = arguments;
+        this.arguments = ImmutableList.copyOf(arguments);
     }
-
-    /**
-     * The name of the message to send.
-     */
-    public String method() { return method; }
-
-    /**
-     * The arguments to send with the message.
-     */
-    public List<Object> arguments() { return Arrays.asList(arguments); }
 }

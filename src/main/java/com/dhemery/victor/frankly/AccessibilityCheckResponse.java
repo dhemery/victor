@@ -1,9 +1,8 @@
 package com.dhemery.victor.frankly;
 
-public class AccessibilityCheckResponse {
-    private boolean accessibility_enabled;
+import com.google.gson.annotations.SerializedName;
 
-    public boolean accessibilityEnabled() {
-        return accessibility_enabled;
-    }
+public class AccessibilityCheckResponse {
+    @SerializedName("accessibility_enabled")
+    public final boolean accessibilityEnabled = false;
 }

@@ -1,53 +1,53 @@
 package com.dhemery.victor.frankly;
 
-import com.google.common.collect.ImmutableList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public interface FrankEvent {
-    class WillRequestAccessibilityCheck {}
+public class FrankEvent {
+    public static class WillRequestAccessibilityCheck {}
 
-    class AccessibilityCheckReturned {
-        public final AccessibilityCheckResponse response;
+    public static class AccessibilityCheckReturned {
+        public final boolean enabled;
 
-        public AccessibilityCheckReturned(AccessibilityCheckResponse response) {
-            this.response = response;
+        public AccessibilityCheckReturned(boolean enabled) {
+            this.enabled = enabled;
         }
     }
 
-    public class WillRequestAppExec {
+    public static class WillRequestAppExec {
         public final String name;
         public final List<Object> arguments;
 
         public WillRequestAppExec(String name, Object[] arguments) {
             this.name = name;
-            this.arguments = ImmutableList.copyOf(arguments);
+            this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
         }
     }
 
-    public class AppExecReturned {
+    public static class AppExecReturned {
         public final String name;
         public final List<Object> arguments;
-        public final MessageResponse response;
+        public final String returnValue;
 
-        public AppExecReturned(String name, Object[] arguments, MessageResponse response) {
+        public AppExecReturned(String name, Object[] arguments, String returnValue) {
             this.name = name;
-            this.arguments = ImmutableList.copyOf(arguments);
-            this.response = response;
+            this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
+            this.returnValue = returnValue;
         }
     }
 
-    public class WillRequestDump {}
+    public static class WillRequestDump {}
 
-    public class DumpReturned {
-        public final String response;
+    public static class DumpReturned {
+        public final String viewTreeJson;
 
-        public DumpReturned(String response) {
-            this.response = response;
+        public DumpReturned(String viewTreeJson) {
+            this.viewTreeJson = viewTreeJson;
         }
     }
 
-    public class WillRequestMap {
+    public static class WillRequestMap {
         public final String engine;
         public final String query;
         public final String name;
@@ -57,37 +57,37 @@ public interface FrankEvent {
             this.engine = engine;
             this.query = query;
             this.name = name;
-            this.arguments = ImmutableList.copyOf(arguments);
+            this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
         }
     }
 
-    public class MapReturned {
+    public static class MapReturned {
         public final String engine;
         public final String query;
         public final String name;
         public final List<Object> arguments;
-        public final MessageResponse response;
+        public final List<String> returnValues;
 
-        public MapReturned(String engine, String query, String name, Object[] arguments, MessageResponse response) {
+        public MapReturned(String engine, String query, String name, Object[] arguments, List<String> returnValues) {
             this.engine = engine;
             this.query = query;
             this.name = name;
-            this.arguments = ImmutableList.copyOf(arguments);
-            this.response = response;
+            this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
+            this.returnValues = Collections.unmodifiableList(returnValues);;
         }
     }
 
-    public class WillRequestOrientation {}
+    public static class WillRequestOrientation {}
 
-    public class OrientationReturned {
-        public final OrientationResponse response;
+    public static class OrientationReturned {
+        public final String orientation;
 
-        public OrientationReturned(OrientationResponse response) {
-            this.response = response;
+        public OrientationReturned(String orientation) {
+            this.orientation = orientation;
         }
     }
 
-    public class WillRequestTypeIntoKeyboard {
+    public static class WillRequestTypeIntoKeyboard {
         public final String text;
 
         public WillRequestTypeIntoKeyboard(String text) {
@@ -95,5 +95,5 @@ public interface FrankEvent {
         }
     }
 
-    public class TypeIntoKeyboardReturned {}
+    public static class TypeIntoKeyboardReturned {}
 }

@@ -1,6 +1,7 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents the text to type into the device's keyboard.
@@ -9,17 +10,13 @@ import com.dhemery.victor.frank.Frank;
  * @see PublishingFrank
  */
 public class TextToType {
-    private final String text_to_type;
+    @SerializedName("text_to_type")
+    public final String text;
 
     /**
      * Create a representation of the text to type into the device's keyboard.
      */
     public TextToType(String text) {
-        text_to_type = text;
+        this.text = text;
     }
-
-    /**
-     * The text to type into the keyboard.
-     */
-    public String text() { return text_to_type; }
 }

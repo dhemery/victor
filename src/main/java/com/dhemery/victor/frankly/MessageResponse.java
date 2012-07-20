@@ -23,29 +23,8 @@ public class MessageResponse {
      */
     public MessageResponse(boolean succeeded, List<String> results, String reason, String details) {
         this.succeeded = succeeded;
-        this.results = results;
+        this.results = Collections.unmodifiableList(results);
         this.reason = reason;
         this.details = details;
     }
-
-    /**
-     * Report whether the operation succeeded.
-     */
-    public boolean succeeded() { return succeeded; }
-
-    /**
-     * The responses returned by the operation's recipients,
-     * one response per recipient.
-     */
-    public List<String> results() { return Collections.unmodifiableList(results); }
-
-    /**
-     * An explanation of the failure (if the operation failed).
-     */
-    public String reason() { return reason; }
-
-    /**
-     * Additional details about the failure (if the operation failed).
-     */
-    public String details() { return details; }
 }
