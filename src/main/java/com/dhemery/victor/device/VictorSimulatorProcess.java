@@ -1,7 +1,7 @@
 package com.dhemery.victor.device;
 
 import com.dhemery.os.*;
-import com.dhemery.os.PublishingCommandBuilder;
+import com.dhemery.os.OSCommandBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class VictorSimulatorProcess implements Service {
     private final List<String> arguments = new ArrayList<String>();
     private final String simulatedProcessName;
     private final OSCommand command;
-    private final OSCommandSubscriber publisher;
+    private final Shell shell;
 
     /**
      * @param sdkRoot               the path to the SDK to use for the simulation
@@ -26,9 +26,9 @@ public class VictorSimulatorProcess implements Service {
      * @param applicationBinaryPath the path to the executable for the application to run
      * @param deviceType            the kind of device to simulate
      */
-    public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType, OSCommandSubscriber publisher) {
-        this.publisher = publisher;
-        command = new PublishingCommandBuilder(publisher, "Start Simulator", simulatorBinaryPath)
+    public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType, Shell shell) {
+        this.shell = shell;
+        command = new OSCommandBuilder("Start Simulator", simulatorBinaryPath)
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
@@ -41,7 +41,7 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void start() {
-        command.run();
+        shell.run(command);
     }
 
     /**
@@ -63,9 +63,9 @@ public class VictorSimulatorProcess implements Service {
 
     private void kill(String processName) {
         String commandName = "Kill " + processName;
-        new PublishingCommandBuilder(publisher, commandName, "killall")
+        OSCommand command = new OSCommandBuilder(commandName, "killall")
                 .withArgument(processName)
-                .build()
-                .run();
+                .build();
+        shell.run(command);
     }
 }

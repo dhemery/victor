@@ -23,15 +23,13 @@ import java.util.*;
  * so you can chain calls in a fluent builder expression.
  * </p>
  */
-public class PublishingCommandBuilder {
-    private final OSCommandSubscriber publisher;
+public class OSCommandBuilder {
     private final String description;
     private final String path;
     private final List<String> arguments = new ArrayList<String>();
     private final Map<String, String> environment = new HashMap<String, String>();
 
-    public PublishingCommandBuilder(OSCommandSubscriber publisher, String description, String path) {
-        this.publisher = publisher;
+    public OSCommandBuilder(String description, String path) {
         this.description = description;
         this.path = path;
     }
@@ -41,7 +39,7 @@ public class PublishingCommandBuilder {
      * @param argument the argument to append
      * @return this command builder
      */
-    public PublishingCommandBuilder withArgument(String argument) {
+    public OSCommandBuilder withArgument(String argument) {
         arguments.add(argument);
         return this;
     }
@@ -51,7 +49,7 @@ public class PublishingCommandBuilder {
      * @param arguments the arguments to append
      * @return this command builder
      */
-    public PublishingCommandBuilder withArguments(String... arguments) {
+    public OSCommandBuilder withArguments(String... arguments) {
         this.arguments.addAll(Arrays.asList(arguments));
         return this;
     }
@@ -61,7 +59,7 @@ public class PublishingCommandBuilder {
      * @param arguments the arguments to append
      * @return this command builder
      */
-    public PublishingCommandBuilder withArguments(List<String> arguments) {
+    public OSCommandBuilder withArguments(List<String> arguments) {
         this.arguments.addAll(arguments);
         return this;
     }
@@ -74,7 +72,7 @@ public class PublishingCommandBuilder {
      * @param environment a map containing the variables to add
      * @return this command builder
      */
-    public PublishingCommandBuilder withEnvironment(Map<String, String> environment) {
+    public OSCommandBuilder withEnvironment(Map<String, String> environment) {
         this.environment.putAll(environment);
         return this;
     }
@@ -83,6 +81,6 @@ public class PublishingCommandBuilder {
      * Create a command from the current state of this builder.
      */
     public OSCommand build() {
-        return new PublishingCommand(publisher, description, path, arguments, environment);
+        return new OSCommand(description, path, arguments, environment);
     }
 }

@@ -3,7 +3,7 @@ package com.dhemery.victor.frankly;
 import com.dhemery.network.Codec;
 import com.dhemery.network.Endpoint;
 import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FrankSubscriber;
+import com.google.common.eventbus.EventBus;
 
 import java.util.List;
 
@@ -74,7 +74,7 @@ public class PublishingFrank implements Frank {
     private static final String APP_EXEC_REQUEST = "app_exec";
     private static final String MAP_REQUEST = "map";
     private static final String TYPE_INTO_KEYBOARD_REQUEST = "type_into_keyboard";
-    private final FrankSubscriber publish;
+    private final EventBus publisher;
     private final Endpoint endpoint;
     private final Codec codec;
 
@@ -83,62 +83,62 @@ public class PublishingFrank implements Frank {
      * @param endpoint the endpoint at which the Frank server can be accessed.
      * @param codec codec to serialize Frankly payloads and deserialize Frankly responses.
      */
-    public PublishingFrank(FrankSubscriber subscriber, Endpoint endpoint, Codec codec) {
-        publish = subscriber;
+    public PublishingFrank(EventBus publisher, Endpoint endpoint, Codec codec) {
+        this.publisher = publisher;
         this.endpoint = endpoint;
         this.codec = codec;
     }
 
     @Override
     public boolean accessibilityCheck() {
-        publish.accessibilityCheckRequest();
+        publisher.post(new FrankEvent.WillRequestAccessibilityCheck());
         AccessibilityCheckResponse response = get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
         boolean accessibilityEnabled = response.accessibilityEnabled();
-        publish.accessibilityCheckResponse(response);
+        publisher.post(new FrankEvent.AccessibilityCheckReturned(response));
         return accessibilityEnabled;
     }
 
     @Override
     public String appExec(String name, Object...arguments) {
-        publish.appExecRequest(name, arguments);
+        publisher.post(new FrankEvent.WillRequestAppExec(name, arguments));
         Operation operation = new Operation(name, arguments);
         MessageResponse response = put(APP_EXEC_REQUEST, operation, MessageResponse.class);
-        publish.appExecResponse(name, arguments, response);
+        publisher.post(new FrankEvent.AppExecReturned(name, arguments, response));
         return response.results().get(0);
     }
 
     @Override
     public String dump() {
-        publish.dumpRequest();
+        publisher.post(new FrankEvent.WillRequestDump());
         String response = get(DUMP_REQUEST);
-        publish.dumpResponse(response);
+        publisher.post(new FrankEvent.DumpReturned(response));
         return response;
     }
 
     @Override
     public List<String> map(String engine, String query, String name, Object...arguments) {
-        publish.mapRequest(engine, query, name, arguments);
+        publisher.post(new FrankEvent.WillRequestMap(engine, query, name, arguments));
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
         MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
-        publish.mapResponse(engine, query, name, arguments, response);
+        publisher.post(new FrankEvent.MapReturned(engine, query, name, arguments, response));
         return response.results();
     }
 
     @Override
     public String orientation() {
-        publish.orientationRequest();
+        publisher.post(new FrankEvent.WillRequestOrientation());
         OrientationResponse response = get(ORIENTATION_REQUEST, OrientationResponse.class);
-        publish.orientationResponse(response);
+        publisher.post(new FrankEvent.OrientationReturned(response));
         return response.orientation();
     }
 
     @Override
     public void typeIntoKeyboard(String text) {
-        publish.typeIntoKeyboardRequest(text);
+        publisher.post(new FrankEvent.WillRequestTypeIntoKeyboard(text));
         TextToType textToType = new TextToType(text);
         put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
-        publish.typeIntoKeyboardResponse();
+        publisher.post(new FrankEvent.TypeIntoKeyboardReturned());
     }
 
     @Override

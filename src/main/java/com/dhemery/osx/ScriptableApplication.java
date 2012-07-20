@@ -1,8 +1,10 @@
 package com.dhemery.osx;
 
-import com.dhemery.os.OSCommandSubscriber;
-
 //todo: Replace the embedded applescript commands with resource files.
+
+import com.dhemery.os.OSCommand;
+import com.dhemery.os.Shell;
+
 /**
  * Interacts with an OS X application by running AppleScript programs with the {@code osascript} command.
  */
@@ -19,44 +21,44 @@ public class ScriptableApplication implements OsxApplication {
 
     private final String activateApplication;
     private final String tellMenuBar;
-    private final OSCommandSubscriber publisher;
+    private final Shell shell;
 
     //todo: Discover the process name through the application's plist.
     /**
      * @param name the name of the application to interact with
      * @param processName the name of process in which the application is running
      */
-    public ScriptableApplication(String name, String processName, OSCommandSubscriber publisher) {
-        this.publisher = publisher;
+    public ScriptableApplication(String name, String processName, Shell shell) {
+        this.shell = shell;
         activateApplication = String.format(ACTIVATE_APPLICATION, name);
         tellMenuBar = String.format(TELL_MENU_BAR_OF_PROCESS, processName);
     }
 
     @Override
     public void typeKey(char key, MetaKey metaKeys) {
-        new AppleScriptBuilder(publisher, "Type Simulator Keys")
+        OSCommand command = new AppleScriptBuilder("Type Simulator Keys")
                 .withLine(activateApplication)
                 .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()))
-                .build()
-                .run();
+                .build();
+        shell.run(command);
     }
 
     @Override
     public void touchMenuItem(String menu, String item) {
-        new AppleScriptBuilder(publisher, "Touch Simulator Menu")
+        OSCommand command = new AppleScriptBuilder("Touch Simulator Menu")
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)
                 .withLine(String.format(CLICK_MENU_ITEM_OF_MENU, item, menu))
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .build()
-                .run();
+                .build();
+        shell.run(command);
     }
 
     @Override
     public void touchMenuItem(String menu, String submenu, String item) {
-        new AppleScriptBuilder(publisher, "Touch Simulator Menu")
+        OSCommand command = new AppleScriptBuilder("Touch Simulator Menu")
                 .withLine(activateApplication)
                 .withLine(TELL_SYSTEM_EVENTS)
                 .withLine(tellMenuBar)
@@ -65,7 +67,7 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(END_TELL)
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .build()
-                .run();
+                .build();
+        shell.run(command);
     }
 }

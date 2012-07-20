@@ -5,8 +5,8 @@ import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
-import com.dhemery.os.OSCommandPublisher;
-import com.dhemery.os.OSCommandRepublisher;
+import com.dhemery.os.PublishingShell;
+import com.dhemery.os.Shell;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
@@ -15,6 +15,7 @@ import com.dhemery.victor.discovery.SdkItemSource;
 import com.dhemery.victor.frank.*;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
 import com.dhemery.victor.frankly.PublishingFrank;
+import com.google.common.eventbus.EventBus;
 
 import java.util.List;
 
@@ -91,10 +92,10 @@ public class Victor {
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 
     private final Codec codec = new FranklyJsonCodec();
-    private final FrankRepublisher frankPublisher = new FrankRepublisher();
     private final Router router = new URLResourceRouter("http");
-    private final OSCommandRepublisher commandPublisher = new OSCommandRepublisher();
-    private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(commandPublisher);
+    private final EventBus eventBus = new EventBus("Victor");
+    private final Shell shell = new PublishingShell(eventBus);
+    private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell);
     private final SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
 
     private final Configuration configuration;
@@ -120,7 +121,7 @@ public class Victor {
      */
     public IosApplicationBundle applicationBundle() {
         if(applicationBundle == null) {
-            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), commandPublisher);
+            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell);
         }
         return applicationBundle;
     }
@@ -136,20 +137,17 @@ public class Victor {
     }
 
     /**
-     * A publisher that publishes events related to OSCommand execution.
-     */
-    public OSCommandPublisher commandEvents() {
-        return commandPublisher;
-    }
-
-    /**
      * A driver for the configured device.
      */
     public IosDevice device() {
         if(device == null) {
-            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(commandPublisher), simulator());
+            device = new SimulatedIosDevice(deviceType(), new SimulatorApplication(shell), simulator());
         }
         return device;
+    }
+
+    public EventBus events() {
+        return eventBus;
     }
 
     /**
@@ -157,7 +155,7 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            frank = new PublishingFrank(frankPublisher, frankEndpoint(), codec);
+            frank = new PublishingFrank(eventBus, frankEndpoint(), codec);
         }
         return frank;
     }
@@ -169,10 +167,6 @@ public class Victor {
             frankEndpoint = new RoutedEndpoint(router, host, port);
         }
         return frankEndpoint;
-    }
-
-    public FrankPublisher frankEvents() {
-        return frankPublisher;
     }
 
     /**
@@ -264,7 +258,7 @@ public class Victor {
             String simulatorBinaryPath = sdk().simulatorBinaryPath();
             String applicationBinaryPath = applicationBinaryPath();
             String deviceType = deviceType();
-            return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType, commandPublisher);
+            return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType, shell);
         }
         return new UserSimulatorProcess();
     }

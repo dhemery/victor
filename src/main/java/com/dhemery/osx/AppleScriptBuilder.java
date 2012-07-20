@@ -1,17 +1,16 @@
 package com.dhemery.osx;
 
+import com.dhemery.os.OSCommandBuilder;
 import com.dhemery.os.OSCommand;
-import com.dhemery.os.OSCommandSubscriber;
-import com.dhemery.os.PublishingCommandBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AppleScriptBuilder {
-    private final PublishingCommandBuilder builder;
+    private final OSCommandBuilder builder;
 
-    public AppleScriptBuilder(OSCommandSubscriber publisher, String description) {
-        builder = new PublishingCommandBuilder(publisher, description, "osascript");
+    public AppleScriptBuilder(String description) {
+        builder = new OSCommandBuilder(description, "osascript");
     }
 
     /**

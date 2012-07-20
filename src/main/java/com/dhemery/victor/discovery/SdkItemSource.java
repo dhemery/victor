@@ -1,17 +1,18 @@
 package com.dhemery.victor.discovery;
 
 import com.dhemery.configuration.CacheSource;
-import com.dhemery.os.OSCommandSubscriber;
-import com.dhemery.os.PublishingCommandBuilder;
+import com.dhemery.os.OSCommand;
+import com.dhemery.os.OSCommandBuilder;
+import com.dhemery.os.Shell;
 
 /**
  * Discovers information about iOS SDKs in the active development environment.
  */
 public class SdkItemSource implements CacheSource<SdkItemKey,String> {
-    private final OSCommandSubscriber publisher;
+    private final Shell shell;
 
-    public SdkItemSource(OSCommandSubscriber publisher) {
-        this.publisher = publisher;
+    public SdkItemSource(Shell shell) {
+        this.shell = shell;
     }
 
     /**
@@ -27,10 +28,9 @@ public class SdkItemSource implements CacheSource<SdkItemKey,String> {
      */
     @Override
     public String value(SdkItemKey key) {
-        return new PublishingCommandBuilder(publisher, "Request SDK Information", "xcodebuild")
+        OSCommand command = new OSCommandBuilder("Request SDK Information", "xcodebuild")
                 .withArguments("-sdk", key.sdkname(), "-version", key.infoitem())
-                .build()
-                .run()
-                .output();
+                .build();
+        return shell.run(command).output();
     }
 }
