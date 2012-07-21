@@ -21,6 +21,8 @@ import com.dhemery.victor.frank.FrankViewAgent;
 import com.dhemery.victor.frank.publishing.PublishingFrank;
 import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.eventbus.EventBus;
 
 import java.util.List;
@@ -98,11 +100,11 @@ public class Victor {
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
     public static final String FRANK_ENDPOINT_PROTOCOL = "http";
 
+    private final Supplier<IosApplication> application = Suppliers.memoize(applicationSupplier());
     private final EventBusPublisher publisher = eventBusPublisher("Victor");
     private final Shell shell = shell(publisher);
 
     private final Configuration configuration;
-    private IosApplication application;
     private IosApplicationBundle applicationBundle;
     private IosDevice device;
     private Frank frank;
@@ -133,10 +135,7 @@ public class Victor {
      * A driver for the configured application.
      */
     public IosApplication application() {
-        if(application == null) {
-            application = new FrankApplication(frank());
-        }
-        return application;
+        return application.get();
     }
 
     /**
@@ -256,6 +255,15 @@ public class Victor {
         if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
 
         throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
+    }
+
+    private Supplier<IosApplication> applicationSupplier() {
+        return new Supplier<IosApplication>() {
+            @Override
+            public IosApplication get() {
+                return new FrankApplication(frank());
+            }
+        };
     }
 
     private String option(String property, String defaultValue) {

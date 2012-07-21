@@ -2,6 +2,8 @@ package com.dhemery.osx;
 
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.os.Shell;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 
 import java.io.File;
 
@@ -14,9 +16,9 @@ public class ApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
+    private final Supplier<PListInspector> plist = Suppliers.memoize(plistSupplier());
     private final String path;
     private final Shell shell;
-    private PListInspector plist;
 
     /**
      * Create an "inspector" that retrieves information from a specified application bundle.
@@ -69,15 +71,21 @@ public class ApplicationBundle {
      * A {@link PListInspector} with the contents of the bundle's Info.plist file.
      */
     public PListInspector plist() {
-        if(plist == null) {
-            String plistPath = path + "/Info.plist";
-            requireFile(plistPath, "Info.plist in application bundle");
-            plist = new PListInspector(plistPath, shell);
-        }
-        return plist;
+        return plist.get();
     }
 
-    private void requireFile(String path, String description) {
+    private Supplier<PListInspector> plistSupplier() {
+        return new Supplier<PListInspector>() {
+            @Override
+            public PListInspector get() {
+                String plistPath = path + "/Info.plist";
+                requireFile(plistPath, "Info.plist in application bundle");
+                return new PListInspector(plistPath, shell);
+            }
+        };
+    }
+
+    private static void requireFile(String path, String description) {
         File file = new File(path);
         if(!file.exists()) {
             throw new ConfigurationException(String.format("Can not find %s at %s", description, path));

@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- * Wraps a Frank agent and publishes events about each {@link com.dhemery.victor.frank.Frank} method call and each result.
+ * Wraps a Frank agent and publishes events about each {@link Frank} method call and each result.
  * For each method X, the wrapper publishes two events:
  * {@code WillRequestX} and {@code XReturned}.
  * </p>
@@ -20,7 +20,7 @@ import java.util.List;
  * Most of the {@code XReturned} events include method's arguments and return value.
  * </p>
  * <p>
- * For a complete roster of Frank events, see the {@link com.dhemery.victor.frank.FrankEvent} class.
+ * For a complete roster of Frank events, see the {@link com.dhemery.victor.frank} package.
  * </p>
  */
 public class PublishingFrank implements Frank {

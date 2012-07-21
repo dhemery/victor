@@ -15,7 +15,8 @@ public class PListInspector extends JsonInspector {
     }
 
     private static String plistAsJson(String path, Shell shell) {
-        return shell.command("Read PList", "plutil")
+        return shell
+                .command("Read PList", "plutil")
                 .withArguments("-convert", "json", "-o", "-", "--", path)
                 .get().run().output();
     }
