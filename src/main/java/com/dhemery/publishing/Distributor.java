@@ -8,12 +8,12 @@ package com.dhemery.publishing;
  */
 public interface Distributor<S> {
     /**
-     * Register the subscriber to receive publications from this distributor
+     * Register the subscribers to receive publications from this distributor
      */
-    void subscribe(S subscriber);
+    void subscribe(S... subscriber);
 
     /**
-     * Remove the subscriber from this distributor's recipients
+     * Remove the subscribers from this distributor's recipients
      */
-    void unsubscribe(S subscriber);
+    void unsubscribe(S... subscriber);
 }

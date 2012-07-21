@@ -64,6 +64,11 @@ public class Victor {
     public static final String DEVICE_TYPE = "victor.simulator.device.type";
 
     /**
+     * The protocol that Victor uses to communicate with the Frank server.
+     */
+    public static final String FRANK_ENDPOINT_PROTOCOL = "http";
+
+    /**
      * The name of the host on which the Frank server listens for requests.
      * Do not include a scheme (e.g. "http://") at the start of this value.
      */
@@ -98,20 +103,20 @@ public class Victor {
      * </p>
      */
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
-    public static final String FRANK_ENDPOINT_PROTOCOL = "http";
 
     private final Supplier<IosApplication> application = Suppliers.memoize(applicationSupplier());
-    private final EventBusPublisher publisher = eventBusPublisher("Victor");
-    private final Shell shell = shell(publisher);
+    private final Supplier<IosApplicationBundle> applicationBundle = Suppliers.memoize(applicationBundleSupplier());
+    private final Supplier<IosDevice> device = Suppliers.memoize(deviceSupplier());
+    private final Supplier<String> deviceType = Suppliers.memoize(deviceTypeSupplier());
+    private final Supplier<Frank> frank = Suppliers.memoize(frankSupplier());
+    private final Supplier<EventBusPublisher> publisher = Suppliers.memoize(publisherSupplier());
+    private final Supplier<IosSdk> sdk = Suppliers.memoize(sdkSupplier());
+    private final Supplier<Shell> shell = Suppliers.memoize(shellSupplier());
+    private final Supplier<Service> simulator = Suppliers.memoize(simulatorSupplier());
+    private final Supplier<IosViewAgent> viewAgent = Suppliers.memoize(viewAgentSupplier());
+    private final Supplier<IosViewFactory> viewFactory = Suppliers.memoize(viewFactorySupplier());
 
     private final Configuration configuration;
-    private IosApplicationBundle applicationBundle;
-    private IosDevice device;
-    private Frank frank;
-    private IosSdk sdk;
-    private IosViewAgent viewAgent;
-    private IosViewFactory viewFactory;
-    private Endpoint frankEndpoint;
 
     /**
      * Create a Victor factory with the specified configuration options.
@@ -122,13 +127,10 @@ public class Victor {
     }
 
     /**
-     * The application bundle of the configured application.
+     * An application bundle inspector for the configured application.
      */
     public IosApplicationBundle applicationBundle() {
-        if(applicationBundle == null) {
-            applicationBundle = new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell);
-        }
-        return applicationBundle;
+        return applicationBundle.get();
     }
 
     /**
@@ -142,119 +144,44 @@ public class Victor {
      * A driver for the configured device.
      */
     public IosDevice device() {
-        if(device == null) {
-            AppleScriptShell appleScriptShell = new AppleScriptShell(shell);
-            SimulatorApplication simulatorApplication = new SimulatorApplication(appleScriptShell);
-            device = new SimulatedIosDevice(deviceType(), simulatorApplication, simulator());
-        }
-        return device;
+        return device.get();
     }
 
+    /**
+     * A distributor through which to subscribe to events published by Victor's creations.
+     */
     public Distributor<Object> events() {
-        return publisher;
+        return publisher.get();
     }
 
     /**
      * The Frank agent used by the application and by view agents.
      */
     public Frank frank() {
-        if(frank == null) {
-            Codec codec = new FranklyJsonCodec();
-            frank = new PublishingFrank(publisher, new FranklyFrank(frankEndpoint(), codec));
-        }
-        return frank;
+        return frank.get();
     }
 
-    private Endpoint frankEndpoint() {
-        if(frankEndpoint == null) {
-            String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
-            int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-            Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
-            frankEndpoint = new RoutedEndpoint(router, host, port);
-        }
-        return frankEndpoint;
-    }
 
     /**
      * The iOS SDK used to run the device and application.
      */
     public IosSdk sdk() {
-        if(sdk == null) {
-            sdk = findSdk();
-        }
-        return sdk;
-    }
-
-    /**
-     * Report whether Victor owns the simulator.
-     */
-    public boolean victorOwnsSimulator() {
-        String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
-        return processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
+        return sdk.get();
     }
 
     /**
      * The view agent that Victor's view factory uses to create view drivers.
      */
     public IosViewAgent viewAgent() {
-        if(viewAgent == null) {
-            viewAgent = new FrankViewAgent(frank());
-        }
-        return viewAgent;
+        return viewAgent.get();
     }
+
 
     /**
-     * A factory that creates views backed by Victor's view agent.
+     * The factory that creates views backed by Victor's view agent.
      */
     public IosViewFactory viewFactory() {
-        if(viewFactory == null) {
-            viewFactory = new AgentBackedViewFactory(viewAgent());
-        }
-        return viewFactory;
-    }
-
-
-
-
-    private String applicationBinaryPath() {
-        if(applicationBundle().isExecutable()) {
-            return applicationBundle.pathToExecutable();
-        }
-        throw new ConfigurationException("Application binary is not executable: " + applicationBundle.pathToExecutable());
-    }
-
-    private String defaultDeviceType() {
-        List<String> deviceTypes = applicationBundle().deviceTypes();
-        if(deviceTypes.size() == 1) return deviceTypes.get(0);
-        return DEFAULT_DEVICE_TYPE;
-    }
-
-    private String deviceType() {
-        return option(DEVICE_TYPE, defaultDeviceType());
-    }
-
-    private static EventBusPublisher eventBusPublisher(String name) {
-        EventBus eventBus = new EventBus(name);
-        return new EventBusPublisher(eventBus);
-    }
-
-    private IosSdk findSdk() {
-        SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = sdkInfoCache(shell);
-        if(configuration.defines(SDK_VERSION)) {
-            IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
-            if (userPreferredSdk.isInstalled()) return userPreferredSdk;
-        }
-
-        String canonicalName = applicationBundle.sdkCanonicalName();
-        if(canonicalName != null) {
-            IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfoCache, canonicalName);
-            if (bundlePreferredSdk.isInstalled()) return bundlePreferredSdk;
-        }
-
-        IosSdk newestInstalledSdk = IosSdk.newest(sdkInfoCache);
-        if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
-
-        throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
+        return viewFactory.get();
     }
 
     private Supplier<IosApplication> applicationSupplier() {
@@ -266,6 +193,51 @@ public class Victor {
         };
     }
 
+    private Supplier<IosApplicationBundle> applicationBundleSupplier() {
+        return new Supplier<IosApplicationBundle>() {
+            @Override
+            public IosApplicationBundle get() {
+                return new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell.get());
+            }
+        };
+    }
+
+    private Supplier<IosDevice> deviceSupplier() {
+        return new Supplier<IosDevice>() {
+            @Override
+            public IosDevice get() {
+                AppleScriptShell appleScriptShell = new AppleScriptShell(shell.get());
+                SimulatorApplication simulatorApplication = new SimulatorApplication(appleScriptShell);
+                return new SimulatedIosDevice(deviceType.get(), simulatorApplication, simulator.get());
+            }
+        };
+    }
+
+    private Supplier<String> deviceTypeSupplier() {
+        return new Supplier<String>() {
+            @Override
+            public String get() {
+                List<String> deviceTypes = applicationBundle().deviceTypes();
+                String defaultDeviceType = deviceTypes.size() == 1 ? deviceTypes.get(0) : DEFAULT_DEVICE_TYPE;
+                return option(DEVICE_TYPE, defaultDeviceType);
+            }
+        };
+    }
+
+    private Supplier<Frank> frankSupplier() {
+        return new Supplier<Frank>() {
+            @Override
+            public Frank get() {
+                String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
+                int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+                Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
+                Endpoint endpoint = new RoutedEndpoint(router, host, port);
+                Codec codec = new FranklyJsonCodec();
+                return new PublishingFrank(publisher.get(), new FranklyFrank(endpoint, codec));
+            }
+        };
+    }
+
     private String option(String property, String defaultValue) {
         if(!configuration.defines(property)) {
             configuration.set(property, defaultValue);
@@ -273,24 +245,86 @@ public class Victor {
         return configuration.option(property);
     }
 
-    private static SingleSourceMappedCache<SdkItemKey, String> sdkInfoCache(Shell shell) {
-        SdkItemSource sdkItemSource = new SdkItemSource(shell);
-        return new SingleSourceMappedCache<SdkItemKey, String>(sdkItemSource);
+    private Supplier<EventBusPublisher> publisherSupplier() {
+        return new Supplier<EventBusPublisher>() {
+            @Override
+            public EventBusPublisher get() {
+                return new EventBusPublisher(new EventBus());
+            }
+        };
     }
 
-    private static Shell shell(EventBusPublisher publisher) {
-        PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher);
-        return new FactoryBasedShell(commandFactory);
+    private Supplier<IosSdk> sdkSupplier() {
+        return new Supplier<IosSdk>() {
+            @Override
+            public IosSdk get() {
+                SdkItemSource sdkItemSource = new SdkItemSource(shell.get());
+                SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkItemSource);
+                if(configuration.defines(SDK_VERSION)) {
+                    IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
+                    if (userPreferredSdk.isInstalled()) return userPreferredSdk;
+                }
+
+                String canonicalName = applicationBundle().sdkCanonicalName();
+                if(canonicalName != null) {
+                    IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfoCache, canonicalName);
+                    if (bundlePreferredSdk.isInstalled()) return bundlePreferredSdk;
+                }
+
+                IosSdk newestInstalledSdk = IosSdk.newest(sdkInfoCache);
+                if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
+
+                throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
+            }
+        };
     }
 
-    private Service simulator() {
-        if (victorOwnsSimulator()) {
-            String sdkPath = sdk().path();
-            String simulatorBinaryPath = sdk().simulatorBinaryPath();
-            String applicationBinaryPath = applicationBinaryPath();
-            String deviceType = deviceType();
-            return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType, shell);
-        }
-        return new UserSimulatorProcess();
+    private Supplier<Shell> shellSupplier() {
+        return new Supplier<Shell>() {
+            @Override
+            public Shell get() {
+                PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher.get());
+                return new FactoryBasedShell(commandFactory);
+            }
+        };
+    }
+
+    private Supplier<Service> simulatorSupplier() {
+        return new Supplier<Service>() {
+            @Override
+            public Service get() {
+                String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
+                boolean victorOwnsSimulator = processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
+                if (victorOwnsSimulator) {
+                    IosApplicationBundle iosApplicationBundle = applicationBundle();
+                    if(!iosApplicationBundle.isExecutable()) {
+                        throw new ConfigurationException("Application binary is not executable: " + iosApplicationBundle.pathToExecutable());
+                    }
+                    String sdkPath = sdk().path();
+                    String simulatorBinaryPath = sdk().simulatorBinaryPath();
+                    String applicationBinaryPath = iosApplicationBundle.pathToExecutable();
+                    return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType.get(), shell.get());
+                }
+                return new UserSimulatorProcess();
+            }
+        };
+    }
+
+    private Supplier<IosViewAgent> viewAgentSupplier() {
+        return new Supplier<IosViewAgent>() {
+            @Override
+            public IosViewAgent get() {
+                return new FrankViewAgent(frank());
+            }
+        };
+    }
+
+    private Supplier<IosViewFactory> viewFactorySupplier() {
+        return new Supplier<IosViewFactory>() {
+            @Override
+            public IosViewFactory get() {
+                return new AgentBackedViewFactory(viewAgent());
+            }
+        };
     }
 }

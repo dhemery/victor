@@ -21,12 +21,16 @@ public class EventBusPublisher implements Publisher<Object>, Distributor<Object>
     }
 
     @Override
-    public void subscribe(Object subscriber) {
-        eventBus.register(subscriber);
+    public void subscribe(Object... subscribers) {
+        for(Object subscriber : subscribers) {
+            eventBus.register(subscriber);
+        }
     }
 
     @Override
-    public void unsubscribe(Object subscriber) {
-        eventBus.unregister(subscriber);
+    public void unsubscribe(Object... subscribers) {
+        for(Object subscriber : subscribers) {
+            eventBus.unregister(subscriber);
+        }
     }
 }
