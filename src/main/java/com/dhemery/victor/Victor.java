@@ -1,18 +1,15 @@
 package com.dhemery.victor;
 
-import com.dhemery.os.publishing.PublishingShell;
-import com.dhemery.publishing.Distributor;
-import com.dhemery.publishing.EventBusPublisher;
-import com.dhemery.publishing.Publisher;
-import com.dhemery.configuration.CacheSource;
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
 import com.dhemery.os.FactoryBasedShell;
-import com.dhemery.os.RuntimeCommandFactory;
 import com.dhemery.os.Shell;
+import com.dhemery.os.publishing.PublishingCommandFactory;
 import com.dhemery.osx.AppleScriptShell;
+import com.dhemery.publishing.Distributor;
+import com.dhemery.publishing.EventBusPublisher;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
@@ -99,14 +96,10 @@ public class Victor {
      * </p>
      */
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
+    public static final String FRANK_ENDPOINT_PROTOCOL = "http";
 
-    private final Codec codec = new FranklyJsonCodec();
     private final EventBusPublisher publisher = eventBusPublisher("Victor");
-    private final Router router = new URLResourceRouter("http");
-    private final Shell shell = publishedShell(publisher);
-
-    private final CacheSource<SdkItemKey,String> sdkInfoSource = new SdkItemSource(shell);
-    private final SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkInfoSource);
+    private final Shell shell = shell(publisher);
 
     private final Configuration configuration;
     private IosApplication application;
@@ -167,6 +160,7 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
+            Codec codec = new FranklyJsonCodec();
             frank = new PublishingFrank(publisher, new FranklyFrank(frankEndpoint(), codec));
         }
         return frank;
@@ -176,6 +170,7 @@ public class Victor {
         if(frankEndpoint == null) {
             String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
             int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
+            Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
             frankEndpoint = new RoutedEndpoint(router, host, port);
         }
         return frankEndpoint;
@@ -245,6 +240,7 @@ public class Victor {
     }
 
     private IosSdk findSdk() {
+        SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = sdkInfoCache(shell);
         if(configuration.defines(SDK_VERSION)) {
             IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
             if (userPreferredSdk.isInstalled()) return userPreferredSdk;
@@ -269,10 +265,14 @@ public class Victor {
         return configuration.option(property);
     }
 
-    private static Shell publishedShell(Publisher<Object> publisher) {
-        RuntimeCommandFactory commandFactory = new RuntimeCommandFactory();
-        FactoryBasedShell factoryBasedShell = new FactoryBasedShell(commandFactory);
-        return new PublishingShell(publisher, factoryBasedShell);
+    private static SingleSourceMappedCache<SdkItemKey, String> sdkInfoCache(Shell shell) {
+        SdkItemSource sdkItemSource = new SdkItemSource(shell);
+        return new SingleSourceMappedCache<SdkItemKey, String>(sdkItemSource);
+    }
+
+    private static Shell shell(EventBusPublisher publisher) {
+        PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher);
+        return new FactoryBasedShell(commandFactory);
     }
 
     private Service simulator() {
@@ -285,5 +285,4 @@ public class Victor {
         }
         return new UserSimulatorProcess();
     }
-
 }
