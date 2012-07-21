@@ -34,14 +34,14 @@ public class FranklyFrank implements Frank {
     @Override
     public boolean accessibilityCheck() {
         AccessibilityCheckResponse response = get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
-        return response.accessibilityEnabled;
+        return response.enabled();
     }
 
     @Override
     public String appExec(String name, Object...arguments) {
         Operation operation = new Operation(name, arguments);
         MessageResponse response = put(APP_EXEC_REQUEST, operation, MessageResponse.class);
-        return response.results.get(0);
+        return response.results().get(0);
     }
 
     @Override
@@ -54,13 +54,13 @@ public class FranklyFrank implements Frank {
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
         MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
-        return response.results;
+        return response.results();
     }
 
     @Override
     public String orientation() {
         OrientationResponse response = get(ORIENTATION_REQUEST, OrientationResponse.class);
-        return response.orientation;
+        return response.orientation();
     }
 
     @Override

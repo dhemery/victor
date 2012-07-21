@@ -4,5 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class AccessibilityCheckResponse {
     @SerializedName("accessibility_enabled")
-    public final boolean accessibilityEnabled = false;
+    private final boolean enabled;
+
+    public AccessibilityCheckResponse(boolean enabled) {
+        this.enabled = enabled;
+    }
+    public boolean enabled() { return enabled; }
 }

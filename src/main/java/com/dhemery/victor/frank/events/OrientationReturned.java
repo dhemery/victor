@@ -1,8 +1,9 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank.events;
 
-public class OrientationResponse {
+public class OrientationReturned {
     private final String orientation;
-    public OrientationResponse(String orientation) {
+
+    public OrientationReturned(String orientation) {
         this.orientation = orientation;
     }
     public String orientation() { return orientation; }

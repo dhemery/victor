@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A runnable command launched via a Java {@link ProcessBuilder}.
+ */
 public class RuntimeCommand implements RunnableCommand {
     private final String path;
     private final List<String> arguments;

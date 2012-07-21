@@ -9,7 +9,7 @@ public class EventBusPublisher implements Publisher<Object>, Distributor<Object>
     private final EventBus eventBus;
 
     /**
-     * Create publisher that publishes through the given {@link EventBus}.
+     * Create a publisher that publishes through the given {@link EventBus}.
      */
     public EventBusPublisher(EventBus eventBus) {
         this.eventBus = eventBus;

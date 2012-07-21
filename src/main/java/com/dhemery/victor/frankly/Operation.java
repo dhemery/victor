@@ -1,8 +1,9 @@
 package com.dhemery.victor.frankly;
 
 import com.dhemery.victor.frank.Frank;
-import com.google.common.collect.ImmutableList;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,8 +16,8 @@ import java.util.List;
  * @see FranklyFrank
  */
 public class Operation {
-    public final String method;
-    public final List<Object> arguments;
+    private final String method;
+    private final List<Object> arguments;
 
     /**
      * Create a message to send to a set of objects.
@@ -25,6 +26,9 @@ public class Operation {
      */
     public Operation(String method, Object... arguments) {
         this.method = method;
-        this.arguments = ImmutableList.copyOf(arguments);
+        this.arguments = Collections.unmodifiableList(Arrays.asList(arguments));
     }
+
+    public String method() { return method; }
+    public List<Object> arguments() { return arguments; }
 }

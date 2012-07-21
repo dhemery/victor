@@ -14,17 +14,17 @@ public class MapOperation {
      * The name of the selector engine that will select recipients for the message.
      */
     @SerializedName("selector_engine")
-    public final String engine;
+    private final String engine;
 
     /**
      * The pattern that the selector engine will use to select recipients for the message.
      */
-    public final String query;
+    private final String query;
 
     /**
      * The message to send to each recipient selected by the selector engine.
      */
-    public final Operation operation;
+    private final Operation operation;
 
     /**
      * Create an operation to send a message to a set of views.
@@ -37,4 +37,8 @@ public class MapOperation {
         this.query = query;
         this.operation = operation;
     }
+
+    public String engine() { return engine; }
+    public String query() { return query; }
+    public Operation operation() { return operation; }
 }

@@ -1,5 +1,6 @@
 package com.dhemery.victor;
 
+import com.dhemery.os.publishing.PublishingShell;
 import com.dhemery.publishing.Distributor;
 import com.dhemery.publishing.EventBusPublisher;
 import com.dhemery.publishing.Publisher;
@@ -9,7 +10,6 @@ import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
 import com.dhemery.os.FactoryBasedShell;
-import com.dhemery.os.PublishedShell;
 import com.dhemery.os.RuntimeCommandFactory;
 import com.dhemery.os.Shell;
 import com.dhemery.osx.AppleScriptShell;
@@ -21,7 +21,7 @@ import com.dhemery.victor.discovery.SdkItemSource;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frank.PublishedFrank;
+import com.dhemery.victor.frank.publishing.PublishingFrank;
 import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
 import com.google.common.eventbus.EventBus;
@@ -167,7 +167,7 @@ public class Victor {
      */
     public Frank frank() {
         if(frank == null) {
-            frank = new PublishedFrank(new EventBus("Victor"), new FranklyFrank(frankEndpoint(), codec));
+            frank = new PublishingFrank(publisher, new FranklyFrank(frankEndpoint(), codec));
         }
         return frank;
     }
@@ -272,7 +272,7 @@ public class Victor {
     private static Shell publishedShell(Publisher<Object> publisher) {
         RuntimeCommandFactory commandFactory = new RuntimeCommandFactory();
         FactoryBasedShell factoryBasedShell = new FactoryBasedShell(commandFactory);
-        return new PublishedShell(publisher, factoryBasedShell);
+        return new PublishingShell(publisher, factoryBasedShell);
     }
 
     private Service simulator() {
