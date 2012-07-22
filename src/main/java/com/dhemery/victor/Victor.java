@@ -2,19 +2,16 @@ package com.dhemery.victor;
 
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
-import com.dhemery.configuration.SingleSourceMappedCache;
 import com.dhemery.network.*;
 import com.dhemery.os.FactoryBasedShell;
 import com.dhemery.os.Shell;
 import com.dhemery.os.publishing.PublishingCommandFactory;
-import com.dhemery.osx.AppleScriptShell;
 import com.dhemery.publishing.Distributor;
 import com.dhemery.publishing.EventBusPublisher;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
-import com.dhemery.victor.discovery.SdkItemKey;
-import com.dhemery.victor.discovery.SdkItemSource;
+import com.dhemery.victor.discovery.SdkItem;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
@@ -23,6 +20,10 @@ import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 
 import java.util.List;
@@ -111,10 +112,12 @@ public class Victor {
     private final Supplier<Frank> frank = Suppliers.memoize(frankSupplier());
     private final Supplier<EventBusPublisher> publisher = Suppliers.memoize(publisherSupplier());
     private final Supplier<IosSdk> sdk = Suppliers.memoize(sdkSupplier());
+    private final LoadingCache<SdkItem,String> sdkInfoCache = sdkInfoCache();
     private final Supplier<Shell> shell = Suppliers.memoize(shellSupplier());
     private final Supplier<Service> simulator = Suppliers.memoize(simulatorSupplier());
     private final Supplier<IosViewAgent> viewAgent = Suppliers.memoize(viewAgentSupplier());
     private final Supplier<IosViewFactory> viewFactory = Suppliers.memoize(viewFactorySupplier());
+
 
     private final Configuration configuration;
 
@@ -206,8 +209,7 @@ public class Victor {
         return new Supplier<IosDevice>() {
             @Override
             public IosDevice get() {
-                AppleScriptShell appleScriptShell = new AppleScriptShell(shell.get());
-                SimulatorApplication simulatorApplication = new SimulatorApplication(appleScriptShell);
+                SimulatorApplication simulatorApplication = new SimulatorApplication(shell.get());
                 return new SimulatedIosDevice(deviceType.get(), simulatorApplication, simulator.get());
             }
         };
@@ -254,26 +256,50 @@ public class Victor {
         };
     }
 
+    private LoadingCache<SdkItem, String> sdkInfoCache() {
+        return CacheBuilder.newBuilder().build(new CacheLoader<SdkItem, String>() {
+            @Override
+            public String load(SdkItem key) {
+                return shell.get().command("Request SDK Information", "xcodebuild")
+                        .withArguments("-sdk", key.sdkname(), "-version", key.infoitem())
+                        .get().run().output();
+
+            }
+        });
+    }
+
     private Supplier<IosSdk> sdkSupplier() {
         return new Supplier<IosSdk>() {
             @Override
             public IosSdk get() {
-                SdkItemSource sdkItemSource = new SdkItemSource(shell.get());
-                SingleSourceMappedCache<SdkItemKey,String> sdkInfoCache = new SingleSourceMappedCache<SdkItemKey, String>(sdkItemSource);
-                if(configuration.defines(SDK_VERSION)) {
-                    IosSdk userPreferredSdk = IosSdk.withVersion(sdkInfoCache, configuration.option(SDK_VERSION));
-                    if (userPreferredSdk.isInstalled()) return userPreferredSdk;
+                Supplier<String> userPreferredSdkName = new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        return "iphonesimulator" + configuration.option(SDK_VERSION);
+                    }
+                };
+                Supplier<String> applicationPreferredSdkName = new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        return String.valueOf(applicationBundle().sdkCanonicalName());
+                    }
+                };
+                Supplier<String> newestInstalledSdkName = new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        return "iphonesimulator";
+                    }
+                };
+                List<Supplier<String>> prioritizedSdkNameSuppliers = ImmutableList.of (
+                        userPreferredSdkName,
+                        applicationPreferredSdkName,
+                        newestInstalledSdkName
+                );
+                for(Supplier<String> sdkNameSupplier : prioritizedSdkNameSuppliers) {
+                    String sdkName = sdkNameSupplier.get();
+                    IosSdk sdk = new IosSdk(sdkName, sdkInfoCache);
+                    if(sdk.isInstalled()) return sdk;
                 }
-
-                String canonicalName = applicationBundle().sdkCanonicalName();
-                if(canonicalName != null) {
-                    IosSdk bundlePreferredSdk = IosSdk.withCanonicalName(sdkInfoCache, canonicalName);
-                    if (bundlePreferredSdk.isInstalled()) return bundlePreferredSdk;
-                }
-
-                IosSdk newestInstalledSdk = IosSdk.newest(sdkInfoCache);
-                if (newestInstalledSdk.isInstalled()) return newestInstalledSdk;
-
                 throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
             }
         };

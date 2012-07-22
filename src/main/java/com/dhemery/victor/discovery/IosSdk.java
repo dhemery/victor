@@ -1,6 +1,9 @@
 package com.dhemery.victor.discovery;
 
-import com.dhemery.configuration.SingleSourceMappedCache;
+import com.dhemery.configuration.ConfigurationException;
+import com.google.common.cache.LoadingCache;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Represents an iOS SDK in the currently active Xcode development environment.
@@ -8,46 +11,22 @@ import com.dhemery.configuration.SingleSourceMappedCache;
  * by {@code xcode-select -print-path}.
  */
 public class IosSdk {
-    private final SingleSourceMappedCache<SdkItemKey,String> sdkInfo;
     public static final String GENERIC_SDK_NAME = "iphonesimulator";
     public static final String NAME_FOR_SDK_VERSION = GENERIC_SDK_NAME + "%s";
     public static final String PLATFORM_PATH = "PlatformPath";
     public static final String SDK_PATH = "Path";
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
+    private final LoadingCache<SdkItem,String> sdkInfo;
     private final String canonicalName;
 
     /**
      * Create a representation of an iOS SDK.
-     * @param sdkInfo a source of information about iOS SDKs installed on this computer.
      * @param canonicalName the canonical name of the iOS SDK to represent.
      */
-    public IosSdk(SingleSourceMappedCache<SdkItemKey,String> sdkInfo, String canonicalName) {
-        this.sdkInfo = sdkInfo;
+    public IosSdk(String canonicalName, LoadingCache<SdkItem,String> sdkInfo) {
         this.canonicalName = canonicalName;
-    }
-
-    /**
-     * A representation of the newest iOS SDK installed in the active environment.
-     */
-    public static IosSdk newest(SingleSourceMappedCache<SdkItemKey,String> sdkInfo) {
-        return withCanonicalName(sdkInfo, GENERIC_SDK_NAME);
-    }
-
-    /**
-     * A representation of the iOS SDK with a given canonical name.
-     * @param canonicalName the canonical name of an iOS SDK.
-     */
-    public static IosSdk withCanonicalName(SingleSourceMappedCache<SdkItemKey,String> sdkInfo, String canonicalName) {
-        return new IosSdk(sdkInfo, canonicalName);
-    }
-
-    /**
-     * A representation of the iOS SDK with a given version.
-     * @param version the version of an iOS SDK.
-     */
-    public static IosSdk withVersion(SingleSourceMappedCache<SdkItemKey,String> sdkInfo, String version) {
-        return withCanonicalName(sdkInfo, String.format(NAME_FOR_SDK_VERSION, version));
+        this.sdkInfo = sdkInfo;
     }
 
     /**
@@ -80,21 +59,10 @@ public class IosSdk {
     }
 
     /**
-     * This iOS SDK's version.
-     */
-    public String version() {
-        return sdkInfo(SDK_VERSION);
-    }
-
-    /**
      * The absolute path to the iPhone Simulator platform in the active development environment.
      */
     public String platformPath() {
         return sdkInfo(GENERIC_SDK_NAME, PLATFORM_PATH);
-    }
-
-    private String sdkInfo(String canonicalName, String itemName) {
-        return sdkInfo.value(new SdkItemKey(canonicalName, itemName));
     }
 
     /**
@@ -114,5 +82,21 @@ public class IosSdk {
      */
     public String simulatorBinaryPath() {
         return String.format(SIMULATOR_BINARY_PATH_FOR_PLATFORM, platformPath());
+    }
+
+    /**
+     * This iOS SDK's version.
+     */
+    public String version() {
+        return sdkInfo(SDK_VERSION);
+    }
+
+    private String sdkInfo(String canonicalName, String itemName) {
+        try {
+            return sdkInfo.get(new SdkItem(canonicalName, itemName));
+        } catch (ExecutionException cause) {
+            String explanation = String.format("Cannot retrieve item %s for SDK %s", itemName, canonicalName);
+            throw new ConfigurationException(explanation, cause);
+        }
     }
 }

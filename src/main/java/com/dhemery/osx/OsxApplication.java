@@ -19,12 +19,4 @@ public interface OsxApplication {
      * @param item the name of a menu item item in the submenu
      */
     void touchMenuItem(String menu, String submenu, String item);
-
-    //todo: Allow strings, sets of metakeys, and combinations of these.
-    /**
-     * Type a keystroke into the application.
-     * @param key the key to type
-     * @param metaKey the metakey to press while typing the key
-     */
-    void typeKey(char key, MetaKey metaKey);
 }
