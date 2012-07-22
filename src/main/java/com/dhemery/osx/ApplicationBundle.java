@@ -16,18 +16,17 @@ public class ApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
-    private final Supplier<PListInspector> plist = Suppliers.memoize(plistSupplier());
+    private final Supplier<PListInspector> plist;
     private final String path;
-    private final Shell shell;
 
     /**
      * Create an "inspector" that retrieves information from a specified application bundle.
      * @param path the absolute file path to the application bundle.
      */
     public ApplicationBundle(String path, Shell shell) {
-        this.path = path;
-        this.shell = shell;
         requireFile(path, "application bundle");
+        this.path = path;
+        plist = Suppliers.memoize(plistSupplier(shell));
     }
 
     /**
@@ -74,7 +73,7 @@ public class ApplicationBundle {
         return plist.get();
     }
 
-    private Supplier<PListInspector> plistSupplier() {
+    private Supplier<PListInspector> plistSupplier(final Shell shell) {
         return new Supplier<PListInspector>() {
             @Override
             public PListInspector get() {

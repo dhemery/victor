@@ -2,6 +2,10 @@ package com.dhemery.osx;
 
 //todo: Replace the embedded applescript commands with resource files.
 
+import com.dhemery.os.OSCommandBuilder;
+import com.dhemery.os.RunnableCommand;
+import com.dhemery.os.Shell;
+
 /**
  * Interacts with an OS X application by running AppleScript programs with the {@code osascript} command.
  */
@@ -19,24 +23,33 @@ public class ScriptableApplication implements OsxApplication {
     private final String activateApplication;
     private final String tellMenuBar;
     private final AppleScriptShell apple;
+    private final Shell shell;
 
     //todo: Discover the process name through the application's plist.
     /**
      * @param name the name of the application to interact with
      * @param processName the name of process in which the application is running
      */
-    public ScriptableApplication(String name, String processName, AppleScriptShell shell) {
-        this.apple = shell;
+    public ScriptableApplication(String name, String processName, AppleScriptShell apple, Shell shell) {
+        this.apple = apple;
+        this.shell = shell;
         activateApplication = String.format(ACTIVATE_APPLICATION, name);
         tellMenuBar = String.format(TELL_MENU_BAR_OF_PROCESS, processName);
     }
 
     @Override
     public void typeKey(char key, MetaKey metaKeys) {
-        apple.script("Type Simulator Keys")
-                .withLine(activateApplication)
-                .withLine(String.format(STROKE_KEY_WITH_METAKEYS, key, metaKeys.down()))
-                .get().run();
+        script("Type Simulator Keys", "type_keys.applescript")
+                .withArgument().get().run();
+    }
+
+    private OSCommandBuilder<RunnableCommand> script(String description, String scriptName) {
+        String scriptPath = pathTo(scriptName);
+        return shell.command(description, "osascript").withArgument(scriptPath);
+    }
+
+    private String pathTo(String scriptName) {
+        return getClass().getResource(scriptName).getPath();
     }
 
     @Override

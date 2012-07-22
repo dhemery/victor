@@ -13,9 +13,9 @@ import java.io.File;
  * @author Dale Emery
  */
 public class VictorSimulatorProcess implements Service {
-    private final String simulatedProcessName;
-    private final RunnableCommand startCommand;
-    private final Shell shell;
+    private final RunnableCommand startSimulator;
+    private final RunnableCommand killSimulatorProcess;
+    private final RunnableCommand killSimulatedApplicationProcess;
 
     /**
      * @param sdkRoot               the path to the SDK to use for the simulation
@@ -24,13 +24,14 @@ public class VictorSimulatorProcess implements Service {
      * @param deviceType            the kind of device to simulate
      */
     public VictorSimulatorProcess(String sdkRoot, String simulatorBinaryPath, String applicationBinaryPath, String deviceType, Shell shell) {
-        this.shell = shell;
-        startCommand = shell.command("Start Simulator", simulatorBinaryPath)
+        startSimulator = shell.command("Start Simulator", simulatorBinaryPath)
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
                 .get();
-        simulatedProcessName = new File(applicationBinaryPath).getName();
+        killSimulatorProcess = killCommand(shell, "iPhone Simulator");
+        String simulatedProcessName = new File(applicationBinaryPath).getName();
+        killSimulatedApplicationProcess = killCommand(shell, simulatedProcessName);
     }
 
     /**
@@ -38,7 +39,7 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void start() {
-        startCommand.run();
+        startSimulator.run();
     }
 
     /**
@@ -46,22 +47,13 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void stop() {
-        killSimulator();
-        killApplication();
+        killSimulatorProcess.run();
+        killSimulatedApplicationProcess.run();
     }
 
-    private void killApplication() {
-        kill(simulatedProcessName);
-    }
-
-    private void killSimulator() {
-        kill("iPhone Simulator");
-    }
-
-    private void kill(String processName) {
-        String commandName = "Kill " + processName;
-        shell.command(commandName, "killall")
+    private RunnableCommand killCommand(Shell shell, String processName) {
+        return shell.command("Kill " + processName, "killall")
                 .withArgument(processName)
-                .get().run();
+                .get();
     }
 }
