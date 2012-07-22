@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class PublishingCommandFactory implements OSCommandFactory<RunnableCommand> {
-    private final Publisher<Object> publisher;
+    private final Publisher publisher;
 
-    public PublishingCommandFactory(Publisher<Object> publisher) {
+    public PublishingCommandFactory(Publisher publisher) {
         this.publisher = publisher;
     }
 

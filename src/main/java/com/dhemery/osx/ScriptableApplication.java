@@ -42,7 +42,7 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(String.format(CLICK_MENU_ITEM_OF_MENU, item, menu))
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .get().run();
+                .build().run();
     }
 
     @Override
@@ -56,6 +56,6 @@ public class ScriptableApplication implements OsxApplication {
                 .withLine(END_TELL)
                 .withLine(END_TELL)
                 .withLine(END_TELL)
-                .get().run();
+                .build().run();
     }
 }

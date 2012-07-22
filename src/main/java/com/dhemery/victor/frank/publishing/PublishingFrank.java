@@ -24,10 +24,10 @@ import java.util.List;
  * </p>
  */
 public class PublishingFrank implements Frank {
-    private final Publisher<Object> publisher;
+    private final Publisher publisher;
     private final Frank frank;
 
-    public PublishingFrank(Publisher<Object> publisher, Frank frank) {
+    public PublishingFrank(Publisher publisher, Frank frank) {
         this.publisher = publisher;
         this.frank = frank;
     }

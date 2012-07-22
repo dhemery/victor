@@ -1,6 +1,6 @@
 package com.dhemery.os;
 
-import com.google.common.base.Supplier;
+import com.dhemery.builder.Builder;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ import java.util.Map;
  * </p>
  * @param <T> the type of {@code OSCommand} created
  */
-public interface OSCommandBuilder<T extends OSCommand> extends Supplier<T> {
+public interface OSCommandBuilder<T extends OSCommand> extends Builder<T> {
     /**
      * Append an argument to the command's argument list.
      * @param argument the argument to append

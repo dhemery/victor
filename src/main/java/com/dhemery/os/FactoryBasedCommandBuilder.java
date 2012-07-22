@@ -49,7 +49,7 @@ public class FactoryBasedCommandBuilder implements OSCommandBuilder<RunnableComm
     }
 
     @Override
-    public RunnableCommand get() {
+    public RunnableCommand build() {
         return factory.command(description, path, arguments, environment);
     }
 }

@@ -1,31 +1,28 @@
 package com.dhemery.victor;
 
+import com.dhemery.builder.Builder;
+import com.dhemery.builder.Lazily;
+import com.dhemery.builder.Lazy;
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.network.*;
 import com.dhemery.os.FactoryBasedShell;
 import com.dhemery.os.Shell;
 import com.dhemery.os.publishing.PublishingCommandFactory;
+import com.dhemery.publishing.DistributingPublisher;
 import com.dhemery.publishing.Distributor;
-import com.dhemery.publishing.EventBusPublisher;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
-import com.dhemery.victor.discovery.SdkItem;
+import com.dhemery.victor.discovery.SdkInspector;
 import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.FrankApplication;
 import com.dhemery.victor.frank.FrankViewAgent;
 import com.dhemery.victor.frank.publishing.PublishingFrank;
 import com.dhemery.victor.frankly.FranklyFrank;
 import com.dhemery.victor.frankly.FranklyJsonCodec;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -105,19 +102,18 @@ public class Victor {
      */
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 
-    private final Supplier<IosApplication> application = Suppliers.memoize(applicationSupplier());
-    private final Supplier<IosApplicationBundle> applicationBundle = Suppliers.memoize(applicationBundleSupplier());
-    private final Supplier<IosDevice> device = Suppliers.memoize(deviceSupplier());
-    private final Supplier<String> deviceType = Suppliers.memoize(deviceTypeSupplier());
-    private final Supplier<Frank> frank = Suppliers.memoize(frankSupplier());
-    private final Supplier<EventBusPublisher> publisher = Suppliers.memoize(publisherSupplier());
-    private final Supplier<IosSdk> sdk = Suppliers.memoize(sdkSupplier());
-    private final LoadingCache<SdkItem,String> sdkInfoCache = sdkInfoCache();
-    private final Supplier<Shell> shell = Suppliers.memoize(shellSupplier());
-    private final Supplier<Service> simulator = Suppliers.memoize(simulatorSupplier());
-    private final Supplier<IosViewAgent> viewAgent = Suppliers.memoize(viewAgentSupplier());
-    private final Supplier<IosViewFactory> viewFactory = Suppliers.memoize(viewFactorySupplier());
-
+    private final Lazy<IosApplication> application = Lazily.from(applicationSupplier());
+    private final Lazy<IosApplicationBundle> applicationBundle = Lazily.from(applicationBundleSupplier());
+    private final DistributingPublisher publisher = new DistributingPublisher();
+    private final Lazy<IosDevice> device = Lazily.from(deviceSupplier());
+    private final Lazy<String> deviceType = Lazily.from(deviceTypeSupplier());
+    private final Lazy<Frank> frank = Lazily.from(frankSupplier());
+    private final Lazy<IosSdk> sdk = Lazily.from(sdkSupplier());
+    private final Lazy<SdkInspector> sdkInspector = Lazily.from(sdkInspectorBuilder());
+    private final Lazy<Shell> shell = Lazily.from(shellSupplier());
+    private final Lazy<Service> simulator = Lazily.from(simulatorSupplier());
+    private final Lazy<IosViewAgent> viewAgent = Lazily.from(viewAgentSupplier());
+    private final Lazy<IosViewFactory> viewFactory = Lazily.from(viewFactorySupplier());
 
     private final Configuration configuration;
 
@@ -153,8 +149,8 @@ public class Victor {
     /**
      * A distributor through which to subscribe to events published by Victor's creations.
      */
-    public Distributor<Object> events() {
-        return publisher.get();
+    public Distributor events() {
+        return publisher;
     }
 
     /**
@@ -187,38 +183,38 @@ public class Victor {
         return viewFactory.get();
     }
 
-    private Supplier<IosApplication> applicationSupplier() {
-        return new Supplier<IosApplication>() {
+    private Builder<IosApplication> applicationSupplier() {
+        return new Builder<IosApplication>() {
             @Override
-            public IosApplication get() {
+            public IosApplication build() {
                 return new FrankApplication(frank());
             }
         };
     }
 
-    private Supplier<IosApplicationBundle> applicationBundleSupplier() {
-        return new Supplier<IosApplicationBundle>() {
+    private Builder<IosApplicationBundle> applicationBundleSupplier() {
+        return new Builder<IosApplicationBundle>() {
             @Override
-            public IosApplicationBundle get() {
-                return new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH), shell.get());
+            public IosApplicationBundle build() {
+                return new IosApplicationBundle(configuration.requiredOption(APPLICATION_BUNDLE_PATH));
             }
         };
     }
 
-    private Supplier<IosDevice> deviceSupplier() {
-        return new Supplier<IosDevice>() {
+    private Builder<IosDevice> deviceSupplier() {
+        return new Builder<IosDevice>() {
             @Override
-            public IosDevice get() {
+            public IosDevice build() {
                 SimulatorApplication simulatorApplication = new SimulatorApplication(shell.get());
                 return new SimulatedIosDevice(deviceType.get(), simulatorApplication, simulator.get());
             }
         };
     }
 
-    private Supplier<String> deviceTypeSupplier() {
-        return new Supplier<String>() {
+    private Builder<String> deviceTypeSupplier() {
+        return new Builder<String>() {
             @Override
-            public String get() {
+            public String build() {
                 List<String> deviceTypes = applicationBundle().deviceTypes();
                 String defaultDeviceType = deviceTypes.size() == 1 ? deviceTypes.get(0) : DEFAULT_DEVICE_TYPE;
                 return option(DEVICE_TYPE, defaultDeviceType);
@@ -226,16 +222,16 @@ public class Victor {
         };
     }
 
-    private Supplier<Frank> frankSupplier() {
-        return new Supplier<Frank>() {
+    private Builder<Frank> frankSupplier() {
+        return new Builder<Frank>() {
             @Override
-            public Frank get() {
+            public Frank build() {
                 String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
                 int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
                 Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
                 Endpoint endpoint = new RoutedEndpoint(router, host, port);
                 Codec codec = new FranklyJsonCodec();
-                return new PublishingFrank(publisher.get(), new FranklyFrank(endpoint, codec));
+                return new PublishingFrank(publisher, new FranklyFrank(endpoint, codec));
             }
         };
     }
@@ -247,57 +243,26 @@ public class Victor {
         return configuration.option(property);
     }
 
-    private Supplier<EventBusPublisher> publisherSupplier() {
-        return new Supplier<EventBusPublisher>() {
+    private Builder<SdkInspector> sdkInspectorBuilder() {
+        return new Builder<SdkInspector>() {
             @Override
-            public EventBusPublisher get() {
-                return new EventBusPublisher(new EventBus());
+            public SdkInspector build() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
         };
     }
 
-    private LoadingCache<SdkItem, String> sdkInfoCache() {
-        return CacheBuilder.newBuilder().build(new CacheLoader<SdkItem, String>() {
+    private Builder<IosSdk> sdkSupplier() {
+        return new Builder<IosSdk>() {
             @Override
-            public String load(SdkItem key) {
-                return shell.get().command("Request SDK Information", "xcodebuild")
-                        .withArguments("-sdk", key.sdkname(), "-version", key.infoitem())
-                        .get().run().output();
-
-            }
-        });
-    }
-
-    private Supplier<IosSdk> sdkSupplier() {
-        return new Supplier<IosSdk>() {
-            @Override
-            public IosSdk get() {
-                Supplier<String> userPreferredSdkName = new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return "iphonesimulator" + configuration.option(SDK_VERSION);
-                    }
-                };
-                Supplier<String> applicationPreferredSdkName = new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return String.valueOf(applicationBundle().sdkCanonicalName());
-                    }
-                };
-                Supplier<String> newestInstalledSdkName = new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return "iphonesimulator";
-                    }
-                };
-                List<Supplier<String>> prioritizedSdkNameSuppliers = ImmutableList.of (
-                        userPreferredSdkName,
-                        applicationPreferredSdkName,
-                        newestInstalledSdkName
+            public IosSdk build() {
+                List<String> prioritizedSdkNames = Arrays.asList(
+                        "iphonesimulator" + configuration.option(SDK_VERSION),
+                        String.valueOf(applicationBundle().sdkCanonicalName()),
+                        "iphonesimulator"
                 );
-                for(Supplier<String> sdkNameSupplier : prioritizedSdkNameSuppliers) {
-                    String sdkName = sdkNameSupplier.get();
-                    IosSdk sdk = new IosSdk(sdkName, sdkInfoCache);
+                for(String sdkName : prioritizedSdkNames) {
+                    IosSdk sdk = new IosSdk(sdkName, sdkInspector.get());
                     if(sdk.isInstalled()) return sdk;
                 }
                 throw new ConfigurationException("No iphonesimulator SDK installed on this computer");
@@ -305,20 +270,20 @@ public class Victor {
         };
     }
 
-    private Supplier<Shell> shellSupplier() {
-        return new Supplier<Shell>() {
+    private Builder<Shell> shellSupplier() {
+        return new Builder<Shell>() {
             @Override
-            public Shell get() {
-                PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher.get());
+            public Shell build() {
+                PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher);
                 return new FactoryBasedShell(commandFactory);
             }
         };
     }
 
-    private Supplier<Service> simulatorSupplier() {
-        return new Supplier<Service>() {
+    private Builder<Service> simulatorSupplier() {
+        return new Builder<Service>() {
             @Override
-            public Service get() {
+            public Service build() {
                 String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
                 boolean victorOwnsSimulator = processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
                 if (victorOwnsSimulator) {
@@ -336,19 +301,19 @@ public class Victor {
         };
     }
 
-    private Supplier<IosViewAgent> viewAgentSupplier() {
-        return new Supplier<IosViewAgent>() {
+    private Builder<IosViewAgent> viewAgentSupplier() {
+        return new Builder<IosViewAgent>() {
             @Override
-            public IosViewAgent get() {
+            public IosViewAgent build() {
                 return new FrankViewAgent(frank());
             }
         };
     }
 
-    private Supplier<IosViewFactory> viewFactorySupplier() {
-        return new Supplier<IosViewFactory>() {
+    private Builder<IosViewFactory> viewFactorySupplier() {
+        return new Builder<IosViewFactory>() {
             @Override
-            public IosViewFactory get() {
+            public IosViewFactory build() {
                 return new AgentBackedViewFactory(viewAgent());
             }
         };

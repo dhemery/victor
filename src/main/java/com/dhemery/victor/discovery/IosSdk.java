@@ -1,10 +1,5 @@
 package com.dhemery.victor.discovery;
 
-import com.dhemery.configuration.ConfigurationException;
-import com.google.common.cache.LoadingCache;
-
-import java.util.concurrent.ExecutionException;
-
 /**
  * Represents an iOS SDK in the currently active Xcode development environment.
  * The active development environment is the one reported
@@ -17,16 +12,16 @@ public class IosSdk {
     public static final String SDK_PATH = "Path";
     public static final String SDK_VERSION = "SDKVersion";
     public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
-    private final LoadingCache<SdkItem,String> sdkInfo;
+    private final SdkInspector inspector;
     private final String canonicalName;
 
     /**
      * Create a representation of an iOS SDK.
      * @param canonicalName the canonical name of the iOS SDK to represent.
      */
-    public IosSdk(String canonicalName, LoadingCache<SdkItem,String> sdkInfo) {
+    public IosSdk(String canonicalName, SdkInspector inspector) {
         this.canonicalName = canonicalName;
-        this.sdkInfo = sdkInfo;
+        this.inspector = inspector;
     }
 
     /**
@@ -92,11 +87,6 @@ public class IosSdk {
     }
 
     private String sdkInfo(String canonicalName, String itemName) {
-        try {
-            return sdkInfo.get(new SdkItem(canonicalName, itemName));
-        } catch (ExecutionException cause) {
-            String explanation = String.format("Cannot retrieve item %s for SDK %s", itemName, canonicalName);
-            throw new ConfigurationException(explanation, cause);
-        }
+        return inspector.get(canonicalName, itemName);
     }
 }

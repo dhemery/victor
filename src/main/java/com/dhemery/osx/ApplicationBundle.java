@@ -1,9 +1,10 @@
 package com.dhemery.osx;
 
-import com.dhemery.configuration.ConfigurationException;
-import com.dhemery.os.Shell;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.dhemery.builder.Builder;
+import com.dhemery.builder.Lazily;
+import com.dhemery.builder.Lazy;
+import com.dhemery.configuration.GsonJsonInspector;
+import com.dhemery.configuration.JsonInspector;
 
 import java.io.File;
 
@@ -16,31 +17,39 @@ public class ApplicationBundle {
     private static final String BUNDLE_VERSION = "CFBundleVersion";
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
-    private final Supplier<PListInspector> plist;
     private final String path;
+    private final Lazy<JsonInspector> inspector = Lazily.from(inspectorBuilder());
+
+    private Builder<JsonInspector> inspectorBuilder() {
+        return new Builder<JsonInspector>() {
+            @Override
+            public JsonInspector build() {
+                String json = new PlutilPlistReader().read(path + "/Info.plist");
+                return new GsonJsonInspector(json);
+            }
+        };
+    }
 
     /**
      * Create an "inspector" that retrieves information from a specified application bundle.
      * @param path the absolute file path to the application bundle.
      */
-    public ApplicationBundle(String path, Shell shell) {
-        requireFile(path, "application bundle");
+    public ApplicationBundle(String path) {
         this.path = path;
-        plist = Suppliers.memoize(plistSupplier(shell));
     }
 
     /**
      * The bundle's version.
      */
     public String bundleIdentifier() {
-        return plist().stringValue(BUNDLE_IDENTIFIER);
+        return json().stringValue(BUNDLE_IDENTIFIER);
     }
 
     /**
      * The bundle's version.
      */
     public String bundleVersion() {
-        return plist().stringValue(BUNDLE_VERSION);
+        return json().stringValue(BUNDLE_VERSION);
     }
 
     /**
@@ -48,7 +57,7 @@ public class ApplicationBundle {
      * This method does not verify that the file exists or that its "executable" bit is set.
      */
     public String executableName() {
-        return plist().stringValue(EXECUTABLE_NAME);
+        return json().stringValue(EXECUTABLE_NAME);
     }
 
     /**
@@ -67,27 +76,9 @@ public class ApplicationBundle {
     }
 
     /**
-     * A {@link PListInspector} with the contents of the bundle's Info.plist file.
+     * A {@link JsonInspector} with the contents of the bundle's Info.plist file.
      */
-    public PListInspector plist() {
-        return plist.get();
-    }
-
-    private Supplier<PListInspector> plistSupplier(final Shell shell) {
-        return new Supplier<PListInspector>() {
-            @Override
-            public PListInspector get() {
-                String plistPath = path + "/Info.plist";
-                requireFile(plistPath, "Info.plist in application bundle");
-                return new PListInspector(plistPath, shell);
-            }
-        };
-    }
-
-    private static void requireFile(String path, String description) {
-        File file = new File(path);
-        if(!file.exists()) {
-            throw new ConfigurationException(String.format("Can not find %s at %s", description, path));
-        }
+    public JsonInspector json() {
+        return inspector.get();
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
  * <p>After each call to {@code run()}, the wrapper publishes a {@link com.dhemery.os.events.Ran} event.</p>
  */
 public class PublishingCommand implements RunnableCommand {
-    private final Publisher<Object> publisher;
+    private final Publisher publisher;
     private final RunnableCommand command;
 
     /**
@@ -23,7 +23,7 @@ public class PublishingCommand implements RunnableCommand {
      * @param publisher the publisher through which to publish events
      * @param command the command to wrap
      */
-    public PublishingCommand(Publisher<Object> publisher, RunnableCommand command) {
+    public PublishingCommand(Publisher publisher, RunnableCommand command) {
         this.publisher = publisher;
         this.command = command;
     }

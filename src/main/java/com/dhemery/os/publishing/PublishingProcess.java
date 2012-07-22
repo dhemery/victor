@@ -13,7 +13,7 @@ import com.dhemery.publishing.Publisher;
  * </p>
  */
 public class PublishingProcess implements OSProcess {
-    private final Publisher<Object> publisher;
+    private final Publisher publisher;
     private final OSCommand command;
     private final OSProcess process;
 
@@ -23,7 +23,7 @@ public class PublishingProcess implements OSProcess {
      * @param command the command that launched the process
      * @param process the process to wrap
      */
-    public PublishingProcess(Publisher<Object> publisher, OSCommand command, OSProcess process) {
+    public PublishingProcess(Publisher publisher, OSCommand command, OSProcess process) {
         this.publisher = publisher;
         this.command = command;
         this.process = process;

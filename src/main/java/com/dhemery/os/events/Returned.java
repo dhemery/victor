@@ -3,7 +3,7 @@ package com.dhemery.os.events;
 import com.dhemery.os.OSCommand;
 
 /**
- * Indicates that an {@link com.dhemery.os.OSCommand} returned its output to a caller.
+ * Indicates that an {@link OSCommand} returned its output to a caller.
  * This event does not occur automatically merely because a command produces output.
  * It is posted only in response to a caller requesting the output.
  */

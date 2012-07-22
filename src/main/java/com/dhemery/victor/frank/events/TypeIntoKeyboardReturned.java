@@ -1,3 +1,3 @@
 package com.dhemery.victor.frank.events;
 
-public class TypeIntoKeyboardReturned {}
+public class TypeIntoKeyboardReturned{}

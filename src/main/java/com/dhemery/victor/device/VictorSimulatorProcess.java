@@ -28,7 +28,7 @@ public class VictorSimulatorProcess implements Service {
                 .withArguments("-currentSDKRoot", sdkRoot)
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
-                .get();
+                .build();
         killSimulatorProcess = killCommand(shell, "iPhone Simulator");
         String simulatedProcessName = new File(applicationBinaryPath).getName();
         killSimulatedApplicationProcess = killCommand(shell, simulatedProcessName);
@@ -54,6 +54,6 @@ public class VictorSimulatorProcess implements Service {
     private RunnableCommand killCommand(Shell shell, String processName) {
         return shell.command("Kill " + processName, "killall")
                 .withArgument(processName)
-                .get();
+                .build();
     }
 }

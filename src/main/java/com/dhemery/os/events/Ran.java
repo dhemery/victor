@@ -3,7 +3,7 @@ package com.dhemery.os.events;
 import com.dhemery.os.OSCommand;
 
 /**
- * Indicates that an {@link com.dhemery.os.OSCommand} was executed.
+ * Indicates that an {@link OSCommand} was executed.
  * By the time this event posts,
  * the process launched by the command
  * may or may not have terminated.
