@@ -1,5 +1,6 @@
 package com.dhemery.victor.discovery;
 
+import com.dhemery.os.Shell;
 import com.dhemery.osx.ApplicationBundle;
 
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class IosApplicationBundle extends ApplicationBundle {
     /**
      * @param path the absolute file path to the application bundle.
      */
-    public IosApplicationBundle(String path) {
-        super(path);
+    public IosApplicationBundle(String path, Shell shell) {
+        super(path, shell);
     }
 
     /**

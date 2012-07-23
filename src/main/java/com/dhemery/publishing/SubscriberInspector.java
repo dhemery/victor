@@ -9,7 +9,7 @@ import java.util.Set;
 public class SubscriberInspector {
     public Set<Method> subscriptionsOn(Object subscriber) {
         SubscriptionMethodFilter filter = new SubscriptionMethodFilter();
-        Class<? extends Object> subscriberClass = subscriber.getClass();
+        Class<?> subscriberClass = subscriber.getClass();
         List<Method> methods = Arrays.asList(subscriberClass.getMethods());
         Set<Method> subscriptions = new HashSet<Method>();
         for (Method method : methods) {

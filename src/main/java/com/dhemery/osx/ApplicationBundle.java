@@ -5,6 +5,7 @@ import com.dhemery.builder.Lazily;
 import com.dhemery.builder.Lazy;
 import com.dhemery.configuration.GsonJsonInspector;
 import com.dhemery.configuration.JsonInspector;
+import com.dhemery.os.Shell;
 
 import java.io.File;
 
@@ -18,13 +19,14 @@ public class ApplicationBundle {
     private static final String BUNDLE_IDENTIFIER = "CFBundleIdentifier";
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
     private final String path;
+    private final Shell shell;
     private final Lazy<JsonInspector> inspector = Lazily.from(inspectorBuilder());
 
     private Builder<JsonInspector> inspectorBuilder() {
         return new Builder<JsonInspector>() {
             @Override
             public JsonInspector build() {
-                String json = new PlutilPlistReader().read(path + "/Info.plist");
+                String json = new PlutilPlistReader(shell).read(path + "/Info.plist");
                 return new GsonJsonInspector(json);
             }
         };
@@ -34,8 +36,9 @@ public class ApplicationBundle {
      * Create an "inspector" that retrieves information from a specified application bundle.
      * @param path the absolute file path to the application bundle.
      */
-    public ApplicationBundle(String path) {
+    public ApplicationBundle(String path, Shell shell) {
         this.path = path;
+        this.shell = shell;
     }
 
     /**

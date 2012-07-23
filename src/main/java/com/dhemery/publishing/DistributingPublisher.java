@@ -35,7 +35,6 @@ public class DistributingPublisher implements Publisher, Distributor {
     @Override
     public void publish(Object publication) {
         Set<Subscription> subscriptions = subscriptionsForPublication(publication);
-        System.out.println("Subscriptions for " + publication + " " + subscriptions);
         for(Subscription subscription : subscriptions) {
             subscription.deliver(publication);
         }
