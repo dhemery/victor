@@ -28,7 +28,7 @@ public class ADistributingPublisher {
     private class MySubscriber {
         public int receiptCount;
 
-        @Subscription
+        @Subscribe
         public void myEventHandler(Object publication) {
             receiptCount++;
         }

@@ -11,7 +11,7 @@ public class SubscriptionMethodFilter {
      * Reports whether the method is a subscription method.
      * A subscription method is a method that:
      * <ul>
-     * <li>is annotated as {@link Subscription}, and</li>
+     * <li>is annotated as {@link Subscribe}, and</li>
      * <li>is public, and</li>
      * <li>returns {@code void}, and</li>
      * <li>takes one parameter</li>
@@ -26,7 +26,7 @@ public class SubscriptionMethodFilter {
     }
 
     private boolean isAnnotatedAsSubscription(Method method) {
-        return method.isAnnotationPresent(Subscription.class);
+        return method.isAnnotationPresent(Subscribe.class);
     }
 
     private boolean isPublic(Method method) {

@@ -11,12 +11,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ASubscriptionMethodFilter {
     private final Object subscriber = new Object(){
-        @Subscription public void validSubscription(Object o) {}
+        @Subscribe
+        public void validSubscription(Object o) {}
         public void methodNotAnnotatedAsSubscription(Object o) {}
-        @Subscription private void privateMethod(Object o) {}
-        @Subscription public Object nonVoidMethod(Object o) { return null; }
-        @Subscription public void zeroParameterMethod(){}
-        @Subscription public void multiParameterMethod(Object a, Object b){}
+        @Subscribe
+        private void privateMethod(Object o) {}
+        @Subscribe
+        public Object nonVoidMethod(Object o) { return null; }
+        @Subscribe
+        public void zeroParameterMethod(){}
+        @Subscribe
+        public void multiParameterMethod(Object a, Object b){}
     };
     private final SubscriptionMethodFilter filter = new SubscriptionMethodFilter();
 

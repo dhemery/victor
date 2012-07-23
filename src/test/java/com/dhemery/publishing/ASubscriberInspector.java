@@ -11,18 +11,26 @@ import static org.hamcrest.Matchers.*;
 public class ASubscriberInspector {
     private final Object subscriberWithNoSubscriptions = new Object(){};
     private final Object subscriberWithOneSubscription = new Object(){
-        @Subscription public void subscription(Object o) {}
+        @Subscribe
+        public void subscription(Object o) {}
     };
     private final Object subscriberWithMultipleSubscriptions = new Object(){
-        @Subscription public void subscription1(Object o) {}
-        @Subscription public void subscription2(Object o) {}
-        @Subscription public void subscription3(Object o) {}
-        @Subscription public void subscription4(Object o) {}
-        @Subscription public void subscription5(Object o) {}
-        @Subscription public void subscription6(Object o) {}
+        @Subscribe
+        public void subscription1(Object o) {}
+        @Subscribe
+        public void subscription2(Object o) {}
+        @Subscribe
+        public void subscription3(Object o) {}
+        @Subscribe
+        public void subscription4(Object o) {}
+        @Subscribe
+        public void subscription5(Object o) {}
+        @Subscribe
+        public void subscription6(Object o) {}
     };
     private final Object subscriberWithSubscriptionAndAnotherMethod = new Object(){
-        @Subscription public void subscription(Object o) {}
+        @Subscribe
+        public void subscription(Object o) {}
         public void notASubscription(Object o) {}
     };
     private final SubscriberInspector subscriberInspector = new SubscriberInspector();
@@ -37,7 +45,7 @@ public class ASubscriberInspector {
     public void findsOneSubscriptionIfSubscriberHasOneSubscription() {
         List<Method> subscriptions = subscriberInspector.subscriptionsOn(subscriberWithOneSubscription);
         Method method = subscriberWithOneSubscription.getClass().getDeclaredMethods()[0];
-        assertThat(subscriptions, contains(method));
+        assertThat(subscriptions, hasItem(method));
     }
 
     @Test
@@ -52,7 +60,7 @@ public class ASubscriberInspector {
         List<Method> subscriptions = subscriberInspector.subscriptionsOn(subscriberWithSubscriptionAndAnotherMethod);
         Method subscription = subscriberWithSubscriptionAndAnotherMethod.getClass().getDeclaredMethod("subscription", Object.class);
         Method notASubscription = subscriberWithSubscriptionAndAnotherMethod.getClass().getDeclaredMethod("notASubscription", Object.class);
-        assertThat(subscriptions, contains(subscription));
-        assertThat(subscriptions, not(contains(notASubscription)));
+        assertThat(subscriptions, hasItem(subscription));
+        assertThat(subscriptions, not(hasItem(notASubscription)));
     }
 }
