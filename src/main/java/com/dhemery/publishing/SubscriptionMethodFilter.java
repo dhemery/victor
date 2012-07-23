@@ -18,11 +18,7 @@ public class SubscriptionMethodFilter {
      * </ul>
      */
     public boolean accepts(Method method) {
-        return isAnnotatedAsSubscription(method)
-                && isPublic(method)
-                && isVoid(method)
-                && takesOneParameter(method)
-                ;
+        return isPublic(method) && isVoid(method) && takesOneParameter(method) && isAnnotatedAsSubscription(method);
     }
 
     private boolean isAnnotatedAsSubscription(Method method) {

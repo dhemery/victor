@@ -25,7 +25,6 @@ public class ASubscriptionMethodFilter {
     };
     private final SubscriptionMethodFilter filter = new SubscriptionMethodFilter();
 
-
     @Test
     public void acceptsPublicVoidOneParameterMethodsAnnotatedAsSubscription() throws NoSuchMethodException {
         Method validSubscription = subscriber.getClass().getDeclaredMethod("validSubscription", Object.class);
