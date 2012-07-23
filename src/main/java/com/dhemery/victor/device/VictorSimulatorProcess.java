@@ -14,8 +14,8 @@ import java.io.File;
  */
 public class VictorSimulatorProcess implements Service {
     private final RunnableCommand startSimulator;
-    private final RunnableCommand killSimulatorProcess;
-    private final RunnableCommand killSimulatedApplicationProcess;
+    private final RunnableCommand stopSimulator;
+    private final RunnableCommand stopSimulatedApplication;
 
     /**
      * @param sdkRoot               the path to the SDK to use for the simulation
@@ -29,9 +29,9 @@ public class VictorSimulatorProcess implements Service {
                 .withArguments("-SimulateDevice", deviceType)
                 .withArguments("-SimulateApplication", applicationBinaryPath)
                 .build();
-        killSimulatorProcess = killCommand(shell, "iPhone Simulator");
+        stopSimulator = killCommand(shell, "Stop Simulator", "iPhone Simulator");
         String simulatedProcessName = new File(applicationBinaryPath).getName();
-        killSimulatedApplicationProcess = killCommand(shell, simulatedProcessName);
+        stopSimulatedApplication = killCommand(shell, "Stop Simulated Application", simulatedProcessName);
     }
 
     /**
@@ -47,12 +47,12 @@ public class VictorSimulatorProcess implements Service {
      */
     @Override
     public void stop() {
-        killSimulatorProcess.run();
-        killSimulatedApplicationProcess.run();
+        stopSimulator.run();
+        stopSimulatedApplication.run();
     }
 
-    private RunnableCommand killCommand(Shell shell, String processName) {
-        return shell.command("Kill " + processName, "killall")
+    private RunnableCommand killCommand(Shell shell, String description, String processName) {
+        return shell.command(description, "killall")
                 .withArgument(processName)
                 .build();
     }

@@ -273,12 +273,32 @@ public class Victor {
         return new Builder<IosSdk>() {
             @Override
             public IosSdk build() {
-                List<String> prioritizedSdkNames = Arrays.asList(
-                        "iphonesimulator" + configuration.option(SDK_VERSION),
-                        String.valueOf(applicationBundle().sdkCanonicalName()),
-                        "iphonesimulator"
+                List<Builder<String>> prioritizedSdkNames = Arrays.asList(
+                        new Builder<String>() {
+                            @Override
+                            public String build() {
+                                if(!configuration.defines(SDK_VERSION)) return null;
+                                return "iphonesimulator" + configuration.option(SDK_VERSION);
+                            }
+                        },
+                        new Builder<String>() {
+
+                            @Override
+                            public String build() {
+                                return String.valueOf(applicationBundle().sdkCanonicalName());
+                            }
+                        },
+                        new Builder<String>() {
+                            @Override
+                            public String build() {
+                                return "iphonesimulator";
+                            }
+                        }
                 );
-                for(String sdkName : prioritizedSdkNames) {
+
+                for(Builder<String> builder : prioritizedSdkNames) {
+                    String sdkName = builder.build();
+                    if(sdkName == null) continue;
                     IosSdk sdk = new IosSdk(sdkName, sdkInspector.get());
                     if(sdk.isInstalled()) return sdk;
                 }
