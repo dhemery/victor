@@ -1,7 +1,5 @@
-package com.dhemery.os.publishing;
+package com.dhemery.os;
 
-import com.dhemery.os.OSProcess;
-import com.dhemery.os.RunnableCommand;
 import com.dhemery.os.events.Ran;
 import com.dhemery.os.events.WillRun;
 import com.dhemery.publishing.Publisher;

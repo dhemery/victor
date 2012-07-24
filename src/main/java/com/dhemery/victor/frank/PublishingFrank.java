@@ -1,4 +1,4 @@
-package com.dhemery.victor.frank.publishing;
+package com.dhemery.victor.frank;
 
 import com.dhemery.network.Endpoint;
 import com.dhemery.publishing.Publisher;

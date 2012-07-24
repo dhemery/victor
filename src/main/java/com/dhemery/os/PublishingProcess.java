@@ -1,4 +1,4 @@
-package com.dhemery.os.publishing;
+package com.dhemery.os;
 
 import com.dhemery.os.OSCommand;
 import com.dhemery.os.OSProcess;

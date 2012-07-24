@@ -7,8 +7,8 @@ import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.network.*;
 import com.dhemery.os.FactoryBasedShell;
+import com.dhemery.os.PublishingCommandFactory;
 import com.dhemery.os.Shell;
-import com.dhemery.os.publishing.PublishingCommandFactory;
 import com.dhemery.publishing.DistributingPublisher;
 import com.dhemery.publishing.Distributor;
 import com.dhemery.victor.device.*;
@@ -16,12 +16,8 @@ import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkInspector;
 import com.dhemery.victor.discovery.SdkItem;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FrankApplication;
-import com.dhemery.victor.frank.FrankViewAgent;
-import com.dhemery.victor.frank.publishing.PublishingFrank;
-import com.dhemery.victor.frankly.FranklyFrank;
-import com.dhemery.victor.frankly.FranklyJsonCodec;
+import com.dhemery.victor.frank.*;
+import com.dhemery.victor.frank.frankly.FranklyJsonCodec;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -233,8 +229,9 @@ public class Victor {
                 int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
                 Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
                 Endpoint endpoint = new RoutedEndpoint(router, host, port);
+                Endpoint publishingEndpoint = new PublishingEndpoint(publisher, endpoint);
                 Codec codec = new FranklyJsonCodec();
-                return new PublishingFrank(publisher, new FranklyFrank(endpoint, codec));
+                return new PublishingFrank(publisher, new FranklyFrank(publishingEndpoint, codec));
             }
         };
     }

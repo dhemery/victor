@@ -1,6 +1,7 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank.frankly;
 
 import com.dhemery.victor.frank.Frank;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,9 +14,10 @@ import java.util.List;
  * of the argument to {@link Frank#appExec}
  * and of the final two arguments to {@link Frank#map}.
  * </ul>
- * @see FranklyFrank
+ * @see com.dhemery.victor.frank.FranklyFrank
  */
 public class Operation {
+    @SerializedName("method_name")
     private final String method;
     private final List<Object> arguments;
 

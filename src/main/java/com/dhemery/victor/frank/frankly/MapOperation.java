@@ -1,4 +1,4 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank.frankly;
 
 import com.dhemery.victor.frank.Frank;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * An operation to send a message to a set of views.
  * {@code MapOperation} is the serializable representation
  * of the arguments to {@link Frank#map}.
- * @see FranklyFrank
+ * @see com.dhemery.victor.frank.FranklyFrank
  */
 public class MapOperation {
     /**

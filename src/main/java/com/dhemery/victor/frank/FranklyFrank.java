@@ -1,8 +1,8 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank;
 
 import com.dhemery.network.Codec;
 import com.dhemery.network.Endpoint;
-import com.dhemery.victor.frank.Frank;
+import com.dhemery.victor.frank.frankly.*;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import java.util.List;
  * </p>
  */
 public class FranklyFrank implements Frank {
-    private static final String ACCESSIBILITY_CHECK_REQUEST = "accessibility_check";
-    private static final String DUMP_REQUEST = "dump";
-    private static final String ORIENTATION_REQUEST = "orientation";
-    private static final String APP_EXEC_REQUEST = "app_exec";
-    private static final String MAP_REQUEST = "map";
-    private static final String TYPE_INTO_KEYBOARD_REQUEST = "type_into_keyboard";
+    private static final String ACCESSIBILITY_CHECK_REQUEST = "/accessibility_check";
+    private static final String DUMP_REQUEST = "/dump";
+    private static final String ORIENTATION_REQUEST = "/orientation";
+    private static final String APP_EXEC_REQUEST = "/app_exec";
+    private static final String MAP_REQUEST = "/map";
+    private static final String TYPE_INTO_KEYBOARD_REQUEST = "/type_into_keyboard";
     private final Endpoint endpoint;
     private final Codec codec;
 

@@ -1,8 +1,5 @@
-package com.dhemery.os.publishing;
+package com.dhemery.os;
 
-import com.dhemery.os.OSCommandFactory;
-import com.dhemery.os.RunnableCommand;
-import com.dhemery.os.RuntimeCommand;
 import com.dhemery.publishing.Publisher;
 
 import java.util.List;

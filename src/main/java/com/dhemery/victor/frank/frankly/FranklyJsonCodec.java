@@ -1,4 +1,4 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank.frankly;
 
 import com.dhemery.network.Codec;
 import com.google.gson.Gson;
@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 
 /**
  * Serializes Frankly payloads and deserializes Frankly responses.
- * @see FranklyFrank
+ * @see com.dhemery.victor.frank.FranklyFrank
  */
 public class FranklyJsonCodec implements Codec {
     private final Gson gson = new GsonBuilder()

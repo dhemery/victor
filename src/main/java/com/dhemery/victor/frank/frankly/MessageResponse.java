@@ -1,4 +1,4 @@
-package com.dhemery.victor.frankly;
+package com.dhemery.victor.frank.frankly;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 //TODO: Describe success, failure, reason, and details.
 /**
  * A response to a Frankly {@link Operation}.
- * @see FranklyFrank
+ * @see com.dhemery.victor.frank.FranklyFrank
  */
 public class MessageResponse {
     private final boolean succeeded;
