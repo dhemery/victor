@@ -1,13 +1,15 @@
 package com.dhemery.network.events;
 
+import com.dhemery.network.Resource;
+
 public class GetThrew {
-    private final String path;
+    private final Resource resource;
     private final Throwable exception;
 
-    public GetThrew(String path, Throwable exception) {
-        this.path = path;
+    public GetThrew(Resource resource, Throwable exception) {
+        this.resource = resource;
         this.exception = exception;
     }
-    public String path() { return path; }
+    public Resource resource() { return resource; }
     public Throwable exception() { return exception; }
 }

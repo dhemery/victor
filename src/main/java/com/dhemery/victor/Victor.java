@@ -6,9 +6,7 @@ import com.dhemery.builder.Lazy;
 import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.network.*;
-import com.dhemery.os.FactoryBasedShell;
-import com.dhemery.os.PublishingCommandFactory;
-import com.dhemery.os.Shell;
+import com.dhemery.os.*;
 import com.dhemery.publishing.DistributingPublisher;
 import com.dhemery.publishing.Distributor;
 import com.dhemery.victor.device.*;
@@ -227,11 +225,11 @@ public class Victor {
             public Frank build() {
                 String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
                 int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-                Router router = new URLResourceRouter(FRANK_ENDPOINT_PROTOCOL);
-                Endpoint endpoint = new RoutedEndpoint(router, host, port);
-                Endpoint publishingEndpoint = new PublishingEndpoint(publisher, endpoint);
+                ResourceFactory resources = new URLResourceFactory();
+                ResourceFactory publishingResources = new PublishingResourceFactory(publisher, resources);
+                Endpoint endpoint = new ResourceFactoryBasedEndpoint(FRANK_ENDPOINT_PROTOCOL, host, port, publishingResources);
                 Codec codec = new FranklyJsonCodec();
-                return new PublishingFrank(publisher, new FranklyFrank(publishingEndpoint, codec));
+                return new PublishingFrank(publisher, new FranklyFrank(endpoint, codec));
             }
         };
     }
@@ -308,8 +306,9 @@ public class Victor {
         return new Builder<Shell>() {
             @Override
             public Shell build() {
-                PublishingCommandFactory commandFactory = new PublishingCommandFactory(publisher);
-                return new FactoryBasedShell(commandFactory);
+                OSCommandFactory<RunnableCommand> commandFactory = new RuntimeCommandFactory();
+                PublishingCommandFactory publishingCommandFactory = new PublishingCommandFactory(publisher, commandFactory);
+                return new FactoryBasedShell(publishingCommandFactory);
             }
         };
     }

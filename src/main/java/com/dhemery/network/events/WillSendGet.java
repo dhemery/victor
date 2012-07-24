@@ -1,10 +1,12 @@
 package com.dhemery.network.events;
 
-public class WillSendGet {
-    private final String path;
+import com.dhemery.network.Resource;
 
-    public WillSendGet(String path) {
-        this.path = path;
+public class WillSendGet {
+    private final Resource resource;
+
+    public WillSendGet(Resource resource) {
+        this.resource = resource;
     }
-    public String path() { return path ;}
+    public Resource resource() { return resource; }
 }

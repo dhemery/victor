@@ -1,13 +1,15 @@
 package com.dhemery.network.events;
 
+import com.dhemery.network.Resource;
+
 public class GetResponded {
-    private final String path;
+    private final Resource resource;
     private final String response;
 
-    public GetResponded(String path, String response) {
-        this.path = path;
+    public GetResponded(Resource resource, String response) {
+        this.resource = resource;
         this.response = response;
     }
-    public String path() { return path; }
+    public Resource resource() { return resource; }
     public String response() { return response; }
 }

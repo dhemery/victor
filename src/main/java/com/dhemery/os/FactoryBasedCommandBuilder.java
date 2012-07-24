@@ -6,7 +6,7 @@ import java.util.*;
  * A command builder that uses a factory to construct the commands.
  */
 public class FactoryBasedCommandBuilder implements OSCommandBuilder<RunnableCommand> {
-    private final OSCommandFactory<RunnableCommand> factory;
+    private final OSCommandFactory<RunnableCommand> create;
     private final String description;
     private final String path;
     private final List<String> arguments = new ArrayList<String>();
@@ -19,7 +19,7 @@ public class FactoryBasedCommandBuilder implements OSCommandBuilder<RunnableComm
      * @param path the path to the command executable
      */
     public FactoryBasedCommandBuilder(OSCommandFactory<RunnableCommand> factory, String description, String path) {
-        this.factory = factory;
+        create = factory;
         this.description = description;
         this.path = path;
     }
@@ -50,6 +50,6 @@ public class FactoryBasedCommandBuilder implements OSCommandBuilder<RunnableComm
 
     @Override
     public RunnableCommand build() {
-        return factory.command(description, path, arguments, environment);
+        return create.command(description, path, arguments, environment);
     }
 }

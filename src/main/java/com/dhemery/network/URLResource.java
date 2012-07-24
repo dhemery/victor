@@ -21,6 +21,11 @@ public class URLResource implements Resource {
     }
 
     @Override
+    public URL url() {
+        return connection.getURL();
+    }
+
+    @Override
     public String get() {
         connect(FOR_READING);
         return read();
@@ -37,7 +42,7 @@ public class URLResource implements Resource {
         try {
             return url.openConnection();
         } catch (IOException cause) {
-            throw new NetworkKitException(String.format("Cannot create connection to %s", url), cause);
+            throw new NetworkKitException(url, "Cannot create connection", cause);
         }
     }
 
@@ -48,7 +53,7 @@ public class URLResource implements Resource {
             connection.setReadTimeout(READ_TIMEOUT);
             connection.connect();
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot connect to " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot connect", cause);
         }
     }
 
@@ -57,7 +62,7 @@ public class URLResource implements Resource {
         try {
             writer.write(message);
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot write to " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot write", cause);
         }
         close(writer);
     }
@@ -66,7 +71,7 @@ public class URLResource implements Resource {
         try {
             return new OutputStreamWriter(connection.getOutputStream());
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot get output stream for " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot get output stream", cause);
         }
     }
 
@@ -85,7 +90,7 @@ public class URLResource implements Resource {
         try {
             return connection.getInputStream();
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot get input stream for" + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot get input stream", cause);
         }
     }
 
@@ -93,7 +98,7 @@ public class URLResource implements Resource {
         try {
             return reader.readLine();
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot read line from " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot read line", cause);
         }
     }
 
@@ -101,7 +106,7 @@ public class URLResource implements Resource {
         try {
             writer.close();
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot close writer for " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot close writer", cause);
         }
     }
 
@@ -109,7 +114,7 @@ public class URLResource implements Resource {
         try {
             reader.close();
         } catch (IOException cause) {
-            throw new NetworkKitException("Cannot close reader for " + connection.getURL(), cause);
+            throw new NetworkKitException(this, "Cannot close reader", cause);
         }
     }
 }

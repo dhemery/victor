@@ -1,13 +1,15 @@
 package com.dhemery.network.events;
 
+import com.dhemery.network.Resource;
+
 public class WillSendPut {
-    private final String path;
+    private final Resource resource;
     private final String message;
 
-    public WillSendPut(String path, String message) {
-        this.path = path;
+    public WillSendPut(Resource resource, String message) {
+        this.resource = resource;
         this.message = message;
     }
-    public String path() { return path; }
+    public Resource resource() { return resource; }
     public String message() { return message; }
 }

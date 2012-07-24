@@ -5,6 +5,11 @@ package com.dhemery.network;
  */
 public interface Endpoint {
     /**
+     * The name of the protocol that this Endpoint speaks.
+     */
+    String protocol();
+
+    /**
      * The name of the endpoint's host.
      */
     String host();
