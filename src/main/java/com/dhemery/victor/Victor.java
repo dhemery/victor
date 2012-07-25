@@ -99,18 +99,18 @@ public class Victor {
      */
     public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
 
-    private final Lazy<IosApplication> application = Lazily.from(applicationBuilder());
-    private final Lazy<IosApplicationBundle> applicationBundle = Lazily.from(applicationBundleBuilder());
+    private final Lazy<IosApplication> application = Lazily.build(theApplication());
+    private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
     private final DistributingPublisher publisher = new DistributingPublisher();
-    private final Lazy<IosDevice> device = Lazily.from(deviceBuilder());
-    private final Lazy<String> deviceType = Lazily.from(deviceTypeBuilder());
-    private final Lazy<Frank> frank = Lazily.from(frankBuilder());
-    private final Lazy<IosSdk> sdk = Lazily.from(sdkBuilder());
-    private final Lazy<SdkInspector> sdkInspector = Lazily.from(sdkInspectorBuilder());
-    private final Lazy<Shell> shell = Lazily.from(shellBuilder());
-    private final Lazy<Service> simulator = Lazily.from(simulatorBuilder());
-    private final Lazy<IosViewAgent> viewAgent = Lazily.from(viewAgentBuilder());
-    private final Lazy<IosViewFactory> viewFactory = Lazily.from(viewFactoryBuilder());
+    private final Lazy<IosDevice> device = Lazily.build(theDevice());
+    private final Lazy<String> deviceType = Lazily.build(theDeviceType());
+    private final Lazy<Frank> frank = Lazily.build(theFrank());
+    private final Lazy<IosSdk> sdk = Lazily.build(theSdk());
+    private final Lazy<SdkInspector> sdkInspector = Lazily.build(theSdkInspector());
+    private final Lazy<Shell> shell = Lazily.build(theShell());
+    private final Lazy<Service> simulator = Lazily.build(theSimulator());
+    private final Lazy<IosViewAgent> viewAgent = Lazily.build(theViewAgent());
+    private final Lazy<IosViewFactory> viewFactory = Lazily.build(theViewFactory());
 
     private final Configuration configuration;
 
@@ -172,7 +172,6 @@ public class Victor {
         return viewAgent.get();
     }
 
-
     /**
      * The factory that creates views backed by Victor's view agent.
      */
@@ -180,7 +179,14 @@ public class Victor {
         return viewFactory.get();
     }
 
-    private Builder<IosApplication> applicationBuilder() {
+    private String option(String property, String defaultValue) {
+        if(!configuration.defines(property)) {
+            configuration.set(property, defaultValue);
+        }
+        return configuration.option(property);
+    }
+
+    private Builder<IosApplication> theApplication() {
         return new Builder<IosApplication>() {
             @Override
             public IosApplication build() {
@@ -189,7 +195,7 @@ public class Victor {
         };
     }
 
-    private Builder<IosApplicationBundle> applicationBundleBuilder() {
+    private Builder<IosApplicationBundle> theApplicationBundle() {
         return new Builder<IosApplicationBundle>() {
             @Override
             public IosApplicationBundle build() {
@@ -198,7 +204,7 @@ public class Victor {
         };
     }
 
-    private Builder<IosDevice> deviceBuilder() {
+    private Builder<IosDevice> theDevice() {
         return new Builder<IosDevice>() {
             @Override
             public IosDevice build() {
@@ -208,7 +214,7 @@ public class Victor {
         };
     }
 
-    private Builder<String> deviceTypeBuilder() {
+    private Builder<String> theDeviceType() {
         return new Builder<String>() {
             @Override
             public String build() {
@@ -219,7 +225,7 @@ public class Victor {
         };
     }
 
-    private Builder<Frank> frankBuilder() {
+    private Builder<Frank> theFrank() {
         return new Builder<Frank>() {
             @Override
             public Frank build() {
@@ -234,14 +240,7 @@ public class Victor {
         };
     }
 
-    private String option(String property, String defaultValue) {
-        if(!configuration.defines(property)) {
-            configuration.set(property, defaultValue);
-        }
-        return configuration.option(property);
-    }
-
-    private Builder<SdkInspector> sdkInspectorBuilder() {
+    private Builder<SdkInspector> theSdkInspector() {
         return new Builder<SdkInspector>() {
             @Override
             public SdkInspector build() {
@@ -264,7 +263,7 @@ public class Victor {
         };
     }
 
-    private Builder<IosSdk> sdkBuilder() {
+    private Builder<IosSdk> theSdk() {
         return new Builder<IosSdk>() {
             @Override
             public IosSdk build() {
@@ -302,7 +301,7 @@ public class Victor {
         };
     }
 
-    private Builder<Shell> shellBuilder() {
+    private Builder<Shell> theShell() {
         return new Builder<Shell>() {
             @Override
             public Shell build() {
@@ -313,7 +312,7 @@ public class Victor {
         };
     }
 
-    private Builder<Service> simulatorBuilder() {
+    private Builder<Service> theSimulator() {
         return new Builder<Service>() {
             @Override
             public Service build() {
@@ -334,7 +333,7 @@ public class Victor {
         };
     }
 
-    private Builder<IosViewAgent> viewAgentBuilder() {
+    private Builder<IosViewAgent> theViewAgent() {
         return new Builder<IosViewAgent>() {
             @Override
             public IosViewAgent build() {
@@ -343,7 +342,7 @@ public class Victor {
         };
     }
 
-    private Builder<IosViewFactory> viewFactoryBuilder() {
+    private Builder<IosViewFactory> theViewFactory() {
         return new Builder<IosViewFactory>() {
             @Override
             public IosViewFactory build() {

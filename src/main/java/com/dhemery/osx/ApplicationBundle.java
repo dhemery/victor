@@ -20,7 +20,7 @@ public class ApplicationBundle {
     private static final String EXECUTABLE_NAME = "CFBundleExecutable";
     private final String path;
     private final Shell shell;
-    private final Lazy<JsonInspector> inspector = Lazily.from(inspectorBuilder());
+    private final Lazy<JsonInspector> inspector = Lazily.build(inspectorBuilder());
 
     private Builder<JsonInspector> inspectorBuilder() {
         return new Builder<JsonInspector>() {
