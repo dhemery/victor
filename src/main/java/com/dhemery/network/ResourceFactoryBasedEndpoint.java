@@ -41,4 +41,9 @@ public class ResourceFactoryBasedEndpoint implements Endpoint {
     private Resource resourceFor(String path) {
         return create.resource(protocol, host, port,  path);
     }
+
+    @Override
+    public String toString() {
+        return protocol + "://" + host + ':' + port;
+    }
 }

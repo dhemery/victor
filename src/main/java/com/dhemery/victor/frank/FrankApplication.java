@@ -45,4 +45,9 @@ public class FrankApplication implements IosApplication {
     public void typeIntoKeyboard(String text) {
         frank.typeIntoKeyboard(text);
     }
+
+    @Override
+    public String toString() {
+        return frank.toString();
+    }
 }

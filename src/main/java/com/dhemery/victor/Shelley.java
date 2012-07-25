@@ -9,21 +9,11 @@ package com.dhemery.victor;
  * Shelley runs in the application,
  * registered under the required name.
  */
-public class Shelley implements By {
-    private final String pattern;
+public class Shelley extends ByLanguagePattern {
+    public static final String LANGUAGE = "shelley_compat";
 
     protected Shelley(String pattern) {
-        this.pattern = pattern;
-    }
-
-    @Override
-    public String language() {
-        return "shelley_compat";
-    }
-
-    @Override
-    public String pattern() {
-        return pattern;
+        super(LANGUAGE, pattern);
     }
 
     /**

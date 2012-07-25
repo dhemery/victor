@@ -88,4 +88,9 @@ public class FranklyFrank implements Frank {
         String rawResponse = endpoint.put(path, message);
         return codec.decode(rawResponse, responseType);
     }
+
+    @Override
+    public String toString() {
+        return "Frank at " + endpoint;
+    }
 }

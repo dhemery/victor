@@ -30,7 +30,8 @@ public class MessageResponseParser implements JsonDeserializer<MessageResponse> 
         if (succeeded) {
             if (body.get("results") != null) {
                 for (JsonElement result : body.get("results").getAsJsonArray()) {
-                    if (result.isJsonNull()) results.add(null);
+                    if(result.isJsonNull()) results.add(null);
+                    else if(result.isJsonObject()) results.add(result.toString());
                     else results.add(result.getAsString());
                 }
             }

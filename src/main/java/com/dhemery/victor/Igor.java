@@ -9,21 +9,11 @@ package com.dhemery.victor;
  * Igor runs in the application,
  * registered under the required name.
  */
-public class Igor implements By {
-    private final String pattern;
+public class Igor extends ByLanguagePattern {
+    public static final String LANGUAGE = "igor";
 
     protected Igor(String pattern) {
-        this.pattern = pattern;
-    }
-
-    @Override
-    public String language() {
-        return "igor";
-    }
-
-    @Override
-    public String pattern() {
-        return pattern;
+        super(LANGUAGE, pattern);
     }
 
     /**

@@ -9,21 +9,11 @@ package com.dhemery.victor;
  * and runs in every Frankified application,
  * registered under the required name.
  */
-public class UIQuery implements By {
-    private final String pattern;
+public class UIQuery extends ByLanguagePattern {
+    public static final String LANGUAGE = "uiquery";
 
     protected UIQuery(String pattern) {
-        this.pattern = pattern;
-    }
-
-    @Override
-    public String language() {
-        return "uiquery";
-    }
-
-    @Override
-    public String pattern() {
-        return pattern;
+        super(LANGUAGE, pattern);
     }
 
     /**

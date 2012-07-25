@@ -2,7 +2,6 @@ package com.dhemery.victor.frank;
 
 import com.dhemery.network.Endpoint;
 import com.dhemery.publishing.Publisher;
-import com.dhemery.victor.frank.Frank;
 import com.dhemery.victor.frank.events.*;
 
 import java.util.List;
@@ -82,5 +81,10 @@ public class PublishingFrank implements Frank {
     @Override
     public Endpoint endpoint() {
         return frank.endpoint();
+    }
+
+    @Override
+    public String toString() {
+        return frank.toString();
     }
 }
