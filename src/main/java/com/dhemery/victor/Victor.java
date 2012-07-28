@@ -109,8 +109,6 @@ public class Victor {
     private final Lazy<SdkInspector> sdkInspector = Lazily.build(theSdkInspector());
     private final Lazy<Shell> shell = Lazily.build(theShell());
     private final Lazy<Service> simulator = Lazily.build(theSimulator());
-    private final Lazy<IosViewAgent> viewAgent = Lazily.build(theViewAgent());
-    private final Lazy<IosViewFactory> viewFactory = Lazily.build(theViewFactory());
 
     private final Configuration configuration;
 
@@ -163,20 +161,6 @@ public class Victor {
      */
     public IosSdk sdk() {
         return sdk.get();
-    }
-
-    /**
-     * The view agent that Victor's view factory uses to create view drivers.
-     */
-    public IosViewAgent viewAgent() {
-        return viewAgent.get();
-    }
-
-    /**
-     * The factory that creates views backed by Victor's view agent.
-     */
-    public IosViewFactory viewFactory() {
-        return viewFactory.get();
     }
 
     private String option(String property, String defaultValue) {
@@ -329,24 +313,6 @@ public class Victor {
                     return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType.get(), shell.get());
                 }
                 return new UserSimulatorProcess();
-            }
-        };
-    }
-
-    private Builder<IosViewAgent> theViewAgent() {
-        return new Builder<IosViewAgent>() {
-            @Override
-            public IosViewAgent build() {
-                return new FrankViewAgent(frank());
-            }
-        };
-    }
-
-    private Builder<IosViewFactory> theViewFactory() {
-        return new Builder<IosViewFactory>() {
-            @Override
-            public IosViewFactory build() {
-                return new AgentBackedViewFactory(viewAgent());
             }
         };
     }

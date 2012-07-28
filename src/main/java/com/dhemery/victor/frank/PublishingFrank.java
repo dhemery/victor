@@ -16,10 +16,10 @@ import java.util.List;
  * The {@code WillRequestX} events include the method's arguments (if any).
  * </p>
  * <p>
- * Most of the {@code XReturned} events include method's arguments and return value.
+ * Most {@code XReturned} events include the method's arguments and return value.
  * </p>
  * <p>
- * For a complete roster of Frank events, see the {@link com.dhemery.victor.frank} package.
+ * For a complete roster of Frank events, see the {@link com.dhemery.victor.frank.events} package.
  * </p>
  */
 public class PublishingFrank implements Frank {

@@ -32,4 +32,9 @@ public interface IosApplication {
      * @param text the text to type.
      */
     void typeIntoKeyboard(String text);
+
+    /**
+     * Create a driver that can interact with the views identified by an identifier.
+     */
+    IosView view(IosViewIdentifier id);
 }

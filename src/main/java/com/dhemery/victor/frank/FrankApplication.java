@@ -1,7 +1,6 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.victor.IosApplication;
-import com.dhemery.victor.IosApplicationOrientation;
+import com.dhemery.victor.*;
 
 /**
  * An application agent that communicates to an iOS application through a Frank agent.
@@ -44,6 +43,11 @@ public class FrankApplication implements IosApplication {
     @Override
     public void typeIntoKeyboard(String text) {
         frank.typeIntoKeyboard(text);
+    }
+
+    @Override
+    public IosView view(IosViewIdentifier id) {
+        return new FrankView(frank, id);
     }
 
     @Override

@@ -1,6 +1,6 @@
 /**
  * <p>
- * Interact with iOS applications.
+ * Interact with iOS devices, applications, and views.
  * Victor is designed for use with a Frank server embedded into the iOS application.
  * Victor includes an API and reasonable implementations
  * to use all of the Frank server's features through Java.
@@ -13,7 +13,7 @@
  * <li>{@link com.dhemery.victor.IosDevice}: a driver that interacts with a simulated iOS device.</li>
  * <li>{@link com.dhemery.victor.IosView}: a driver that interacts with a set of views in an iOS application.</li>
  * <li>{@link com.dhemery.victor.IosViewFactory}: a factory that creates {@code IosView}s.</li>
- * <li>{@link com.dhemery.victor.By}: a mechanism for identifying iOS views.</li>
+ * <li>{@link IosViewIdentifier}: a mechanism for identifying iOS views.</li>
  * <li>{@link com.dhemery.victor.Victor}: a factory that constructs a complete Victor environment
  * based on a small set of configuration optoins..</li>
  * </ul>

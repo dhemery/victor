@@ -9,16 +9,16 @@ import java.util.List;
  */
 public interface IosView {
     /**
-     * The query that identifies the views represented by this driver.
+     * The identifier that identifies the views represented by this driver.
      */
-    By query();
+    IosViewIdentifier id();
 
     /**
      * Send a message to each represented view.
      *
-     * @param name      the name of the message to send (an Objective-C query).
-     * @param arguments arguments to send with the message.
-     * @return the list of values returned from the represented views.
+     * @param name      the name of the message to send (an Objective-Cquery)
+     * @param arguments arguments to send with the message
+     * @return the list of values returned from the represented views
      */
     List<String> sendMessage(String name, Object... arguments);
 }
