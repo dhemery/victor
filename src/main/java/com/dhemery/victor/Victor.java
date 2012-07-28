@@ -7,7 +7,7 @@ import com.dhemery.configuration.Configuration;
 import com.dhemery.configuration.ConfigurationException;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
-import com.dhemery.publishing.DistributingPublisher;
+import com.dhemery.publishing.Channel;
 import com.dhemery.publishing.Distributor;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
@@ -101,7 +101,7 @@ public class Victor {
 
     private final Lazy<IosApplication> application = Lazily.build(theApplication());
     private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
-    private final DistributingPublisher publisher = new DistributingPublisher();
+    private final Channel publisher = new Channel();
     private final Lazy<IosDevice> device = Lazily.build(theDevice());
     private final Lazy<String> deviceType = Lazily.build(theDeviceType());
     private final Lazy<Frank> frank = Lazily.build(theFrank());
