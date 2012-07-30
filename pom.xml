@@ -1,11 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.dhemery</groupId>
     <artifactId>victor</artifactId>
-    <packaging>jar</packaging>
     <version>3.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>Victor</name>
+    <description>A Java driver for iOS applications</description>
+    <url>https://github.com/dhemery/victor</url>
+
+    <licenses>
+        <license>
+            <name>MIT LICENSE</name>
+            <url>https://github.com/dhemery/victor/LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
 
     <developers>
         <developer>
@@ -20,8 +37,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/dhemery/victor</url>
+        <url>scm:git:git@github.com:dhemery/victor.git</url>
         <connection>scm:git:git@github.com:dhemery/victor.git</connection>
+        <developerConnection>scm:git:git@github.com:dhemery/victor.git</developerConnection>
     </scm>
 
     <dependencies>
