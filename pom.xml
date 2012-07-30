@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dhemery</groupId>
+    <artifactId>victor</artifactId>
+    <packaging>jar</packaging>
+    <version>3.0-SNAPSHOT</version>
+    <name>Victor</name>
+
+    <developers>
+        <developer>
+            <id>dhemery</id>
+            <name>Dale Emery</name>
+            <email>dale@dhemery.com</email>
+            <url>http://dhemery.com</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/dhemery/victor</url>
+        <connection>scm:git:git@github.com:dhemery/victor.git</connection>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dhemery</groupId>
+            <artifactId>hartley</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>

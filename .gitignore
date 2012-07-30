@@ -1,3 +1,4 @@
 # IntelliJ IDEA
-out/*
+/out
+/target
 workspace.xml

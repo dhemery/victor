@@ -1,7 +1,7 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.Codec;
 import com.dhemery.network.Endpoint;
+import com.dhemery.serializing.Codec;
 import com.dhemery.victor.frank.frankly.*;
 
 import java.util.List;

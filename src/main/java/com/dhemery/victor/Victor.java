@@ -1,20 +1,25 @@
 package com.dhemery.victor;
 
-import com.dhemery.builder.Builder;
-import com.dhemery.builder.Lazily;
-import com.dhemery.builder.Lazy;
-import com.dhemery.configuration.Configuration;
-import com.dhemery.configuration.ConfigurationException;
+import com.dhemery.configuring.Configuration;
+import com.dhemery.configuring.ConfigurationException;
+import com.dhemery.creating.Builder;
+import com.dhemery.creating.Lazily;
+import com.dhemery.creating.Lazy;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
 import com.dhemery.publishing.Channel;
 import com.dhemery.publishing.Distributor;
+import com.dhemery.publishing.MethodSubscriptionChannel;
+import com.dhemery.serializing.Codec;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkInspector;
 import com.dhemery.victor.discovery.SdkItem;
-import com.dhemery.victor.frank.*;
+import com.dhemery.victor.frank.Frank;
+import com.dhemery.victor.frank.FrankApplication;
+import com.dhemery.victor.frank.FranklyFrank;
+import com.dhemery.victor.frank.PublishingFrank;
 import com.dhemery.victor.frank.frankly.FranklyJsonCodec;
 
 import java.util.Arrays;
@@ -101,7 +106,7 @@ public class Victor {
 
     private final Lazy<IosApplication> application = Lazily.build(theApplication());
     private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
-    private final Channel publisher = new Channel();
+    private final Channel publisher = new MethodSubscriptionChannel();
     private final Lazy<IosDevice> device = Lazily.build(theDevice());
     private final Lazy<String> deviceType = Lazily.build(theDeviceType());
     private final Lazy<Frank> frank = Lazily.build(theFrank());
@@ -165,7 +170,7 @@ public class Victor {
 
     private String option(String property, String defaultValue) {
         if(!configuration.defines(property)) {
-            configuration.set(property, defaultValue);
+            configuration.define(property, defaultValue);
         }
         return configuration.option(property);
     }
