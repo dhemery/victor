@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank.frankly;
 
-import com.dhemery.network.Codec;
+import com.dhemery.serializing.Codec;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
