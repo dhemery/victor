@@ -1,13 +1,15 @@
 <component name="libraryTable">
   <library name="Maven: com.dhemery:hartley:1.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-20120730.220941-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-20120730.220941-1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-20120730.220941-1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dhemery/hartley/1.0-SNAPSHOT/hartley-1.0-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
