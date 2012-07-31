@@ -7,9 +7,7 @@ import com.dhemery.creating.Lazily;
 import com.dhemery.creating.Lazy;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
-import com.dhemery.publishing.Channel;
-import com.dhemery.publishing.Distributor;
-import com.dhemery.publishing.MethodSubscriptionChannel;
+import com.dhemery.publishing.Publisher;
 import com.dhemery.serializing.Codec;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.IosApplicationBundle;
@@ -106,7 +104,7 @@ public class Victor {
 
     private final Lazy<IosApplication> application = Lazily.build(theApplication());
     private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
-    private final Channel publisher = new MethodSubscriptionChannel();
+    private final Publisher publisher;
     private final Lazy<IosDevice> device = Lazily.build(theDevice());
     private final Lazy<String> deviceType = Lazily.build(theDeviceType());
     private final Lazy<Frank> frank = Lazily.build(theFrank());
@@ -122,7 +120,12 @@ public class Victor {
      * @param configuration the configuration options for Victor.
      */
     public Victor(Configuration configuration) {
+        this(configuration, defaultPublisher());
+    }
+
+    public Victor(Configuration configuration, Publisher publisher) {
         this.configuration = new Configuration(configuration);
+        this.publisher = publisher;
     }
 
     /**
@@ -147,13 +150,6 @@ public class Victor {
     }
 
     /**
-     * A distributor through which to subscribe to events published by Victor's creations.
-     */
-    public Distributor events() {
-        return publisher;
-    }
-
-    /**
      * The Frank agent used by the application and by view agents.
      */
     public Frank frank() {
@@ -166,6 +162,13 @@ public class Victor {
      */
     public IosSdk sdk() {
         return sdk.get();
+    }
+
+    private static Publisher defaultPublisher() {
+        return new Publisher() {
+            @Override
+            public void publish(Object publication) {}
+        };
     }
 
     private String option(String property, String defaultValue) {

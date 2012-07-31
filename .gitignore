@@ -1,4 +1,5 @@
 # IntelliJ IDEA
+/out
 /target
 /.idea
 *.iml
