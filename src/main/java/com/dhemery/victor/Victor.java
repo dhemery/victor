@@ -2,9 +2,9 @@ package com.dhemery.victor;
 
 import com.dhemery.configuring.Configuration;
 import com.dhemery.configuring.ConfigurationException;
-import com.dhemery.creating.Builder;
-import com.dhemery.creating.Lazily;
-import com.dhemery.creating.Lazy;
+import com.dhemery.core.Builder;
+import com.dhemery.core.Lazily;
+import com.dhemery.core.Lazy;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
 import com.dhemery.publishing.Publisher;
