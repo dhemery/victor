@@ -1,7 +1,6 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.Endpoint;
-import com.dhemery.serializing.Codec;
+import com.dhemery.network.SerializingEndpoint;
 import com.dhemery.victor.frank.frankly.*;
 
 import java.util.List;
@@ -18,17 +17,14 @@ public class FranklyFrank implements Frank {
     private static final String APP_EXEC_REQUEST = "/app_exec";
     private static final String MAP_REQUEST = "/map";
     private static final String TYPE_INTO_KEYBOARD_REQUEST = "/type_into_keyboard";
-    private final Endpoint endpoint;
-    private final Codec codec;
+    private final SerializingEndpoint endpoint;
 
     /**
      * Create a Frank agent to communicate with the Frank server at the given endpoint.
      * @param endpoint the endpoint at which the Frank server can be accessed.
-     * @param codec codec to serialize Frankly payloads and deserialize Frankly responses.
      */
-    public FranklyFrank(Endpoint endpoint, Codec codec) {
+    public FranklyFrank(SerializingEndpoint endpoint) {
         this.endpoint = endpoint;
-        this.codec = codec;
     }
 
     @Override
@@ -50,7 +46,7 @@ public class FranklyFrank implements Frank {
 
     @Override
     public String dump() {
-        return get(DUMP_REQUEST);
+        return get(DUMP_REQUEST, String.class);
     }
 
     @Override
@@ -77,23 +73,16 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
-    public Endpoint endpoint() {
+    public SerializingEndpoint endpoint() {
         return endpoint;
     }
 
-    private String get(String path) {
-        return endpoint.get(path);
-    }
-
     private <T> T get(String path, Class<T> responseType) {
-        String rawResponse = get(path);
-        return codec.decode(rawResponse, responseType);
+        return endpoint.get(path, responseType);
     }
 
     private <T> T put(String path, Object payload, Class<T> responseType) {
-        String message = codec.encode(payload);
-        String rawResponse = endpoint.put(path, message);
-        return codec.decode(rawResponse, responseType);
+        return endpoint.put(path, payload, responseType);
     }
 
     @Override

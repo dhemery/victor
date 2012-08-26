@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.Endpoint;
+import com.dhemery.network.SerializingEndpoint;
 import com.dhemery.publishing.Publisher;
 import com.dhemery.victor.frank.events.*;
 
@@ -79,7 +79,7 @@ public class PublishingFrank implements Frank {
     }
 
     @Override
-    public Endpoint endpoint() {
+    public SerializingEndpoint endpoint() {
         return frank.endpoint();
     }
 

@@ -1,6 +1,6 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.Endpoint;
+import com.dhemery.network.SerializingEndpoint;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public interface Frank {
     /**
      * The endpoint through which this Frank agent communicates with the Frank server.
      */
-    Endpoint endpoint();
+    SerializingEndpoint endpoint();
 
     //TODO: explain empty list and null value.
     /**

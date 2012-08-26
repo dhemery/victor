@@ -5,6 +5,8 @@ import com.dhemery.configuring.ConfigurationException;
 import com.dhemery.core.Builder;
 import com.dhemery.core.Lazily;
 import com.dhemery.core.Lazy;
+import com.dhemery.network.CodecEndpoint;
+import com.dhemery.network.SerializingEndpoint;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
 import com.dhemery.publishing.Publisher;
@@ -14,10 +16,7 @@ import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkInspector;
 import com.dhemery.victor.discovery.SdkItem;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FrankApplication;
-import com.dhemery.victor.frank.FranklyFrank;
-import com.dhemery.victor.frank.PublishingFrank;
+import com.dhemery.victor.frank.*;
 import com.dhemery.victor.frank.frankly.FranklyJsonCodec;
 
 import java.util.Arrays;
@@ -227,7 +226,8 @@ public class Victor {
                 ResourceFactory publishingResources = new PublishingResourceFactory(publisher, resources);
                 Endpoint endpoint = new ResourceFactoryBasedEndpoint(FRANK_ENDPOINT_PROTOCOL, host, port, publishingResources);
                 Codec codec = new FranklyJsonCodec();
-                return new PublishingFrank(publisher, new FranklyFrank(endpoint, codec));
+                SerializingEndpoint codecEndpoint = new CodecEndpoint(endpoint, codec);
+                return new PublishingFrank(publisher, new FranklyFrank(codecEndpoint));
             }
         };
     }

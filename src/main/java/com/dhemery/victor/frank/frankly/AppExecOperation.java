@@ -21,4 +21,26 @@ public class AppExecOperation {
     }
 
     public Operation operation() { return operation; }
+
+    @Override
+    public String toString() {
+        return operation.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppExecOperation that = (AppExecOperation) o;
+
+        if (operation != null ? !operation.equals(that.operation) : that.operation != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return operation != null ? operation.hashCode() : 0;
+    }
 }
