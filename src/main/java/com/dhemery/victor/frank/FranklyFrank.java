@@ -40,8 +40,12 @@ public class FranklyFrank implements Frank {
     @Override
     public String appExec(String name, Object...arguments) {
         Operation operation = new Operation(name, arguments);
-        MessageResponse response = put(APP_EXEC_REQUEST, operation, MessageResponse.class);
-        return response.results().get(0);
+        AppExecOperation appExecOperation = new AppExecOperation(operation);
+        MessageResponse response = put(APP_EXEC_REQUEST, appExecOperation, MessageResponse.class);
+
+        if(response.succeeded()) return response.results().get(0);
+
+        throw new IosOperationException("Application delegate", operation, response);
     }
 
     @Override
@@ -54,7 +58,10 @@ public class FranklyFrank implements Frank {
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
         MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
-        return response.results();
+
+        if(response.succeeded()) return response.results();
+
+        throw new IosOperationException(engine + ' ' + query, operation, response);
     }
 
     @Override
