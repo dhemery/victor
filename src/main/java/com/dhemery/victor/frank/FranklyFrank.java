@@ -69,7 +69,7 @@ public class FranklyFrank implements Frank {
     @Override
     public void typeIntoKeyboard(String text) {
         TextToType textToType = new TextToType(text);
-        put(TYPE_INTO_KEYBOARD_REQUEST, textToType, MessageResponse.class);
+        put(TYPE_INTO_KEYBOARD_REQUEST, textToType, Void.class);
     }
 
     @Override
