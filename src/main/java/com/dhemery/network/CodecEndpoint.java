@@ -18,9 +18,9 @@ public class CodecEndpoint implements SerializingEndpoint {
     }
 
     @Override
-    public <T> T put(String path, Object payload, Class<T> responseType) {
-        String message = codec.encode(payload);
-        String rawResponse = endpoint.put(path, message);
-        return codec.decode(rawResponse, responseType);
+    public <T> T put(String path, Object body, Class<T> responseType) {
+        String encodedBody = codec.encode(body);
+        String encodedResponse = endpoint.put(path, encodedBody);
+        return codec.decode(encodedResponse, responseType);
     }
 }
