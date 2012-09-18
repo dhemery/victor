@@ -1,8 +1,6 @@
-package com.victor.frank.tests;
+package com.dhemery.victor.frank;
 
 import com.dhemery.network.SerializingEndpoint;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FranklyFrank;
 import com.dhemery.victor.frank.frankly.OrientationResponse;
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
@@ -14,7 +12,7 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class FranklyFrankOrientationTest {
+public class FranklyFrankOrientation {
     @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
     @Mock public SerializingEndpoint endpoint;
     private Frank frank;

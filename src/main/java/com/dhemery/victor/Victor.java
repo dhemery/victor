@@ -155,7 +155,6 @@ public class Victor {
         return frank.get();
     }
 
-
     /**
      * The iOS SDK used to run the device and application.
      */

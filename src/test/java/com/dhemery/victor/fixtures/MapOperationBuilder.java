@@ -1,4 +1,4 @@
-package com.victor.fixtures;
+package com.dhemery.victor.fixtures;
 
 import com.dhemery.core.Builder;
 import com.dhemery.victor.frank.frankly.MapOperation;

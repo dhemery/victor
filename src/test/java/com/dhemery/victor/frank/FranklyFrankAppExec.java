@@ -1,9 +1,6 @@
-package com.victor.frank.tests;
+package com.dhemery.victor.frank;
 
 import com.dhemery.network.SerializingEndpoint;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FranklyFrank;
-import com.dhemery.victor.frank.IosOperationException;
 import com.dhemery.victor.frank.frankly.AppExecOperation;
 import com.dhemery.victor.frank.frankly.MessageResponse;
 import com.dhemery.victor.frank.frankly.Operation;
@@ -21,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class FranklyFrankAppExecTest {
+public class FranklyFrankAppExec {
     public static final String IGNORED_METHOD_NAME = null;
     @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
     @Mock public SerializingEndpoint endpoint;

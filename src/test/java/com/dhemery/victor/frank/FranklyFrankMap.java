@@ -1,11 +1,8 @@
-package com.victor.frank.tests;
+package com.dhemery.victor.frank;
 
 import com.dhemery.network.SerializingEndpoint;
-import com.dhemery.victor.frank.Frank;
-import com.dhemery.victor.frank.FranklyFrank;
-import com.dhemery.victor.frank.IosOperationException;
 import com.dhemery.victor.frank.frankly.*;
-import com.victor.fixtures.MapOperationBuilder;
+import com.dhemery.victor.fixtures.MapOperationBuilder;
 import org.jmock.Expectations;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
@@ -20,7 +17,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class FranklyFrankMapTest {
+public class FranklyFrankMap {
     public static final String IGNORED_ENGINE = null;
     public static final String IGNORED_METHOD_NAME = null;
     public static final String IGNORED_QUERY = null;
