@@ -2,11 +2,10 @@ package com.dhemery.victor;
 
 import com.dhemery.configuring.Configuration;
 import com.dhemery.configuring.ConfigurationException;
+import com.dhemery.configuring.MapBackedConfiguration;
 import com.dhemery.core.Builder;
 import com.dhemery.core.Lazily;
 import com.dhemery.core.Lazy;
-import com.dhemery.network.CodecEndpoint;
-import com.dhemery.network.SerializingEndpoint;
 import com.dhemery.network.*;
 import com.dhemery.os.*;
 import com.dhemery.publishing.Publisher;
@@ -16,7 +15,10 @@ import com.dhemery.victor.discovery.IosApplicationBundle;
 import com.dhemery.victor.discovery.IosSdk;
 import com.dhemery.victor.discovery.SdkInspector;
 import com.dhemery.victor.discovery.SdkItem;
-import com.dhemery.victor.frank.*;
+import com.dhemery.victor.frank.Frank;
+import com.dhemery.victor.frank.FrankApplication;
+import com.dhemery.victor.frank.FranklyFrank;
+import com.dhemery.victor.frank.PublishingFrank;
 import com.dhemery.victor.frank.frankly.FranklyJsonCodec;
 
 import java.util.Arrays;
@@ -123,7 +125,7 @@ public class Victor {
     }
 
     public Victor(Configuration configuration, Publisher publisher) {
-        this.configuration = new Configuration(configuration);
+        this.configuration = new MapBackedConfiguration(configuration);
         this.publisher = publisher;
     }
 
