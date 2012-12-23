@@ -201,7 +201,7 @@ public class Victor {
             @Override
             public IosDevice build() {
                 SimulatorApplication simulatorApplication = new SimulatorApplication(shell.get());
-                return new SimulatedIosDevice(deviceType.get(), simulatorApplication, simulator.get());
+                return new SimulatedIosDevice(deviceType.get(), simulatorApplication, simulator.get(), frank.get());
             }
         };
     }

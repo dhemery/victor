@@ -15,7 +15,7 @@ public interface IosApplication {
     /**
      * Report the application's orientation.
      */
-    IosApplicationOrientation orientation();
+    Orientation orientation();
 
     /**
      * Send a message with arguments to the application delegate.

@@ -1,7 +1,9 @@
 package com.dhemery.victor.device;
 
-import com.dhemery.victor.IosDevice;
 import com.dhemery.osx.OsxApplication;
+import com.dhemery.victor.Orientation;
+import com.dhemery.victor.IosDevice;
+import com.dhemery.victor.frank.Frank;
 
 /**
  * Interacts with a simulated iOS device through a various agents.
@@ -10,19 +12,26 @@ public class SimulatedIosDevice implements IosDevice {
     private final String deviceType;
     private final OsxApplication simulatorApplication;
     private final Service simulatorProcess;
+    private final Frank frank;
 
     /**
      * @param deviceType the type of device simulated by this driver
      * @param simulatorApplication a driver to interact with the simulator application
      * @param simulatorProcess a driver to start and stop the simulator
      */
-    public SimulatedIosDevice(String deviceType, OsxApplication simulatorApplication, Service simulatorProcess) {
+    public SimulatedIosDevice(String deviceType, OsxApplication simulatorApplication, Service simulatorProcess, Frank frank) {
         this.deviceType = deviceType;
         this.simulatorApplication = simulatorApplication;
         this.simulatorProcess = simulatorProcess;
+        this.frank = frank;
     }
 
     @Override public String type() { return deviceType; }
+
+    @Override
+    public void orientIn(Orientation orientation) {
+        frank.orientIn(orientation.toString().toLowerCase());
+    }
 
     @Override
     public void rotateLeft() {

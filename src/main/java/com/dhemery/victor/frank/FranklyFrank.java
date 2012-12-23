@@ -67,6 +67,11 @@ public class FranklyFrank implements Frank {
     }
 
     @Override
+    public void orientIn(String orientation) {
+        endpoint.put(ORIENTATION_REQUEST, orientation, Void.class);
+    }
+
+    @Override
     public void typeIntoKeyboard(String text) {
         TextToType textToType = new TextToType(text);
         endpoint.put(TYPE_INTO_KEYBOARD_REQUEST, textToType, Void.class);

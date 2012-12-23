@@ -6,6 +6,8 @@ package com.dhemery.victor;
  * @author Dale Emery
  */
 public interface IosDevice {
+    void orientIn(Orientation orientation);
+
     /**
      * Rotate the simulated device left.
      */

@@ -1,9 +1,14 @@
 package com.dhemery.victor.frank.frankly;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OrientationResponse {
-    private final String orientation;
+    @SerializedName("orientation") private String notUsed;
+    @SerializedName("detailed_orientation") private final String detailedOrientation;
+
     public OrientationResponse(String orientation) {
-        this.orientation = orientation;
+        detailedOrientation = orientation;
     }
-    public String orientation() { return orientation; }
+
+    public String orientation() { return detailedOrientation; }
 }

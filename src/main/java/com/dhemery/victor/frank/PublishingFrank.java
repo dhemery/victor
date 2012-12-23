@@ -72,6 +72,13 @@ public class PublishingFrank implements Frank {
     }
 
     @Override
+    public void orientIn(String orientation) {
+        publisher.publish(new WillRequestOrientIn(orientation));
+        frank.orientIn(orientation);
+        publisher.publish(new OrientInReturned());
+    }
+
+    @Override
     public void typeIntoKeyboard(String text) {
         publisher.publish(new WillRequestTypeIntoKeyboard(text));
         frank.typeIntoKeyboard(text);

@@ -52,6 +52,11 @@ public interface Frank {
     String orientation();
 
     /**
+     * Set the device's orientation.
+     */
+    void orientIn(String orientation);
+
+    /**
      * Type text using the device's keyboard.
      */
     void typeIntoKeyboard(String text);

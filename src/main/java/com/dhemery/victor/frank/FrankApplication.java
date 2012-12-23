@@ -26,12 +26,12 @@ public class FrankApplication implements IosApplication {
     }
 
     @Override
-    public IosApplicationOrientation orientation() {
+    public Orientation orientation() {
         String orientationName = frank.orientation();
         try {
-            return IosApplicationOrientation.valueOf(orientationName.toUpperCase());
+            return Orientation.valueOf(orientationName.toUpperCase());
         } catch (IllegalArgumentException ignored) {
-            return IosApplicationOrientation.UNKNOWN;
+            return Orientation.UNKNOWN;
         }
     }
 
