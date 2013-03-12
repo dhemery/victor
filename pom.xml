@@ -8,7 +8,7 @@
 
     <groupId>com.dhemery</groupId>
     <artifactId>victor</artifactId>
-    <version>3.0</version>
+    <version>3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Victor</name>
     <description>A Java driver for iOS applications</description>
