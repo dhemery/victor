@@ -1,7 +1,4 @@
-# IntelliJ IDEA
-/out
-/target
 /.idea
-*.iml
-*.ipr
-*.iws
+/target
+/_site
+

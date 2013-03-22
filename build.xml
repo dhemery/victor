@@ -1,0 +1,43 @@
+<project name="utility-generator-pages" default="snapshot">
+    <property name="build.dir" value="${basedir}/target" />
+    <property name="repo.dir" value="${build.dir}/repo" />
+    <property name="javadoc.dir" value="${repo.dir}/target/site/apidocs" />
+    <property name="api.dir" value="${basedir}/api" />
+    <property name="snapshot.dir" value="${api.dir}/SNAPSHOT" />
+    <property name="jekyll.site" value="${basedir}/_site" />
+
+    <target name="clean" depends="original-snapshot" description="Remove intermediate build artifacts" >
+        <delete dir="${build.dir}" quiet="true" />
+        <delete dir="${jekyll.site}" quiet="true" />
+    </target>
+
+    <target name="javadocs" depends="repo" >
+        <exec executable="mvn" dir="${repo.dir}">
+            <arg line="clean javadoc:javadoc" />
+        </exec>
+    </target>
+
+    <target name="no-snapshot">
+        <delete dir="${snapshot.dir}" />
+    </target>
+
+    <target name="original-snapshot" depends="no-snapshot" description="Remove the SNAPSHOT directory">
+        <exec executable="git" dir="${basedir}">
+            <arg line="checkout ${snapshot.dir}" />
+        </exec>
+    </target>
+
+    <target name="repo">
+        <delete dir="${repo.dir}" />
+        <exec executable="git" dir="${basedir}">
+            <arg line="clone -b master . ${repo.dir}" />
+        </exec>
+    </target>
+
+    <target name="snapshot" depends="javadocs, no-snapshot" description="Create API Documentation from the master branch">
+        <copy todir="${snapshot.dir}">
+            <fileset dir="${javadoc.dir}"/>
+        </copy>
+    </target>
+</project>
+
