@@ -3,6 +3,7 @@ package com.dhemery.victor.discovery;
 import com.dhemery.os.Shell;
 import com.dhemery.osx.ApplicationBundle;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,5 +40,10 @@ public class IosApplicationBundle extends ApplicationBundle {
      */
     public String sdkCanonicalName() {
         return json().stringValue(SDK_CANONICAL_NAME);
+    }
+
+
+    public String path() {
+        return Paths.get(pathToExecutable()).getParent().toString();
     }
 }

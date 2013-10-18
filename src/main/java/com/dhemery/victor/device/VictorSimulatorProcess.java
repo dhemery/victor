@@ -10,6 +10,10 @@ import java.io.File;
  * The {@link #start()} method launches the simulator.
  * The {@link #stop()} method shuts it down.
  *
+ * <p><strong>NOTE:</strong>
+ * This class works only with Xcode 4.
+ * For Xcode 5, see {@link InstrumentsSimulatorProcess}
+ *
  * @author Dale Emery
  */
 public class VictorSimulatorProcess implements Service {
@@ -34,24 +38,18 @@ public class VictorSimulatorProcess implements Service {
         stopSimulatedApplication = killCommand(shell, "Stop Simulated Application", simulatedProcessName);
     }
 
-    /**
-     * Start the simulator.
-     */
     @Override
     public void start() {
         startSimulator.run();
     }
 
-    /**
-     * Stop the simulator.
-     */
     @Override
     public void stop() {
         stopSimulator.run();
         stopSimulatedApplication.run();
     }
 
-    private RunnableCommand killCommand(Shell shell, String description, String processName) {
+    private static RunnableCommand killCommand(Shell shell, String description, String processName) {
         return shell.command(description, "killall")
                 .withArgument(processName)
                 .build();

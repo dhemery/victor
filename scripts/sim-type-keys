@@ -1,7 +1,0 @@
-#!/usr/bin/env osascript
-on run argv
-	activate application "iPhone Simulator"
-	tell application "System Events"
-		keystroke item 1 of argv
-	end
-end
