@@ -52,9 +52,9 @@ public class Victor {
     public static final String DEFAULT_FRANK_PORT = "37265";
 
     /**
-     * The default value for the {@link #SIMULATOR_PROCESS_OWNER} option.
+     * The default value for the {@link #SIMULATOR_LAUNCHER} option.
      */
-    public static final String DEFAULT_SIMULATOR_PROCESS_OWNER = "victor";
+    public static final String DEFAULT_SIMULATOR_LAUNCHER = "instruments";
 
     /**
      * The type of device to simulate.
@@ -84,11 +84,17 @@ public class Victor {
     public static final String SDK_VERSION = "victor.simulator.sdk.version";
 
     /**
-     * <p>Specifies who is responsible for starting and stopping the simulator.</p>
-     * <p>If the value is <strong>victor</strong>,
-     * the constructed {@link IosDevice IosDevice}'s
-     * {@link IosDevice#start() start()} method will launch the simulator,
-     * and its {@link IosDevice#stop() stop()} method will shut it down.
+     * <p>Specifies the launcher for starting and stopping the simulator.</p>
+     * <p>If the value is <strong>instruments</strong>,
+     * Victor will launch the iOS simulator application
+     * via <em>instruments</em>.
+     * </p>
+     * <p>If the value is <strong>obsolete-victor</strong>,
+     * Victor will launch the simulator directly
+     * using command line commands.
+     * <strong>WARNING:</strong>
+     * The <em>obsolete-victor</em> launcher requires Xcode 4.
+     * It does not work with Xcode 5.
      * </p>
      * <p>
      * If this option has any other value,
@@ -101,7 +107,9 @@ public class Victor {
      * then run an automated test against the prepared application.
      * </p>
      */
-    public static final String SIMULATOR_PROCESS_OWNER = "victor.simulator.process.owner";
+    public static final String SIMULATOR_LAUNCHER = "victor.simulator.launcher";
+    public static final String INSTRUMENTS_SIMULATOR_LAUNCHER = "instruments";
+    public static final String OBSOLETE_VICTOR_SIMULATOR_LAUNCHER = "obsolete-victor";
 
     private final Lazy<IosApplication> application = Lazily.build(theApplication());
     private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
@@ -309,19 +317,22 @@ public class Victor {
         return new Builder<Service>() {
             @Override
             public Service build() {
-                String processOwner = option(SIMULATOR_PROCESS_OWNER, DEFAULT_SIMULATOR_PROCESS_OWNER);
-                boolean victorOwnsSimulator = processOwner.equals(DEFAULT_SIMULATOR_PROCESS_OWNER);
-                if (victorOwnsSimulator) {
-                    IosApplicationBundle iosApplicationBundle = applicationBundle();
-                    if(!iosApplicationBundle.isExecutable()) {
-                        throw new ConfigurationException("Application binary is not executable: " + iosApplicationBundle.pathToExecutable());
-                    }
-                    String sdkPath = sdk().path();
-                    String simulatorBinaryPath = sdk().simulatorBinaryPath();
-                    String applicationBinaryPath = iosApplicationBundle.pathToExecutable();
-                    return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType.get(), shell.get());
+                String launcherType = option(SIMULATOR_LAUNCHER, DEFAULT_SIMULATOR_LAUNCHER);
+                switch(launcherType) {
+                    case INSTRUMENTS_SIMULATOR_LAUNCHER:
+                        return new InstrumentsSimulatorProcess(applicationBundle(), deviceType.get(), shell.get());
+                    case OBSOLETE_VICTOR_SIMULATOR_LAUNCHER:
+                        IosApplicationBundle iosApplicationBundle = applicationBundle();
+                        if(!iosApplicationBundle.isExecutable()) {
+                            throw new ConfigurationException("Application binary is not executable: " + iosApplicationBundle.pathToExecutable());
+                        }
+                        String sdkPath = sdk().path();
+                        String simulatorBinaryPath = sdk().simulatorBinaryPath();
+                        String applicationBinaryPath = iosApplicationBundle.pathToExecutable();
+                        return new VictorSimulatorProcess(sdkPath, simulatorBinaryPath, applicationBinaryPath, deviceType.get(), shell.get());
+                    default:
+                        return new UserSimulatorProcess();
                 }
-                return new UserSimulatorProcess();
             }
         };
     }

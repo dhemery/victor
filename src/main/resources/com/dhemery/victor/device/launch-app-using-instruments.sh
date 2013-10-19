@@ -26,7 +26,7 @@ AUTOMATION_TEMPLATE_PATH="$XCODE_CONTENT_PATH/Applications/Instruments.app/Conte
 DIR=$( cd $( dirname "$0" ) && pwd )
 
 # The path to the script that loops for Instruments
-LOOP_FOREVER="$DIR/loop-forever.js
+LOOP_FOREVER="$DIR/loop-forever.js"
 
 # The prefix of the directory where instruments will write its output.
 # TODO: Make this a parameter. It should probably be an absolute path.
@@ -36,4 +36,4 @@ OUTPUT_PREFIX=instruments.output
 defaults write com.apple.iphonesimulator SimulateDevice "'$DEVICE_TYPE'"
 
 # Launch the app and run the "loop forever" script
-instruments -D "$OUTPUT_PREFIX" -t "AUTOMATION_TEMPLATE_PATH" "$APPLICATION_EXECUTABLE_PATH" -e UIASCRIPT "$LOOP_FOREVER"
+instruments -D "$OUTPUT_PREFIX" -t "$AUTOMATION_TEMPLATE_PATH" "$APPLICATION_EXECUTABLE_PATH" -e UIASCRIPT "$LOOP_FOREVER"
