@@ -13,7 +13,7 @@
  * <li>{@link com.dhemery.victor.IosDevice}: a driver that interacts with a simulated iOS device.</li>
  * <li>{@link com.dhemery.victor.IosView}: a driver that interacts with a set of views in an iOS application.</li>
  * <li>{@link com.dhemery.victor.IosViewIdentifier}: a mechanism for identifying iOS views.</li>
- * <li>{@link com.dhemery.victor.Victor}: a factory that constructs a complete Victor environment
+ * <li>{@link com.dhemery.victor.configuration.ConfigurableVictor}: a factory that constructs a complete Victor environment
  * based on a small set of configuration options.</li>
  * </ul>
  */

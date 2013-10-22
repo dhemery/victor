@@ -1,10 +1,10 @@
 package com.dhemery.victor.discovery;
 
-public class SdkItem {
+public class IosSdkItem {
     private final String sdkCanonicalName;
     private final String itemName;
 
-    public SdkItem(String sdkCanonicalName, String itemName) {
+    public IosSdkItem(String sdkCanonicalName, String itemName) {
         this.sdkCanonicalName = sdkCanonicalName;
         this.itemName = itemName;
     }
@@ -14,7 +14,7 @@ public class SdkItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SdkItem sdkItem = (SdkItem) o;
+        IosSdkItem sdkItem = (IosSdkItem) o;
 
         if (itemName != null ? !itemName.equals(sdkItem.itemName) : sdkItem.itemName != null) return false;
         if (sdkCanonicalName != null ? !sdkCanonicalName.equals(sdkItem.sdkCanonicalName) : sdkItem.sdkCanonicalName != null)

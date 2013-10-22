@@ -2,7 +2,7 @@ package com.dhemery.victor.device;
 
 import com.dhemery.os.RunnableCommand;
 import com.dhemery.os.Shell;
-import com.dhemery.victor.discovery.IosApplicationBundle;
+import com.dhemery.victor.IosApplicationBundle;
 
 import java.io.IOException;
 import java.io.InputStream;

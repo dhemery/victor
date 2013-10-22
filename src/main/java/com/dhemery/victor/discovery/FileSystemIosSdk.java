@@ -1,61 +1,57 @@
 package com.dhemery.victor.discovery;
 
+import com.dhemery.os.Shell;
+import com.dhemery.victor.IosSdk;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents an iOS SDK in the currently active Xcode development environment.
  * The active development environment is the one reported
  * by {@code xcode-select -print-path}.
  */
-public class IosSdk {
-    public static final String GENERIC_SDK_NAME = "iphonesimulator";
-    public static final String NAME_FOR_SDK_VERSION = GENERIC_SDK_NAME + "%s";
-    public static final String PLATFORM_PATH = "PlatformPath";
-    public static final String SDK_PATH = "Path";
-    public static final String SDK_VERSION = "SDKVersion";
-    public static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
-    private final SdkInspector inspector;
+public class FileSystemIosSdk implements IosSdk {
+    private static final String GENERIC_SDK_NAME = "iphonesimulator";
+    private static final String PLATFORM_PATH = "PlatformPath";
+    private static final String SDK_PATH = "Path";
+    private static final String SDK_VERSION = "SDKVersion";
+    private static final String SIMULATOR_BINARY_PATH_FOR_PLATFORM = "%s/Developer/Applications/iPhone Simulator.app/Contents/MacOS/iPhone Simulator";
+    Map<IosSdkItem,String> items = new HashMap<>();
     private final String canonicalName;
+    private final Shell shell;
 
     /**
      * Create a representation of an iOS SDK.
-     * @param canonicalName the canonical name of the iOS SDK to represent.
+     * @param canonicalName the canonical name of the iOS SDK to represent
+     * @param shell the Shell to use to execute command line commands
      */
-    public IosSdk(String canonicalName, SdkInspector inspector) {
+    public FileSystemIosSdk(String canonicalName, Shell shell) {
         this.canonicalName = canonicalName;
-        this.inspector = inspector;
+        this.shell = shell;
     }
 
-    /**
-     * This iOS SDK's canonical name.
-     */
+    @Override
     public String canonicalName() {
         return canonicalName;
     }
 
-    /**
-     * Report this iOS SDK is installed in the active development environment.
-     */
+    @Override
     public boolean isInstalled() {
         return path() != null;
     }
 
-    /**
-     * Return an information item for this iOS SDK.
-     * @param itemName the name of the item to retrieve.
-     */
+    @Override
     public String sdkInfo(String itemName) {
         return sdkInfo(canonicalName, itemName);
     }
 
-    /**
-     * The absolute path to this iOS SDK.
-     */
+    @Override
     public String path(){
         return sdkInfo(SDK_PATH);
     }
 
-    /**
-     * The absolute path to the iPhone Simulator platform in the active development environment.
-     */
+    @Override
     public String platformPath() {
         return sdkInfo(GENERIC_SDK_NAME, PLATFORM_PATH);
     }
@@ -75,18 +71,25 @@ public class IosSdk {
      *
      * @return the absolute path to the iPhoneSimulator Simulator executable in the active development environment.
      */
+    @Override
     public String simulatorBinaryPath() {
         return String.format(SIMULATOR_BINARY_PATH_FOR_PLATFORM, platformPath());
     }
 
-    /**
-     * This iOS SDK's version.
-     */
+    @Override
     public String version() {
         return sdkInfo(SDK_VERSION);
     }
 
     private String sdkInfo(String canonicalName, String itemName) {
-        return inspector.get(canonicalName, itemName);
+        IosSdkItem item = new IosSdkItem(canonicalName, itemName);
+        if(!items.containsKey(item)) {
+            String value = shell.command("SDK Inspector", "xcodebuild")
+                    .withArguments("-sdk", canonicalName)
+                    .withArguments("-version", itemName)
+                    .build().run().output();
+            items.put(item, value);
+        }
+        return items.get(item);
     }
 }

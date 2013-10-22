@@ -1,6 +1,9 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.victor.*;
+import com.dhemery.victor.IosApplication;
+import com.dhemery.victor.IosApplicationOrientation;
+import com.dhemery.victor.IosView;
+import com.dhemery.victor.IosViewIdentifier;
 
 /**
  * An application agent that communicates to an iOS application through a Frank agent.
