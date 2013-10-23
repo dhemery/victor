@@ -31,7 +31,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private IosApplicationBundle applicationBundle;
     private Codec codec;
     private SerializingEndpoint codecEndpoint;
-    private OSCommandFactory<RunnableCommand> commandFactory;
     private IosDevice device;
     private String deviceType;
     private Frank frank;
@@ -39,7 +38,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private URL frankUrl;
     private Publisher publisher;
     private ResourceFactory resourceFactory;
-    private OSCommandFactory<RunnableCommand> runtimeCommandFactory;
     private IosSdk sdk;
     private String sdkCanonicalName;
     private Shell shell;
@@ -85,21 +83,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return DEFAULT_DEVICE_TYPE;
     }
 
-    private Codec codec() {
-        if(codec == null) codec = new FranklyJsonCodec();
-        return codec;
-    }
-
-    private SerializingEndpoint codecEndpoint() {
-        if(codecEndpoint == null) codecEndpoint = new CodecEndpoint(frankEndpoint(), codec());
-        return codecEndpoint;
-    }
-
-    private OSCommandFactory<RunnableCommand> commandFactory() {
-        if(commandFactory == null) commandFactory = new PublishingCommandFactory(publisher(), runtimeCommandFactory());
-        return commandFactory;
-    }
-
     private IosDevice device() {
         if(device == null) device = new SimulatedIosDevice(deviceType(), simulatorApplication(), simulatorProcess());
         return device;
@@ -111,7 +94,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private Frank frank() {
-        if(frank == null) frank = new FranklyFrank(codecEndpoint());
+        if(frank == null) frank = new FranklyFrank(franlkyEndpoint());
         return frank;
     }
 
@@ -124,6 +107,16 @@ public class FrankVictorBuilder implements Builder<Victor> {
             frankEndpoint = new ResourceFactoryBasedEndpoint(protocol, host, port, resourceFactory());
         }
         return frankEndpoint;
+    }
+
+    private Codec franklyCodec() {
+        if(codec == null) codec = new FranklyJsonCodec();
+        return codec;
+    }
+
+    private SerializingEndpoint franlkyEndpoint() {
+        if(codecEndpoint == null) codecEndpoint = new CodecEndpoint(frankEndpoint(), franklyCodec());
+        return codecEndpoint;
     }
 
     private URL frankUrl() {
@@ -141,11 +134,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return resourceFactory;
     }
 
-    private OSCommandFactory<RunnableCommand> runtimeCommandFactory() {
-        if(runtimeCommandFactory == null) runtimeCommandFactory = new RuntimeCommandFactory();
-        return runtimeCommandFactory;
-    }
-
     private IosSdk sdk() {
         if(sdk == null) sdk = new FileSystemIosSdk(sdkCanonicalName(), shell());
         return sdk;
@@ -158,7 +146,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private Shell shell() {
-        if(shell == null) shell = new FactoryBasedShell(commandFactory());
+        if(shell == null) shell = new PublishingShell(publisher(), new JvmShell());
         return shell;
     }
 

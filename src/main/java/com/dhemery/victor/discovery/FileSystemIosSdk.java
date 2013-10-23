@@ -1,10 +1,13 @@
 package com.dhemery.victor.discovery;
 
+import com.dhemery.os.Command;
 import com.dhemery.os.Shell;
 import com.dhemery.victor.IosSdk;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.dhemery.os.CommandBuilder.command;
 
 /**
  * Represents an iOS SDK in the currently active Xcode development environment.
@@ -84,12 +87,23 @@ public class FileSystemIosSdk implements IosSdk {
     private String sdkInfo(String canonicalName, String itemName) {
         IosSdkItem item = new IosSdkItem(canonicalName, itemName);
         if(!items.containsKey(item)) {
-            String value = shell.command("SDK Inspector", "xcodebuild")
-                    .withArguments("-sdk", canonicalName)
-                    .withArguments("-version", itemName)
-                    .build().run().output();
-            items.put(item, value);
+            items.put(item, valueOf(item));
         }
         return items.get(item);
+    }
+
+    private String valueOf(IosSdkItem item) {
+        return outputFrom(commandToFetch(item));
+    }
+
+    private String outputFrom(Command command) {
+        return shell.run(command).output();
+    }
+
+    private Command commandToFetch(IosSdkItem item) {
+        return command("SDK Inspector", "xcodebuild")
+                .withArguments("-sdk", item.sdkName())
+                .withArguments("-version", item.itemName())
+                .build();
     }
 }

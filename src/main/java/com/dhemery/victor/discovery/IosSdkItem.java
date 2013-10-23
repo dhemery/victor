@@ -1,12 +1,20 @@
 package com.dhemery.victor.discovery;
 
 public class IosSdkItem {
-    private final String sdkCanonicalName;
+    private final String sdkName;
     private final String itemName;
 
-    public IosSdkItem(String sdkCanonicalName, String itemName) {
-        this.sdkCanonicalName = sdkCanonicalName;
+    public IosSdkItem(String sdkName, String itemName) {
+        this.sdkName = sdkName;
         this.itemName = itemName;
+    }
+
+    public String sdkName() {
+        return sdkName;
+    }
+
+    public String itemName() {
+        return itemName;
     }
 
     @Override
@@ -17,7 +25,7 @@ public class IosSdkItem {
         IosSdkItem sdkItem = (IosSdkItem) o;
 
         if (itemName != null ? !itemName.equals(sdkItem.itemName) : sdkItem.itemName != null) return false;
-        if (sdkCanonicalName != null ? !sdkCanonicalName.equals(sdkItem.sdkCanonicalName) : sdkItem.sdkCanonicalName != null)
+        if (sdkName != null ? !sdkName.equals(sdkItem.sdkName) : sdkItem.sdkName != null)
             return false;
 
         return true;
@@ -25,7 +33,7 @@ public class IosSdkItem {
 
     @Override
     public int hashCode() {
-        int result = sdkCanonicalName != null ? sdkCanonicalName.hashCode() : 0;
+        int result = sdkName != null ? sdkName.hashCode() : 0;
         result = 31 * result + (itemName != null ? itemName.hashCode() : 0);
         return result;
     }
@@ -33,7 +41,7 @@ public class IosSdkItem {
     @Override
     public String toString() {
         return "SdkItem{" +
-                "sdkCanonicalName='" + sdkCanonicalName + '\'' +
+                "sdkCanonicalName='" + sdkName + '\'' +
                 ", itemName='" + itemName + '\'' +
                 '}';
     }

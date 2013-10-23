@@ -281,9 +281,7 @@ public class ConfigurableVictor implements Victor {
     }
 
     private static Shell shellPublishedBy(Publisher publisher) {
-        OSCommandFactory<RunnableCommand> commandFactory = new RuntimeCommandFactory();
-        PublishingCommandFactory publishingCommandFactory = new PublishingCommandFactory(publisher, commandFactory);
-        return new FactoryBasedShell(publishingCommandFactory);
+        return new PublishingShell(publisher, new JvmShell());
     }
 
 
