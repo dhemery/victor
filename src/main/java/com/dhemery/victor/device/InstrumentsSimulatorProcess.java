@@ -10,34 +10,38 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class InstrumentsSimulatorProcess implements Service {
-    private static final String LAUNCH_SCRIPT_NAME = "launch-app-using-instruments.sh";
-    private static final String LOOP_SCRIPT_NAME = "loop-forever.js";
+    private static final String AUTOMATION_TEMPLATE_NAME = "VictorLaunch.tracetemplate";
+    private static final String OUTPUT_PREFIX = "instruments.output";
+    private static final String AUTOMATION_TEMPLATE_PATH = createAutomationTemplate();
     private final RunnableCommand launch;
+    private final RunnableCommand prepareLaunch;
     private final RunnableCommand stopSimulator;
     private final RunnableCommand stopSimulatedApplication;
     private final RunnableCommand stopInstruments;
 
     public InstrumentsSimulatorProcess(IosApplicationBundle bundle, String deviceType, Shell shell) {
-        InputStream launchScriptStream = streamForResource(LAUNCH_SCRIPT_NAME);
-        InputStream loopScriptStream = streamForResource(LOOP_SCRIPT_NAME);
-        Path scriptDirectory = createScriptDirectory();
-        Path launchScriptDestinationPath = scriptDirectory.resolve(LAUNCH_SCRIPT_NAME);
-        Path loopScriptDestinationPath = scriptDirectory.resolve(LOOP_SCRIPT_NAME);
-
-        copy(launchScriptStream, launchScriptDestinationPath);
-        copy(loopScriptStream, loopScriptDestinationPath);
-
-        launch = shell.command("Launch Application with Instruments", "bash")
-                .withArgument(launchScriptDestinationPath.toString())
-                .withArgument(bundle.path())
-                .withArgument(deviceType)
+        prepareLaunch = shell.command("Prepare Simulator Properties", "defaults")
+                .withArguments("write", "com.apple.iphonesimulator", "SimulateDevice", "'" + deviceType + "'")
+                .build();
+        launch = shell.command("Launch Application with Instruments", "instruments")
+                .withArguments("-D", OUTPUT_PREFIX)
+                .withArguments("-t", AUTOMATION_TEMPLATE_PATH)
+                .withArgument(bundle.pathToExecutable())
                 .build();
         stopInstruments = killCommand(shell, "Stop Instruments", "instruments");
         stopSimulator = killCommand(shell, "Stop Simulator", "iPhone Simulator");
         stopSimulatedApplication = killCommand(shell, "Stop Simulated Application", bundle.executableName());
     }
 
-    private void copy(InputStream source, Path destination) {
+    private static String createAutomationTemplate() {
+        Path scriptDirectory = createScriptDirectory();
+        Path destinationPath = scriptDirectory.resolve(AUTOMATION_TEMPLATE_NAME);
+        InputStream resourceStream = InstrumentsSimulatorProcess.class.getResourceAsStream(AUTOMATION_TEMPLATE_NAME);
+        copy(resourceStream, destinationPath);
+        return destinationPath.toString();
+    }
+
+    private static void copy(InputStream source, Path destination) {
         try {
             Files.copy(source, destination);
         } catch (IOException e) {
@@ -45,11 +49,7 @@ public class InstrumentsSimulatorProcess implements Service {
         }
     }
 
-    private InputStream streamForResource(String resourceName) {
-        return getClass().getResourceAsStream(resourceName);
-    }
-
-    private Path createScriptDirectory() {
+    private static Path createScriptDirectory() {
         try {
             return Files.createTempDirectory(null);
         } catch (Exception e) {
@@ -59,6 +59,7 @@ public class InstrumentsSimulatorProcess implements Service {
 
     @Override
     public void start() {
+        prepareLaunch.run();
         launch.run();
     }
 

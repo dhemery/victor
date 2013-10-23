@@ -59,6 +59,16 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return new DefaultVictor(application(), applicationBundle(), device(), sdk());
     }
 
+    public FrankVictorBuilder withPublisher(Publisher publisher) {
+        this.publisher = publisher;
+        return this;
+    }
+
+    public FrankVictorBuilder withDeviceType(String deviceType){
+        this.deviceType = deviceType;
+        return this;
+    }
+
     private IosApplication application() {
         if(application == null) application = new FrankApplication(frank());
         return application;
@@ -92,7 +102,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
 
     private IosDevice device() {
         if(device == null) device = new SimulatedIosDevice(deviceType(), simulatorApplication(), simulatorProcess());
-        return null;
+        return device;
     }
 
     private String deviceType() {

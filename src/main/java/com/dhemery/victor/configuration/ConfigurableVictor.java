@@ -10,10 +10,7 @@ import com.dhemery.network.*;
 import com.dhemery.os.*;
 import com.dhemery.publishing.Publisher;
 import com.dhemery.serializing.Codec;
-import com.dhemery.victor.IosApplication;
-import com.dhemery.victor.IosApplicationBundle;
-import com.dhemery.victor.IosDevice;
-import com.dhemery.victor.IosSdk;
+import com.dhemery.victor.*;
 import com.dhemery.victor.device.*;
 import com.dhemery.victor.discovery.FileSystemIosApplicationBundle;
 import com.dhemery.victor.discovery.FileSystemIosSdk;
@@ -29,7 +26,7 @@ import java.util.List;
 /**
  * A Victor environment configured according to specified configuration options.
  */
-public class ConfigurableVictor {
+public class ConfigurableVictor implements Victor {
     /**
      * The absolute path to the iOS application bundle to execute.
      * This is typically the application's .app package.
@@ -111,11 +108,8 @@ public class ConfigurableVictor {
     public static final String INSTRUMENTS_SIMULATOR_LAUNCHER = "instruments";
     public static final String OBSOLETE_VICTOR_SIMULATOR_LAUNCHER = "obsolete-victor";
 
-    private final Shell shell = theShell();
-
     private final Lazy<IosApplication> application = Lazily.build(theApplication());
     private final Lazy<IosApplicationBundle> applicationBundle = Lazily.build(theApplicationBundle());
-    private final Publisher publisher;
     private final Lazy<IosDevice> device = Lazily.build(theDevice());
     private final Lazy<String> deviceType = Lazily.build(theDeviceType());
     private final Lazy<Frank> frank = Lazily.build(theFrank());
@@ -123,6 +117,8 @@ public class ConfigurableVictor {
     private final Lazy<Service> simulator = Lazily.build(theSimulator());
 
     private final Configuration configuration;
+    private final Publisher publisher;
+    private final Shell shell;
 
     /**
      * Create a Victor factory with the specified configuration options.
@@ -135,11 +131,13 @@ public class ConfigurableVictor {
     public ConfigurableVictor(Configuration configuration, Publisher publisher) {
         this.configuration = new MapBackedConfiguration(configuration);
         this.publisher = publisher;
+        shell = shellPublishedBy(publisher);
     }
 
     /**
      * An application bundle inspector for the configured application.
      */
+    @Override
     public IosApplicationBundle applicationBundle() {
         return applicationBundle.get();
     }
@@ -147,6 +145,7 @@ public class ConfigurableVictor {
     /**
      * A driver for the configured application.
      */
+    @Override
     public IosApplication application() {
         return application.get();
     }
@@ -154,6 +153,7 @@ public class ConfigurableVictor {
     /**
      * A driver for the configured device.
      */
+    @Override
     public IosDevice device() {
         return device.get();
     }
@@ -168,6 +168,7 @@ public class ConfigurableVictor {
     /**
      * The iOS SDK used to run the device and application.
      */
+    @Override
     public IosSdk sdk() {
         return sdk.get();
     }
@@ -279,7 +280,7 @@ public class ConfigurableVictor {
         };
     }
 
-    private Shell theShell() {
+    private static Shell shellPublishedBy(Publisher publisher) {
         OSCommandFactory<RunnableCommand> commandFactory = new RuntimeCommandFactory();
         PublishingCommandFactory publishingCommandFactory = new PublishingCommandFactory(publisher, commandFactory);
         return new FactoryBasedShell(publishingCommandFactory);
