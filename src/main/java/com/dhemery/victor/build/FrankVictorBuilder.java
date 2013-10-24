@@ -1,8 +1,13 @@
 package com.dhemery.victor.build;
 
 import com.dhemery.core.Builder;
-import com.dhemery.network.*;
-import com.dhemery.os.*;
+import com.dhemery.network.CodecEndpoint;
+import com.dhemery.network.Endpoint;
+import com.dhemery.network.SerializingEndpoint;
+import com.dhemery.network.URLEndpoint;
+import com.dhemery.os.ProcessBuilderShell;
+import com.dhemery.os.PublishingShell;
+import com.dhemery.os.Shell;
 import com.dhemery.osx.OsxApplication;
 import com.dhemery.publishing.MethodSubscriptionChannel;
 import com.dhemery.publishing.Publisher;
@@ -30,14 +35,12 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private IosApplication application;
     private IosApplicationBundle applicationBundle;
     private Codec codec;
-    private SerializingEndpoint codecEndpoint;
     private IosDevice device;
     private String deviceType;
     private Frank frank;
     private Endpoint frankEndpoint;
     private URL frankUrl;
     private Publisher publisher;
-    private ResourceFactory resourceFactory;
     private IosSdk sdk;
     private String sdkCanonicalName;
     private Shell shell;
@@ -94,8 +97,12 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private Frank frank() {
-        if(frank == null) frank = new FranklyFrank(franlkyEndpoint());
+        if(frank == null) frank = new FranklyFrank(franklyEndpoint());
         return frank;
+    }
+
+    private SerializingEndpoint franklyEndpoint() {
+        return new CodecEndpoint(frankEndpoint(), franklyCodec());
     }
 
     private Endpoint frankEndpoint() {
@@ -104,7 +111,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
             String protocol = url.getProtocol();
             String host = url.getHost();
             int port = url.getPort();
-            frankEndpoint = new ResourceFactoryBasedEndpoint(protocol, host, port, resourceFactory());
+            frankEndpoint = new URLEndpoint(protocol, host, port);
         }
         return frankEndpoint;
     }
@@ -112,11 +119,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private Codec franklyCodec() {
         if(codec == null) codec = new FranklyJsonCodec();
         return codec;
-    }
-
-    private SerializingEndpoint franlkyEndpoint() {
-        if(codecEndpoint == null) codecEndpoint = new CodecEndpoint(frankEndpoint(), franklyCodec());
-        return codecEndpoint;
     }
 
     private URL frankUrl() {
@@ -127,11 +129,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private Publisher publisher() {
         if(publisher == null) publisher = new MethodSubscriptionChannel();
         return publisher;
-    }
-
-    private ResourceFactory resourceFactory() {
-        if(resourceFactory == null) resourceFactory  = new URLResourceFactory();
-        return resourceFactory;
     }
 
     private IosSdk sdk() {
@@ -146,7 +143,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private Shell shell() {
-        if(shell == null) shell = new PublishingShell(publisher(), new JvmShell());
+        if(shell == null) shell = new PublishingShell(publisher(), new ProcessBuilderShell());
         return shell;
     }
 

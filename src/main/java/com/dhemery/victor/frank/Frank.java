@@ -1,7 +1,5 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.SerializingEndpoint;
-
 import java.util.List;
 
 /**
@@ -29,11 +27,6 @@ public interface Frank {
      * Retrieve a JSON description of the tree of views in the application's main window.
      */
     String dump();
-
-    /**
-     * The endpoint through which this Frank agent communicates with the Frank server.
-     */
-    SerializingEndpoint endpoint();
 
     //TODO: explain empty list and null value.
     /**

@@ -29,7 +29,7 @@ public class FranklyFrank implements Frank {
 
     @Override
     public boolean accessibilityCheck() {
-        AccessibilityCheckResponse response = endpoint.get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
+        AccessibilityCheckResponse response = get(ACCESSIBILITY_CHECK_REQUEST, AccessibilityCheckResponse.class);
         return response.enabled();
     }
 
@@ -37,7 +37,7 @@ public class FranklyFrank implements Frank {
     public String appExec(String name, Object...arguments) {
         Operation operation = new Operation(name, arguments);
         AppExecOperation appExecOperation = new AppExecOperation(operation);
-        MessageResponse response = endpoint.put(APP_EXEC_REQUEST, appExecOperation, MessageResponse.class);
+        MessageResponse response = put(APP_EXEC_REQUEST, appExecOperation, MessageResponse.class);
 
         if(response.succeeded()) return response.results().get(0);
 
@@ -46,14 +46,14 @@ public class FranklyFrank implements Frank {
 
     @Override
     public String dump() {
-        return endpoint.get(DUMP_REQUEST, String.class);
+        return get(DUMP_REQUEST, String.class);
     }
 
     @Override
     public List<String> map(String engine, String query, String name, Object...arguments) {
         Operation operation = new Operation(name, arguments);
         MapOperation mapOperation = new MapOperation(engine, query, operation);
-        MessageResponse response = endpoint.put(MAP_REQUEST, mapOperation, MessageResponse.class);
+        MessageResponse response = put(MAP_REQUEST, mapOperation, MessageResponse.class);
 
         if(response.succeeded()) return response.results();
 
@@ -62,23 +62,26 @@ public class FranklyFrank implements Frank {
 
     @Override
     public String orientation() {
-        OrientationResponse response = endpoint.get(ORIENTATION_REQUEST, OrientationResponse.class);
+        OrientationResponse response = get(ORIENTATION_REQUEST, OrientationResponse.class);
         return response.orientation();
     }
 
     @Override
     public void typeIntoKeyboard(String text) {
         TextToType textToType = new TextToType(text);
-        endpoint.put(TYPE_INTO_KEYBOARD_REQUEST, textToType, Void.class);
-    }
-
-    @Override
-    public SerializingEndpoint endpoint() {
-        return endpoint;
+        put(TYPE_INTO_KEYBOARD_REQUEST, textToType, Void.class);
     }
 
     @Override
     public String toString() {
         return "Frank at " + endpoint;
+    }
+
+    private <R> R get(String resource, Class<R> returnType) {
+        return endpoint.get(resource, returnType);
+    }
+
+    private <B,R> R put(String path, B body, Class<R> returnType) {
+        return endpoint.put(path, body, returnType);
     }
 }

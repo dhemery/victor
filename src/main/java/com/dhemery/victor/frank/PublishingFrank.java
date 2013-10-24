@@ -1,6 +1,5 @@
 package com.dhemery.victor.frank;
 
-import com.dhemery.network.SerializingEndpoint;
 import com.dhemery.publishing.Publisher;
 import com.dhemery.victor.frank.events.*;
 
@@ -76,11 +75,6 @@ public class PublishingFrank implements Frank {
         publisher.publish(new WillRequestTypeIntoKeyboard(text));
         frank.typeIntoKeyboard(text);
         publisher.publish(new TypeIntoKeyboardReturned());
-    }
-
-    @Override
-    public SerializingEndpoint endpoint() {
-        return frank.endpoint();
     }
 
     @Override

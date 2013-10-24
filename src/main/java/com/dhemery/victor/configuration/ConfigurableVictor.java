@@ -6,8 +6,13 @@ import com.dhemery.configuring.MapBackedConfiguration;
 import com.dhemery.core.Builder;
 import com.dhemery.core.Lazily;
 import com.dhemery.core.Lazy;
-import com.dhemery.network.*;
-import com.dhemery.os.*;
+import com.dhemery.network.CodecEndpoint;
+import com.dhemery.network.Endpoint;
+import com.dhemery.network.SerializingEndpoint;
+import com.dhemery.network.URLEndpoint;
+import com.dhemery.os.ProcessBuilderShell;
+import com.dhemery.os.PublishingShell;
+import com.dhemery.os.Shell;
 import com.dhemery.publishing.Publisher;
 import com.dhemery.serializing.Codec;
 import com.dhemery.victor.*;
@@ -232,12 +237,10 @@ public class ConfigurableVictor implements Victor {
             public Frank build() {
                 String host = option(FRANK_HOST, DEFAULT_FRANK_HOST);
                 int port = Integer.parseInt(option(FRANK_PORT, DEFAULT_FRANK_PORT));
-                ResourceFactory resources = new URLResourceFactory();
-                ResourceFactory publishingResources = new PublishingResourceFactory(publisher, resources);
-                Endpoint endpoint = new ResourceFactoryBasedEndpoint(FRANK_ENDPOINT_PROTOCOL, host, port, publishingResources);
+                Endpoint endpoint = new URLEndpoint(FRANK_ENDPOINT_PROTOCOL, host, port);
                 Codec codec = new FranklyJsonCodec();
-                SerializingEndpoint codecEndpoint = new CodecEndpoint(endpoint, codec);
-                return new PublishingFrank(publisher, new FranklyFrank(codecEndpoint));
+                SerializingEndpoint franklyEndpoint = new CodecEndpoint(endpoint, codec);
+                return new PublishingFrank(publisher, new FranklyFrank(franklyEndpoint));
             }
         };
     }
@@ -281,7 +284,7 @@ public class ConfigurableVictor implements Victor {
     }
 
     private static Shell shellPublishedBy(Publisher publisher) {
-        return new PublishingShell(publisher, new JvmShell());
+        return new PublishingShell(publisher, new ProcessBuilderShell());
     }
 
 
