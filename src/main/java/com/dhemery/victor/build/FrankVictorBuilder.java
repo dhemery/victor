@@ -34,18 +34,19 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private final String applicationBundlePath;
     private IosApplication application;
     private IosApplicationBundle applicationBundle;
-    private Codec codec;
+    private Codec franklyCodec;
     private IosDevice device;
     private String deviceType;
     private Frank frank;
     private Endpoint frankEndpoint;
+    private SerializingEndpoint franklyEndpoint;
     private URL frankUrl;
     private Publisher publisher;
     private IosSdk sdk;
     private String sdkCanonicalName;
     private Shell shell;
     private OsxApplication simulatorApplication;
-    private Service simulatorProcess;
+    private Service simulatorService;
 
     private FrankVictorBuilder(String bundlePath){
         this.applicationBundlePath = bundlePath;
@@ -60,13 +61,155 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return new DefaultVictor(application(), applicationBundle(), device(), sdk());
     }
 
+    /**
+     * Supply an application to interact with.
+     * @return this builder
+     */
+    public FrankVictorBuilder withApplication(IosApplication application) {
+        this.application = application;
+        return this;
+    }
+
+    /**
+     * Supply an application bundle
+     * to describe the application.
+     * @return this builder
+     */
+    public FrankVictorBuilder withApplicationBundle(IosApplicationBundle applicationBundle) {
+        this.applicationBundle = applicationBundle;
+        return this;
+    }
+
+    /**
+     * Supply an iOS device to simulate.
+     * @return this builder
+     */
+    public FrankVictorBuilder withDevice(IosDevice device) {
+        this.device = device;
+        return this;
+    }
+
+    /**
+     * Specify a type of device to simulate.
+     * @return this builder
+     */
+    public FrankVictorBuilder withDeviceType(String deviceType){
+        this.deviceType = deviceType;
+        return this;
+    }
+
+    /**
+     * Supply a Frank driver
+     * to communicate with the application
+     * through the Frank server.
+     * @return this builder
+     */
+    public FrankVictorBuilder withFrank(Frank frank) {
+        this.frank = frank;
+        return this;
+    }
+
+    /**
+     * Supply an endpoint to interact with a Frank server via HTTP.
+     * @return this builder
+     */
+    public FrankVictorBuilder withFrankEndpoint(Endpoint frankEndpoint) {
+        this.frankEndpoint = frankEndpoint;
+        return this;
+    }
+
+    /**
+     * Supply the URL of the Frank server.
+     * @return this builder
+     */
+    public FrankVictorBuilder withFrankUrl(URL frankUrl) {
+        this.frankUrl = frankUrl;
+        return this;
+    }
+
+    /**
+     * Supply a codec that can serialize and deserialize Frankly messages.
+     * The codec must be able to:
+     * <ul>
+     * <li>Serialize each {@code FranklyFrank} message object
+     * into the corresponding Frankly wire protocol format.</li>
+     * <li>Deserialize each response from its Frankly wire protocol format
+     * @return this builder
+     */
+    public FrankVictorBuilder withFranklyCodec(Codec franklyCodec) {
+        this.franklyCodec = franklyCodec;
+        return this;
+    }
+
+    /**
+     * Supply a serializing endpoint
+     * that can send and receive {@link FranklyFrank} messages.
+     * The serializing endpoint must be able to:
+     * <ul>
+     * <li>Serialize each {@code FranklyFrank} message object
+     * into the corresponding Frankly wire protocol format.</li>
+     * <li>Send each serialized message to the Frank server via HTTP.</li>
+     * <li>Receive each serialized response from the Frank server via HTTP.</li>
+     * <li>Deserialize each response from its Frankly wire protocol format
+     * into the corresponding {@code FranklyFrank} response object.</li>
+     * @return this builder
+     */
+    public FrankVictorBuilder withFranklyEndpoint(SerializingEndpoint franklyEndpoint) {
+        this.franklyEndpoint = franklyEndpoint;
+        return this;
+    }
+
+    /**
+     * Supply a publisher to publish events.
+     * @return this builder
+     */
     public FrankVictorBuilder withPublisher(Publisher publisher) {
         this.publisher = publisher;
         return this;
     }
 
-    public FrankVictorBuilder withDeviceType(String deviceType){
-        this.deviceType = deviceType;
+    /**
+     * Supply an SDK.
+     * @return this builder
+     */
+    public FrankVictorBuilder withSdk(IosSdk sdk) {
+        this.sdk = sdk;
+        return this;
+    }
+
+    /**
+     * Specify the canonical name of the SDK to use to launc the simulator.
+     * @return this builder
+     */
+    public FrankVictorBuilder withSdkCanonicalName(String sdkCanonicalName) {
+        this.sdkCanonicalName = sdkCanonicalName;
+        return this;
+    }
+
+    /**
+     * Supply a shell to execute command line commands.
+     * @return this builder
+     */
+    public FrankVictorBuilder withShell(Shell shell) {
+        this.shell = shell;
+        return this;
+    }
+
+    /**
+     * Supply a driver to interact with a running iOS simulator application.
+     * @return this builder
+     */
+    public FrankVictorBuilder withSimulatorApplication(OsxApplication simulatorApplication){
+        this.simulatorApplication = simulatorApplication;
+        return this;
+    }
+
+    /**
+     * Supply a service to start and stop the simulator.
+     * @return this builder
+     */
+    public FrankVictorBuilder withSimulatorService(Service simulatorService) {
+        this.simulatorService = simulatorService;
         return this;
     }
 
@@ -87,7 +230,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private IosDevice device() {
-        if(device == null) device = new SimulatedIosDevice(deviceType(), simulatorApplication(), simulatorProcess());
+        if(device == null) device = new SimulatedIosDevice(deviceType(), simulatorApplication(), simulatorService());
         return device;
     }
 
@@ -102,7 +245,8 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private SerializingEndpoint franklyEndpoint() {
-        return new CodecEndpoint(frankEndpoint(), franklyCodec());
+        if(franklyEndpoint == null) franklyEndpoint = new CodecEndpoint(frankEndpoint(), franklyCodec());
+        return franklyEndpoint;
     }
 
     private Endpoint frankEndpoint() {
@@ -117,8 +261,8 @@ public class FrankVictorBuilder implements Builder<Victor> {
     }
 
     private Codec franklyCodec() {
-        if(codec == null) codec = new FranklyJsonCodec();
-        return codec;
+        if(franklyCodec == null) franklyCodec = new FranklyJsonCodec();
+        return franklyCodec;
     }
 
     private URL frankUrl() {
@@ -136,7 +280,6 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return sdk;
     }
 
-
     private String sdkCanonicalName() {
         if(sdkCanonicalName == null) sdkCanonicalName = applicationBundle().targetSdkCanonicalName();
         return sdkCanonicalName;
@@ -152,9 +295,9 @@ public class FrankVictorBuilder implements Builder<Victor> {
         return simulatorApplication;
     }
 
-    private Service simulatorProcess() {
-        if(simulatorProcess == null) simulatorProcess = new InstrumentsSimulatorProcess(applicationBundle(), deviceType(), shell());
-        return simulatorProcess;
+    private Service simulatorService() {
+        if(simulatorService == null) simulatorService = new InstrumentsSimulatorProcess(applicationBundle(), deviceType(), shell());
+        return simulatorService;
     }
 
     private static URL url(String url) {
