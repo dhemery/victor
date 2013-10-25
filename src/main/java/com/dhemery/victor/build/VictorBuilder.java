@@ -28,7 +28,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class FrankVictorBuilder implements Builder<Victor> {
+/**
+ * Build a Victor environment using default values and user-supplied values.
+ */
+public class VictorBuilder implements Builder<Victor> {
     private static final String DEFAULT_DEVICE_TYPE = "iPhone";
     public static final String DEFAULT_FRANK_URL = "http://localhost:37265";
     private final String applicationBundlePath;
@@ -48,12 +51,12 @@ public class FrankVictorBuilder implements Builder<Victor> {
     private OsxApplication simulatorApplication;
     private Service simulatorService;
 
-    private FrankVictorBuilder(String bundlePath){
+    private VictorBuilder(String bundlePath){
         this.applicationBundlePath = bundlePath;
     }
 
-    public static FrankVictorBuilder victor(String bundlePath) {
-        return new FrankVictorBuilder(bundlePath);
+    public static VictorBuilder victorForApplicationBundle(String bundlePath) {
+        return new VictorBuilder(bundlePath);
     }
 
     @Override
@@ -65,7 +68,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply an application to interact with.
      * @return this builder
      */
-    public FrankVictorBuilder withApplication(IosApplication application) {
+    public VictorBuilder withApplication(IosApplication application) {
         this.application = application;
         return this;
     }
@@ -75,7 +78,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * to describe the application.
      * @return this builder
      */
-    public FrankVictorBuilder withApplicationBundle(IosApplicationBundle applicationBundle) {
+    public VictorBuilder withApplicationBundle(IosApplicationBundle applicationBundle) {
         this.applicationBundle = applicationBundle;
         return this;
     }
@@ -84,7 +87,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply an iOS device to simulate.
      * @return this builder
      */
-    public FrankVictorBuilder withDevice(IosDevice device) {
+    public VictorBuilder withDevice(IosDevice device) {
         this.device = device;
         return this;
     }
@@ -93,7 +96,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Specify a type of device to simulate.
      * @return this builder
      */
-    public FrankVictorBuilder withDeviceType(String deviceType){
+    public VictorBuilder withDeviceType(String deviceType){
         this.deviceType = deviceType;
         return this;
     }
@@ -104,7 +107,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * through the Frank server.
      * @return this builder
      */
-    public FrankVictorBuilder withFrank(Frank frank) {
+    public VictorBuilder withFrank(Frank frank) {
         this.frank = frank;
         return this;
     }
@@ -113,7 +116,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply an endpoint to interact with a Frank server via HTTP.
      * @return this builder
      */
-    public FrankVictorBuilder withFrankEndpoint(Endpoint frankEndpoint) {
+    public VictorBuilder withFrankEndpoint(Endpoint frankEndpoint) {
         this.frankEndpoint = frankEndpoint;
         return this;
     }
@@ -122,7 +125,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply the URL of the Frank server.
      * @return this builder
      */
-    public FrankVictorBuilder withFrankUrl(URL frankUrl) {
+    public VictorBuilder withFrankUrl(URL frankUrl) {
         this.frankUrl = frankUrl;
         return this;
     }
@@ -136,7 +139,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * <li>Deserialize each response from its Frankly wire protocol format
      * @return this builder
      */
-    public FrankVictorBuilder withFranklyCodec(Codec franklyCodec) {
+    public VictorBuilder withFranklyCodec(Codec franklyCodec) {
         this.franklyCodec = franklyCodec;
         return this;
     }
@@ -154,7 +157,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * into the corresponding {@code FranklyFrank} response object.</li>
      * @return this builder
      */
-    public FrankVictorBuilder withFranklyEndpoint(SerializingEndpoint franklyEndpoint) {
+    public VictorBuilder withFranklyEndpoint(SerializingEndpoint franklyEndpoint) {
         this.franklyEndpoint = franklyEndpoint;
         return this;
     }
@@ -163,7 +166,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply a publisher to publish events.
      * @return this builder
      */
-    public FrankVictorBuilder withPublisher(Publisher publisher) {
+    public VictorBuilder withPublisher(Publisher publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -172,7 +175,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply an SDK.
      * @return this builder
      */
-    public FrankVictorBuilder withSdk(IosSdk sdk) {
+    public VictorBuilder withSdk(IosSdk sdk) {
         this.sdk = sdk;
         return this;
     }
@@ -181,7 +184,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Specify the canonical name of the SDK to use to launc the simulator.
      * @return this builder
      */
-    public FrankVictorBuilder withSdkCanonicalName(String sdkCanonicalName) {
+    public VictorBuilder withSdkCanonicalName(String sdkCanonicalName) {
         this.sdkCanonicalName = sdkCanonicalName;
         return this;
     }
@@ -190,7 +193,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply a shell to execute command line commands.
      * @return this builder
      */
-    public FrankVictorBuilder withShell(Shell shell) {
+    public VictorBuilder withShell(Shell shell) {
         this.shell = shell;
         return this;
     }
@@ -199,7 +202,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply a driver to interact with a running iOS simulator application.
      * @return this builder
      */
-    public FrankVictorBuilder withSimulatorApplication(OsxApplication simulatorApplication){
+    public VictorBuilder withSimulatorApplication(OsxApplication simulatorApplication){
         this.simulatorApplication = simulatorApplication;
         return this;
     }
@@ -208,7 +211,7 @@ public class FrankVictorBuilder implements Builder<Victor> {
      * Supply a service to start and stop the simulator.
      * @return this builder
      */
-    public FrankVictorBuilder withSimulatorService(Service simulatorService) {
+    public VictorBuilder withSimulatorService(Service simulatorService) {
         this.simulatorService = simulatorService;
         return this;
     }
